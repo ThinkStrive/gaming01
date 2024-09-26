@@ -6,19 +6,28 @@ const BigSmall = ({ historyData }) => {
 
   historyData.forEach((data) => {
     if (data.size === "large") {
-      if (columns[currentColumn].includes("small") || columns[currentColumn].includes("zero")) {
+      if (
+        columns[currentColumn].includes("small") ||
+        columns[currentColumn].includes("zero")
+      ) {
         columns.push([]);
         currentColumn++;
       }
       columns[currentColumn].push("large");
     } else if (data.size === "small") {
-      if (columns[currentColumn].includes("large") || columns[currentColumn].includes("zero")) {
+      if (
+        columns[currentColumn].includes("large") ||
+        columns[currentColumn].includes("zero")
+      ) {
         columns.push([]);
         currentColumn++;
       }
       columns[currentColumn].push("small");
     } else if (data.size === "zero") {
-      if (columns[currentColumn].includes("large") || columns[currentColumn].includes("small")) {
+      if (
+        columns[currentColumn].includes("large") ||
+        columns[currentColumn].includes("small")
+      ) {
         columns.push([]);
         currentColumn++;
       }
@@ -36,9 +45,9 @@ const BigSmall = ({ historyData }) => {
             <div key={colIndex} style={{ width: "50px", textAlign: "center" }}>
               <div
                 className={`
-                  ${col[rowIndex] === "large" ? "bg-red-500" : ""}
-                  ${col[rowIndex] === "small" ? "bg-blue-500" : ""}
-                  ${col[rowIndex] === "zero" ? "bg-green-500" : ""}
+                  ${col[rowIndex] === "large" ? "bg-red-500 rounded-lg mb-1" : ""}
+                  ${col[rowIndex] === "small" ? "bg-blue-500 rounded-lg my-1" : ""}
+                  ${col[rowIndex] === "zero" ? "bg-green-500 rounded-lg my-1" : ""}
                   text-white py-2
                 `}
               >

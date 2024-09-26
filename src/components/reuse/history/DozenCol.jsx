@@ -73,8 +73,10 @@ const DozenCol = ({ historyData }) => {
       ].map((label, rowIndex) => (
         <div key={rowIndex} style={{ display: "flex", gap: "10px" }}>
           {/* First column for labels */}
-          <div style={{ width: "100px", textAlign: "left", padding: "10px" }}>
-            <p>{label}</p>
+          <div style={{ width: "160px", textAlign: "left", padding: "10px" }}>
+            <p className="text-black font-semibold w-full max-md:text-xs max-sm:w-16">
+              {label}
+            </p>
           </div>
           {/* Grid for circles */}
           {Array.from({ length: maxColumns }).map((_, colIndex) => (
@@ -93,10 +95,10 @@ const DozenCol = ({ historyData }) => {
                   grid[rowIndex][colIndex] === "dozen"
                     ? "bg-red-500"
                     : grid[rowIndex][colIndex] === "column"
-                    ? "bg-blue-500"
-                    : grid[rowIndex][colIndex] === "zero"
-                    ? "bg-green-500"
-                    : ""
+                      ? "bg-blue-500"
+                      : grid[rowIndex][colIndex] === "zero"
+                        ? "bg-green-500"
+                        : ""
                 } ${grid[rowIndex][colIndex] ? "rounded-full w-8 h-8" : ""}`}
               />
             </div>

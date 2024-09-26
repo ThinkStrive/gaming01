@@ -7,6 +7,8 @@ import DozenCol from "./DozenCol";
 import PatternPre from "../pattern/PatternPre";
 import PatternBigSmall from "../pattern/PatternBigSmall";
 import PatternOddEven from "../pattern/PatternOddEven";
+import background from "../../../assets/imgs/2002.i029.002_realistic-poker-club-illustration.jpg";
+import "../../../Style/History.css";
 
 const History = ({ historyData }) => {
   const [activeTab, setActiveTab] = useState("blackRed");
@@ -25,7 +27,6 @@ const History = ({ historyData }) => {
     zero: 0,
   });
 
-
   const handleFindCountOfAllData = () => {
     // Initialize counters
     let redCount = 0;
@@ -43,7 +44,7 @@ const History = ({ historyData }) => {
         redCount++;
       } else if (data.color === "black") {
         blackCount++;
-      } 
+      }
 
       // Count size (small/big)
       if (data.size === "small") {
@@ -59,11 +60,13 @@ const History = ({ historyData }) => {
         evenCount++;
       }
 
-
-      if (data.color === 'zero' && data.odd_even === 'zero' && data.size === 'zero') {
+      if (
+        data.color === "zero" &&
+        data.odd_even === "zero" &&
+        data.size === "zero"
+      ) {
         zeroCount++;
       }
-
     });
 
     // Update the historyCountData state with the calculated counts
@@ -84,102 +87,138 @@ const History = ({ historyData }) => {
 
   return (
     <div>
-      <div className="flex w-full justify-evenly items-center h-10 border">
-        <div className="flex justify-center items-center">
-          <div className="bg-red-500 rounded-[50%] w-5 h-5"></div>
-          <p className="mx-2">{historyCountData.red}</p>
-        </div>
-        <div className="flex justify-center items-center">
-          <div className="bg-black rounded-[50%] w-5 h-5"></div>
-          <p className="mx-2">{historyCountData.black}</p>
-        </div>
-        <div className="flex justify-center items-center">
-          <div className="bg-blue-500 rounded-[50%] w-5 h-5 flex justify-center items-center">
-            S
+      <div
+        className="border p-3 w-full border-black rounded-lg"
+        style={{
+          background: `linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),url(${background}) center center no-repeat`,
+          backgroundSize: "cover",
+          backgroundPositionX: "center",
+          backgroundPositionY: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        <div className="flex w-full justify-evenly items-center mb-10">
+          <div className="flex justify-center items-center">
+            <div className="bg-red-500 rounded-[50%] w-5 h-5"></div>
+            <p className="mx-2 text-black font-semibold">
+              {historyCountData.red}
+            </p>
           </div>
-          <p className="mx-2">{historyCountData.small}</p>
-        </div>
-        <div className="flex justify-center items-center">
-          <div className="bg-red-500 rounded-[50%] w-5 h-5 flex justify-center items-center">
-            B
+          <div className="flex justify-center items-center">
+            <div className="bg-black rounded-[50%] w-5 h-5"></div>
+            <p className="mx-2 text-black font-semibold">
+              {historyCountData.black}
+            </p>
           </div>
-          <p className="mx-2">{historyCountData.big}</p>
-        </div>
-        <div className="flex justify-center items-center">
-          <div className="bg-blue-500 rounded-[50%] w-5 h-5 flex justify-center items-center">
-            O
+          <div className="flex justify-center items-center">
+            <div className="bg-blue-500 rounded-[25%] w-5 h-5 flex justify-center items-center">
+              S
+            </div>
+            <p className="mx-2 text-black font-semibold">
+              {historyCountData.small}
+            </p>
           </div>
-          <p className="mx-2">{historyCountData.odd}</p>
-        </div>
-        <div className="flex justify-center items-center">
-          <div className="bg-red-500 rounded-[50%] w-5 h-5 flex justify-center items-center">
-            E
+          <div className="flex justify-center items-center">
+            <div className="bg-red-500 rounded-[25%] w-5 h-5 flex justify-center items-center">
+              B
+            </div>
+            <p className="mx-2 text-black font-semibold">
+              {historyCountData.big}
+            </p>
           </div>
-          <p className="mx-2">{historyCountData.even}</p>
-        </div>
-        <div className="flex justify-center items-center">
-          <div className="bg-green-500 rounded-[50%] w-5 h-5 flex justify-center items-center">
-            Z
+          <div className="flex justify-center items-center">
+            <div className="bg-blue-500 rounded-[25%] w-5 h-5 flex justify-center items-center">
+              O
+            </div>
+            <p className="mx-2 text-black font-semibold">
+              {historyCountData.odd}
+            </p>
           </div>
-          <p className="mx-2">{historyCountData.zero}</p>
+          <div className="flex justify-center items-center">
+            <div className="bg-red-500 rounded-[25%] w-5 h-5 flex justify-center items-center">
+              E
+            </div>
+            <p className="mx-2 text-black font-semibold">
+              {historyCountData.even}
+            </p>
+          </div>
+          <div className="flex justify-center items-center">
+            <div className="bg-green-500 rounded-[25%] w-5 h-5 flex justify-center items-center">
+              Z
+            </div>
+            <p className="mx-2 text-black font-semibold">
+              {historyCountData.zero}
+            </p>
+          </div>
         </div>
-      </div>
-      <Routes>
-        <Route
-          path="/blackRed"
-          element={<BlackRed historyData={historyData} />}
-        />
-        <Route
-          path="/oddEven"
-          element={<OddEven historyData={historyData} />}
-        />
-        <Route
-          path="/bigSmall"
-          element={<BigSmall historyData={historyData} />}
-        />
-        <Route
-          path="/dozenCol"
-          element={<DozenCol historyData={historyData} />}
-        />
-      </Routes>
 
-      <div className="w-full h-10 flex justify-evenly items-center">
-        <Link
-          to="blackRed"
-          className={`${
-            activeTab === "blackRed" ? "bg-red-400" : "transparent"
-          }`}
-          onClick={() => setActiveTab("blackRed")}
-        >
-          Red / Black
-        </Link>
-        <Link
-          to="bigSmall"
-          className={`${
-            activeTab === "bigSmall" ? "bg-red-400" : "transparent"
-          }`}
-          onClick={() => setActiveTab("bigSmall")}
-        >
-          Big / Small
-        </Link>
-        <Link
-          to="oddEven"
-          className={`${
-            activeTab === "oddEven" ? "bg-red-400" : "transparent"
-          }`}
-          onClick={() => setActiveTab("oddEven")}
-        >
-          Odd / Even
-        </Link>
-        <Link
-          to="dozenCol"
-          className={`${
-            activeTab === "dozenCol" ? "bg-red-400" : "transparent"
-          }`}
-          onClick={() => setActiveTab("dozenCol")}
-        >
-          Dozen / Column
-        </Link>
+        <div className="px-10 max-sm:p-3 overflow-scroll max-sm:h-48 h-72 custom-scrollbar">
+          <Routes>
+            <Route
+              path="/blackRed"
+              element={<BlackRed historyData={historyData} />}
+            />
+            <Route
+              path="/oddEven"
+              element={<OddEven historyData={historyData} />}
+            />
+            <Route
+              path="/bigSmall"
+              element={<BigSmall historyData={historyData} />}
+            />
+            <Route
+              path="/dozenCol"
+              element={<DozenCol historyData={historyData} />}
+            />
+          </Routes>
+        </div>
+
+        <div className="w-full h-10 flex justify-evenly items-center border-t border-gray-500 mt-4">
+          <Link
+            to="blackRed"
+            className={`${
+              activeTab === "blackRed"
+                ? "bg-red-500 text-black font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1 rounded-lg"
+                : "transparent text-black font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1"
+            }`}
+            onClick={() => setActiveTab("blackRed")}
+          >
+            Red / Black
+          </Link>
+          <Link
+            to="bigSmall"
+            className={`${
+              activeTab === "bigSmall"
+                ? "bg-red-500 text-black font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1 rounded-lg"
+                : "transparent text-black font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1"
+            }`}
+            onClick={() => setActiveTab("bigSmall")}
+          >
+            Big / Small
+          </Link>
+          <Link
+            to="oddEven"
+            className={`${
+              activeTab === "oddEven"
+                ? "bg-red-500 text-black font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1 rounded-lg"
+                : "transparent text-black font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1"
+            }`}
+            onClick={() => setActiveTab("oddEven")}
+          >
+            Odd / Even
+          </Link>
+          <Link
+            to="dozenCol"
+            className={`${
+              activeTab === "dozenCol"
+                ? "bg-red-500 text-black font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1 rounded-lg"
+                : "transparent text-black font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1"
+            }`}
+            onClick={() => setActiveTab("dozenCol")}
+          >
+            Dozen / Column
+          </Link>
+        </div>
       </div>
 
       <div>

@@ -6,19 +6,28 @@ const OddEven = ({ historyData }) => {
 
   historyData.forEach((data) => {
     if (data.odd_even === "odd") {
-      if (columns[currentColumn].includes("even") || columns[currentColumn].includes("zero")) {
+      if (
+        columns[currentColumn].includes("even") ||
+        columns[currentColumn].includes("zero")
+      ) {
         columns.push([]);
         currentColumn++;
       }
       columns[currentColumn].push("odd");
     } else if (data.odd_even === "even") {
-      if (columns[currentColumn].includes("odd") || columns[currentColumn].includes("zero")) {
+      if (
+        columns[currentColumn].includes("odd") ||
+        columns[currentColumn].includes("zero")
+      ) {
         columns.push([]);
         currentColumn++;
       }
       columns[currentColumn].push("even");
     } else if (data.odd_even === "zero") {
-      if (columns[currentColumn].includes("odd") || columns[currentColumn].includes("even")) {
+      if (
+        columns[currentColumn].includes("odd") ||
+        columns[currentColumn].includes("even")
+      ) {
         columns.push([]);
         currentColumn++;
       }
@@ -36,9 +45,9 @@ const OddEven = ({ historyData }) => {
             <div key={colIndex} style={{ width: "50px", textAlign: "center" }}>
               <div
                 className={`
-                  ${col[rowIndex] === "odd" ? "bg-blue-500" : ""}
-                  ${col[rowIndex] === "even" ? "bg-red-500" : ""}
-                  ${col[rowIndex] === "zero" ? "bg-green-500" : ""}
+                  ${col[rowIndex] === "odd" ? "bg-blue-500 my-0.5 rounded-lg" : ""}
+                  ${col[rowIndex] === "even" ? "bg-red-500 my-0.5 rounded-lg" : ""}
+                  ${col[rowIndex] === "zero" ? "bg-green-500 my-0.5 rounded-lg" : ""}
                   text-white py-2
                 `}
               >
