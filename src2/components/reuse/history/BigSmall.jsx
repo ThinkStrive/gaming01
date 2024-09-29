@@ -45,9 +45,9 @@ const BigSmall = ({ historyData }) => {
             <div key={colIndex} style={{ width: "50px", textAlign: "center" }}>
               <div
                 className={`
-                  ${col[rowIndex] === "large" ? "bg-red-500 rounded-lg mb-1 px-2" : ""}
-                  ${col[rowIndex] === "small" ? "bg-blue-500 rounded-lg my-1 px-2" : ""}
-                  ${col[rowIndex] === "zero" ? "bg-green-500 rounded-lg my-1 px-2" : ""}
+                  ${col[rowIndex] === "large" ? "bg-red-500 rounded-lg mb-1" : ""}
+                  ${col[rowIndex] === "small" ? "bg-blue-500 rounded-lg my-1" : ""}
+                  ${col[rowIndex] === "zero" ? "bg-green-500 rounded-lg my-1" : ""}
                   text-white py-2
                 `}
               >

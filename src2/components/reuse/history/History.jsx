@@ -10,14 +10,12 @@ import PatternOddEven from "../pattern/PatternOddEven";
 import background from "../../../assets/imgs/2002.i029.002_realistic-poker-club-illustration.jpg";
 import "../../../Style/History.css";
 
-const History = ({ historyData, isAlertAllowed }) => {
+const History = ({ historyData }) => {
   const [activeTab, setActiveTab] = useState("blackRed");
   let navigate = useNavigate();
   useEffect(() => {
     navigate("/blackRed");
   }, []);
-
-  console.log(isAlertAllowed);
 
   const [historyCountData, setHistoryCountData] = useState({
     red: 0,
@@ -99,7 +97,7 @@ const History = ({ historyData, isAlertAllowed }) => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div className="flex w-full justify-evenly items-center mb-10 overflow-x-auto">
+        <div className="flex w-full justify-evenly items-center mb-10">
           <div className="flex justify-center items-center">
             <div className="bg-red-500 rounded-[50%] w-5 h-5"></div>
             <p className="mx-2 text-black font-semibold">
@@ -224,15 +222,9 @@ const History = ({ historyData, isAlertAllowed }) => {
       </div>
 
       <div>
-        <PatternPre historyData={historyData} isAlertAllowed={isAlertAllowed} />
-        <PatternBigSmall
-          historyData={historyData}
-          isAlertAllowed={isAlertAllowed}
-        />
-        <PatternOddEven
-          historyData={historyData}
-          isAlertAllowed={isAlertAllowed}
-        />
+        <PatternPre historyData={historyData} />
+        <PatternBigSmall historyData={historyData} />
+        <PatternOddEven historyData={historyData} />
       </div>
     </div>
   );

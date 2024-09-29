@@ -58,18 +58,3 @@ input:checked + .slider:before {
     inset -3px -2px 5px -2px #8983f7,
     inset -10px -4px 0 0 #a3dafb;
 }
-
-@media only screen and (max-width: 500px) {
-  .switch {
-    display: block;
-    --width-of-switch: 2.5em;
-    --height-of-switch: 1.3em;
-    /* size of sliding icon -- sun and moon */
-    --size-of-icon: 1em;
-    /* it is like a inline-padding of switch */
-    --slider-offset: 0em;
-    position: relative;
-    width: var(--width-of-switch);
-    height: var(--height-of-switch);
-  }
-}

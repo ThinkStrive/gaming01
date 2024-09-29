@@ -1,13 +1,11 @@
 import React, { useEffect } from "react";
 
-const PatternOddEven = ({ historyData, isAlertAllowed }) => {
+const PatternOddEven = ({ historyData }) => {
   const checkPlayerStreak = () => {
     const recentEntries = historyData.slice(-4);
-    const isPlayerStreak = recentEntries.every(
-      (data) => data.odd_even === "even",
-    );
+    const isPlayerStreak = recentEntries.every((data) => data.odd_even === "even");
 
-    if (isPlayerStreak && isAlertAllowed) {
+    if (isPlayerStreak) {
       alert("Player Streak detected, Odd/Even");
     }
   };
@@ -15,10 +13,10 @@ const PatternOddEven = ({ historyData, isAlertAllowed }) => {
   const checkBankerStreak = () => {
     const recentEntries = historyData.slice(-4);
     const isBankerStreak = recentEntries.every(
-      (data) => data.odd_even === "odd",
+      (data) => data.odd_even === "odd"
     );
 
-    if (isBankerStreak && isAlertAllowed) {
+    if (isBankerStreak) {
       alert("Banker Streak detected, Odd/Even");
     }
   };
@@ -33,7 +31,7 @@ const PatternOddEven = ({ historyData, isAlertAllowed }) => {
       }
     });
 
-    if (isPingPong && isAlertAllowed) {
+    if (isPingPong) {
       alert("Ping Pong Pattern detected, Odd/Even");
     }
   };
@@ -48,8 +46,10 @@ const PatternOddEven = ({ historyData, isAlertAllowed }) => {
       }
     });
 
-    if (isDoublePingPong && isAlertAllowed) {
-      alert("Double Ping Pong Pattern detected, Odd/Even");
+    if (isDoublePingPong) {
+      alert(
+        "Double Ping Pong Pattern detected, Odd/Even"
+      );
     }
   };
 
@@ -66,7 +66,9 @@ const PatternOddEven = ({ historyData, isAlertAllowed }) => {
       recentEntries[7]?.odd_even === "even";
 
     if (isSandwich) {
-      alert("Sandwich Pattern detected, Odd/Even");
+      alert(
+        "Sandwich Pattern detected, Odd/Even"
+      );
     }
   };
 
@@ -81,10 +83,11 @@ const PatternOddEven = ({ historyData, isAlertAllowed }) => {
       recentEntries[4]?.odd_even === "odd" &&
       recentEntries[5]?.odd_even === "odd";
 
-    if (isPattern && isAlertAllowed) {
+    if (isPattern) {
       alert("One Two One Two Pattern detected, Odd/Even");
     }
   };
+
 
   const checkStickWIthThePlayerPattern = () => {
     const recentEntries = historyData.slice(-9);
@@ -98,12 +101,13 @@ const PatternOddEven = ({ historyData, isAlertAllowed }) => {
       recentEntries[5]?.odd_even === "even" &&
       recentEntries[6]?.odd_even === "even" &&
       recentEntries[7]?.odd_even === "odd" &&
-      recentEntries[8]?.odd_even === "odd";
+      recentEntries[8]?.odd_even === "odd"
 
-    if (isPattern && isAlertAllowed) {
+    if (isPattern) {
       alert("Stick With the Player Pattern detected, Odd/Even");
     }
   };
+
 
   const checkSwitchWIthThePlayerPattern = () => {
     const recentEntries = historyData.slice(-9);
@@ -117,12 +121,13 @@ const PatternOddEven = ({ historyData, isAlertAllowed }) => {
       recentEntries[5]?.odd_even === "odd" &&
       recentEntries[6]?.odd_even === "odd" &&
       recentEntries[7]?.odd_even === "odd" &&
-      recentEntries[8]?.odd_even === "even";
+      recentEntries[8]?.odd_even === "even"
 
-    if (isPattern && isAlertAllowed) {
+    if (isPattern) {
       alert("Switch With the Player Pattern detected, Odd/Even");
     }
   };
+
 
   const checkStickWIthTheBankerPattern = () => {
     const recentEntries = historyData.slice(-8);
@@ -135,12 +140,13 @@ const PatternOddEven = ({ historyData, isAlertAllowed }) => {
       recentEntries[4]?.odd_even === "even" &&
       recentEntries[5]?.odd_even === "odd" &&
       recentEntries[6]?.odd_even === "odd" &&
-      recentEntries[7]?.odd_even === "even";
+      recentEntries[7]?.odd_even === "even"
 
-    if (isPattern && isAlertAllowed) {
+    if (isPattern) {
       alert("Stick With the Banker Pattern detected, Odd/Even");
     }
   };
+
 
   const checkSwitchWIthTheBankerPattern = () => {
     const recentEntries = historyData.slice(-8);
@@ -153,9 +159,9 @@ const PatternOddEven = ({ historyData, isAlertAllowed }) => {
       recentEntries[4]?.odd_even === "even" &&
       recentEntries[5]?.odd_even === "even" &&
       recentEntries[6]?.odd_even === "even" &&
-      recentEntries[7]?.odd_even === "odd";
+      recentEntries[7]?.odd_even === "odd"
 
-    if (isPattern && isAlertAllowed) {
+    if (isPattern) {
       alert("Switch With the Banker Pattern detected, Odd/Even");
     }
   };
@@ -173,13 +179,13 @@ const PatternOddEven = ({ historyData, isAlertAllowed }) => {
     if (historyData.length >= 8) {
       checkDoublePingPongPattern();
       checkSandwichPattern();
-      checkStickWIthTheBankerPattern();
-      checkSwitchWIthTheBankerPattern();
+      checkStickWIthTheBankerPattern()
+      checkSwitchWIthTheBankerPattern()
     }
 
     if (historyData.length >= 9) {
       checkStickWIthThePlayerPattern();
-      checkSwitchWIthThePlayerPattern();
+      checkSwitchWIthThePlayerPattern()
     }
   };
 
@@ -191,3 +197,4 @@ const PatternOddEven = ({ historyData, isAlertAllowed }) => {
 };
 
 export default PatternOddEven;
+

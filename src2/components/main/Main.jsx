@@ -2,18 +2,10 @@ import React, { useEffect, useState } from "react";
 import History from "../reuse/history/History.jsx";
 import logo from "../../assets/imgs/LOGO.jpg";
 import rouletteImg from "../../assets/imgs/948e105b4f0de225d1484946244b4680.jpeg";
-import background from "../../assets/imgs/2002.i029.002_realistic-poker-club-illustration.jpg";
 import { data } from "../resources/mainComponetRenderData.js";
-import "../../Style/Main.css";
-import Nav from "../nav/nav.jsx";
-import { GrPowerReset } from "react-icons/gr";
 
 const Main = () => {
   const [theme, setTheme] = useState(JSON.parse(localStorage.getItem("Theme")));
-  const [isa_Active, setIsa_Active] = useState(true);
-  const [isb_Active, setIsb_Active] = useState(false);
-  const [isc_Active, setIsc_Active] = useState(false);
-  const [isAlertAllowed, setIsAlertAllowed] = useState(true);
 
   const [countData, setCountData] = useState(() => {
     const savedCountData = localStorage.getItem("countData");
@@ -810,14 +802,14 @@ const Main = () => {
   const tableRow = (category, count, lastHit) => {
     return (
       <tr className="text-center">
-        <td className="bg-customGray border text-black max-sm:text-xs max-sm:py-2 font-semibold text-base max-lg:text-sm">
+        <td className="bg-customGray border text-black max-sm:text-xs max-sm:py-2 font-semibold">
           {category}
         </td>
         <td
           className={
             count != 0
-              ? "bg-brightRed border hover:bg-softBlue"
-              : "bg-customGray text-black border hover:bg-softBlue"
+              ? "bg-customBlue border"
+              : "bg-gray-100 text-black border"
           }
         >
           {count}
@@ -825,8 +817,8 @@ const Main = () => {
         <td
           className={
             lastHit != 0
-              ? "bg-customPurple border hover:bg-softBlue"
-              : "bg-customGray text-black border hover:bg-softBlue"
+              ? "bg-customPurple border"
+              : "bg-gray-100 text-black border"
           }
         >
           {lastHit}
@@ -838,13 +830,13 @@ const Main = () => {
   const renderSummaryData = (category, data) => {
     return (
       <>
-        <div className="w-[50%] p-1 border bg-customGray text-customBlack font-semibold flex items-center justify-center">
+        <div className="w-[50%] p-1 border bg-customGray text-black font-semibold flex items-center justify-center">
           {category}
         </div>
         <div
           className={
             data !== 0
-              ? "w-[50%] bg-goldenYellow flex items-center justify-center border"
+              ? "w-[50%] bg-customBlue flex items-center justify-center border"
               : "w-[50%] bg-customGray text-black font-semibold flex items-center justify-center border"
           }
         >
@@ -854,93 +846,17 @@ const Main = () => {
     );
   };
 
-  const displayDivHandler = (div) => {
-    if (div === "a") {
-      setIsa_Active(true);
-      setIsb_Active(false);
-      setIsc_Active(false);
-    } else if (div === "b") {
-      setIsa_Active(false);
-      setIsb_Active(true);
-      setIsc_Active(false);
-    } else if (div === "c") {
-      setIsa_Active(false);
-      setIsb_Active(false);
-      setIsc_Active(true);
-    }
-  };
-
   return (
     <>
-      <div className="sticky top-0 z-40">
-        <Nav />
-
-        <div
-          className="py-3 px-2 justify-between flex sm--navbar"
-          style={{ backgroundColor: "#FFFBE3" }}
-        >
-          <div className="flex gap-4 pl-2 items-center">
-            <div>
-              <h2 className="text-customPurple text-base font-bold">
-                Last Hit Number
-              </h2>
-              {/* <p className="text-customPurple text-xs">Last Hit Number</p> */}
-            </div>
-            <div
-              className={`${
-                lastHitNumber?.color === "zero"
-                  ? "border-customGreen text-customGreen border-2"
-                  : ""
-              } ${
-                lastHitNumber?.color === "red"
-                  ? "border-customRed text-customRed border-2"
-                  : lastHitNumber?.color === "black"
-                    ? "border-customBlack text-customBlack border-2"
-                    : ""
-              } flex justify-center items-center w-10 h-10 rounded-md mt-1`}
-            >
-              {lastHitNumber?.number}
-            </div>
-          </div>
-
-          <div className="flex">
-            <div
-              className="flex justify-center items-center p-0.5 py-0 rounded-md font-semibold text-sm text-gray-500"
-              onClick={() => setIsAlertAllowed(!isAlertAllowed)}
-            >
-              <div>
-                Off Alerts!
-                <input
-                  type="checkbox"
-                  checked={isAlertAllowed}
-                  className="w-4 h-4"
-                />
-              </div>
-            </div>
-            <button
-              className="text-gray-500 py-1 px-3 rounded-full"
-              onClick={handleClickResetButton}
-            >
-              <GrPowerReset className="inline mr-0.5 -mt-0.5" />
-              Reset
-            </button>
-          </div>
-        </div>
-        <div
-          className="flex justify-between items-center px-10 py-2 max-sm:px-3 pb-3 max-sm:hidden"
-          // style={{ backgroundColor: "rgb(81,29,91)" }}
-        >
-          <div className="flex bg-neutral-300 p-1 rounded-full items-center">
-            <p className="bg-black p-1 rounded-full z-10 btns max-sm:text-sm">
-              Last Hit Number
-            </p>
+      <div className="px-4">
+        <div className="flex justify-between items-center my-8">
+          <div className="flex bg-neutral-300 p-2 rounded-full items-center">
+            <p className="bg-black p-2 rounded-full z-10">Last Hit Number</p>
             {lastHitNumber ? (
               <div
-                className={`${lastHitNumber?.color === "red" ? "bg-customRed" : lastHitNumber.color === "black" ? "bg-black" : "bg-customGreen"} py-1 flex justify-center items-center w-20 max-sm:w-14 rounded-full -ml-8 max-sm:-ml-7`}
+                className={`${lastHitNumber?.color === "red" ? "bg-customRed" : lastHitNumber.color === "black" ? "bg-black" : "bg-customGreen"} h-8 flex justify-center items-center w-20 rounded-full -ml-8`}
               >
-                <p className="text-white ml-6 max-sm:text-xs">
-                  {lastHitNumber?.number}
-                </p>
+                <p className="text-white ml-6">{lastHitNumber?.number}</p>
               </div>
             ) : (
               <div className="transparent">
@@ -949,75 +865,54 @@ const Main = () => {
             )}
           </div>
 
-          {/* <div className="w-44 max-sm:hidden">
+          <div className="w-44 max-sm:hidden">
             <img src={rouletteImg} alt="" className="w-full object-cover" />
-          </div> */}
-          <div
-            className="flex justify-center items-center bg-red-400 p-1.5 rounded-md font-semibold cursor-pointer"
-            onClick={() => setIsAlertAllowed(!isAlertAllowed)}
-          >
-            Turn off Alerts!
-            <input
-              type="checkbox"
-              checked={isAlertAllowed}
-              className="ml-1 w-5 h-5"
-            />
           </div>
 
-          <div className="bg-neutral-300 p-1 rounded-full">
+          <div className="bg-neutral-300 p-2 rounded-full">
             <button
               onClick={handleClickResetButton}
-              className="bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm"
+              className="bg-black text-white h-10 px-10 py-2 rounded-full"
             >
               Reset
             </button>
           </div>
         </div>
-      </div>
-      <div className="px-4 main">
-        <div
-          className="flex gap-2 mt-3 max-sm:flex-wrap rit-wrapper w-full"
-          style={{ height: "73vh" }}
-        >
-          <div className="w-full flex justify-between">
-            <div
-              className="w-[35%] max-sm:w-[50%] max-w-xs"
-              style={{ maxHeight: "100%" }}
-            >
-              <div className="w-full h-[7%] flex">
-                <div
-                  className="bg-customGreen w-[50%] flex justify-center items-center cursor-pointer border"
-                  onClick={() => handleClickNumber("zero", 0)}
-                >
-                  <p>0</p>
-                </div>
-                <div
-                  className="bg-customGreen w-[50%] flex justify-center items-center cursor-pointer border"
-                  onClick={() => handleClickNumber("doubleZero", "00")}
-                >
-                  <p>00</p>
-                </div>
-              </div>
 
-              <div className="w-full h-[93%] flex flex-wrap">
-                {data.map((item) => {
-                  return (
-                    <div
-                      className="w-[33.3%] flex justify-center items-center border cursor-pointer"
-                      onClick={() =>
-                        handleClickNumber(item.numString, item.num)
-                      }
-                      style={{ backgroundColor: item.bg }}
-                      key={item.num}
-                    >
-                      {item.num}
-                    </div>
-                  );
-                })}
+        <div className="flex gap-5 my-20 max-sm:flex-wrap">
+          <div className="w-[36%] max-sm:w-[50%] bg-slate-400">
+            <div className="w-full flex">
+              <div
+                className="bg-customGreen h-full w-[50%] text-center py-2 cursor-pointer border"
+                onClick={() => handleClickNumber("zero", 0)}
+              >
+                <p>0</p>
+              </div>
+              <div
+                className="bg-customGreen h-full w-[50%] text-center py-2 cursor-pointer border"
+                onClick={() => handleClickNumber("doubleZero", "00")}
+              >
+                <p>00</p>
               </div>
             </div>
 
-            {/* <div>
+            <div className="w-full h-full flex flex-wrap">
+              {data.map((item) => {
+                return (
+                  <div
+                    className="w-[33.3%] p-2 text-center border cursor-pointer"
+                    onClick={() => handleClickNumber(item.numString, item.num)}
+                    style={{ backgroundColor: item.bg }}
+                    key={item.num}
+                  >
+                    {item.num}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* <div>
           <div className="flex items-center justify-evenly w-full">
             <div
               className="bg-green-500 h-full w-[50%] flex justify-center items-center cursor-pointer border"
@@ -1275,62 +1170,56 @@ const Main = () => {
           </div>
         </div> */}
 
-            <table
-              border="1"
-              cellPadding="10"
-              className="w-[30%] max-sm:w-[40%] table--1"
-            >
-              <thead>
-                <tr className="text-center max-sm:text-base md:text-sm">
-                  <th className="border p-3 max-sm:p-2 bg-customGreen">
-                    Category
-                  </th>
-                  <th className="border p-3 max-sm:p-2 bg-customGreen">
-                    Count
-                  </th>
-                  <th className="border p-3 max-sm:p-2 bg-customGreen">
-                    Last Hit
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {tableRow("Red", countData.red, lastHitData.red)}
-                {tableRow("Black", countData.black, lastHitData.black)}
-                {tableRow("Even", countData.even, lastHitData.even)}
-                {tableRow("Odd", countData.odd, lastHitData.odd)}
-                {tableRow(
-                  "1-18",
-                  countData.one_eighteen,
-                  lastHitData.one_eighteen,
-                )}
-                {tableRow(
-                  "19-36",
-                  countData.nineteen_thirtySix,
-                  lastHitData.nineteen_thirtySix,
-                )}
-                {tableRow(
-                  "1st Dozen",
-                  countData.dozen_one,
-                  lastHitData.dozen_one,
-                )}
-                {tableRow(
-                  "2nd Dozen",
-                  countData.dozen_two,
-                  lastHitData.dozen_two,
-                )}
-                {tableRow(
-                  "3rd Dozen",
-                  countData.dozen_three,
-                  lastHitData.dozen_three,
-                )}
-                {tableRow("1st Column", countData.col_one, lastHitData.col_one)}
-                {tableRow("3nd Column", countData.col_two, lastHitData.col_two)}
-                {tableRow(
-                  "3rd Column",
-                  countData.col_three,
-                  lastHitData.col_three,
-                )}
-                {/* <tr>
+          <table border="1" cellPadding="10" className="w-[36%] max-sm:w-[40%]">
+            <thead>
+              <tr className="text-center max-sm:text-xs">
+                <th className="border p-3 max-sm:p-2 bg-customGreen">
+                  Category
+                </th>
+                <th className="border p-3 max-sm:p-2 bg-customGreen">Count</th>
+                <th className="border p-3 max-sm:p-2 bg-customGreen">
+                  Last Hit
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {tableRow("Red", countData.red, lastHitData.red)}
+              {tableRow("Black", countData.black, lastHitData.black)}
+              {tableRow("Even", countData.even, lastHitData.even)}
+              {tableRow("Odd", countData.odd, lastHitData.odd)}
+              {tableRow(
+                "1-18",
+                countData.one_eighteen,
+                lastHitData.one_eighteen,
+              )}
+              {tableRow(
+                "19-36",
+                countData.nineteen_thirtySix,
+                lastHitData.nineteen_thirtySix,
+              )}
+              {tableRow(
+                "1st Dozen",
+                countData.dozen_one,
+                lastHitData.dozen_one,
+              )}
+              {tableRow(
+                "2nd Dozen",
+                countData.dozen_two,
+                lastHitData.dozen_two,
+              )}
+              {tableRow(
+                "3rd Dozen",
+                countData.dozen_three,
+                lastHitData.dozen_three,
+              )}
+              {tableRow("1st Column", countData.col_one, lastHitData.col_one)}
+              {tableRow("3nd Column", countData.col_two, lastHitData.col_two)}
+              {tableRow(
+                "3rd Column",
+                countData.col_three,
+                lastHitData.col_three,
+              )}
+              {/* <tr>
               <td>Red</td>
               <td>{countData.red}</td>
               <td>{lastHitData.red}</td>
@@ -1390,59 +1279,53 @@ const Main = () => {
               <td>{countData.col_three}</td>
               <td>{lastHitData.col_three}</td>
             </tr> */}
-              </tbody>
-            </table>
-            <table
-              border="1"
-              cellPadding="10"
-              className="w-[30%] max-sm:mt-14 table--1 max-sm:hidden"
-            >
-              <thead>
-                <tr className="text-center max-sm:text-sm">
-                  <th className="border p-3 max-sm:p-2 bg-customGreen">
-                    Category
-                  </th>
-                  <th className="border p-3 max-sm:p-2 bg-customGreen">
-                    Count
-                  </th>
-                  <th className="border p-3 max-sm:p-2 bg-customGreen">
-                    Last Hit
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {tableRow(
-                  "One / Four",
-                  doubleStreetData.one_six,
-                  nonDoubleStreetData.one_six,
-                )}
-                {tableRow(
-                  "Seven / Ten",
-                  doubleStreetData.seven_twelve,
-                  nonDoubleStreetData.seven_twelve,
-                )}
-                {tableRow(
-                  "Thirteen / Sixteen",
-                  doubleStreetData.thirteen_eighteen,
-                  nonDoubleStreetData.thirteen_eighteen,
-                )}
-                {tableRow(
-                  "Nineteen / Twentytwo",
-                  doubleStreetData.nineteen_twentyFour,
-                  nonDoubleStreetData.nineteen_twentyFour,
-                )}
-                {tableRow(
-                  "Twentyfive / Twentyeight",
-                  doubleStreetData.twentyFive_thirty,
-                  nonDoubleStreetData.twentyFive_thirty,
-                )}
-                {tableRow(
-                  "Thirtyone / Thirtysix",
-                  doubleStreetData.thirtyOne_thirtySix,
-                  nonDoubleStreetData.thirtyOne_thirtySix,
-                )}
+            </tbody>
+          </table>
+          <table border="1" cellPadding="10" className="w-[36%] max-sm:mt-14">
+            <thead>
+              <tr className="text-center max-sm:text-sm">
+                <th className="border p-3 max-sm:p-2 bg-customGreen">
+                  Category
+                </th>
+                <th className="border p-3 max-sm:p-2 bg-customGreen">Count</th>
+                <th className="border p-3 max-sm:p-2 bg-customGreen">
+                  Last Hit
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {tableRow(
+                "One Four",
+                doubleStreetData.one_six,
+                nonDoubleStreetData.one_six,
+              )}
+              {tableRow(
+                "Seven Ten",
+                doubleStreetData.seven_twelve,
+                nonDoubleStreetData.seven_twelve,
+              )}
+              {tableRow(
+                "Thirteen Sixteen",
+                doubleStreetData.thirteen_eighteen,
+                nonDoubleStreetData.thirteen_eighteen,
+              )}
+              {tableRow(
+                "Nineteen Twentytwo",
+                doubleStreetData.nineteen_twentyFour,
+                nonDoubleStreetData.nineteen_twentyFour,
+              )}
+              {tableRow(
+                "Twentyfive Twentyeight",
+                doubleStreetData.twentyFive_thirty,
+                nonDoubleStreetData.twentyFive_thirty,
+              )}
+              {tableRow(
+                "Thirtyone Thirtysix",
+                doubleStreetData.thirtyOne_thirtySix,
+                nonDoubleStreetData.thirtyOne_thirtySix,
+              )}
 
-                {/* <tr>
+              {/* <tr>
               <td>one four</td>
               <td>{doubleStreetData.one_six}</td>
               <td>{nonDoubleStreetData.one_six}</td>
@@ -1472,15 +1355,14 @@ const Main = () => {
               <td>{doubleStreetData.thirtyOne_thirtySix}</td>
               <td>{nonDoubleStreetData.thirtyOne_thirtySix}</td>
             </tr> */}
-              </tbody>
-            </table>
-          </div>
+            </tbody>
+          </table>
 
-          {/* <div className="w-2/5 small--screen--wrapper">
+          <div>
             <table
               border="1"
               cellPadding="10"
-              className="text-center max-h-60 hidden max-sm:block table-408"
+              className="text-center max-h-60 hidden max-sm:block"
             >
               <thead>
                 <tr>
@@ -1538,7 +1420,7 @@ const Main = () => {
               </tbody>
             </table>
 
-            <div className="border max-sm:flex flex-wrap max-sm:text-xs w-40 mt-5 hidden table-408">
+            <div className="border max-sm:flex flex-wrap max-sm:text-xs w-40 mt-5 hidden">
               {renderSummaryData("LER", summaryData.lowEvenRed)}
               {renderSummaryData("LEB", summaryData.lowEvenBlack)}
               {renderSummaryData("LOR", summaryData.lowOddRed)}
@@ -1548,194 +1430,14 @@ const Main = () => {
               {renderSummaryData("HEB", summaryData.highEvenBlack)}
               {renderSummaryData("HOB", summaryData.highOddBlack)}
             </div>
-          </div> */}
-        </div>
-
-        {/* small screen Data slide bar */}
-        <div
-          className="border w-full my-10 mt-28 hidden max-sm:block relative p-2 rounded-lg"
-          style={{
-            background: `linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),url(${background}) center center no-repeat`,
-            backgroundSize: "cover",
-            backgroundPositionX: "center",
-            backgroundPositionY: "center",
-            backgroundRepeat: "no-repeat",
-            height: "25rem",
-          }}
-        >
-          <div className="mx-auto w-[60%]">
-            <table
-              border="1"
-              cellPadding="10"
-              className="md:hidden w-full"
-              style={{ display: isa_Active ? "block" : "none" }}
-            >
-              <thead>
-                <tr className="text-center max-sm:text-sm">
-                  <th className="border p-3 max-sm:p-2 bg-customGreen">
-                    Category
-                  </th>
-                  <th className="border p-3 max-sm:p-2 bg-customGreen">
-                    Count
-                  </th>
-                  <th className="border p-3 max-sm:p-2 bg-customGreen">
-                    Last Hit
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {tableRow(
-                  "One / Four",
-                  doubleStreetData.one_six,
-                  nonDoubleStreetData.one_six,
-                )}
-                {tableRow(
-                  "Seven / Ten",
-                  doubleStreetData.seven_twelve,
-                  nonDoubleStreetData.seven_twelve,
-                )}
-                {tableRow(
-                  "Thirteen / Sixteen",
-                  doubleStreetData.thirteen_eighteen,
-                  nonDoubleStreetData.thirteen_eighteen,
-                )}
-                {tableRow(
-                  "Nineteen / Twentytwo",
-                  doubleStreetData.nineteen_twentyFour,
-                  nonDoubleStreetData.nineteen_twentyFour,
-                )}
-                {tableRow(
-                  "Twentyfive / Twentyeight",
-                  doubleStreetData.twentyFive_thirty,
-                  nonDoubleStreetData.twentyFive_thirty,
-                )}
-                {tableRow(
-                  "Thirtyone / Thirtysix",
-                  doubleStreetData.thirtyOne_thirtySix,
-                  nonDoubleStreetData.thirtyOne_thirtySix,
-                )}
-              </tbody>
-            </table>
-
-            {/* second table */}
-
-            <table
-              border="1"
-              cellPadding="10"
-              className="text-center w-full"
-              style={{ display: isb_Active ? "block" : "none" }}
-            >
-              <thead>
-                <tr>
-                  <th className="border bg-customGreen p-2">Category</th>
-                  <th className="border bg-customGreen p-2">Count</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="bg-darkNavy border text-customGray font-semibold p-2">
-                    Voisins du Zero
-                  </td>
-                  <td
-                    className={
-                      circleData.duZero === 0
-                        ? "bg-softBlue text-black"
-                        : "bg-neonGreen"
-                    }
-                  >
-                    {circleData.duZero}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="bg-darkNavy border text-customGray font-semibold p-2">
-                    Orphelins
-                  </td>
-                  <td
-                    className={
-                      circleData.orphe === 0
-                        ? "bg-softBlue text-black"
-                        : "bg-neonGreen"
-                    }
-                  >
-                    {circleData.orphe}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="bg-darkNavy border text-customGray font-semibold p-2">
-                    Tiers du Cylindre
-                  </td>
-                  <td
-                    className={
-                      circleData.tires === 0
-                        ? "bg-softBlue text-black"
-                        : "bg-neonGreen"
-                    }
-                  >
-                    {circleData.tires}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-
-            {/* third table */}
-            <div
-              className="border flex w-full h-full flex-wrap"
-              style={{ display: isc_Active ? "flex" : "none" }}
-            >
-              {renderSummaryData("L.E.R", summaryData.lowEvenRed)}
-              {renderSummaryData("L.E.B", summaryData.lowEvenBlack)}
-              {renderSummaryData("L.O.R", summaryData.lowOddRed)}
-              {renderSummaryData("L.O.B", summaryData.lowOddBlack)}
-              {renderSummaryData("H.E.R", summaryData.highEvenRed)}
-              {renderSummaryData("H.O.R", summaryData.highOddRed)}
-              {renderSummaryData("H.E.B", summaryData.highEvenBlack)}
-              {renderSummaryData("H.O.B", summaryData.highOddBlack)}
-            </div>
-          </div>
-
-          <div className="mt-3 border-t border-gray-400 py-2 flex justify-around absolute bottom-0 w-[95%] left-2">
-            <button
-              className="border px-3 bg-slate-600 rounded-md text-xs"
-              onClick={() => displayDivHandler("a")}
-              style={{
-                backgroundColor: isa_Active ? "#FFC107" : "teal",
-                color: isa_Active ? "black" : "white",
-                fontWeight: isa_Active ? "600" : "",
-              }}
-            >
-              Streets Tracker
-            </button>
-
-            <button
-              className="border px-3 bg-slate-600 text-customBlack rounded-md text-xs"
-              onClick={() => displayDivHandler("b")}
-              style={{
-                backgroundColor: isb_Active ? "#FFC107" : "teal",
-                color: isb_Active ? "black" : "white",
-                fontWeight: isb_Active ? "600" : "",
-              }}
-            >
-              Wheel Section Breakdown
-            </button>
-
-            <button
-              className="border px-3 bg-slate-600 text-customBlack rounded-md text-xs"
-              onClick={() => displayDivHandler("c")}
-              style={{
-                backgroundColor: isc_Active ? "#FFC107" : "teal",
-                color: isc_Active ? "black" : "white",
-                fontWeight: isc_Active ? "600" : "",
-              }}
-            >
-              Quadro Tracker
-            </button>
           </div>
         </div>
-        <div className="flex justify-between my-10 gap-4 max-sm:hidden">
+
+        <div className="flex justify-between my-10 gap-4">
           <table
             border="1"
             cellPadding="10"
-            className="border text-center max-h-60"
+            className="border text-center max-h-60 max-sm:hidden"
           >
             <thead>
               <tr>
@@ -1745,42 +1447,42 @@ const Main = () => {
             </thead>
             <tbody>
               <tr>
-                <td className="bg-darkNavy border text-customGray font-semibold p-2">
+                <td className="bg-customGray border text-black font-semibold p-2">
                   Voisins du Zero
                 </td>
                 <td
                   className={
                     circleData.duZero === 0
-                      ? "bg-softBlue text-black"
-                      : "bg-neonGreen"
+                      ? "bg-gray-100 text-black"
+                      : "bg-customBlue"
                   }
                 >
                   {circleData.duZero}
                 </td>
               </tr>
               <tr>
-                <td className="bg-darkNavy border text-customGray font-semibold p-2">
+                <td className="bg-customGray border text-black font-semibold p-2">
                   Orphelins
                 </td>
                 <td
                   className={
                     circleData.orphe === 0
-                      ? "bg-softBlue text-black"
-                      : "bg-neonGreen"
+                      ? "bg-gray-100 text-black"
+                      : "bg-customBlue"
                   }
                 >
                   {circleData.orphe}
                 </td>
               </tr>
               <tr>
-                <td className="bg-darkNavy border text-customGray font-semibold p-2">
+                <td className="bg-customGray border text-black font-semibold p-2">
                   Tiers du Cylindre
                 </td>
                 <td
                   className={
                     circleData.tires === 0
-                      ? "bg-softBlue text-black"
-                      : "bg-neonGreen"
+                      ? "bg-gray-100 text-black"
+                      : "bg-customBlue"
                   }
                 >
                   {circleData.tires}
@@ -1791,14 +1493,14 @@ const Main = () => {
 
           <div className="border flex max-w-60 flex-wrap max-sm:hidden">
             {/* ////////// */}
-            {renderSummaryData("L.E.R", summaryData.lowEvenRed)}
-            {renderSummaryData("L.E.B", summaryData.lowEvenBlack)}
-            {renderSummaryData("L.O.R", summaryData.lowOddRed)}
-            {renderSummaryData("L.O.B", summaryData.lowOddBlack)}
-            {renderSummaryData("H.E.R", summaryData.highEvenRed)}
-            {renderSummaryData("H.O.R", summaryData.highOddRed)}
-            {renderSummaryData("H.E.B", summaryData.highEvenBlack)}
-            {renderSummaryData("H.O.B", summaryData.highOddBlack)}
+            {renderSummaryData("LER", summaryData.lowEvenRed)}
+            {renderSummaryData("LEB", summaryData.lowEvenBlack)}
+            {renderSummaryData("LOR", summaryData.lowOddRed)}
+            {renderSummaryData("LOB", summaryData.lowOddBlack)}
+            {renderSummaryData("HER", summaryData.highEvenRed)}
+            {renderSummaryData("HOR", summaryData.highOddRed)}
+            {renderSummaryData("HEB", summaryData.highEvenBlack)}
+            {renderSummaryData("HOB", summaryData.highOddBlack)}
 
             {/* <p>LEB : {summaryData.lowEvenBlack}</p> */}
             {/* <p>LOR : {summaryData.lowOddRed}</p> */}
@@ -1813,7 +1515,7 @@ const Main = () => {
         <Route path="/*" element={<History  historyData={historyData} />} />
       </Routes> */}
         <section>
-          <History historyData={historyData} isAlertAllowed={isAlertAllowed} />
+          <History historyData={historyData} />
         </section>
       </div>
     </>

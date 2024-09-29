@@ -1,20 +1,22 @@
 import React, { useEffect } from "react";
 
-const PatternBigSmall = ({ historyData, isAlertAllowed }) => {
+const PatternBigSmall = ({ historyData }) => {
   const checkPlayerStreak = () => {
     const recentEntries = historyData.slice(-4);
     const isPlayerStreak = recentEntries.every((data) => data.size === "large");
 
-    if (isPlayerStreak && isAlertAllowed) {
+    if (isPlayerStreak) {
       alert("Player Streak detected, Big/small");
     }
   };
 
   const checkBankerStreak = () => {
     const recentEntries = historyData.slice(-4);
-    const isBankerStreak = recentEntries.every((data) => data.size === "small");
+    const isBankerStreak = recentEntries.every(
+      (data) => data.size === "small"
+    );
 
-    if (isBankerStreak && isAlertAllowed) {
+    if (isBankerStreak) {
       alert("Banker Streak detected, Big/small");
     }
   };
@@ -29,7 +31,7 @@ const PatternBigSmall = ({ historyData, isAlertAllowed }) => {
       }
     });
 
-    if (isPingPong && isAlertAllowed) {
+    if (isPingPong) {
       alert("Ping Pong Pattern detected, Big/small");
     }
   };
@@ -44,8 +46,10 @@ const PatternBigSmall = ({ historyData, isAlertAllowed }) => {
       }
     });
 
-    if (isDoublePingPong && isAlertAllowed) {
-      alert("Double Ping Pong Pattern detected, Big/small");
+    if (isDoublePingPong) {
+      alert(
+        "Double Ping Pong Pattern detected, Big/small"
+      );
     }
   };
 
@@ -61,8 +65,10 @@ const PatternBigSmall = ({ historyData, isAlertAllowed }) => {
       recentEntries[6]?.size === "large" &&
       recentEntries[7]?.size === "large";
 
-    if (isSandwich && isAlertAllowed) {
-      alert("Sandwich Pattern detected, Big/small");
+    if (isSandwich) {
+      alert(
+        "Sandwich Pattern detected, Big/small"
+      );
     }
   };
 
@@ -77,10 +83,11 @@ const PatternBigSmall = ({ historyData, isAlertAllowed }) => {
       recentEntries[4]?.size === "small" &&
       recentEntries[5]?.size === "small";
 
-    if (isPattern && isAlertAllowed) {
+    if (isPattern) {
       alert("One Two One Two Pattern detected, Big/small");
     }
   };
+
 
   const checkStickWIthThePlayerPattern = () => {
     const recentEntries = historyData.slice(-9);
@@ -94,12 +101,13 @@ const PatternBigSmall = ({ historyData, isAlertAllowed }) => {
       recentEntries[5]?.size === "large" &&
       recentEntries[6]?.size === "large" &&
       recentEntries[7]?.size === "small" &&
-      recentEntries[8]?.size === "small";
+      recentEntries[8]?.size === "small"
 
-    if (isPattern && isAlertAllowed) {
+    if (isPattern) {
       alert("Stick With the Player Pattern detected, Big/small");
     }
   };
+
 
   const checkSwitchWIthThePlayerPattern = () => {
     const recentEntries = historyData.slice(-9);
@@ -113,12 +121,13 @@ const PatternBigSmall = ({ historyData, isAlertAllowed }) => {
       recentEntries[5]?.size === "small" &&
       recentEntries[6]?.size === "small" &&
       recentEntries[7]?.size === "small" &&
-      recentEntries[8]?.size === "large";
+      recentEntries[8]?.size === "large"
 
-    if (isPattern && isAlertAllowed) {
+    if (isPattern) {
       alert("Switch With the Player Pattern detected, Big/small");
     }
   };
+
 
   const checkStickWIthTheBankerPattern = () => {
     const recentEntries = historyData.slice(-8);
@@ -131,12 +140,13 @@ const PatternBigSmall = ({ historyData, isAlertAllowed }) => {
       recentEntries[4]?.size === "large" &&
       recentEntries[5]?.size === "small" &&
       recentEntries[6]?.size === "small" &&
-      recentEntries[7]?.size === "large";
+      recentEntries[7]?.size === "large"
 
-    if (isPattern && isAlertAllowed) {
+    if (isPattern) {
       alert("Stick With the Banker Pattern detected, Big/small");
     }
   };
+
 
   const checkSwitchWIthTheBankerPattern = () => {
     const recentEntries = historyData.slice(-8);
@@ -149,9 +159,9 @@ const PatternBigSmall = ({ historyData, isAlertAllowed }) => {
       recentEntries[4]?.size === "large" &&
       recentEntries[5]?.size === "large" &&
       recentEntries[6]?.size === "large" &&
-      recentEntries[7]?.size === "small";
+      recentEntries[7]?.size === "small"
 
-    if (isPattern && isAlertAllowed) {
+    if (isPattern) {
       alert("Switch With the Banker Pattern detected, Big/small");
     }
   };
@@ -169,13 +179,13 @@ const PatternBigSmall = ({ historyData, isAlertAllowed }) => {
     if (historyData.length >= 8) {
       checkDoublePingPongPattern();
       checkSandwichPattern();
-      checkStickWIthTheBankerPattern();
-      checkSwitchWIthTheBankerPattern();
+      checkStickWIthTheBankerPattern()
+      checkSwitchWIthTheBankerPattern()
     }
 
     if (historyData.length >= 9) {
       checkStickWIthThePlayerPattern();
-      checkSwitchWIthThePlayerPattern();
+      checkSwitchWIthThePlayerPattern()
     }
   };
 
@@ -187,3 +197,4 @@ const PatternBigSmall = ({ historyData, isAlertAllowed }) => {
 };
 
 export default PatternBigSmall;
+

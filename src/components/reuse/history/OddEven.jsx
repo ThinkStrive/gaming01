@@ -45,9 +45,9 @@ const OddEven = ({ historyData }) => {
             <div key={colIndex} style={{ width: "50px", textAlign: "center" }}>
               <div
                 className={`
-                  ${col[rowIndex] === "odd" ? "bg-blue-500 my-0.5 rounded-lg" : ""}
-                  ${col[rowIndex] === "even" ? "bg-red-500 my-0.5 rounded-lg" : ""}
-                  ${col[rowIndex] === "zero" ? "bg-green-500 my-0.5 rounded-lg" : ""}
+                  ${col[rowIndex] === "odd" ? "bg-blue-500 my-0.5 rounded-lg px-2" : ""}
+                  ${col[rowIndex] === "even" ? "bg-red-500 my-0.5 rounded-lg px-2" : ""}
+                  ${col[rowIndex] === "zero" ? "bg-green-500 my-0.5 rounded-lg px-2" : ""}
                   text-white py-2
                 `}
               >
