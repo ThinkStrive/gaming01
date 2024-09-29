@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
+import { useToast } from "../../resources/Toast";
 
 const PatternPre = ({ historyData, isAlertAllowed }) => {
+  const showToast = useToast()
   const checkPlayerStreak = () => {
     const recentEntries = historyData.slice(-4);
     const isPlayerStreak = recentEntries.every(
@@ -8,7 +10,7 @@ const PatternPre = ({ historyData, isAlertAllowed }) => {
     );
 
     if (isPlayerStreak && isAlertAllowed) {
-      alert("Player Streak detected, Red/Black");
+      showToast('Player Streak detected, Red/Black', 'success')
     }
   };
 
@@ -17,7 +19,7 @@ const PatternPre = ({ historyData, isAlertAllowed }) => {
     const isBankerStreak = recentEntries.every((data) => data.color === "red");
 
     if (isBankerStreak && isAlertAllowed) {
-      alert("Banker Streak detected, Red/Black");
+      showToast('Banker Streak detected, Red/Black', 'success')
     }
   };
 
@@ -32,7 +34,7 @@ const PatternPre = ({ historyData, isAlertAllowed }) => {
     });
 
     if (isPingPong && isAlertAllowed) {
-      alert("Ping Pong Pattern detected, Red/Black");
+      showToast('Ping Pong Pattern detected, Red/Black', 'success')
     }
   };
 
@@ -47,7 +49,7 @@ const PatternPre = ({ historyData, isAlertAllowed }) => {
     });
 
     if (isDoublePingPong && isAlertAllowed) {
-      alert("Double Ping Pong Pattern detected, Red/Black");
+      showToast("Double Ping Pong Pattern detected, Red/Black", 'success');
     }
   };
 
@@ -64,7 +66,7 @@ const PatternPre = ({ historyData, isAlertAllowed }) => {
       recentEntries[7]?.color === "black";
 
     if (isSandwich && isAlertAllowed) {
-      alert("Sandwich Pattern detected, Red/Black");
+      showToast("Sandwich Pattern detected, Red/Black", 'success');
     }
   };
 
@@ -80,7 +82,7 @@ const PatternPre = ({ historyData, isAlertAllowed }) => {
       recentEntries[5]?.color === "red";
 
     if (isPattern && isAlertAllowed) {
-      alert("One Two One Two Pattern detected, Red/Black");
+      showToast('One Two Two Pattern detected, Red/Black', 'success');
     }
   };
 
@@ -99,7 +101,7 @@ const PatternPre = ({ historyData, isAlertAllowed }) => {
       recentEntries[8]?.color === "red";
 
     if (isPattern && isAlertAllowed) {
-      alert("Stick With the Player Pattern detected, Red/Black");
+      showToast("Stick With the Player Pattern detected, Red/Black", 'success');
     }
   };
 
@@ -118,7 +120,7 @@ const PatternPre = ({ historyData, isAlertAllowed }) => {
       recentEntries[8]?.color === "black";
 
     if (isPattern && isAlertAllowed) {
-      alert("Switch With the Player Pattern detected, Red/Black");
+      showToast("Switch With the Player Pattern detected, Red/Black", "success");
     }
   };
 
@@ -136,7 +138,7 @@ const PatternPre = ({ historyData, isAlertAllowed }) => {
       recentEntries[7]?.color === "black";
 
     if (isPattern && isAlertAllowed) {
-      alert("Stick With the Banker Pattern detected, Red/Black");
+      showToast("Stick With the Banker Pattern detected, Red/Black", "success");
     }
   };
 
@@ -154,7 +156,7 @@ const PatternPre = ({ historyData, isAlertAllowed }) => {
       recentEntries[7]?.color === "red";
 
     if (isPattern && isAlertAllowed) {
-      alert("Switch With the Banker Pattern detected, Red/Black");
+      showToast("Switch With the Banker Pattern detected, Red/Black", "success");
     }
   };
 
