@@ -40,7 +40,7 @@ const OddEven = ({ historyData }) => {
   return (
     <div>
       {Array.from({ length: maxRows }).map((_, rowIndex) => (
-        <div key={rowIndex} style={{ display: "flex", gap: "20px" }}>
+        <div key={rowIndex} style={{ display: "flex", gap: "1px" }}>
           {columns.map((col, colIndex) => (
             <div key={colIndex} style={{ width: "50px", textAlign: "center" }}>
               <div

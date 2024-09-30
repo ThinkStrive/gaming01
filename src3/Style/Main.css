@@ -3,10 +3,6 @@
   margin: 0 auto;
 }
 
-.number--divs:hover {
-  background-color: #4cd964 !important;
-}
-
 @media only screen and (max-width: 375px) {
   .btns {
     font-size: 0.8rem;
@@ -170,8 +166,4 @@
   .rit-wrapper {
     max-height: 650px;
   }
-}
-
-.streak-div::-webkit-scrollbar {
-  display: none;
 }

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useToast } from "../../resources/Toast";
 
 const PatternOddEven = ({ historyData, isAlertAllowed }) => {
-  const showToast = useToast();
+  const showToast = useToast()
   const checkPlayerStreak = () => {
     const recentEntries = historyData.slice(-4);
     const isPlayerStreak = recentEntries.every(
@@ -10,7 +10,7 @@ const PatternOddEven = ({ historyData, isAlertAllowed }) => {
     );
 
     if (isPlayerStreak && isAlertAllowed) {
-      showToast("Odd/Even Streak detected", "success");
+      showToast("Player Streak detected, Odd/Even", 'success')
     }
   };
 
@@ -21,7 +21,7 @@ const PatternOddEven = ({ historyData, isAlertAllowed }) => {
     );
 
     if (isBankerStreak && isAlertAllowed) {
-      showToast("Odd/Even Steak detected", "success");
+      showToast("Banker Steak detected, Odd/Even", 'success');
     }
   };
 
@@ -36,7 +36,7 @@ const PatternOddEven = ({ historyData, isAlertAllowed }) => {
     });
 
     if (isPingPong && isAlertAllowed) {
-      showToast("Ping Pong Pattern detected, Odd/Even", "success");
+      showToast("Ping Pong Pattern detected, Odd/Even", 'success')
     }
   };
 
@@ -51,7 +51,7 @@ const PatternOddEven = ({ historyData, isAlertAllowed }) => {
     });
 
     if (isDoublePingPong && isAlertAllowed) {
-      showToast("Double Ping Pong Pattern detected, Odd/Even", "success");
+      showToast("Double Ping Pong Pattern detected, Odd/Even", 'success')
     }
   };
 
@@ -68,7 +68,7 @@ const PatternOddEven = ({ historyData, isAlertAllowed }) => {
       recentEntries[7]?.odd_even === "even";
 
     if (isSandwich) {
-      showToast("Sandwich Pattern detected, Odd/Even", "success");
+      showToast("Sandwich Pattern detected, Odd/Even", 'success')
     }
   };
 
@@ -84,7 +84,7 @@ const PatternOddEven = ({ historyData, isAlertAllowed }) => {
       recentEntries[5]?.odd_even === "odd";
 
     if (isPattern && isAlertAllowed) {
-      showToast("One Two Two Pattern detected, Odd/Even", "success");
+      showToast('One Two Two Pattern detected, Odd/Even', 'success');
     }
   };
 
@@ -103,7 +103,7 @@ const PatternOddEven = ({ historyData, isAlertAllowed }) => {
       recentEntries[8]?.odd_even === "odd";
 
     if (isPattern && isAlertAllowed) {
-      showToast("Stick With the Player Pattern detected, Odd/Even", "success");
+      showToast("Stick With the Player Pattern detected, Odd/Even", 'success')
     }
   };
 
@@ -122,7 +122,7 @@ const PatternOddEven = ({ historyData, isAlertAllowed }) => {
       recentEntries[8]?.odd_even === "even";
 
     if (isPattern && isAlertAllowed) {
-      showToast("Switch With the Player Pattern detected, Odd/Even", "success");
+      showToast('Switch With the Player Pattern detected, Odd/Even', 'success')
     }
   };
 
@@ -140,7 +140,7 @@ const PatternOddEven = ({ historyData, isAlertAllowed }) => {
       recentEntries[7]?.odd_even === "even";
 
     if (isPattern && isAlertAllowed) {
-      showToast("Stick With the Banker Pattern detected, Odd/Even", "success");
+      showToast('Stick With the Banker Pattern detected, Odd/Even', 'success')
     }
   };
 
@@ -158,7 +158,7 @@ const PatternOddEven = ({ historyData, isAlertAllowed }) => {
       recentEntries[7]?.odd_even === "odd";
 
     if (isPattern && isAlertAllowed) {
-      showToast("Switch With the Banker Pattern detected, Odd/Even", "success");
+      showToast('Switch With the Banker Pattern detected, Odd/Even', 'success')
     }
   };
 

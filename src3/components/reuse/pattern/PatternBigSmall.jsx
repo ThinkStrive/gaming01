@@ -2,13 +2,13 @@ import React, { useEffect } from "react";
 import { useToast } from "../../resources/Toast";
 
 const PatternBigSmall = ({ historyData, isAlertAllowed }) => {
-  const showToast = useToast();
+  const showToast = useToast()
   const checkPlayerStreak = () => {
     const recentEntries = historyData.slice(-4);
     const isPlayerStreak = recentEntries.every((data) => data.size === "large");
 
     if (isPlayerStreak && isAlertAllowed) {
-      showToast("Big/Small streak detected", "success");
+      showToast('player streak detected, big/small', 'success');
     }
   };
 
@@ -17,7 +17,7 @@ const PatternBigSmall = ({ historyData, isAlertAllowed }) => {
     const isBankerStreak = recentEntries.every((data) => data.size === "small");
 
     if (isBankerStreak && isAlertAllowed) {
-      showToast("Big/Small streak detected", "success");
+      showToast('banker streak detected, big/small', 'success');
     }
   };
 
@@ -32,7 +32,7 @@ const PatternBigSmall = ({ historyData, isAlertAllowed }) => {
     });
 
     if (isPingPong && isAlertAllowed) {
-      showToast("Ping Pong Pattern detected, Big/small", "success");
+      showToast('Ping Pong Pattern detected, Big/small', 'success')
     }
   };
 
@@ -47,7 +47,7 @@ const PatternBigSmall = ({ historyData, isAlertAllowed }) => {
     });
 
     if (isDoublePingPong && isAlertAllowed) {
-      showToast("Double Ping Pong Pattern detected, Big/small", "success");
+      showToast('Double Ping Pong Pattern detected, Big/small', 'success')
     }
   };
 
@@ -64,7 +64,7 @@ const PatternBigSmall = ({ historyData, isAlertAllowed }) => {
       recentEntries[7]?.size === "large";
 
     if (isSandwich && isAlertAllowed) {
-      showToast("Sandwich Pattern detected, Big/small", "success");
+      showToast('Sandwich Pattern detected, Big/small', 'success')
     }
   };
 
@@ -80,7 +80,7 @@ const PatternBigSmall = ({ historyData, isAlertAllowed }) => {
       recentEntries[5]?.size === "small";
 
     if (isPattern && isAlertAllowed) {
-      showToast("One Two One Two Pattern detected, Big/small", "success");
+      showToast('One Two One Two Pattern detected, Big/small', 'success')
     }
   };
 
@@ -99,7 +99,7 @@ const PatternBigSmall = ({ historyData, isAlertAllowed }) => {
       recentEntries[8]?.size === "small";
 
     if (isPattern && isAlertAllowed) {
-      showToast("Stick With the Player Pattern detected, Big/small", "success");
+      showToast('Stick With the Player Pattern detected, Big/small', 'success')
     }
   };
 
@@ -118,10 +118,7 @@ const PatternBigSmall = ({ historyData, isAlertAllowed }) => {
       recentEntries[8]?.size === "large";
 
     if (isPattern && isAlertAllowed) {
-      showToast(
-        "Switch With the Player Pattern detected, Big/small",
-        "success",
-      );
+      showToast('Switch With the Player Pattern detected, Big/small', 'success')
     }
   };
 
@@ -139,7 +136,7 @@ const PatternBigSmall = ({ historyData, isAlertAllowed }) => {
       recentEntries[7]?.size === "large";
 
     if (isPattern && isAlertAllowed) {
-      showToast("Stick With the Banker Pattern detected, Big/small", "success");
+      showToast('Stick With the Banker Pattern detected, Big/small', 'success')
     }
   };
 
@@ -157,10 +154,7 @@ const PatternBigSmall = ({ historyData, isAlertAllowed }) => {
       recentEntries[7]?.size === "small";
 
     if (isPattern && isAlertAllowed) {
-      showToast(
-        "Switch With the Banker Pattern detected, Big/small",
-        "success",
-      );
+      showToast('Switch With the Banker Pattern detected, Big/small', 'success')
     }
   };
 

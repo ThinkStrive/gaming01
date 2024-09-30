@@ -8,13 +8,12 @@ import "../../Style/Main.css";
 import Nav from "../nav/nav.jsx";
 import { GrPowerReset } from "react-icons/gr";
 
-const Main = ({ theme }) => {
+const Main = () => {
+  const [theme, setTheme] = useState(JSON.parse(localStorage.getItem("Theme")));
   const [isa_Active, setIsa_Active] = useState(true);
   const [isb_Active, setIsb_Active] = useState(false);
   const [isc_Active, setIsc_Active] = useState(false);
-  const [isSingle_Active, setIsSingle_Active] = useState(true);
-  const [isDouble_Active, setIsDouble_Active] = useState(false);
-  const [isAlertAllowed, setIsAlertAllowed] = useState(false);
+  const [isAlertAllowed, setIsAlertAllowed] = useState(true);
 
   const [countData, setCountData] = useState(() => {
     const savedCountData = localStorage.getItem("countData");
@@ -164,25 +163,6 @@ const Main = ({ theme }) => {
         };
   });
 
-  const [previousState, setPreviousState] = useState(() => {
-    const savedData = localStorage.getItem("previousData");
-    return savedData
-      ? JSON.parse(savedData)
-      : {
-        countData: {},
-        doubleStreetData: {},
-        singleStreetData: {},
-        summaryData: {},
-        circleData: {},
-        lastHitNumber: {},
-        lastHitData: {},
-        nonCircleData: {},
-        historyData : [],
-        nonDoubleStreetData : {},
-        nonSingleStreetData : {},
-        };
-  });
-
   const [lastHitNumber, setLastHitNumber] = useState(() => {
     const savedLastHitNumber = localStorage.getItem("lastHitNumber");
     return savedLastHitNumber ? JSON.parse(savedLastHitNumber) : null;
@@ -247,10 +227,6 @@ const Main = ({ theme }) => {
   useEffect(() => {
     localStorage.setItem("nonCircleData", JSON.stringify(nonCircleData));
   }, [nonCircleData]);
-
-  useEffect(() => {
-    localStorage.setItem("previousData", JSON.stringify(previousState));
-  }, [previousState]);
 
   // Handle reset button click
   const handleClickResetButton = () => {
@@ -321,7 +297,6 @@ const Main = ({ theme }) => {
 
     setCircleData(resetCircleData);
     setNonCircleData(resetCircleData);
-    
 
     // Also reset the data in local storage
     localStorage.setItem("countData", JSON.stringify(resetState));
@@ -350,16 +325,16 @@ const Main = ({ theme }) => {
     zero: {
       countUpdates: {},
       summaryUpdates: {},
-      doubleStreetDataUpdates: {},
-      singleStreetDataUpdates: {},
-      circleDataUpdates: { zero: 1 },
+      doubleStreetData: {},
+      singleStreetData : {},
+      circleData: { zero: 1 },
     },
     doubleZero: {
       countUpdates: {},
       summaryUpdates: {},
-      doubleStreetDataUpdates: {},
-      singleStreetDataUpdates: {},
-      circleDataUpdates: { zero: 1 },
+      doubleStreetData: {},
+      singleStreetData : {},
+      circleData: { zero: 1 },
     },
     one: {
       countUpdates: {
@@ -370,9 +345,9 @@ const Main = ({ theme }) => {
         col_one: 1,
       },
       summaryUpdates: { lowOddRed: 1 },
-      doubleStreetDataUpdates: { one_six: 1 },
-      singleStreetDataUpdates: { one_three: 1 },
-      circleDataUpdates: { orphe: 1 },
+      doubleStreetData: { one_six: 1 },
+      singleStreetData: { one_three: 1 },
+      circleData: { orphe: 1 },
     },
     two: {
       countUpdates: {
@@ -383,9 +358,9 @@ const Main = ({ theme }) => {
         col_two: 1,
       },
       summaryUpdates: { lowEvenBlack: 1 },
-      doubleStreetDataUpdates: { one_six: 1 },
-      singleStreetDataUpdates: { one_three: 1 },
-      circleDataUpdates: { duZero: 1 },
+      doubleStreetData: { one_six: 1 },
+      singleStreetData: { one_three: 1 },
+      circleData: { duZero: 1 },
     },
     three: {
       countUpdates: {
@@ -396,9 +371,9 @@ const Main = ({ theme }) => {
         col_three: 1,
       },
       summaryUpdates: { lowOddRed: 1 },
-      doubleStreetDataUpdates: { one_six: 1 },
-      singleStreetDataUpdates: { one_three: 1 },
-      circleDataUpdates: { zero: 1 },
+      doubleStreetData: { one_six: 1 },
+      singleStreetData: { one_three: 1 },
+      circleData: { zero: 1 },
     },
     four: {
       countUpdates: {
@@ -409,9 +384,9 @@ const Main = ({ theme }) => {
         col_one: 1,
       },
       summaryUpdates: { lowEvenBlack: 1 },
-      doubleStreetDataUpdates: { one_six: 1 },
-      singleStreetDataUpdates: { four_six: 1 },
-      circleDataUpdates: { duZero: 1 },
+      doubleStreetData: { one_six: 1 },
+      singleStreetData: { four_six: 1 },
+      circleData: { duZero: 1 },
     },
     five: {
       countUpdates: {
@@ -422,9 +397,9 @@ const Main = ({ theme }) => {
         col_two: 1,
       },
       summaryUpdates: { lowOddRed: 1 },
-      doubleStreetDataUpdates: { one_six: 1 },
-      singleStreetDataUpdates: { four_six: 1 },
-      circleDataUpdates: { tires: 1 },
+      doubleStreetData: { one_six: 1 },
+      singleStreetData: { four_six: 1 },
+      circleData: { tires: 1 },
     },
     six: {
       countUpdates: {
@@ -435,9 +410,9 @@ const Main = ({ theme }) => {
         col_three: 1,
       },
       summaryUpdates: { lowEvenBlack: 1 },
-      doubleStreetDataUpdates: { one_six: 1 },
-      singleStreetDataUpdates: { four_six: 1 },
-      circleDataUpdates: { orphe: 1 },
+      doubleStreetData: { one_six: 1 },
+      singleStreetData: { four_six: 1 },
+      circleData: { orphe: 1 },
     },
     seven: {
       countUpdates: {
@@ -448,9 +423,9 @@ const Main = ({ theme }) => {
         col_one: 1,
       },
       summaryUpdates: { lowOddRed: 1 },
-      doubleStreetDataUpdates: { seven_twelve: 1 },
-      singleStreetDataUpdates: { seven_nine: 1 },
-      circleDataUpdates: { duZero: 1 },
+      doubleStreetData: { seven_twelve: 1 },
+      singleStreetData: { seven_nine: 1 },
+      circleData: { duZero: 1 },
     },
     eight: {
       countUpdates: {
@@ -461,9 +436,9 @@ const Main = ({ theme }) => {
         col_two: 1,
       },
       summaryUpdates: { lowEvenBlack: 1 },
-      doubleStreetDataUpdates: { seven_twelve: 1 },
-      singleStreetDataUpdates: { seven_nine: 1 },
-      circleDataUpdates: { tires: 1 },
+      doubleStreetData: { seven_twelve: 1 },
+      singleStreetData: { seven_nine: 1 },
+      circleData: { tires: 1 },
     },
     nine: {
       countUpdates: {
@@ -474,9 +449,9 @@ const Main = ({ theme }) => {
         col_three: 1,
       },
       summaryUpdates: { lowOddRed: 1 },
-      doubleStreetDataUpdates: { seven_twelve: 1 },
-      singleStreetDataUpdates: { seven_nine: 1 },
-      circleDataUpdates: { orphe: 1 },
+      doubleStreetData: { seven_twelve: 1 },
+      singleStreetData: { seven_nine: 1 },
+      circleData: { orphe: 1 },
     },
     ten: {
       countUpdates: {
@@ -487,9 +462,9 @@ const Main = ({ theme }) => {
         col_one: 1,
       },
       summaryUpdates: { lowEvenBlack: 1 },
-      doubleStreetDataUpdates: { seven_twelve: 1 },
-      singleStreetDataUpdates: { ten_twelve: 1 },
-      circleDataUpdates: { tires: 1 },
+      doubleStreetData: { seven_twelve: 1 },
+      singleStreetData: { ten_twelve: 1 },
+      circleData: { tires: 1 },
     },
     eleven: {
       countUpdates: {
@@ -500,9 +475,9 @@ const Main = ({ theme }) => {
         col_two: 1,
       },
       summaryUpdates: { lowOddBlack: 1 },
-      doubleStreetDataUpdates: { seven_twelve: 1 },
-      singleStreetDataUpdates: { ten_twelve: 1 },
-      circleDataUpdates: { tires: 1 },
+      doubleStreetData: { seven_twelve: 1 },
+      singleStreetData: { ten_twelve: 1 },
+      circleData: { tires: 1 },
     },
     twelve: {
       countUpdates: {
@@ -513,9 +488,9 @@ const Main = ({ theme }) => {
         col_three: 1,
       },
       summaryUpdates: { lowEvenRed: 1 },
-      doubleStreetDataUpdates: { seven_twelve: 1 },
-      singleStreetDataUpdates: { ten_twelve: 1 },
-      circleDataUpdates: { zero: 1 },
+      doubleStreetData: { seven_twelve: 1 },
+      singleStreetData: { ten_twelve: 1 },
+      circleData: { zero: 1 },
     },
     thirteen: {
       countUpdates: {
@@ -526,9 +501,9 @@ const Main = ({ theme }) => {
         col_one: 1,
       },
       summaryUpdates: { lowOddBlack: 1 },
-      doubleStreetDataUpdates: { thirteen_eighteen: 1 },
-      singleStreetDataUpdates: { thirteen_fifteen: 1 },
-      circleDataUpdates: { tires: 1 },
+      doubleStreetData: { thirteen_eighteen: 1 },
+      singleStreetData: { thirteen_fifteen: 1 },
+      circleData: { tires: 1 },
     },
     fourteen: {
       countUpdates: {
@@ -539,9 +514,9 @@ const Main = ({ theme }) => {
         col_two: 1,
       },
       summaryUpdates: { lowEvenRed: 1 },
-      doubleStreetDataUpdates: { thirteen_eighteen: 1 },
-      singleStreetDataUpdates: { thirteen_fifteen: 1 },
-      circleDataUpdates: { orphe: 1 },
+      doubleStreetData: { thirteen_eighteen: 1 },
+      singleStreetData: { thirteen_fifteen: 1 },
+      circleData: { orphe: 1 },
     },
     fifteen: {
       countUpdates: {
@@ -552,9 +527,9 @@ const Main = ({ theme }) => {
         col_three: 1,
       },
       summaryUpdates: { lowOddBlack: 1 },
-      doubleStreetDataUpdates: { thirteen_eighteen: 1 },
-      singleStreetDataUpdates: { thirteen_fifteen: 1 },
-      circleDataUpdates: { zero: 1 },
+      doubleStreetData: { thirteen_eighteen: 1 },
+      singleStreetData: { thirteen_fifteen: 1 },
+      circleData: { zero: 1 },
     },
     sixteen: {
       countUpdates: {
@@ -565,9 +540,9 @@ const Main = ({ theme }) => {
         col_one: 1,
       },
       summaryUpdates: { lowEvenRed: 1 },
-      doubleStreetDataUpdates: { thirteen_eighteen: 1 },
-      singleStreetDataUpdates: { sixteen_eighteen: 1 },
-      circleDataUpdates: { tires: 1 },
+      doubleStreetData: { thirteen_eighteen: 1 },
+      singleStreetData: { sixteen_eighteen: 1 },
+      circleData: { tires: 1 },
     },
     seventeen: {
       countUpdates: {
@@ -578,9 +553,9 @@ const Main = ({ theme }) => {
         col_two: 1,
       },
       summaryUpdates: { lowOddBlack: 1 },
-      doubleStreetDataUpdates: { thirteen_eighteen: 1 },
-      singleStreetDataUpdates: { sixteen_eighteen: 1 },
-      circleDataUpdates: { orphe: 1 },
+      doubleStreetData: { thirteen_eighteen: 1 },
+      singleStreetData: { sixteen_eighteen: 1 },
+      circleData: { orphe: 1 },
     },
     eighteen: {
       countUpdates: {
@@ -591,9 +566,9 @@ const Main = ({ theme }) => {
         col_three: 1,
       },
       summaryUpdates: { lowEvenRed: 1 },
-      doubleStreetDataUpdates: { thirteen_eighteen: 1 },
-      singleStreetDataUpdates: { sixteen_eighteen: 1 },
-      circleDataUpdates: { duZero: 1 },
+      doubleStreetData: { thirteen_eighteen: 1 },
+      singleStreetData: { sixteen_eighteen: 1 },
+      circleData: { duZero: 1 },
     },
     nineteen: {
       countUpdates: {
@@ -604,9 +579,9 @@ const Main = ({ theme }) => {
         col_one: 1,
       },
       summaryUpdates: { highOddRed: 1 },
-      doubleStreetDataUpdates: { nineteen_twentyFour: 1 },
-      singleStreetDataUpdates: { nineteen_twentyOne: 1 },
-      circleDataUpdates: { duZero: 1 },
+      doubleStreetData: { nineteen_twentyFour: 1 },
+      singleStreetData: { nineteen_twentyOne: 1 },
+      circleData: { duZero: 1 },
     },
     twenty: {
       countUpdates: {
@@ -617,9 +592,9 @@ const Main = ({ theme }) => {
         col_two: 1,
       },
       summaryUpdates: { highEvenBlack: 1 },
-      doubleStreetDataUpdates: { nineteen_twentyFour: 1 },
-      singleStreetDataUpdates: { nineteen_twentyOne: 1 },
-      circleDataUpdates: { orphe: 1 },
+      doubleStreetData: { nineteen_twentyFour: 1 },
+      singleStreetData: { nineteen_twentyOne: 1 },
+      circleData: { orphe: 1 },
     },
     twentyOne: {
       countUpdates: {
@@ -630,9 +605,9 @@ const Main = ({ theme }) => {
         col_three: 1,
       },
       summaryUpdates: { highOddRed: 1 },
-      doubleStreetDataUpdates: { nineteen_twentyFour: 1 },
-      singleStreetDataUpdates: { nineteen_twentyOne: 1 },
-      circleDataUpdates: { duZero: 1 },
+      doubleStreetData: { nineteen_twentyFour: 1 },
+      singleStreetData: { nineteen_twentyOne: 1 },
+      circleData: { duZero: 1 },
     },
     twentyTwo: {
       countUpdates: {
@@ -643,9 +618,9 @@ const Main = ({ theme }) => {
         col_one: 1,
       },
       summaryUpdates: { highEvenBlack: 1 },
-      doubleStreetDataUpdates: { nineteen_twentyFour: 1 },
-      singleStreetDataUpdates: { twentyTwo_twentyFour: 1 },
-      circleDataUpdates: { duZero: 1 },
+      doubleStreetData: { nineteen_twentyFour: 1 },
+      singleStreetData: { twentyTwo_twentyFour: 1 },
+      circleData: { duZero: 1 },
     },
     twentyThree: {
       countUpdates: {
@@ -656,9 +631,9 @@ const Main = ({ theme }) => {
         col_two: 1,
       },
       summaryUpdates: { highOddRed: 1 },
-      doubleStreetDataUpdates: { nineteen_twentyFour: 1 },
-      singleStreetDataUpdates: { twentyTwo_twentyFour: 1 },
-      circleDataUpdates: { tires: 1 },
+      doubleStreetData: { nineteen_twentyFour: 1 },
+      singleStreetData: { twentyTwo_twentyFour: 1 },
+      circleData: { tires: 1 },
     },
     twentyFour: {
       countUpdates: {
@@ -669,9 +644,9 @@ const Main = ({ theme }) => {
         col_three: 1,
       },
       summaryUpdates: { highEvenBlack: 1 },
-      doubleStreetDataUpdates: { nineteen_twentyFour: 1 },
-      singleStreetDataUpdates: { twentyTwo_twentyFour: 1 },
-      circleDataUpdates: { tires: 1 },
+      doubleStreetData: { nineteen_twentyFour: 1 },
+      singleStreetData: { twentyTwo_twentyFour: 1 },
+      circleData: { tires: 1 },
     },
     twentyFive: {
       countUpdates: {
@@ -682,9 +657,9 @@ const Main = ({ theme }) => {
         col_one: 1,
       },
       summaryUpdates: { highOddRed: 1 },
-      doubleStreetDataUpdates: { twentyFive_thirty: 1 },
-      singleStreetDataUpdates: { twentyFive_twentySeven: 1 },
-      circleDataUpdates: { duZero: 1 },
+      doubleStreetData: { twentyFive_thirty: 1 },
+      singleStreetData: { twentyFive_twentySeven: 1 },
+      circleData: { duZero: 1 },
     },
     twentySix: {
       countUpdates: {
@@ -695,9 +670,9 @@ const Main = ({ theme }) => {
         col_two: 1,
       },
       summaryUpdates: { highEvenBlack: 1 },
-      doubleStreetDataUpdates: { twentyFive_thirty: 1 },
-      singleStreetDataUpdates: { twentyFive_twentySeven: 1 },
-      circleDataUpdates: { zero: 1 },
+      doubleStreetData: { twentyFive_thirty: 1 },
+      singleStreetData: { twentyFive_twentySeven: 1 },
+      circleData: { zero: 1 },
     },
     twentySeven: {
       countUpdates: {
@@ -708,9 +683,9 @@ const Main = ({ theme }) => {
         col_three: 1,
       },
       summaryUpdates: { highOddRed: 1 },
-      doubleStreetDataUpdates: { twentyFive_thirty: 1 },
-      singleStreetDataUpdates: { twentyFive_twentySeven: 1 },
-      circleDataUpdates: { tires: 1 },
+      doubleStreetData: { twentyFive_thirty: 1 },
+      singleStreetData: { twentyFive_twentySeven: 1 },
+      circleData: { tires: 1 },
     },
     twentyEight: {
       countUpdates: {
@@ -721,9 +696,9 @@ const Main = ({ theme }) => {
         col_one: 1,
       },
       summaryUpdates: { highEvenBlack: 1 },
-      doubleStreetDataUpdates: { twentyFive_thirty: 1 },
-      singleStreetDataUpdates: { twentyEight_thirty: 1 },
-      circleDataUpdates: { duZero: 1 },
+      doubleStreetData: { twentyFive_thirty: 1 },
+      singleStreetData: { twentyEight_thirty: 1 },
+      circleData: { duZero: 1 },
     },
     twentyNine: {
       countUpdates: {
@@ -734,9 +709,9 @@ const Main = ({ theme }) => {
         col_two: 1,
       },
       summaryUpdates: { highOddBlack: 1 },
-      doubleStreetDataUpdates: { twentyFive_thirty: 1 },
-      singleStreetDataUpdates: { twentyEight_thirty: 1 },
-      circleDataUpdates: { duZero: 1 },
+      doubleStreetData: { twentyFive_thirty: 1 },
+      singleStreetData: { twentyEight_thirty: 1 },
+      circleData: { duZero: 1 },
     },
     thirty: {
       countUpdates: {
@@ -747,9 +722,9 @@ const Main = ({ theme }) => {
         col_three: 1,
       },
       summaryUpdates: { highEvenRed: 1 },
-      doubleStreetDataUpdates: { twentyFive_thirty: 1 },
-      singleStreetDataUpdates: { twentyEight_thirty: 1 },
-      circleDataUpdates: { tires: 1 },
+      doubleStreetData: { twentyFive_thirty: 1 },
+      singleStreetData: { twentyEight_thirty: 1 },
+      circleData: { tires: 1 },
     },
     thirtyOne: {
       countUpdates: {
@@ -760,9 +735,9 @@ const Main = ({ theme }) => {
         col_one: 1,
       },
       summaryUpdates: { highOddBlack: 1 },
-      doubleStreetDataUpdates: { thirtyOne_thirtySix: 1 },
-      singleStreetDataUpdates: { thirtyOne_thirtyThree: 1 },
-      circleDataUpdates: { orphe: 1 },
+      doubleStreetData: { thirtyOne_thirtySix: 1 },
+      singleStreetData: { thirtyOne_thirtyThree: 1 },
+      circleData: { orphe: 1 },
     },
     thirtyTwo: {
       countUpdates: {
@@ -773,9 +748,9 @@ const Main = ({ theme }) => {
         col_two: 1,
       },
       summaryUpdates: { highEvenRed: 1 },
-      doubleStreetDataUpdates: { thirtyOne_thirtySix: 1 },
-      singleStreetDataUpdates: { thirtyOne_thirtyThree: 1 },
-      circleDataUpdates: { zero: 1 },
+      doubleStreetData: { thirtyOne_thirtySix: 1 },
+      singleStreetData: { thirtyOne_thirtyThree: 1 },
+      circleData: { zero: 1 },
     },
     thirtyThree: {
       countUpdates: {
@@ -786,9 +761,9 @@ const Main = ({ theme }) => {
         col_three: 1,
       },
       summaryUpdates: { highOddBlack: 1 },
-      doubleStreetDataUpdates: { thirtyOne_thirtySix: 1 },
-      singleStreetDataUpdates: { thirtyOne_thirtyThree: 1 },
-      circleDataUpdates: { tires: 1 },
+      doubleStreetData: { thirtyOne_thirtySix: 1 },
+      singleStreetData: { thirtyOne_thirtyThree: 1 },
+      circleData: { tires: 1 },
     },
     thirtyFour: {
       countUpdates: {
@@ -799,9 +774,9 @@ const Main = ({ theme }) => {
         col_one: 1,
       },
       summaryUpdates: { highEvenRed: 1 },
-      doubleStreetDataUpdates: { thirtyOne_thirtySix: 1 },
-      singleStreetDataUpdates: { thirtyFour_thirtySix: 1 },
-      circleDataUpdates: { orphe: 1 },
+      doubleStreetData: { thirtyOne_thirtySix: 1 },
+      singleStreetData: { thirtyFour_thirtySix: 1 },
+      circleData: { orphe: 1 },
     },
     thirtyFive: {
       countUpdates: {
@@ -812,9 +787,9 @@ const Main = ({ theme }) => {
         col_two: 1,
       },
       summaryUpdates: { highOddBlack: 1 },
-      doubleStreetDataUpdates: { thirtyOne_thirtySix: 1 },
-      singleStreetDataUpdates: { thirtyFour_thirtySix: 1 },
-      circleDataUpdates: { zero: 1 },
+      doubleStreetData: { thirtyOne_thirtySix: 1 },
+      singleStreetData: { thirtyFour_thirtySix: 1 },
+      circleData: { zero: 1 },
     },
     thirtySix: {
       countUpdates: {
@@ -825,34 +800,15 @@ const Main = ({ theme }) => {
         col_three: 1,
       },
       summaryUpdates: { highEvenRed: 1 },
-      doubleStreetDataUpdates: { thirtyOne_thirtySix: 1 },
-      singleStreetDataUpdates: { thirtyFour_thirtySix: 1 },
-      circleDataUpdates: { tires: 1 },
+      doubleStreetData: { thirtyOne_thirtySix: 1 },
+      singleStreetData: { thirtyFour_thirtySix: 1 },
+      circleData: { tires: 1 },
     },
   };
 
   const handleClickNumber = (key, number) => {
-    const {
-      countUpdates,
-      summaryUpdates,
-      doubleStreetDataUpdates,
-      circleDataUpdates,
-      singleStreetDataUpdates,
-    } = updateMapping[key];
-
-    setPreviousState({
-      countData,
-      doubleStreetData,
-      singleStreetData,
-      summaryData,
-      lastHitNumber,
-      lastHitData,
-      nonDoubleStreetData,
-      nonCircleData,
-      circleData,
-      historyData,
-      nonSingleStreetData
-    });
+    const { countUpdates, summaryUpdates, doubleStreetData, circleData, singleStreetData } =
+      updateMapping[key];
 
     // Update countData
     setCountData((prevState) => {
@@ -865,16 +821,16 @@ const Main = ({ theme }) => {
 
     setDoubleStreetData((prevState) => {
       const updatedCounts = {};
-      Object.keys(doubleStreetDataUpdates).forEach((field) => {
-        updatedCounts[field] = prevState[field] + doubleStreetDataUpdates[field];
+      Object.keys(doubleStreetData).forEach((field) => {
+        updatedCounts[field] = prevState[field] + doubleStreetData[field];
       });
       return { ...prevState, ...updatedCounts };
     });
 
     setSIngleStreetData((prevState) => {
       const updatedCounts = {};
-      Object.keys(singleStreetDataUpdates).forEach((field) => {
-        updatedCounts[field] = prevState[field] + singleStreetDataUpdates[field];
+      Object.keys(singleStreetData).forEach((field) => {
+        updatedCounts[field] = prevState[field] + singleStreetData[field];
       });
       return { ...prevState, ...updatedCounts };
     });
@@ -889,8 +845,8 @@ const Main = ({ theme }) => {
 
     setCircleData((prevState) => {
       const updatedSummary = {};
-      Object.keys(circleDataUpdates).forEach((field) => {
-        updatedSummary[field] = prevState[field] + circleDataUpdates[field];
+      Object.keys(circleData).forEach((field) => {
+        updatedSummary[field] = prevState[field] + circleData[field];
       });
       return { ...prevState, ...updatedSummary };
     });
@@ -911,34 +867,34 @@ const Main = ({ theme }) => {
     };
 
     const clickedDataDoubleStreetData = {
-      one_six: doubleStreetDataUpdates.one_six || 0,
-      seven_twelve: doubleStreetDataUpdates.seven_twelve || 0,
-      thirteen_eighteen: doubleStreetDataUpdates.thirteen_eighteen || 0,
-      nineteen_twentyFour: doubleStreetDataUpdates.nineteen_twentyFour || 0,
-      twentyFive_thirty: doubleStreetDataUpdates.twentyFive_thirty || 0,
-      thirtyOne_thirtySix: doubleStreetDataUpdates.thirtyOne_thirtySix || 0,
+      one_six: doubleStreetData.one_six || 0,
+      seven_twelve: doubleStreetData.seven_twelve || 0,
+      thirteen_eighteen: doubleStreetData.thirteen_eighteen || 0,
+      nineteen_twentyFour: doubleStreetData.nineteen_twentyFour || 0,
+      twentyFive_thirty: doubleStreetData.twentyFive_thirty || 0,
+      thirtyOne_thirtySix: doubleStreetData.thirtyOne_thirtySix || 0,
     };
 
     const clickedDataSingleStreetData = {
-      one_three: singleStreetDataUpdates.one_three || 0,
-      four_six: singleStreetDataUpdates.four_six || 0,
-      seven_nine: singleStreetDataUpdates.seven_nine || 0,
-      ten_twelve: singleStreetDataUpdates.ten_twelve || 0,
-      thirteen_fifteen: singleStreetDataUpdates.thirteen_fifteen || 0,
-      sixteen_eighteen: singleStreetDataUpdates.sixteen_eighteen || 0,
-      nineteen_twentyOne: singleStreetDataUpdates.nineteen_twentyOne || 0,
-      twentyTwo_twentyFour: singleStreetDataUpdates.twentyTwo_twentyFour || 0,
-      twentyFive_twentySeven: singleStreetDataUpdates.twentyFive_twentySeven || 0,
-      twentyEight_thirty: singleStreetDataUpdates.twentyEight_thirty || 0,
-      thirtyOne_thirtyThree: singleStreetDataUpdates.thirtyOne_thirtyThree || 0,
-      thirtyFour_thirtySix: singleStreetDataUpdates.thirtyFour_thirtySix || 0,
+      one_three: singleStreetData.one_three || 0,
+      four_six: singleStreetData.four_six || 0,
+      seven_nine: singleStreetData.seven_nine || 0,
+      ten_twelve: singleStreetData.ten_twelve || 0,
+      thirteen_fifteen: singleStreetData.thirteen_fifteen || 0,
+      sixteen_eighteen: singleStreetData.sixteen_eighteen || 0,
+      nineteen_twentyOne: singleStreetData.nineteen_twentyOne || 0,
+      twentyTwo_twentyFour: singleStreetData.twentyTwo_twentyFour || 0,
+      twentyFive_twentySeven: singleStreetData.twentyFive_twentySeven || 0,
+      twentyEight_thirty: singleStreetData.twentyEight_thirty || 0,
+      thirtyOne_thirtyThree: singleStreetData.thirtyOne_thirtyThree || 0,
+      thirtyFour_thirtySix: singleStreetData.thirtyFour_thirtySix || 0,
     };
 
     const clickedCircleData = {
-      zero: circleDataUpdates.zero || 0,
-      duZero: circleDataUpdates.duZero || 0,
-      orphe: circleDataUpdates.orphe || 0,
-      tires: circleDataUpdates.tires || 0,
+      zero: circleData.zero || 0,
+      duZero: circleData.duZero || 0,
+      orphe: circleData.orphe || 0,
+      tires: circleData.tires || 0,
     };
 
     setLastHitNumber({
@@ -962,8 +918,6 @@ const Main = ({ theme }) => {
       return updatedLastHitData;
     });
 
-
-
     setNonDoubleStreetData((prevLastHitData) => {
       const updatedLastHitData = {};
 
@@ -982,7 +936,9 @@ const Main = ({ theme }) => {
 
       Object.keys(prevLastHitData).forEach((field) => {
         updatedLastHitData[field] =
-          clickedCircleData[field] > 0 ? 0 : prevLastHitData[field] + 1;
+          clickedCircleData[field] > 0
+            ? 0
+            : prevLastHitData[field] + 1;
       });
 
       return updatedLastHitData;
@@ -1041,31 +997,10 @@ const Main = ({ theme }) => {
     setHistoryData([...historyData, changedHistoryData]);
   };
 
-  const handleClickUndoButton = () => {
-    try {
-      setCountData(previousState.countData);
-      setDoubleStreetData(previousState.doubleStreetData);
-      setNonDoubleStreetData(previousState.nonDoubleStreetData);
-      setSIngleStreetData(previousState.singleStreetData);
-      setNonSingleStreetData(previousState.nonSingleStreetData);
-      setHistoryData(previousState.historyData);
-      setSummaryData(previousState.summaryData);
-      setCircleData(previousState.circleData);
-      setNonCircleData(previousState.nonCircleData);
-      setLastHitNumber(previousState.lastHitNumber);
-      setLastHitData(previousState.lastHitData);
-    } catch (err) {
-      console.log("err", err);
-    }
-  };
-
-  const tableRow = (category, count, lastHit, screen) => {
+  const tableRow = (category, count, lastHit) => {
     return (
       <tr className="text-center">
-        <td
-          className="bg-customGray border text-darkNavy max-sm:text-xs max-sm:py-2  text-base max-lg:text-sm font-semibold"
-          style={{ padding: screen === "small" ? "7px 10px" : "" }}
-        >
+        <td className="bg-customGray border text-black max-sm:text-xs max-sm:py-2 font-semibold text-base max-lg:text-sm">
           {category}
         </td>
         <td
@@ -1074,7 +1009,6 @@ const Main = ({ theme }) => {
               ? "bg-brightRed border hover:bg-softBlue"
               : "bg-customGray text-black border hover:bg-softBlue"
           }
-          style={{ padding: screen === "small" ? "3px 10px" : "" }}
         >
           {count}
         </td>
@@ -1084,7 +1018,6 @@ const Main = ({ theme }) => {
               ? "bg-customPurple border hover:bg-softBlue"
               : "bg-customGray text-black border hover:bg-softBlue"
           }
-          style={{ padding: screen === "small" ? "3px 10px" : "" }}
         >
           {lastHit}
         </td>
@@ -1124,20 +1057,14 @@ const Main = ({ theme }) => {
       setIsa_Active(false);
       setIsb_Active(false);
       setIsc_Active(true);
-    } else if (div === "single--streak") {
-      setIsSingle_Active(true);
-      setIsDouble_Active(false);
-    } else if (div === "double--streak") {
-      setIsSingle_Active(false);
-      setIsDouble_Active(true);
     }
   };
-
-  console.log(theme);
 
   return (
     <>
       <div className="sticky top-0 z-40">
+        <Nav />
+
         <div
           className="py-3 px-2 justify-between flex sm--navbar"
           style={{ backgroundColor: "#FFFBE3" }}
@@ -1172,26 +1099,16 @@ const Main = ({ theme }) => {
               onClick={() => setIsAlertAllowed(!isAlertAllowed)}
             >
               <div>
-                Alerts{" "}
-                <span
-                  className={
-                    !isAlertAllowed ? "text-red-500" : "text-neonGreen"
-                  }
-                >
-                  {!isAlertAllowed ? "Off!" : "On!"}
-                </span>
+                Off Alerts!
+                <input
+                  type="checkbox"
+                  checked={isAlertAllowed}
+                  className="w-4 h-4"
+                />
               </div>
             </div>
-
             <button
-              className="text-gray-500 py-1 px-1 rounded-full text-sm font-semibold"
-              onClick={handleClickUndoButton}
-            >
-              Undo
-            </button>
-
-            <button
-              className="text-gray-500 py-1 px-1 rounded-full text-sm font-semibold"
+              className="text-gray-500 py-1 px-3 rounded-full"
               onClick={handleClickResetButton}
             >
               <GrPowerReset className="inline mr-0.5 -mt-0.5" />
@@ -1231,42 +1148,25 @@ const Main = ({ theme }) => {
           {/* <div className="w-44 max-sm:hidden">
             <img src={rouletteImg} alt="" className="w-full object-cover" />
           </div> */}
-          <div className="flex gap-2">
-            <div className="bg-neutral-300 p-1 rounded-full">
-              <div
-                className="flex justify-center items-center bg-customBlack p-1.5 font-semibold cursor-pointer rounded-full hover:bg-gray-500"
-                onClick={() => setIsAlertAllowed(!isAlertAllowed)}
-              >
-                Alerts{" "}
-                <span
-                  className={
-                    !isAlertAllowed
-                      ? "text-red-500 ml-1"
-                      : "text-neonGreen ml-1"
-                  }
-                >
-                  {!isAlertAllowed ? "Off" : "On"}
-                </span>
-              </div>
-            </div>
+          <div
+            className="flex justify-center items-center bg-red-400 p-1.5 rounded-md font-semibold cursor-pointer"
+            onClick={() => setIsAlertAllowed(!isAlertAllowed)}
+          >
+            Turn off Alerts!
+            <input
+              type="checkbox"
+              checked={isAlertAllowed}
+              className="ml-1 w-5 h-5"
+            />
+          </div>
 
-            <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-              <button
-                className="bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                onClick={handleClickUndoButton}
-              >
-                Undo
-              </button>
-            </div>
-
-            <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-              <button
-                onClick={handleClickResetButton}
-                className="bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-              >
-                Reset
-              </button>
-            </div>
+          <div className="bg-neutral-300 p-1 rounded-full">
+            <button
+              onClick={handleClickResetButton}
+              className="bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm"
+            >
+              Reset
+            </button>
           </div>
         </div>
       </div>
@@ -1299,7 +1199,7 @@ const Main = ({ theme }) => {
                 {data.map((item) => {
                   return (
                     <div
-                      className="w-[33.3%] flex justify-center items-center border cursor-pointer number--divs"
+                      className="w-[33.3%] flex justify-center items-center border cursor-pointer"
                       onClick={() =>
                         handleClickNumber(item.numString, item.num)
                       }
@@ -1691,7 +1591,7 @@ const Main = ({ theme }) => {
             <table
               border="1"
               cellPadding="10"
-              className="w-[30%] max-sm:mt-14 table--1 max-sm:hidden hidden"
+              className="w-[30%] max-sm:mt-14 table--1 max-sm:hidden"
             >
               <thead>
                 <tr className="text-center max-sm:text-sm">
@@ -1773,7 +1673,7 @@ const Main = ({ theme }) => {
             <table
               border="1"
               cellPadding="10"
-              className="w-[30%] max-sm:mt-14 table--1 max-sm:hidden hidden"
+              className="w-[30%] max-sm:mt-14 table--1 max-sm:hidden"
             >
               <thead>
                 <tr className="text-center max-sm:text-sm">
@@ -1930,212 +1830,76 @@ const Main = ({ theme }) => {
 
         {/* small screen Data slide bar */}
         <div
-          className="border w-full my-10 mt-28 max-sm:block relative p-2 rounded-lg lg:h-[30rem] max-lg:h-[75vh]"
+          className="border w-full my-10 mt-28 hidden max-sm:block relative p-2 rounded-lg"
           style={{
             background: `linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),url(${background}) center center no-repeat`,
             backgroundSize: "cover",
             backgroundPositionX: "center",
             backgroundPositionY: "center",
             backgroundRepeat: "no-repeat",
-            // height: "25rem",
+            height: "25rem",
           }}
         >
-          <div className="mx-auto w-[60%] h-[85%]">
-            <div
-              className="w-[100%] lg:w-[42%] md:w-[60%] -mt-1 mb-1 flex gap-1 mx-auto"
-              style={{ display: isa_Active ? "flex" : "none" }}
-            >
-              <button
-                className="bg-softBlue text-white py-1 px-3 rounded-lg max-md:text-sm max-sm:text-xs max-sm:py-2"
-                onClick={() => displayDivHandler("single--streak")}
-                style={{
-                  backgroundColor: isSingle_Active ? "#FFC107" : "",
-                  color: isSingle_Active ? "black" : "",
-                  fontWeight: isSingle_Active ? "600" : "",
-                  border: isSingle_Active ? "1px black solid" : "",
-                }}
-              >
-                Single Streak
-              </button>
-
-              <button
-                className="bg-softBlue text-white py-1 px-3 rounded-lg max-md:text-sm max-sm:text-xs max-sm:py-2"
-                onClick={() => displayDivHandler("double--streak")}
-                style={{
-                  backgroundColor: isDouble_Active ? "#FFC107" : "",
-                  color: isDouble_Active ? "black" : "",
-                  fontWeight: isDouble_Active ? "600" : "",
-                  border: isDouble_Active ? "1px black solid" : "",
-                }}
-              >
-                Double Streak
-              </button>
-            </div>
-            <div
-              className="lg:w-[60%] md:w-[80%] mx-auto overflow-y-scroll h-[90%] scroll-smooth streak-div"
+          <div className="mx-auto w-[60%]">
+            <table
+              border="1"
+              cellPadding="10"
+              className="md:hidden w-full"
               style={{ display: isa_Active ? "block" : "none" }}
             >
-              <table
-                border="1"
-                cellPadding="10"
-                className="w-full hidden"
-                style={{ display: isSingle_Active ? "block" : "none" }}
-              >
-                <thead>
-                  <tr className="text-center max-sm:text-sm">
-                    <th className="border p-3 max-sm:p-2 bg-customGreen">
-                      Category
-                    </th>
-                    <th className="border p-3 max-sm:p-2 bg-customGreen">
-                      Count
-                    </th>
-                    <th className="border p-3 max-sm:p-2 bg-customGreen">
-                      Last Hit
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {tableRow(
-                    "One / Six",
-                    doubleStreetData.one_six,
-                    nonDoubleStreetData.one_six,
-                    "small"
-                  )}
-                  {tableRow(
-                    "Seven / Twelve",
-                    doubleStreetData.seven_twelve,
-                    nonDoubleStreetData.seven_twelve,
-                    "small"
-                  )}
-                  {tableRow(
-                    "Thirteen / Eighteen",
-                    doubleStreetData.thirteen_eighteen,
-                    nonDoubleStreetData.thirteen_eighteen,
-                    "small"
-                  )}
-                  {tableRow(
-                    "Nineteen / TwentyFour",
-                    doubleStreetData.nineteen_twentyFour,
-                    nonDoubleStreetData.nineteen_twentyFour,
-                    "small"
-                  )}
-                  {tableRow(
-                    "Twentyfive / Thirty",
-                    doubleStreetData.twentyFive_thirty,
-                    nonDoubleStreetData.twentyFive_thirty,
-                    "small"
-                  )}
-                  {tableRow(
-                    "Thirtyone / Thirtysix",
-                    doubleStreetData.thirtyOne_thirtySix,
-                    nonDoubleStreetData.thirtyOne_thirtySix,
-                    "small"
-                  )}
-                </tbody>
-              </table>
-
-              <table
-                border="1"
-                cellPadding="10"
-                className="md:w-[70%] max-md:text-sm hidden mx-auto"
-                style={{ display: isDouble_Active ? "block" : "none" }}
-              >
-                <thead>
-                  <tr className="text-center max-sm:text-sm">
-                    <th className="border p-3 max-sm:p-2 bg-customGreen">
-                      Category
-                    </th>
-                    <th className="border p-3 max-sm:p-2 bg-customGreen">
-                      Count
-                    </th>
-                    <th className="border p-3 max-sm:p-2 bg-customGreen">
-                      Last Hit
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {tableRow(
-                    "1-3",
-                    singleStreetData.one_three,
-                    nonSingleStreetData.one_three,
-                    "small"
-                  )}
-                  {tableRow(
-                    "4 - 6",
-                    singleStreetData.four_six,
-                    nonSingleStreetData.four_six,
-                    "small"
-                  )}
-                  {tableRow(
-                    "7 - 9",
-                    singleStreetData.seven_nine,
-                    nonSingleStreetData.seven_nine,
-                    "small"
-                  )}
-                  {tableRow(
-                    "10 - 12",
-                    singleStreetData.ten_twelve,
-                    nonSingleStreetData.ten_twelve,
-                    "small"
-                  )}
-                  {tableRow(
-                    "13 - 15",
-                    singleStreetData.thirteen_fifteen,
-                    nonSingleStreetData.thirteen_fifteen,
-                    "small"
-                  )}
-                  {tableRow(
-                    "16 - 18",
-                    singleStreetData.sixteen_eighteen,
-                    nonSingleStreetData.sixteen_eighteen,
-                    "small"
-                  )}
-                  {tableRow(
-                    "19 - 21",
-                    singleStreetData.nineteen_twentyOne,
-                    nonSingleStreetData.nineteen_twentyOne,
-                    "small"
-                  )}
-                  {tableRow(
-                    "22 - 24",
-                    singleStreetData.twentyTwo_twentyFour,
-                    nonSingleStreetData.twentyTwo_twentyFour,
-                    "small"
-                  )}
-                  {tableRow(
-                    "25 - 27",
-                    singleStreetData.twentyFive_twentySeven,
-                    nonSingleStreetData.twentyFive_twentySeven,
-                    "small"
-                  )}
-                  {tableRow(
-                    "28 - 30",
-                    singleStreetData.twentyEight_thirty,
-                    nonSingleStreetData.twentyEight_thirty,
-                    "small"
-                  )}
-                  {tableRow(
-                    "31 - 33",
-                    singleStreetData.thirtyOne_thirtyThree,
-                    nonSingleStreetData.thirtyOne_thirtyThree,
-                    "small"
-                  )}
-                  {tableRow(
-                    "31 - 33",
-                    singleStreetData.thirtyFour_thirtySix,
-                    nonSingleStreetData.thirtyFour_thirtySix,
-                    "small"
-                  )}
-                </tbody>
-              </table>
-            </div>
+              <thead>
+                <tr className="text-center max-sm:text-sm">
+                  <th className="border p-3 max-sm:p-2 bg-customGreen">
+                    Category
+                  </th>
+                  <th className="border p-3 max-sm:p-2 bg-customGreen">
+                    Count
+                  </th>
+                  <th className="border p-3 max-sm:p-2 bg-customGreen">
+                    Last Hit
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {tableRow(
+                  "One / Four",
+                  doubleStreetData.one_six,
+                  nonDoubleStreetData.one_six
+                )}
+                {tableRow(
+                  "Seven / Ten",
+                  doubleStreetData.seven_twelve,
+                  nonDoubleStreetData.seven_twelve
+                )}
+                {tableRow(
+                  "Thirteen / Sixteen",
+                  doubleStreetData.thirteen_eighteen,
+                  nonDoubleStreetData.thirteen_eighteen
+                )}
+                {tableRow(
+                  "Nineteen / Twentytwo",
+                  doubleStreetData.nineteen_twentyFour,
+                  nonDoubleStreetData.nineteen_twentyFour
+                )}
+                {tableRow(
+                  "Twentyfive / Twentyeight",
+                  doubleStreetData.twentyFive_thirty,
+                  nonDoubleStreetData.twentyFive_thirty
+                )}
+                {tableRow(
+                  "Thirtyone / Thirtysix",
+                  doubleStreetData.thirtyOne_thirtySix,
+                  nonDoubleStreetData.thirtyOne_thirtySix
+                )}
+              </tbody>
+            </table>
 
             {/* second table */}
 
             <table
               border="1"
               cellPadding="10"
-              className="text-center md:w-[45%] mx-auto"
+              className="text-center w-full"
               style={{ display: isb_Active ? "block" : "none" }}
             >
               <thead>
@@ -2243,7 +2007,7 @@ const Main = ({ theme }) => {
 
             {/* third table */}
             <div
-              className="border flex w-full lg:w-[60%] mx-auto h-full flex-wrap"
+              className="border flex w-full h-full flex-wrap"
               style={{ display: isc_Active ? "flex" : "none" }}
             >
               {renderSummaryData("L.E.R", summaryData.lowEvenRed)}
@@ -2259,47 +2023,43 @@ const Main = ({ theme }) => {
 
           <div className="mt-3 border-t border-gray-400 py-2 flex justify-around absolute bottom-0 w-[95%] left-2">
             <button
-              className="border px-3 bg-slate-600 rounded-md max-sm:text-xs"
+              className="border px-3 bg-slate-600 rounded-md text-xs"
               onClick={() => displayDivHandler("a")}
               style={{
                 backgroundColor: isa_Active ? "#FFC107" : "teal",
                 color: isa_Active ? "black" : "white",
                 fontWeight: isa_Active ? "600" : "",
-                border: isa_Active ? "1px black solid" : "",
               }}
             >
               Streets Tracker
             </button>
 
             <button
-              className="border px-3 bg-slate-600 text-customBlack rounded-md max-sm:text-xs"
+              className="border px-3 bg-slate-600 text-customBlack rounded-md text-xs"
               onClick={() => displayDivHandler("b")}
               style={{
                 backgroundColor: isb_Active ? "#FFC107" : "teal",
                 color: isb_Active ? "black" : "white",
                 fontWeight: isb_Active ? "600" : "",
-                border: isb_Active ? "1px black solid" : "",
               }}
             >
               Wheel Section Breakdown
             </button>
 
             <button
-              className="border px-3 py-1 lg:px-5 lg:py-2  bg-slate-600 text-customBlack rounded-md max-sm:text-xs"
+              className="border px-3 bg-slate-600 text-customBlack rounded-md text-xs"
               onClick={() => displayDivHandler("c")}
               style={{
                 backgroundColor: isc_Active ? "#FFC107" : "teal",
                 color: isc_Active ? "black" : "white",
                 fontWeight: isc_Active ? "600" : "",
-                border: isc_Active ? "1px black solid" : "",
               }}
             >
               Quadro Tracker
             </button>
           </div>
         </div>
-
-        <div className="flex justify-between my-10 gap-4 max-sm:hidden hidden">
+        <div className="flex justify-between my-10 gap-4 max-sm:hidden">
           <table
             border="1"
             cellPadding="10"
@@ -2408,7 +2168,7 @@ const Main = ({ theme }) => {
             </tbody>
           </table>
 
-          <div className="border flex max-w-60 flex-wrap max-sm:hidden hidden">
+          <div className="border flex max-w-60 flex-wrap max-sm:hidden">
             {/* ////////// */}
             {renderSummaryData("L.E.R", summaryData.lowEvenRed)}
             {renderSummaryData("L.E.B", summaryData.lowEvenBlack)}

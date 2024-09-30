@@ -40,14 +40,14 @@ const BigSmall = ({ historyData }) => {
   return (
     <div>
       {Array.from({ length: maxRows }).map((_, rowIndex) => (
-        <div key={rowIndex} style={{ display: "flex", gap: "1px" }}>
+        <div key={rowIndex} style={{ display: "flex", gap: "20px" }}>
           {columns.map((col, colIndex) => (
             <div key={colIndex} style={{ width: "50px", textAlign: "center" }}>
               <div
                 className={`
-                  ${col[rowIndex] === "large" ? "bg-red-500 rounded-lg my-1 px-1" : ""}
-                  ${col[rowIndex] === "small" ? "bg-blue-500 rounded-lg my-1 px-1" : ""}
-                  ${col[rowIndex] === "zero" ? "bg-green-500 rounded-lg my-1 px-1" : ""}
+                  ${col[rowIndex] === "large" ? "bg-red-500 rounded-lg mb-1 px-2" : ""}
+                  ${col[rowIndex] === "small" ? "bg-blue-500 rounded-lg my-1 px-2" : ""}
+                  ${col[rowIndex] === "zero" ? "bg-green-500 rounded-lg my-1 px-2" : ""}
                   text-white py-2
                 `}
               >
