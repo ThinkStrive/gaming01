@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from "react";
-import History from "../reuse/history/History.jsx";
-import logo from "../../assets/imgs/LOGO.jpg";
-import rouletteImg from "../../assets/imgs/948e105b4f0de225d1484946244b4680.jpeg";
+import History from "../reuse/project1/history/History.jsx";
 import background from "../../assets/imgs/2002.i029.002_realistic-poker-club-illustration.jpg";
-import { data } from "../resources/mainComponetRenderData.js";
+import { data } from "../reuse/project1/logic/mainComponetRenderData.js";
 import "../../Style/Main.css";
 import Nav from "../nav/nav.jsx";
 import { GrPowerReset } from "react-icons/gr";
 
-const Main = ({ theme }) => {
+const Main = ({ theme, setTheme }) => {
   const [isa_Active, setIsa_Active] = useState(true);
   const [isb_Active, setIsb_Active] = useState(false);
   const [isc_Active, setIsc_Active] = useState(false);
   const [isSingle_Active, setIsSingle_Active] = useState(true);
   const [isDouble_Active, setIsDouble_Active] = useState(false);
   const [isAlertAllowed, setIsAlertAllowed] = useState(false);
+  const [i_btn, setI_btn] = useState(false);
 
   const [countData, setCountData] = useState(() => {
     const savedCountData = localStorage.getItem("countData");
@@ -1064,27 +1063,44 @@ const Main = ({ theme }) => {
       <tr className="text-center">
         <td
           className="bg-customGray border text-darkNavy max-sm:text-xs max-sm:py-2  text-base max-lg:text-sm font-semibold"
-          style={{ padding: screen === "small" ? "7px 10px" : "" }}
+          style={{
+            padding: screen === "small" ? "7px 10px" : "",
+            borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+          }}
         >
           {category}
         </td>
         <td
           className={
-            count != 0
-              ? "bg-brightRed border hover:bg-softBlue"
-              : "bg-customGray text-black border hover:bg-softBlue"
+            count >= 6
+              ? "bg-darkBlue border hover:bg-softBlue"
+              : count > 0 && count <= 2
+                ? "bg-lightBlue text-black border hover:bg-softBlue"
+                : count > 2 && count <= 5
+                  ? "bg-mediumBlue text-black border hover:bg-softBlue"
+                  : "bg-customGray text-black border hover:bg-softBlue"
           }
-          style={{ padding: screen === "small" ? "3px 10px" : "" }}
+          style={{
+            padding: screen === "small" ? "3px 10px" : "",
+            borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+          }}
         >
           {count}
         </td>
         <td
           className={
-            lastHit != 0
-              ? "bg-customPurple border hover:bg-softBlue"
-              : "bg-customGray text-black border hover:bg-softBlue"
+            lastHit >= 11
+              ? "bg-normalRed border hover:bg-softBlue"
+              : lastHit > 0 && lastHit <= 3
+                ? "bg-lightGreen text-black border hover:bg-softBlue"
+                : lastHit > 3 && lastHit <= 10
+                  ? "bg-customYellow text-black border hover:bg-softBlue"
+                  : "bg-customGray text-black border hover:bg-softBlue"
           }
-          style={{ padding: screen === "small" ? "3px 10px" : "" }}
+          style={{
+            padding: screen === "small" ? "3px 10px" : "",
+            borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+          }}
         >
           {lastHit}
         </td>
@@ -1092,20 +1108,41 @@ const Main = ({ theme }) => {
     );
   };
 
-  const renderSummaryData = (category, data) => {
+  const renderSummaryData = (category, count, lastHit) => {
     return (
       <>
-        <div className="w-[50%] p-1 border bg-customGray text-customBlack font-semibold flex items-center justify-center">
+        <div
+          className="w-[33.3%] p-1 border bg-customGray text-customBlack font-semibold flex items-center justify-center max-md:text-sm"
+          style={{
+            borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+          }}
+        >
           {category}
         </div>
         <div
           className={
-            data !== 0
-              ? "w-[50%] bg-goldenYellow flex items-center justify-center border"
-              : "w-[50%] bg-customGray text-black font-semibold flex items-center justify-center border"
+            count !== 0
+              ? "w-[33.3%] bg-goldenYellow flex items-center justify-center border max-md:text-sm"
+              : "w-[33.3%] bg-customGray text-black font-semibold flex items-center justify-center border max-md:text-sm"
           }
+          style={{
+            borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+          }}
         >
-          {data}
+          {count}
+        </div>
+
+        <div
+          className={
+            count !== 0
+              ? "w-[33.3%] bg-goldenYellow flex items-center justify-center border max-md:text-sm"
+              : "w-[33.3%] bg-customGray text-black font-semibold flex items-center justify-center border max-md:text-sm"
+          }
+          style={{
+            borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+          }}
+        >
+          {count}
         </div>
       </>
     );
@@ -1138,11 +1175,12 @@ const Main = ({ theme }) => {
   return (
     <>
       <div className="sticky top-0 z-40">
+        <Nav theme={theme} setTheme={setTheme} />
         <div
           className="py-3 px-2 justify-between flex sm--navbar"
           style={{ backgroundColor: "#FFFBE3" }}
         >
-          <div className="flex gap-4 pl-2 items-center">
+          <div className="flex gap-4 pl-2 items-center sm--lasthit">
             <div>
               <h2 className="text-customPurple text-base font-bold">
                 Last Hit Number
@@ -1158,9 +1196,9 @@ const Main = ({ theme }) => {
                 lastHitNumber?.color === "red"
                   ? "border-customRed text-customRed border-2"
                   : lastHitNumber?.color === "black"
-                  ? "border-customBlack text-customBlack border-2"
-                  : ""
-              } flex justify-center items-center w-10 h-10 rounded-md mt-1`}
+                    ? "border-customBlack text-customBlack border-2"
+                    : ""
+              } flex justify-center items-center w-10 h-10 rounded-md mt-1 px-1`}
             >
               {lastHitNumber?.number}
             </div>
@@ -1183,9 +1221,8 @@ const Main = ({ theme }) => {
               </div>
             </div>
 
-            <button
-              className="text-gray-500 py-1 px-1 rounded-full text-sm font-semibold"
-              onClick={handleClickUndoButton}
+            <button className="text-gray-500 py-1 px-1 rounded-full text-sm font-semibold"
+            onClick={handleClickResetButton}
             >
               Undo
             </button>
@@ -1213,8 +1250,8 @@ const Main = ({ theme }) => {
                   lastHitNumber?.color === "red"
                     ? "bg-customRed"
                     : lastHitNumber.color === "black"
-                    ? "bg-black"
-                    : "bg-customGreen"
+                      ? "bg-black"
+                      : "bg-customGreen"
                 } py-1 flex justify-center items-center w-20 max-sm:w-14 rounded-full -ml-8 max-sm:-ml-7`}
               >
                 <p className="text-white ml-6 max-sm:text-xs">
@@ -1251,9 +1288,8 @@ const Main = ({ theme }) => {
             </div>
 
             <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-              <button
-                className="bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                onClick={handleClickUndoButton}
+              <button className="bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
+              onClick={handleClickUndoButton}
               >
                 Undo
               </button>
@@ -1282,14 +1318,20 @@ const Main = ({ theme }) => {
             >
               <div className="w-full h-[7%] flex">
                 <div
-                  className="bg-customGreen w-[50%] flex justify-center items-center cursor-pointer border"
+                  className="bg-customGreen w-[50%] flex justify-center items-center cursor-pointer border hover:bg-neonGreen"
                   onClick={() => handleClickNumber("zero", 0)}
+                  style={{
+                    borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                  }}
                 >
                   <p>0</p>
                 </div>
                 <div
-                  className="bg-customGreen w-[50%] flex justify-center items-center cursor-pointer border"
+                  className="bg-customGreen w-[50%] flex justify-center items-center cursor-pointer border hover:bg-neonGreen"
                   onClick={() => handleClickNumber("doubleZero", "00")}
+                  style={{
+                    borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                  }}
                 >
                   <p>00</p>
                 </div>
@@ -1303,7 +1345,10 @@ const Main = ({ theme }) => {
                       onClick={() =>
                         handleClickNumber(item.numString, item.num)
                       }
-                      style={{ backgroundColor: item.bg }}
+                      style={{
+                        backgroundColor: item.bg,
+                        borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                      }}
                       key={item.num}
                     >
                       {item.num}
@@ -1597,34 +1642,34 @@ const Main = ({ theme }) => {
                 {tableRow(
                   "1-18",
                   countData.one_eighteen,
-                  lastHitData.one_eighteen
+                  lastHitData.one_eighteen,
                 )}
                 {tableRow(
                   "19-36",
                   countData.nineteen_thirtySix,
-                  lastHitData.nineteen_thirtySix
+                  lastHitData.nineteen_thirtySix,
                 )}
                 {tableRow(
                   "1st Dozen",
                   countData.dozen_one,
-                  lastHitData.dozen_one
+                  lastHitData.dozen_one,
                 )}
                 {tableRow(
                   "2nd Dozen",
                   countData.dozen_two,
-                  lastHitData.dozen_two
+                  lastHitData.dozen_two,
                 )}
                 {tableRow(
                   "3rd Dozen",
                   countData.dozen_three,
-                  lastHitData.dozen_three
+                  lastHitData.dozen_three,
                 )}
                 {tableRow("1st Column", countData.col_one, lastHitData.col_one)}
                 {tableRow("3nd Column", countData.col_two, lastHitData.col_two)}
                 {tableRow(
                   "3rd Column",
                   countData.col_three,
-                  lastHitData.col_three
+                  lastHitData.col_three,
                 )}
                 {/* <tr>
               <td>Red</td>
@@ -1710,32 +1755,32 @@ const Main = ({ theme }) => {
                 {tableRow(
                   "1 - 6",
                   doubleStreetData.one_six,
-                  nonDoubleStreetData.one_six
+                  nonDoubleStreetData.one_six,
                 )}
                 {tableRow(
                   "7 - 12",
                   doubleStreetData.seven_twelve,
-                  nonDoubleStreetData.seven_twelve
+                  nonDoubleStreetData.seven_twelve,
                 )}
                 {tableRow(
                   "13 - 18",
                   doubleStreetData.thirteen_eighteen,
-                  nonDoubleStreetData.thirteen_eighteen
+                  nonDoubleStreetData.thirteen_eighteen,
                 )}
                 {tableRow(
                   "19 - 24",
                   doubleStreetData.nineteen_twentyFour,
-                  nonDoubleStreetData.nineteen_twentyFour
+                  nonDoubleStreetData.nineteen_twentyFour,
                 )}
                 {tableRow(
                   "25 - 30",
                   doubleStreetData.twentyFive_thirty,
-                  nonDoubleStreetData.twentyFive_thirty
+                  nonDoubleStreetData.twentyFive_thirty,
                 )}
                 {tableRow(
                   "31 - 36",
                   doubleStreetData.thirtyOne_thirtySix,
-                  nonDoubleStreetData.thirtyOne_thirtySix
+                  nonDoubleStreetData.thirtyOne_thirtySix,
                 )}
 
                 {/* <tr>
@@ -1792,62 +1837,62 @@ const Main = ({ theme }) => {
                 {tableRow(
                   "1-3",
                   singleStreetData.one_three,
-                  nonSingleStreetData.one_three
+                  nonSingleStreetData.one_three,
                 )}
                 {tableRow(
                   "4 - 6",
                   singleStreetData.four_six,
-                  nonSingleStreetData.four_six
+                  nonSingleStreetData.four_six,
                 )}
                 {tableRow(
                   "7 - 9",
                   singleStreetData.seven_nine,
-                  nonSingleStreetData.seven_nine
+                  nonSingleStreetData.seven_nine,
                 )}
                 {tableRow(
                   "10 - 12",
                   singleStreetData.ten_twelve,
-                  nonSingleStreetData.ten_twelve
+                  nonSingleStreetData.ten_twelve,
                 )}
                 {tableRow(
                   "13 - 15",
                   singleStreetData.thirteen_fifteen,
-                  nonSingleStreetData.thirteen_fifteen
+                  nonSingleStreetData.thirteen_fifteen,
                 )}
                 {tableRow(
                   "16 - 18",
                   singleStreetData.sixteen_eighteen,
-                  nonSingleStreetData.sixteen_eighteen
+                  nonSingleStreetData.sixteen_eighteen,
                 )}
                 {tableRow(
                   "19 - 21",
                   singleStreetData.nineteen_twentyOne,
-                  nonSingleStreetData.nineteen_twentyOne
+                  nonSingleStreetData.nineteen_twentyOne,
                 )}
                 {tableRow(
                   "22 - 24",
                   singleStreetData.twentyTwo_twentyFour,
-                  nonSingleStreetData.twentyTwo_twentyFour
+                  nonSingleStreetData.twentyTwo_twentyFour,
                 )}
                 {tableRow(
                   "25 - 27",
                   singleStreetData.twentyFive_twentySeven,
-                  nonSingleStreetData.twentyFive_twentySeven
+                  nonSingleStreetData.twentyFive_twentySeven,
                 )}
                 {tableRow(
                   "28 - 30",
                   singleStreetData.twentyEight_thirty,
-                  nonSingleStreetData.twentyEight_thirty
+                  nonSingleStreetData.twentyEight_thirty,
                 )}
                 {tableRow(
                   "31 - 33",
                   singleStreetData.thirtyOne_thirtyThree,
-                  nonSingleStreetData.thirtyOne_thirtyThree
+                  nonSingleStreetData.thirtyOne_thirtyThree,
                 )}
                 {tableRow(
                   "31 - 33",
                   singleStreetData.thirtyFour_thirtySix,
-                  nonSingleStreetData.thirtyFour_thirtySix
+                  nonSingleStreetData.thirtyFour_thirtySix,
                 )}
               </tbody>
             </table>
@@ -1930,7 +1975,7 @@ const Main = ({ theme }) => {
 
         {/* small screen Data slide bar */}
         <div
-          className="border w-full my-10 mt-28 max-sm:block relative p-2 rounded-lg lg:h-[30rem] max-lg:h-[75vh]"
+          className="border border-darkNavy w-full my-10 mt-28 max-sm:block relative p-2 rounded-lg lg:h-[30rem] max-lg:h-[75vh]"
           style={{
             background: `linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),url(${background}) center center no-repeat`,
             backgroundSize: "cover",
@@ -1955,7 +2000,7 @@ const Main = ({ theme }) => {
                   border: isSingle_Active ? "1px black solid" : "",
                 }}
               >
-                Single Streak
+                Single Street
               </button>
 
               <button
@@ -1966,9 +2011,10 @@ const Main = ({ theme }) => {
                   color: isDouble_Active ? "black" : "",
                   fontWeight: isDouble_Active ? "600" : "",
                   border: isDouble_Active ? "1px black solid" : "",
+                  borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
                 }}
               >
-                Double Streak
+                Double Street
               </button>
             </div>
             <div
@@ -1978,58 +2024,73 @@ const Main = ({ theme }) => {
               <table
                 border="1"
                 cellPadding="10"
-                className="w-full hidden"
-                style={{ display: isSingle_Active ? "block" : "none" }}
+                className="w-full hidden md:w-[70%] max-md:text-sm mx-auto"
+                style={{ display: isDouble_Active ? "block" : "none" }}
               >
                 <thead>
                   <tr className="text-center max-sm:text-sm">
-                    <th className="border p-3 max-sm:p-2 bg-customGreen">
+                    <th
+                      className="border p-3 max-sm:p-2 bg-customGreen"
+                      style={{
+                        borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                      }}
+                    >
                       Category
                     </th>
-                    <th className="border p-3 max-sm:p-2 bg-customGreen">
+                    <th
+                      className="border p-3 max-sm:p-2 bg-customGreen"
+                      style={{
+                        borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                      }}
+                    >
                       Count
                     </th>
-                    <th className="border p-3 max-sm:p-2 bg-customGreen">
+                    <th
+                      className="border p-3 max-sm:p-2 bg-customGreen"
+                      style={{
+                        borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                      }}
+                    >
                       Last Hit
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   {tableRow(
-                    "One / Six",
+                    "1 - 6",
                     doubleStreetData.one_six,
                     nonDoubleStreetData.one_six,
-                    "small"
+                    "small",
                   )}
                   {tableRow(
-                    "Seven / Twelve",
+                    "7 - 12",
                     doubleStreetData.seven_twelve,
                     nonDoubleStreetData.seven_twelve,
-                    "small"
+                    "small",
                   )}
                   {tableRow(
-                    "Thirteen / Eighteen",
+                    "13 - 18",
                     doubleStreetData.thirteen_eighteen,
                     nonDoubleStreetData.thirteen_eighteen,
-                    "small"
+                    "small",
                   )}
                   {tableRow(
-                    "Nineteen / TwentyFour",
+                    "19 - 24",
                     doubleStreetData.nineteen_twentyFour,
                     nonDoubleStreetData.nineteen_twentyFour,
-                    "small"
+                    "small",
                   )}
                   {tableRow(
-                    "Twentyfive / Thirty",
+                    "25 - 30",
                     doubleStreetData.twentyFive_thirty,
                     nonDoubleStreetData.twentyFive_thirty,
-                    "small"
+                    "small",
                   )}
                   {tableRow(
-                    "Thirtyone / Thirtysix",
+                    "31 - 36",
                     doubleStreetData.thirtyOne_thirtySix,
                     nonDoubleStreetData.thirtyOne_thirtySix,
-                    "small"
+                    "small",
                   )}
                 </tbody>
               </table>
@@ -2038,17 +2099,32 @@ const Main = ({ theme }) => {
                 border="1"
                 cellPadding="10"
                 className="md:w-[70%] max-md:text-sm hidden mx-auto"
-                style={{ display: isDouble_Active ? "block" : "none" }}
+                style={{ display: isSingle_Active ? "block" : "none" }}
               >
                 <thead>
                   <tr className="text-center max-sm:text-sm">
-                    <th className="border p-3 max-sm:p-2 bg-customGreen">
+                    <th
+                      className="border p-3 max-sm:p-2 bg-customGreen"
+                      style={{
+                        borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                      }}
+                    >
                       Category
                     </th>
-                    <th className="border p-3 max-sm:p-2 bg-customGreen">
+                    <th
+                      className="border p-3 max-sm:p-2 bg-customGreen"
+                      style={{
+                        borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                      }}
+                    >
                       Count
                     </th>
-                    <th className="border p-3 max-sm:p-2 bg-customGreen">
+                    <th
+                      className="border p-3 max-sm:p-2 bg-customGreen"
+                      style={{
+                        borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                      }}
+                    >
                       Last Hit
                     </th>
                   </tr>
@@ -2058,73 +2134,73 @@ const Main = ({ theme }) => {
                     "1-3",
                     singleStreetData.one_three,
                     nonSingleStreetData.one_three,
-                    "small"
+                    "small",
                   )}
                   {tableRow(
                     "4 - 6",
                     singleStreetData.four_six,
                     nonSingleStreetData.four_six,
-                    "small"
+                    "small",
                   )}
                   {tableRow(
                     "7 - 9",
                     singleStreetData.seven_nine,
                     nonSingleStreetData.seven_nine,
-                    "small"
+                    "small",
                   )}
                   {tableRow(
                     "10 - 12",
                     singleStreetData.ten_twelve,
                     nonSingleStreetData.ten_twelve,
-                    "small"
+                    "small",
                   )}
                   {tableRow(
                     "13 - 15",
                     singleStreetData.thirteen_fifteen,
                     nonSingleStreetData.thirteen_fifteen,
-                    "small"
+                    "small",
                   )}
                   {tableRow(
                     "16 - 18",
                     singleStreetData.sixteen_eighteen,
                     nonSingleStreetData.sixteen_eighteen,
-                    "small"
+                    "small",
                   )}
                   {tableRow(
                     "19 - 21",
                     singleStreetData.nineteen_twentyOne,
                     nonSingleStreetData.nineteen_twentyOne,
-                    "small"
+                    "small",
                   )}
                   {tableRow(
                     "22 - 24",
                     singleStreetData.twentyTwo_twentyFour,
                     nonSingleStreetData.twentyTwo_twentyFour,
-                    "small"
+                    "small",
                   )}
                   {tableRow(
                     "25 - 27",
                     singleStreetData.twentyFive_twentySeven,
                     nonSingleStreetData.twentyFive_twentySeven,
-                    "small"
+                    "small",
                   )}
                   {tableRow(
                     "28 - 30",
                     singleStreetData.twentyEight_thirty,
                     nonSingleStreetData.twentyEight_thirty,
-                    "small"
+                    "small",
                   )}
                   {tableRow(
                     "31 - 33",
                     singleStreetData.thirtyOne_thirtyThree,
                     nonSingleStreetData.thirtyOne_thirtyThree,
-                    "small"
+                    "small",
                   )}
                   {tableRow(
                     "31 - 33",
                     singleStreetData.thirtyFour_thirtySix,
                     nonSingleStreetData.thirtyFour_thirtySix,
-                    "small"
+                    "small",
                   )}
                 </tbody>
               </table>
@@ -2135,105 +2211,183 @@ const Main = ({ theme }) => {
             <table
               border="1"
               cellPadding="10"
-              className="text-center md:w-[45%] mx-auto"
+              className="text-center md:w-[45%] mx-auto max-md:text-sm"
               style={{ display: isb_Active ? "block" : "none" }}
             >
               <thead>
                 <tr>
-                  <th className="border bg-customGreen p-2">Category</th>
-                  <th className="border bg-customGreen p-2">Count</th>
-                  <th className="border bg-customGreen p-2">Last Hit</th>
+                  <th
+                    className="border bg-customGreen p-2"
+                    style={{
+                      borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                    }}
+                  >
+                    Category
+                  </th>
+                  <th
+                    className="border bg-customGreen p-2"
+                    style={{
+                      borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                    }}
+                  >
+                    Count
+                  </th>
+                  <th
+                    className="border bg-customGreen p-2"
+                    style={{
+                      borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                    }}
+                  >
+                    Last Hit
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td className="bg-darkNavy border text-customGray font-semibold p-2">
+                  <td className="bg-customGray text-customBlack font-semibold p-2">
                     Zero
                   </td>
                   <td
                     className={
-                      circleData.zero === 0
-                        ? "bg-softBlue text-black"
-                        : "bg-neonGreen"
+                      circleData.zero >= 6
+                        ? "bg-darkBlue border hover:bg-softBlue max-md:text-sm"
+                        : circleData.zero > 0 && circleData.zero <= 2
+                          ? "bg-lightBlue text-black border hover:bg-softBlue"
+                          : circleData.zero > 2 && circleData.zero <= 5
+                            ? "bg-mediumBlue text-black border hover:bg-softBlue"
+                            : "bg-customGray text-black border hover:bg-softBlue"
                     }
+                    style={{
+                      borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                    }}
                   >
                     {circleData.zero}
                   </td>
                   <td
                     className={
-                      nonCircleData.zero === 0
-                        ? "bg-softBlue text-black"
-                        : "bg-neonGreen"
+                      nonCircleData.zero >= 11
+                        ? "bg-normalRed border hover:bg-softBlue"
+                        : nonCircleData.zero > 0 && nonCircleData.zero <= 3
+                          ? "bg-lightGreen text-black border hover:bg-softBlue"
+                          : nonCircleData.zero > 3 && nonCircleData.zero <= 10
+                            ? "bg-customYellow text-black border hover:bg-softBlue"
+                            : "bg-customGray text-black border hover:bg-softBlue"
                     }
+                    style={{
+                      borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                    }}
                   >
                     {nonCircleData.zero}
                   </td>
                 </tr>
                 <tr>
-                  <td className="bg-darkNavy border text-customGray font-semibold p-2">
+                  <td className="bg-customGray text-customBlack font-semibold p-2">
                     Voisins
                   </td>
                   <td
                     className={
-                      circleData.duZero === 0
-                        ? "bg-softBlue text-black"
-                        : "bg-neonGreen"
+                      circleData.duZero >= 6
+                        ? "bg-darkBlue border hover:bg-softBlue"
+                        : circleData.duZero > 0 && circleData.duZero <= 2
+                          ? "bg-lightBlue text-black border hover:bg-softBlue"
+                          : circleData.duZero > 2 && circleData.duZero <= 5
+                            ? "bg-mediumBlue text-black border hover:bg-softBlue"
+                            : "bg-customGray text-black border hover:bg-softBlue"
                     }
+                    style={{
+                      borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                    }}
                   >
                     {circleData.duZero}
                   </td>
                   <td
                     className={
-                      nonCircleData.duZero === 0
-                        ? "bg-softBlue text-black"
-                        : "bg-neonGreen"
+                      nonCircleData.duZero >= 11
+                        ? "bg-normalRed border hover:bg-softBlue"
+                        : nonCircleData.duZero > 0 && nonCircleData.duZero <= 3
+                          ? "bg-lightGreen text-black border hover:bg-softBlue"
+                          : nonCircleData.duZero > 3 &&
+                              nonCircleData.duZero <= 10
+                            ? "bg-customYellow text-black border hover:bg-softBlue"
+                            : "bg-customGray text-black border hover:bg-softBlue"
                     }
+                    style={{
+                      borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                    }}
                   >
                     {nonCircleData.duZero}
                   </td>
                 </tr>
                 <tr>
-                  <td className="bg-darkNavy border text-customGray font-semibold p-2">
+                  <td className="bg-customGray text-customBlack font-semibold p-2">
                     Orphelins
                   </td>
                   <td
                     className={
-                      circleData.orphe === 0
-                        ? "bg-softBlue text-black"
-                        : "bg-neonGreen"
+                      circleData.orphe >= 6
+                        ? "bg-darkBlue border hover:bg-softBlue"
+                        : circleData.orphe > 0 && circleData.orphe <= 2
+                          ? "bg-lightBlue text-black border hover:bg-softBlue"
+                          : circleData.orphe > 2 && circleData.orphe <= 5
+                            ? "bg-mediumBlue text-black border hover:bg-softBlue"
+                            : "bg-customGray text-black border hover:bg-softBlue"
                     }
+                    style={{
+                      borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                    }}
                   >
                     {circleData.orphe}
                   </td>
                   <td
                     className={
-                      nonCircleData.orphe === 0
-                        ? "bg-softBlue text-black"
-                        : "bg-neonGreen"
+                      nonCircleData.orphe >= 11
+                        ? "bg-normalRed border hover:bg-softBlue"
+                        : nonCircleData.orphe > 0 && nonCircleData.orphe <= 3
+                          ? "bg-lightGreen text-black border hover:bg-softBlue"
+                          : nonCircleData.orphe > 3 && nonCircleData.orphe <= 10
+                            ? "bg-customYellow text-black border hover:bg-softBlue"
+                            : "bg-customGray text-black border hover:bg-softBlue"
                     }
+                    style={{
+                      borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                    }}
                   >
                     {nonCircleData.orphe}
                   </td>
                 </tr>
                 <tr>
-                  <td className="bg-darkNavy border text-customGray font-semibold p-2">
+                  <td className="bg-customGray text-customBlack font-semibold p-2">
                     Tiers du Cylindre
                   </td>
                   <td
                     className={
-                      circleData.tires === 0
-                        ? "bg-softBlue text-black"
-                        : "bg-neonGreen"
+                      circleData.tires >= 6
+                        ? "bg-darkBlue border hover:bg-softBlue"
+                        : circleData.tires > 0 && circleData.tires <= 2
+                          ? "bg-lightBlue text-black border hover:bg-softBlue"
+                          : circleData.tires > 2 && circleData.tires <= 5
+                            ? "bg-mediumBlue text-black border hover:bg-softBlue"
+                            : "bg-customGray text-black border hover:bg-softBlue"
                     }
+                    style={{
+                      borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                    }}
                   >
                     {circleData.tires}
                   </td>
                   <td
                     className={
-                      nonCircleData.tires === 0
-                        ? "bg-softBlue text-black"
-                        : "bg-neonGreen"
+                      nonCircleData.tires >= 11
+                        ? "bg-normalRed border hover:bg-softBlue"
+                        : nonCircleData.tires > 0 && nonCircleData.tires <= 3
+                          ? "bg-lightGreen text-black border hover:bg-softBlue"
+                          : nonCircleData.tires > 3 && nonCircleData.tires <= 10
+                            ? "bg-customYellow text-black border hover:bg-softBlue"
+                            : "bg-customGray text-black border hover:bg-softBlue"
                     }
+                    style={{
+                      borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                    }}
                   >
                     {nonCircleData.tires}
                   </td>
@@ -2243,9 +2397,40 @@ const Main = ({ theme }) => {
 
             {/* third table */}
             <div
-              className="border flex w-full lg:w-[60%] mx-auto h-full flex-wrap"
-              style={{ display: isc_Active ? "flex" : "none" }}
+              className="flex w-full lg:w-[60%] mx-auto h-full flex-wrap relative"
+              style={{
+                display: isc_Active ? "flex" : "none",
+              }}
             >
+              <div className="w-full flex max-md:text-xs">
+                <div
+                  className="w-[33.3%] text-white font-semibold h-full bg-customGreen px-2 py-1 border flex justify-center items-center"
+                  style={{
+                    borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                  }}
+                >
+                  Category
+                </div>
+
+                <div
+                  className="w-[33.3%] text-white font-semibold h-full bg-customGreen px-2 py-1 border flex justify-center items-center"
+                  style={{
+                    borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                  }}
+                >
+                  Count
+                </div>
+
+                <div
+                  className="w-[33.3%] text-white font-semibold h-full bg-customGreen px-2 py-1 border flex justify-center items-center"
+                  style={{
+                    borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                  }}
+                >
+                  Last Hit
+                </div>
+              </div>
+
               {renderSummaryData("L.E.R", summaryData.lowEvenRed)}
               {renderSummaryData("L.E.B", summaryData.lowEvenBlack)}
               {renderSummaryData("L.O.R", summaryData.lowOddRed)}
@@ -2254,6 +2439,46 @@ const Main = ({ theme }) => {
               {renderSummaryData("H.O.R", summaryData.highOddRed)}
               {renderSummaryData("H.E.B", summaryData.highEvenBlack)}
               {renderSummaryData("H.O.B", summaryData.highOddBlack)}
+
+              <div
+                className="text-gray-400 absolute bottom-0 -right-6 cursor-pointer bg-neutral-700 w-5 h-5 flex justify-center items-center rounded-full"
+                onClick={() => setI_btn(!i_btn)}
+              >
+                i
+              </div>
+
+              <div
+                className="bg-customPurple p-1 flex justify-between items-center text-white w-32 h-24 max-sm:w-20 max-sm:h-20 absolute bottom-6 max-sm:text-xs max-sm:left-[95%] max-lg:-right-[35%] -right-[45%]"
+                style={{ display: i_btn ? "flex" : "none" }}
+              >
+                <div>
+                  <p>
+                    <span className="font-bold">L</span>ow
+                  </p>
+
+                  <p>
+                    <span className="font-bold">E</span>ven
+                  </p>
+
+                  <p>
+                    <span className="font-bold">R</span>ed
+                  </p>
+                </div>
+
+                <div>
+                  <p>
+                    <span className="font-bold">H</span>igh
+                  </p>
+
+                  <p>
+                    <span className="font-bold">O</span>dd
+                  </p>
+
+                  <p>
+                    <span className="font-bold">B</span>lack
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -2434,6 +2659,8 @@ const Main = ({ theme }) => {
         <section>
           <History historyData={historyData} isAlertAllowed={isAlertAllowed} />
         </section>
+
+        {/* <div className="w-full h-full bg-slate-400 absolute top-0 left-0 z-50"></div> */}
       </div>
     </>
   );

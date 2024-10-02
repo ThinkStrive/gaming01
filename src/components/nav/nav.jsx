@@ -13,8 +13,8 @@ const Nav = ({ theme, setTheme }) => {
 
   return (
     <div
-      className="flex items-center justify-between px-10 py-2 max-sm:px-3 bg-darkNavy"
-      // style={{ backgroundColor: "rgb(81,29,91)" }}
+      className="flex items-center justify-between px-10 py-2 max-sm:px-3 "
+      style={{ backgroundColor: "rgb(81,29,91)" }}
     >
       <img
         src={logo}
@@ -22,11 +22,11 @@ const Nav = ({ theme, setTheme }) => {
         className="h-14 w-14 lg:h-20 lg:w-20 object-contain max-sm:h-16 max-sm:w-16 max-md:h-20 max-md:w-20"
       />
       <div className="flex-1 flex flex-col items-center">
-        <h1 className="text-white text-2xl lg:text-3xl font-bold text-center max-sm:text-2xl">
-          {/* RouletteRise */}
+        <h1 className="text-white text-2xl lg:text-3xl font-bold text-center max-sm:text-3xl">
+          Data Driven
         </h1>
-        <p className="text-white text-base font-semibold lg:text-xl tracking-wide uppercase text-center max-sm:text-xs">
-          Data Driven Roulette Tracker
+        <p className="text-white text-base font-semibold lg:text-xl tracking-wide uppercase text-center max-sm:text-sm">
+          Roulette Tracker
         </p>
       </div>
 
