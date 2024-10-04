@@ -13,7 +13,7 @@ const Project4 = ({ theme, setTheme }) => {
   const showToast = useToast();
 
   const [countData, setCountData] = useState(() => {
-    const savedCountData = localStorage.getItem("countData");
+    const savedCountData = localStorage.getItem("countData4");
     return savedCountData
       ? JSON.parse(savedCountData)
       : {
@@ -33,12 +33,12 @@ const Project4 = ({ theme, setTheme }) => {
   });
 
   const [rowData, setRowData] = useState(() => {
-    const savedCountData = localStorage.getItem("rowData");
+    const savedCountData = localStorage.getItem("rowData4");
     return savedCountData ? JSON.parse(savedCountData) : [];
   });
 
   const [summaryData, setSummaryData] = useState(() => {
-    const savedSummaryData = localStorage.getItem("summaryData");
+    const savedSummaryData = localStorage.getItem("summaryData4");
     return savedSummaryData
       ? JSON.parse(savedSummaryData)
       : {
@@ -54,7 +54,7 @@ const Project4 = ({ theme, setTheme }) => {
   });
 
   const [circleData, setCircleData] = useState(() => {
-    const isSaved = localStorage.getItem("circleData");
+    const isSaved = localStorage.getItem("circleData4");
     return isSaved
       ? JSON.parse(isSaved)
       : {
@@ -66,7 +66,7 @@ const Project4 = ({ theme, setTheme }) => {
   });
 
   const [nonCircleData, setNonCircleData] = useState(() => {
-    const isSaved = localStorage.getItem("nonCircleData");
+    const isSaved = localStorage.getItem("nonCircleData4");
     return isSaved
       ? JSON.parse(isSaved)
       : {
@@ -78,7 +78,7 @@ const Project4 = ({ theme, setTheme }) => {
   });
 
   const [lastHitData, setLastHitData] = useState(() => {
-    const savedLastHitData = localStorage.getItem("lastHitData");
+    const savedLastHitData = localStorage.getItem("lastHitData4");
     return savedLastHitData
       ? JSON.parse(savedLastHitData)
       : {
@@ -98,7 +98,7 @@ const Project4 = ({ theme, setTheme }) => {
   });
 
   const [doubleStreetData, setDoubleStreetData] = useState(() => {
-    const savedData = localStorage.getItem("doubleStreetData");
+    const savedData = localStorage.getItem("doubleStreetData4");
     return savedData
       ? JSON.parse(savedData)
       : {
@@ -112,7 +112,7 @@ const Project4 = ({ theme, setTheme }) => {
   });
 
   const [nonDoubleStreetData, setNonDoubleStreetData] = useState(() => {
-    const savedData = localStorage.getItem("nonDoubleStreetData");
+    const savedData = localStorage.getItem("nonDoubleStreetData4");
     return savedData
       ? JSON.parse(savedData)
       : {
@@ -126,7 +126,7 @@ const Project4 = ({ theme, setTheme }) => {
   });
 
   const [singleStreetData, setSIngleStreetData] = useState(() => {
-    const savedData = localStorage.getItem("singleStreetData");
+    const savedData = localStorage.getItem("singleStreetData4");
     return savedData
       ? JSON.parse(savedData)
       : {
@@ -146,7 +146,7 @@ const Project4 = ({ theme, setTheme }) => {
   });
 
   const [nonSingleStreetData, setNonSingleStreetData] = useState(() => {
-    const savedData = localStorage.getItem("nonSingleStreetData");
+    const savedData = localStorage.getItem("nonSingleStreetData4");
     return savedData
       ? JSON.parse(savedData)
       : {
@@ -166,7 +166,7 @@ const Project4 = ({ theme, setTheme }) => {
   });
 
   const [previousState, setPreviousState] = useState(() => {
-    const savedData = localStorage.getItem("previousData");
+    const savedData = localStorage.getItem("previousData4");
     return savedData
       ? JSON.parse(savedData)
       : {
@@ -185,12 +185,12 @@ const Project4 = ({ theme, setTheme }) => {
   });
 
   const [lastHitNumber, setLastHitNumber] = useState(() => {
-    const savedLastHitNumber = localStorage.getItem("lastHitNumber");
+    const savedLastHitNumber = localStorage.getItem("lastHitNumber4");
     return savedLastHitNumber ? JSON.parse(savedLastHitNumber) : null;
   });
 
   const [historyData, setHistoryData] = useState(() => {
-    const savedHistoryData = localStorage.getItem("historyData");
+    const savedHistoryData = localStorage.getItem("historyData4");
     return savedHistoryData ? JSON.parse(savedHistoryData) : [];
   });
 
@@ -201,61 +201,61 @@ const Project4 = ({ theme, setTheme }) => {
 
   // Save `countData` to local storage whenever it changes
   useEffect(() => {
-    localStorage.setItem("countData", JSON.stringify(countData));
+    localStorage.setItem("countData4", JSON.stringify(countData));
   }, [countData]);
 
   // Save `summaryData` to local storage whenever it changes
   useEffect(() => {
-    localStorage.setItem("summaryData", JSON.stringify(summaryData));
+    localStorage.setItem("summaryData4", JSON.stringify(summaryData));
   }, [summaryData]);
 
   // Save `lastHitData` to local storage whenever it changes
   useEffect(() => {
-    localStorage.setItem("lastHitData", JSON.stringify(lastHitData));
+    localStorage.setItem("lastHitData4", JSON.stringify(lastHitData));
   }, [lastHitData]);
 
   // Save `lastHitNumber` to local storage whenever it changes
   useEffect(() => {
-    localStorage.setItem("lastHitNumber", JSON.stringify(lastHitNumber));
+    localStorage.setItem("lastHitNumber4", JSON.stringify(lastHitNumber));
   }, [lastHitNumber]);
 
   // Save `historyData` to local storage whenever it changes
   useEffect(() => {
-    localStorage.setItem("historyData", JSON.stringify(historyData));
+    localStorage.setItem("historyData4", JSON.stringify(historyData));
   }, [historyData]);
 
   useEffect(() => {
-    localStorage.setItem("doubleStreetData", JSON.stringify(doubleStreetData));
+    localStorage.setItem("doubleStreetData4", JSON.stringify(doubleStreetData));
   }, [doubleStreetData]);
 
   useEffect(() => {
     localStorage.setItem(
-      "nonDoubleStreetData",
+      "nonDoubleStreetData4",
       JSON.stringify(nonDoubleStreetData),
     );
   }, [nonDoubleStreetData]);
 
   useEffect(() => {
-    localStorage.setItem("singleStreetData", JSON.stringify(singleStreetData));
+    localStorage.setItem("singleStreetData4", JSON.stringify(singleStreetData));
   }, [singleStreetData]);
 
   useEffect(() => {
     localStorage.setItem(
-      "nonSingleStreetData",
+      "nonSingleStreetData4",
       JSON.stringify(nonSingleStreetData),
     );
   }, [nonSingleStreetData]);
 
   useEffect(() => {
-    localStorage.setItem("circleData", JSON.stringify(circleData));
+    localStorage.setItem("circleData4", JSON.stringify(circleData));
   }, [circleData]);
 
   useEffect(() => {
-    localStorage.setItem("nonCircleData", JSON.stringify(nonCircleData));
+    localStorage.setItem("nonCircleData4", JSON.stringify(nonCircleData));
   }, [nonCircleData]);
 
   useEffect(() => {
-    localStorage.setItem("previousData", JSON.stringify(previousState));
+    localStorage.setItem("previousData4", JSON.stringify(previousState));
   }, [previousState]);
 
   // Handle reset button click
@@ -329,26 +329,26 @@ const Project4 = ({ theme, setTheme }) => {
     setNonCircleData(resetCircleData);
 
     // Also reset the data in local storage
-    localStorage.setItem("countData", JSON.stringify(resetState));
-    localStorage.setItem("summaryData", JSON.stringify(resetState));
-    localStorage.setItem("lastHitData", JSON.stringify(resetState));
-    localStorage.setItem("doubleStreetData", JSON.stringify(resetDoubleData));
+    localStorage.setItem("countData4", JSON.stringify(resetState));
+    localStorage.setItem("summaryData4", JSON.stringify(resetState));
+    localStorage.setItem("lastHitData4", JSON.stringify(resetState));
+    localStorage.setItem("doubleStreetData4", JSON.stringify(resetDoubleData));
     localStorage.setItem(
-      "nonDoubleStreetData",
+      "nonDoubleStreetData4",
       JSON.stringify(resetDoubleData),
     );
     localStorage.setItem(
-      "singleStreetData",
+      "singleStreetData4",
       JSON.stringify(resetSingleStreetData),
     );
     localStorage.setItem(
-      "nonSingleStreetData",
+      "nonSingleStreetData4",
       JSON.stringify(resetSingleStreetData),
     );
-    localStorage.setItem("circleData", JSON.stringify(resetCircleData));
-    localStorage.setItem("nonCircleData", JSON.stringify(resetCircleData));
-    localStorage.setItem("lastHitNumber", null);
-    localStorage.setItem("historyData", JSON.stringify([]));
+    localStorage.setItem("circleData4", JSON.stringify(resetCircleData));
+    localStorage.setItem("nonCircleData4", JSON.stringify(resetCircleData));
+    localStorage.setItem("lastHitNumber4", null);
+    localStorage.setItem("historyData4", JSON.stringify([]));
   };
 
   const updateMapping = {

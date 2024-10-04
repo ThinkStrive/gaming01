@@ -3,7 +3,7 @@ import { TiThMenuOutline } from "react-icons/ti";
 import logo from "../../assets/imgs/RouletteRise Transperent Logo.png";
 import "../../Style/NavToggle.css";
 
-const Nav = ({ theme, setTheme, navigate }) => {
+const Nav = ({ theme, setTheme, navigate, navHeaderName }) => {
   const handleTheme = (theme) => {
     setTheme(theme === "dark" ? "light" : "dark");
     localStorage.setItem(
@@ -17,7 +17,7 @@ const Nav = ({ theme, setTheme, navigate }) => {
       className="flex items-center justify-between px-10 py-2 max-sm:px-3 sticky top-0 z-40"
       style={{ backgroundColor: "rgb(81,29,91)" }}
     >
-      <div className="mr-4" onClick={() => navigate(true)}>
+      <div className="mr-4 cursor-pointer" onClick={() => navigate(true)}>
         <TiThMenuOutline size={24} />
       </div>
 
@@ -28,10 +28,10 @@ const Nav = ({ theme, setTheme, navigate }) => {
       />
       <div className="flex-1 flex flex-col items-center">
         <h1 className="text-white text-2xl lg:text-3xl font-bold text-center max-sm:text-3xl">
-          Data Driven
+        {navHeaderName === 'project1' ?  'Data Driven' : navHeaderName === 'project2' ? 'Roulette' : 'Spincycle'}
         </h1>
         <p className="text-white text-base font-semibold lg:text-xl tracking-wide uppercase text-center max-sm:text-sm">
-          Roulette Tracker
+          {navHeaderName === 'project1' ? 'Roulette Tracker' : navHeaderName === 'project2' ? 'Strategy Analyzer' : ''}
         </p>
       </div>
 

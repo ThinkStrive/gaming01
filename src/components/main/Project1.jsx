@@ -1719,7 +1719,7 @@ const Project1 = ({ theme, setTheme }) => {
                   lastHitData.dozen_three,
                 )}
                 {tableRow("1st Column", countData.col_one, lastHitData.col_one)}
-                {tableRow("3nd Column", countData.col_two, lastHitData.col_two)}
+                {tableRow("2nd Column", countData.col_two, lastHitData.col_two)}
                 {tableRow(
                   "3rd Column",
                   countData.col_three,
