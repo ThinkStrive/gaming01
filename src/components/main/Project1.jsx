@@ -51,7 +51,6 @@ const Project1 = ({ theme, setTheme }) => {
         };
   });
 
-
   const [nonSummaryData, setNonSummaryData] = useState(() => {
     const savedSummaryData = localStorage.getItem("nonSummaryData");
     return savedSummaryData
@@ -185,18 +184,18 @@ const Project1 = ({ theme, setTheme }) => {
     return savedData
       ? JSON.parse(savedData)
       : {
-        countData: {},
-        doubleStreetData: {},
-        singleStreetData: {},
-        summaryData: {},
-        nonSummaryData: {},
-        circleData: {},
-        lastHitNumber: {},
-        lastHitData: {},
-        nonCircleData: {},
-        historyData : [],
-        nonDoubleStreetData : {},
-        nonSingleStreetData : {},
+          countData: {},
+          doubleStreetData: {},
+          singleStreetData: {},
+          summaryData: {},
+          nonSummaryData: {},
+          circleData: {},
+          lastHitNumber: {},
+          lastHitData: {},
+          nonCircleData: {},
+          historyData: [],
+          nonDoubleStreetData: {},
+          nonSingleStreetData: {},
         };
   });
 
@@ -246,7 +245,7 @@ const Project1 = ({ theme, setTheme }) => {
   useEffect(() => {
     localStorage.setItem(
       "nonDoubleStreetData",
-      JSON.stringify(nonDoubleStreetData)
+      JSON.stringify(nonDoubleStreetData),
     );
   }, [nonDoubleStreetData]);
 
@@ -257,7 +256,7 @@ const Project1 = ({ theme, setTheme }) => {
   useEffect(() => {
     localStorage.setItem(
       "nonSingleStreetData",
-      JSON.stringify(nonSingleStreetData)
+      JSON.stringify(nonSingleStreetData),
     );
   }, [nonSingleStreetData]);
 
@@ -291,15 +290,15 @@ const Project1 = ({ theme, setTheme }) => {
     };
     setCountData(resetState);
     let summaryResetData = {
-        lowEvenRed: 0,
-        lowOddRed: 0,
-        highEvenRed: 0,
-        highOddRed: 0,
-        lowEvenBlack: 0,
-        lowOddBlack: 0,
-        highEvenBlack: 0,
-        highOddBlack: 0,
-    }
+      lowEvenRed: 0,
+      lowOddRed: 0,
+      highEvenRed: 0,
+      highOddRed: 0,
+      lowEvenBlack: 0,
+      lowOddBlack: 0,
+      highEvenBlack: 0,
+      highOddBlack: 0,
+    };
     setSummaryData(summaryResetData);
     setNonSummaryData(summaryResetData);
     setLastHitData(resetState);
@@ -344,7 +343,6 @@ const Project1 = ({ theme, setTheme }) => {
 
     setCircleData(resetCircleData);
     setNonCircleData(resetCircleData);
-    
 
     // Also reset the data in local storage
     localStorage.setItem("countData", JSON.stringify(resetState));
@@ -354,15 +352,15 @@ const Project1 = ({ theme, setTheme }) => {
     localStorage.setItem("doubleStreetData", JSON.stringify(resetDoubleData));
     localStorage.setItem(
       "nonDoubleStreetData",
-      JSON.stringify(resetDoubleData)
+      JSON.stringify(resetDoubleData),
     );
     localStorage.setItem(
       "singleStreetData",
-      JSON.stringify(resetSingleStreetData)
+      JSON.stringify(resetSingleStreetData),
     );
     localStorage.setItem(
       "nonSingleStreetData",
-      JSON.stringify(resetSingleStreetData)
+      JSON.stringify(resetSingleStreetData),
     );
     localStorage.setItem("circleData", JSON.stringify(resetCircleData));
     localStorage.setItem("nonCircleData", JSON.stringify(resetCircleData));
@@ -876,7 +874,7 @@ const Project1 = ({ theme, setTheme }) => {
       circleData,
       historyData,
       nonSingleStreetData,
-      nonSummaryData
+      nonSummaryData,
     });
 
     // Update countData
@@ -891,7 +889,8 @@ const Project1 = ({ theme, setTheme }) => {
     setDoubleStreetData((prevState) => {
       const updatedCounts = {};
       Object.keys(doubleStreetDataUpdates).forEach((field) => {
-        updatedCounts[field] = prevState[field] + doubleStreetDataUpdates[field];
+        updatedCounts[field] =
+          prevState[field] + doubleStreetDataUpdates[field];
       });
       return { ...prevState, ...updatedCounts };
     });
@@ -899,7 +898,8 @@ const Project1 = ({ theme, setTheme }) => {
     setSIngleStreetData((prevState) => {
       const updatedCounts = {};
       Object.keys(singleStreetDataUpdates).forEach((field) => {
-        updatedCounts[field] = prevState[field] + singleStreetDataUpdates[field];
+        updatedCounts[field] =
+          prevState[field] + singleStreetDataUpdates[field];
       });
       return { ...prevState, ...updatedCounts };
     });
@@ -964,7 +964,8 @@ const Project1 = ({ theme, setTheme }) => {
       sixteen_eighteen: singleStreetDataUpdates.sixteen_eighteen || 0,
       nineteen_twentyOne: singleStreetDataUpdates.nineteen_twentyOne || 0,
       twentyTwo_twentyFour: singleStreetDataUpdates.twentyTwo_twentyFour || 0,
-      twentyFive_twentySeven: singleStreetDataUpdates.twentyFive_twentySeven || 0,
+      twentyFive_twentySeven:
+        singleStreetDataUpdates.twentyFive_twentySeven || 0,
       twentyEight_thirty: singleStreetDataUpdates.twentyEight_thirty || 0,
       thirtyOne_thirtyThree: singleStreetDataUpdates.thirtyOne_thirtyThree || 0,
       thirtyFour_thirtySix: singleStreetDataUpdates.thirtyFour_thirtySix || 0,
@@ -983,8 +984,8 @@ const Project1 = ({ theme, setTheme }) => {
         clickedDataUpdates.red === 1
           ? "red"
           : clickedDataUpdates.black === 1
-          ? "black"
-          : "zero",
+            ? "black"
+            : "zero",
     });
 
     setLastHitData((prevLastHitData) => {
@@ -998,7 +999,6 @@ const Project1 = ({ theme, setTheme }) => {
       return updatedLastHitData;
     });
 
-
     setNonSummaryData((prevLastHitData) => {
       const updatedLastHitData = {};
 
@@ -1009,8 +1009,6 @@ const Project1 = ({ theme, setTheme }) => {
 
       return updatedLastHitData;
     });
-
-
 
     setNonDoubleStreetData((prevLastHitData) => {
       const updatedLastHitData = {};
@@ -1054,36 +1052,37 @@ const Project1 = ({ theme, setTheme }) => {
         clickedDataUpdates.red === 1
           ? "red"
           : clickedDataUpdates.black === 1
-          ? "black"
-          : "zero",
+            ? "black"
+            : "zero",
       size:
         clickedDataUpdates.one_eighteen === 1
           ? "small"
           : clickedDataUpdates.nineteen_thirtySix === 1
-          ? "large"
-          : "zero",
+            ? "large"
+            : "zero",
       odd_even:
         clickedDataUpdates.odd === 1
           ? "odd"
           : clickedDataUpdates.even === 1
-          ? "even"
-          : "zero",
+            ? "even"
+            : "zero",
       dozen:
         clickedDataUpdates.dozen_one === 1
           ? "1st"
           : clickedDataUpdates.dozen_two === 1
-          ? "2nd"
-          : clickedDataUpdates.dozen_three === 1
-          ? "3rd"
-          : "zero",
+            ? "2nd"
+            : clickedDataUpdates.dozen_three === 1
+              ? "3rd"
+              : "zero",
       column:
         clickedDataUpdates.col_one === 1
           ? "1st"
           : clickedDataUpdates.col_two === 1
-          ? "2nd"
-          : clickedDataUpdates.col_three === 1
-          ? "3rd"
-          : "zero",
+            ? "2nd"
+            : clickedDataUpdates.col_three === 1
+              ? "3rd"
+              : "zero",
+      His_num: number,
     };
 
     setHistoryData([...historyData, changedHistoryData]);
@@ -1108,8 +1107,8 @@ const Project1 = ({ theme, setTheme }) => {
     }
   };
 
-  console.log('summary data', summaryData);
-  console.log('previous state', nonSummaryData);
+  console.log("summary data", summaryData);
+  console.log("previous state", nonSummaryData);
 
   const tableRow = (category, count, lastHit, screen) => {
     return (
@@ -1126,12 +1125,12 @@ const Project1 = ({ theme, setTheme }) => {
         <td
           className={
             count >= 6
-              ? "bg-darkBlue border hover:bg-softBlue"
+              ? "bg-darkBlue border hover:bg-softBlue hover:text-white"
               : count > 0 && count <= 2
-                ? "bg-lightBlue text-black border hover:bg-softBlue"
+                ? "bg-lightBlue text-black border hover:bg-softBlue hover:text-white"
                 : count > 2 && count <= 5
-                  ? "bg-mediumBlue text-black border hover:bg-softBlue"
-                  : "bg-customGray text-black border hover:bg-softBlue"
+                  ? "bg-mediumBlue text-white border hover:bg-softBlue hover:text-white"
+                  : "bg-customGray text-black border hover:bg-softBlue hover:text-white"
           }
           style={{
             padding: screen === "small" ? "3px 10px" : "",
@@ -1145,10 +1144,10 @@ const Project1 = ({ theme, setTheme }) => {
             lastHit >= 11
               ? "bg-normalRed border hover:bg-softBlue"
               : lastHit > 0 && lastHit <= 3
-                ? "bg-lightGreen text-black border hover:bg-softBlue"
+                ? "bg-lightGreen text-black border hover:bg-softBlue hover:text-white"
                 : lastHit > 3 && lastHit <= 10
-                  ? "bg-customYellow text-black border hover:bg-softBlue"
-                  : "bg-customGray text-black border hover:bg-softBlue"
+                  ? "bg-customYellow text-black border hover:bg-softBlue hover:text-white"
+                  : "bg-customGray text-black border hover:bg-softBlue hover:text-white"
           }
           style={{
             padding: screen === "small" ? "3px 10px" : "",
@@ -1228,7 +1227,7 @@ const Project1 = ({ theme, setTheme }) => {
   return (
     <>
       <div className="sticky top-0 z-40">
-        <Nav theme={theme} setTheme={setTheme} />
+        {/* <Nav theme={theme} setTheme={setTheme} /> */}
         <div
           className="py-3 px-2 justify-between flex sm--navbar"
           style={{ backgroundColor: "#FFFBE3" }}
@@ -1274,8 +1273,9 @@ const Project1 = ({ theme, setTheme }) => {
               </div>
             </div>
 
-            <button className="text-gray-500 py-1 px-1 rounded-full text-sm font-semibold"
-            onClick={handleClickUndoButton}
+            <button
+              className="text-gray-500 py-1 px-1 rounded-full text-sm font-semibold"
+              onClick={handleClickUndoButton}
             >
               Undo
             </button>
@@ -1341,8 +1341,9 @@ const Project1 = ({ theme, setTheme }) => {
             </div>
 
             <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-              <button className="bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-              onClick={handleClickUndoButton}
+              <button
+                className="bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
+                onClick={handleClickUndoButton}
               >
                 Undo
               </button>
@@ -2484,14 +2485,46 @@ const Project1 = ({ theme, setTheme }) => {
                 </div>
               </div>
 
-              {renderSummaryData("L.E.R", summaryData.lowEvenRed, nonSummaryData.lowEvenRed)}
-              {renderSummaryData("L.E.B", summaryData.lowEvenBlack, nonSummaryData.lowEvenBlack)}
-              {renderSummaryData("L.O.R", summaryData.lowOddRed, nonSummaryData.lowOddRed)}
-              {renderSummaryData("L.O.B", summaryData.lowOddBlack, nonSummaryData.lowOddBlack)}
-              {renderSummaryData("H.E.R", summaryData.highEvenRed, nonSummaryData.highEvenRed)}
-              {renderSummaryData("H.O.R", summaryData.highOddRed, nonSummaryData.highOddRed)}
-              {renderSummaryData("H.E.B", summaryData.highEvenBlack, nonSummaryData.highEvenBlack)}
-              {renderSummaryData("H.O.B", summaryData.highOddBlack, nonSummaryData.highOddBlack)}
+              {renderSummaryData(
+                "L.E.R",
+                summaryData.lowEvenRed,
+                nonSummaryData.lowEvenRed,
+              )}
+              {renderSummaryData(
+                "L.E.B",
+                summaryData.lowEvenBlack,
+                nonSummaryData.lowEvenBlack,
+              )}
+              {renderSummaryData(
+                "L.O.R",
+                summaryData.lowOddRed,
+                nonSummaryData.lowOddRed,
+              )}
+              {renderSummaryData(
+                "L.O.B",
+                summaryData.lowOddBlack,
+                nonSummaryData.lowOddBlack,
+              )}
+              {renderSummaryData(
+                "H.E.R",
+                summaryData.highEvenRed,
+                nonSummaryData.highEvenRed,
+              )}
+              {renderSummaryData(
+                "H.O.R",
+                summaryData.highOddRed,
+                nonSummaryData.highOddRed,
+              )}
+              {renderSummaryData(
+                "H.E.B",
+                summaryData.highEvenBlack,
+                nonSummaryData.highEvenBlack,
+              )}
+              {renderSummaryData(
+                "H.O.B",
+                summaryData.highOddBlack,
+                nonSummaryData.highOddBlack,
+              )}
 
               <div
                 className="text-gray-400 absolute bottom-0 -right-6 cursor-pointer bg-neutral-700 w-5 h-5 flex justify-center items-center rounded-full"
@@ -2688,14 +2721,46 @@ const Project1 = ({ theme, setTheme }) => {
 
           <div className="border flex max-w-60 flex-wrap max-sm:hidden hidden">
             {/* ////////// */}
-            {renderSummaryData("L.E.R", summaryData.lowEvenRed, nonSummaryData.lowEvenRed)}
-              {renderSummaryData("L.E.B", summaryData.lowEvenBlack, nonSummaryData.lowEvenBlack)}
-              {renderSummaryData("L.O.R", summaryData.lowOddRed, nonSummaryData.lowOddRed)}
-              {renderSummaryData("L.O.B", summaryData.lowOddBlack, nonSummaryData.lowOddBlack)}
-              {renderSummaryData("H.E.R", summaryData.highEvenRed, nonSummaryData.highEvenRed)}
-              {renderSummaryData("H.O.R", summaryData.highOddRed, nonSummaryData.highOddRed)}
-              {renderSummaryData("H.E.B", summaryData.highEvenBlack, nonSummaryData.highEvenBlack)}
-              {renderSummaryData("H.O.B", summaryData.highOddBlack, nonSummaryData.highOddBlack)}
+            {renderSummaryData(
+              "L.E.R",
+              summaryData.lowEvenRed,
+              nonSummaryData.lowEvenRed,
+            )}
+            {renderSummaryData(
+              "L.E.B",
+              summaryData.lowEvenBlack,
+              nonSummaryData.lowEvenBlack,
+            )}
+            {renderSummaryData(
+              "L.O.R",
+              summaryData.lowOddRed,
+              nonSummaryData.lowOddRed,
+            )}
+            {renderSummaryData(
+              "L.O.B",
+              summaryData.lowOddBlack,
+              nonSummaryData.lowOddBlack,
+            )}
+            {renderSummaryData(
+              "H.E.R",
+              summaryData.highEvenRed,
+              nonSummaryData.highEvenRed,
+            )}
+            {renderSummaryData(
+              "H.O.R",
+              summaryData.highOddRed,
+              nonSummaryData.highOddRed,
+            )}
+            {renderSummaryData(
+              "H.E.B",
+              summaryData.highEvenBlack,
+              nonSummaryData.highEvenBlack,
+            )}
+            {renderSummaryData(
+              "H.O.B",
+              summaryData.highOddBlack,
+              nonSummaryData.highOddBlack,
+            )}
 
             {/* <p>LEB : {summaryData.lowEvenBlack}</p> */}
             {/* <p>LOR : {summaryData.lowOddRed}</p> */}

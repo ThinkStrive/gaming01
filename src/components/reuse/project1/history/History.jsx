@@ -7,6 +7,7 @@ import DozenCol from "./DozenCol";
 import PatternPre from "../../project1/pattern/PatternPre";
 import PatternBigSmall from "../../project1/pattern/PatternBigSmall";
 import PatternOddEven from "../../project1/pattern/PatternOddEven";
+import His from "./His";
 import background from "../../../../assets/imgs/2002.i029.002_realistic-poker-club-illustration.jpg";
 import "../../../../Style/History.css";
 
@@ -168,6 +169,8 @@ const History = ({ historyData, isAlertAllowed }) => {
               path="/dozenCol"
               element={<DozenCol historyData={historyData} />}
             />
+
+            <Route path="/his" element={<His historyData={historyData} />} />
           </Routes>
         </div>
 
@@ -215,6 +218,18 @@ const History = ({ historyData, isAlertAllowed }) => {
             onClick={() => setActiveTab("dozenCol")}
           >
             Dozen / Column
+          </Link>
+
+          <Link
+            to="his"
+            className={`${
+              activeTab === "his"
+                ? "bg-red-500 text-black font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1 rounded-lg"
+                : "transparent text-black font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1"
+            }`}
+            onClick={() => setActiveTab("his")}
+          >
+            History
           </Link>
         </div>
       </div>

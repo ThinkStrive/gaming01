@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
+import { TiThMenuOutline } from "react-icons/ti";
 import logo from "../../assets/imgs/RouletteRise Transperent Logo.png";
 import "../../Style/NavToggle.css";
 
-const Nav = ({ theme, setTheme }) => {
+const Nav = ({ theme, setTheme, navigate }) => {
   const handleTheme = (theme) => {
     setTheme(theme === "dark" ? "light" : "dark");
     localStorage.setItem(
@@ -13,9 +14,13 @@ const Nav = ({ theme, setTheme }) => {
 
   return (
     <div
-      className="flex items-center justify-between px-10 py-2 max-sm:px-3 "
+      className="flex items-center justify-between px-10 py-2 max-sm:px-3"
       style={{ backgroundColor: "rgb(81,29,91)" }}
     >
+      <div className="mr-4" onClick={() => navigate(true)}>
+        <TiThMenuOutline size={24} />
+      </div>
+
       <img
         src={logo}
         alt="RouletteRise Logo"

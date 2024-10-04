@@ -231,7 +231,7 @@ const Project4 = ({ theme, setTheme }) => {
   useEffect(() => {
     localStorage.setItem(
       "nonDoubleStreetData",
-      JSON.stringify(nonDoubleStreetData)
+      JSON.stringify(nonDoubleStreetData),
     );
   }, [nonDoubleStreetData]);
 
@@ -242,7 +242,7 @@ const Project4 = ({ theme, setTheme }) => {
   useEffect(() => {
     localStorage.setItem(
       "nonSingleStreetData",
-      JSON.stringify(nonSingleStreetData)
+      JSON.stringify(nonSingleStreetData),
     );
   }, [nonSingleStreetData]);
 
@@ -335,15 +335,15 @@ const Project4 = ({ theme, setTheme }) => {
     localStorage.setItem("doubleStreetData", JSON.stringify(resetDoubleData));
     localStorage.setItem(
       "nonDoubleStreetData",
-      JSON.stringify(resetDoubleData)
+      JSON.stringify(resetDoubleData),
     );
     localStorage.setItem(
       "singleStreetData",
-      JSON.stringify(resetSingleStreetData)
+      JSON.stringify(resetSingleStreetData),
     );
     localStorage.setItem(
       "nonSingleStreetData",
-      JSON.stringify(resetSingleStreetData)
+      JSON.stringify(resetSingleStreetData),
     );
     localStorage.setItem("circleData", JSON.stringify(resetCircleData));
     localStorage.setItem("nonCircleData", JSON.stringify(resetCircleData));
@@ -959,8 +959,8 @@ const Project4 = ({ theme, setTheme }) => {
         clickedDataUpdates.red === 1
           ? "red"
           : clickedDataUpdates.black === 1
-          ? "black"
-          : "zero",
+            ? "black"
+            : "zero",
     });
 
     setLastHitData((prevLastHitData) => {
@@ -1016,36 +1016,36 @@ const Project4 = ({ theme, setTheme }) => {
         clickedDataUpdates.red === 1
           ? "red"
           : clickedDataUpdates.black === 1
-          ? "black"
-          : "zero",
+            ? "black"
+            : "zero",
       size:
         clickedDataUpdates.one_eighteen === 1
           ? "small"
           : clickedDataUpdates.nineteen_thirtySix === 1
-          ? "large"
-          : "zero",
+            ? "large"
+            : "zero",
       odd_even:
         clickedDataUpdates.odd === 1
           ? "odd"
           : clickedDataUpdates.even === 1
-          ? "even"
-          : "zero",
+            ? "even"
+            : "zero",
       dozen:
         clickedDataUpdates.dozen_one === 1
           ? "1st"
           : clickedDataUpdates.dozen_two === 1
-          ? "2nd"
-          : clickedDataUpdates.dozen_three === 1
-          ? "3rd"
-          : "zero",
+            ? "2nd"
+            : clickedDataUpdates.dozen_three === 1
+              ? "3rd"
+              : "zero",
       column:
         clickedDataUpdates.col_one === 1
           ? "1st"
           : clickedDataUpdates.col_two === 1
-          ? "2nd"
-          : clickedDataUpdates.col_three === 1
-          ? "3rd"
-          : "zero",
+            ? "2nd"
+            : clickedDataUpdates.col_three === 1
+              ? "3rd"
+              : "zero",
     };
 
     setHistoryData([...historyData, changedHistoryData]);
@@ -1100,7 +1100,7 @@ const Project4 = ({ theme, setTheme }) => {
 
         // Find if there's any repeated letter
         const repeatedLetter = Object.keys(occurrences).find(
-          (letter) => occurrences[letter] > 1
+          (letter) => occurrences[letter] > 1,
         );
 
         // If there's a repeated letter, prepare the suggestion for the next object
@@ -1174,10 +1174,10 @@ const Project4 = ({ theme, setTheme }) => {
             count >= 6
               ? "bg-darkBlue border hover:bg-softBlue"
               : count > 0 && count <= 2
-              ? "bg-lightBlue text-black border hover:bg-softBlue"
-              : count > 2 && count <= 5
-              ? "bg-mediumBlue text-black border hover:bg-softBlue"
-              : "bg-customGray text-black border hover:bg-softBlue"
+                ? "bg-lightBlue text-black border hover:bg-softBlue"
+                : count > 2 && count <= 5
+                  ? "bg-mediumBlue text-black border hover:bg-softBlue"
+                  : "bg-customGray text-black border hover:bg-softBlue"
           }
           style={{
             padding: screen === "small" ? "3px 10px" : "",
@@ -1191,10 +1191,10 @@ const Project4 = ({ theme, setTheme }) => {
             lastHit >= 11
               ? "bg-normalRed border hover:bg-softBlue"
               : lastHit > 0 && lastHit <= 3
-              ? "bg-lightGreen text-black border hover:bg-softBlue"
-              : lastHit > 3 && lastHit <= 10
-              ? "bg-customYellow text-black border hover:bg-softBlue"
-              : "bg-customGray text-black border hover:bg-softBlue"
+                ? "bg-lightGreen text-black border hover:bg-softBlue"
+                : lastHit > 3 && lastHit <= 10
+                  ? "bg-customYellow text-black border hover:bg-softBlue"
+                  : "bg-customGray text-black border hover:bg-softBlue"
           }
           style={{
             padding: screen === "small" ? "3px 10px" : "",
@@ -1274,7 +1274,7 @@ const Project4 = ({ theme, setTheme }) => {
   return (
     <>
       <div className="sticky top-0 z-40">
-        <Nav theme={theme} setTheme={setTheme} />
+        {/* <Nav theme={theme} setTheme={setTheme} /> */}
         <div
           className="py-3 px-2 justify-between flex sm--navbar"
           style={{ backgroundColor: "#FFFBE3" }}
@@ -1295,8 +1295,8 @@ const Project4 = ({ theme, setTheme }) => {
                 lastHitNumber?.color === "red"
                   ? "border-customRed text-customRed border-2"
                   : lastHitNumber?.color === "black"
-                  ? "border-customBlack text-customBlack border-2"
-                  : ""
+                    ? "border-customBlack text-customBlack border-2"
+                    : ""
               } flex justify-center items-center w-10 h-10 rounded-md mt-1 px-1`}
             >
               {lastHitNumber?.number}
@@ -1350,8 +1350,8 @@ const Project4 = ({ theme, setTheme }) => {
                   lastHitNumber?.color === "red"
                     ? "bg-customRed"
                     : lastHitNumber.color === "black"
-                    ? "bg-black"
-                    : "bg-customGreen"
+                      ? "bg-black"
+                      : "bg-customGreen"
                 } py-1 flex justify-center items-center w-20 max-sm:w-14 rounded-full -ml-8 max-sm:-ml-7`}
               >
                 <p className="text-white ml-6 max-sm:text-xs">
@@ -1744,34 +1744,34 @@ const Project4 = ({ theme, setTheme }) => {
                 {tableRow(
                   "1-18",
                   countData.one_eighteen,
-                  lastHitData.one_eighteen
+                  lastHitData.one_eighteen,
                 )}
                 {tableRow(
                   "19-36",
                   countData.nineteen_thirtySix,
-                  lastHitData.nineteen_thirtySix
+                  lastHitData.nineteen_thirtySix,
                 )}
                 {tableRow(
                   "1st Dozen",
                   countData.dozen_one,
-                  lastHitData.dozen_one
+                  lastHitData.dozen_one,
                 )}
                 {tableRow(
                   "2nd Dozen",
                   countData.dozen_two,
-                  lastHitData.dozen_two
+                  lastHitData.dozen_two,
                 )}
                 {tableRow(
                   "3rd Dozen",
                   countData.dozen_three,
-                  lastHitData.dozen_three
+                  lastHitData.dozen_three,
                 )}
                 {tableRow("1st Column", countData.col_one, lastHitData.col_one)}
                 {tableRow("3nd Column", countData.col_two, lastHitData.col_two)}
                 {tableRow(
                   "3rd Column",
                   countData.col_three,
-                  lastHitData.col_three
+                  lastHitData.col_three,
                 )}
                 {/* <tr>
               <td>Red</td>
@@ -1857,32 +1857,32 @@ const Project4 = ({ theme, setTheme }) => {
                 {tableRow(
                   "1 - 6",
                   doubleStreetData.one_six,
-                  nonDoubleStreetData.one_six
+                  nonDoubleStreetData.one_six,
                 )}
                 {tableRow(
                   "7 - 12",
                   doubleStreetData.seven_twelve,
-                  nonDoubleStreetData.seven_twelve
+                  nonDoubleStreetData.seven_twelve,
                 )}
                 {tableRow(
                   "13 - 18",
                   doubleStreetData.thirteen_eighteen,
-                  nonDoubleStreetData.thirteen_eighteen
+                  nonDoubleStreetData.thirteen_eighteen,
                 )}
                 {tableRow(
                   "19 - 24",
                   doubleStreetData.nineteen_twentyFour,
-                  nonDoubleStreetData.nineteen_twentyFour
+                  nonDoubleStreetData.nineteen_twentyFour,
                 )}
                 {tableRow(
                   "25 - 30",
                   doubleStreetData.twentyFive_thirty,
-                  nonDoubleStreetData.twentyFive_thirty
+                  nonDoubleStreetData.twentyFive_thirty,
                 )}
                 {tableRow(
                   "31 - 36",
                   doubleStreetData.thirtyOne_thirtySix,
-                  nonDoubleStreetData.thirtyOne_thirtySix
+                  nonDoubleStreetData.thirtyOne_thirtySix,
                 )}
 
                 {/* <tr>
@@ -1939,62 +1939,62 @@ const Project4 = ({ theme, setTheme }) => {
                 {tableRow(
                   "1-3",
                   singleStreetData.one_three,
-                  nonSingleStreetData.one_three
+                  nonSingleStreetData.one_three,
                 )}
                 {tableRow(
                   "4 - 6",
                   singleStreetData.four_six,
-                  nonSingleStreetData.four_six
+                  nonSingleStreetData.four_six,
                 )}
                 {tableRow(
                   "7 - 9",
                   singleStreetData.seven_nine,
-                  nonSingleStreetData.seven_nine
+                  nonSingleStreetData.seven_nine,
                 )}
                 {tableRow(
                   "10 - 12",
                   singleStreetData.ten_twelve,
-                  nonSingleStreetData.ten_twelve
+                  nonSingleStreetData.ten_twelve,
                 )}
                 {tableRow(
                   "13 - 15",
                   singleStreetData.thirteen_fifteen,
-                  nonSingleStreetData.thirteen_fifteen
+                  nonSingleStreetData.thirteen_fifteen,
                 )}
                 {tableRow(
                   "16 - 18",
                   singleStreetData.sixteen_eighteen,
-                  nonSingleStreetData.sixteen_eighteen
+                  nonSingleStreetData.sixteen_eighteen,
                 )}
                 {tableRow(
                   "19 - 21",
                   singleStreetData.nineteen_twentyOne,
-                  nonSingleStreetData.nineteen_twentyOne
+                  nonSingleStreetData.nineteen_twentyOne,
                 )}
                 {tableRow(
                   "22 - 24",
                   singleStreetData.twentyTwo_twentyFour,
-                  nonSingleStreetData.twentyTwo_twentyFour
+                  nonSingleStreetData.twentyTwo_twentyFour,
                 )}
                 {tableRow(
                   "25 - 27",
                   singleStreetData.twentyFive_twentySeven,
-                  nonSingleStreetData.twentyFive_twentySeven
+                  nonSingleStreetData.twentyFive_twentySeven,
                 )}
                 {tableRow(
                   "28 - 30",
                   singleStreetData.twentyEight_thirty,
-                  nonSingleStreetData.twentyEight_thirty
+                  nonSingleStreetData.twentyEight_thirty,
                 )}
                 {tableRow(
                   "31 - 33",
                   singleStreetData.thirtyOne_thirtyThree,
-                  nonSingleStreetData.thirtyOne_thirtyThree
+                  nonSingleStreetData.thirtyOne_thirtyThree,
                 )}
                 {tableRow(
                   "31 - 33",
                   singleStreetData.thirtyFour_thirtySix,
-                  nonSingleStreetData.thirtyFour_thirtySix
+                  nonSingleStreetData.thirtyFour_thirtySix,
                 )}
               </tbody>
             </table>

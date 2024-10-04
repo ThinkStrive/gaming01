@@ -1,0 +1,181 @@
+.main {
+  max-width: 80rem !important;
+  margin: 0 auto;
+}
+
+.number--divs:hover {
+  background-color: #4cd964 !important;
+}
+
+@media only screen and (max-width: 375px) {
+  .btns {
+    font-size: 0.8rem;
+  }
+  .rit--table {
+    width: 50% !important;
+  }
+
+  .table--1 {
+    width: 48% !important;
+    font-size: 0.8rem;
+  }
+
+  .sm--lasthit {
+    width: 6rem;
+  }
+}
+
+@media only screen and (max-width: 340px) {
+  .btns {
+    font-size: 0.7rem;
+  }
+}
+
+@media only screen and (min-width: 376px) and (max-width: 455px) {
+  .rit-wrapper {
+    gap: 2%;
+    justify-content: space-between;
+  }
+
+  .table--1 {
+    width: 48% !important;
+    font-size: 0.8rem;
+  }
+  .table--1 th {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 5px;
+  }
+
+  .table--1 td {
+    padding: 0;
+  }
+}
+
+@media only screen and (max-width: 408px) {
+  .rit-wrapper {
+    gap: 2%;
+    justify-content: space-between;
+  }
+
+  .rit--table {
+    width: 48% !important;
+  }
+
+  .table--1 {
+    width: 40%;
+    font-size: 0.8rem;
+  }
+
+  .table--1 th {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 5px;
+  }
+
+  .table--1 td {
+    padding: 0;
+    font-size: 0.8rem;
+  }
+
+  .table-408 {
+    /* max-width: 50%; */
+  }
+  .table-408 th {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0;
+  }
+
+  .table-408 td {
+    font-size: 0.7rem;
+  }
+}
+
+@media only screen and (min-width: 433px) {
+  .rit-wrapper {
+    gap: 5px !important;
+    justify-content: space-between;
+  }
+
+  .rit--table {
+    width: 48% !important;
+  }
+
+  .table--1 {
+    width: 40%;
+    font-size: 0.8rem;
+  }
+}
+
+@media only screen and (min-width: 465px) and (max-width: 639px) {
+  .rit-wrapper {
+    gap: 2%;
+    justify-content: space-between;
+  }
+
+  .table--1 {
+    width: 48% !important;
+    font-size: 0.8rem;
+  }
+  .table--1 th {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 5px;
+  }
+
+  .table--1 td {
+    padding: 0;
+  }
+}
+
+@media only screen and (min-width: 640px) {
+  .small--screen--wrapper {
+    display: none;
+  }
+  .sm--navbar {
+    display: none !important;
+  }
+}
+
+@media only screen and (min-width: 640px) and (max-width: 674px) {
+  .rit-wrapper {
+    gap: 2%;
+    justify-content: space-between;
+  }
+
+  .table--1 {
+    width: 30% !important;
+    font-size: 0.8rem;
+  }
+  .table--1 th {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 5px;
+  }
+
+  .table--1 td {
+    padding: 0;
+  }
+}
+
+@media only screen and (min-width: 1045px) {
+  .rit--table {
+    width: 50% !important;
+  }
+
+  .table--1 {
+    width: 25% !important;
+    /* font-size: 0.8rem; */
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .rit-wrapper {
+    max-height: 650px;
+  }
+}
+
+.streak-div::-webkit-scrollbar {
+  display: none;
+}
