@@ -1,9 +1,18 @@
 import React, { useState } from "react";
 import {
+  MdKeyboardDoubleArrowUp,
+  MdKeyboardDoubleArrowDown,
+} from "react-icons/md";
+
+import {
+  _1_34,
+  _2_35,
+  _3_36,
   black,
   Data,
   even_numbers,
   first_12,
+  listener0,
   listener2DivHorizontal,
   listener2DivVertical,
   listener3div,
@@ -16,10 +25,20 @@ import {
   second_12,
   third_12,
 } from "../resources/mainCompData";
+import WheelCoverage from "../reuse/project2/WheelCoverage";
+import RouletteGrid from "../reuse/project2/RouletteGrid";
 
 function Project2() {
   // const [showCoin, setShowCoin] = useState(false);
-  const [coin, setCoin] = useState(5);
+  const [coin, setCoin] = useState(1);
+  const [zero, setZero] = useState("doubleZero");
+  const [ratioPopup, setRatioPopup] = useState(false);
+  const [ratioPopupData, setRatioPopupData] = useState({
+    head: "",
+    ratio: "",
+    betAnmount: 0,
+    payout: 0,
+  });
 
   const [data, setData] = useState(() => {
     const savedData = localStorage.getItem("Data");
@@ -64,7 +83,7 @@ function Project2() {
           _36: 0,
         };
   });
-  // coins data accorfing to selectors
+  // coins data according to selectors
   const [singleDivCoinData, setSingleDivCoinData] = useState(() => {
     const savedData = localStorage.getItem("_singleDivCoin");
     return savedData
@@ -274,168 +293,235 @@ function Project2() {
   });
 
   const win_lossObject = Object.values(data);
-  const _1divKeys = Object.keys(singleDivCoinData);
-  const _1divData = Object.values(singleDivCoinData);
-  const _2divKeys = Object.keys(divSelect2Data);
-  const _2divData = Object.values(divSelect2Data);
-  const _2divHKeys = Object.keys(divSelect2DataHorizontal);
-  const _2divHData = Object.values(divSelect2DataHorizontal);
-  const _4divKeys = Object.keys(divSelect4Data);
-  const _4divData = Object.values(divSelect4Data);
-  const _3divKeys = Object.keys(divSelect3Data);
-  const _3divData = Object.values(divSelect3Data);
-  const _6divKeys = Object.keys(divSelect6Data);
-  const _6divData = Object.values(divSelect6Data);
-  //   console.log(win_lossObject);singleDivCoinData  setSingleDivCoinData
+  // const _1divKeys = Object.keys(singleDivCoinData);
+  // const _1divData = Object.values(singleDivCoinData);
+  // const _singleDivData = Object.values(data);
+  // const _2divKeys = Object.keys(divSelect2Data);
+  // const _2divData = Object.values(divSelect2Data);
+  // const _2divHKeys = Object.keys(divSelect2DataHorizontal);
+  // const _2divHData = Object.values(divSelect2DataHorizontal);
+  // const _4divKeys = Object.keys(divSelect4Data);
+  // const _4divData = Object.values(divSelect4Data);
+  // const _3divKeys = Object.keys(divSelect3Data);
+  // const _3divData = Object.values(divSelect3Data);
+  // const _6divKeys = Object.keys(divSelect6Data);
+  // const _6divData = Object.values(divSelect6Data);
+  // // const _lowerDivsData = Object.values(lowerDivs);
+  // //   console.log(win_lossObject);singleDivCoinData  setSingleDivCoinData
 
-  const setCoinData = (coin, coinData, selector) => {
-    if (selector === "2v") {
-      setDivSelect2Data((prevData) => {
-        const newData = { ...prevData };
+  // const setCoinData = (coin, coinData, selector) => {
+  //   if (selector === "2v") {
+  //     setDivSelect2Data((prevData) => {
+  //       const newData = { ...prevData };
 
-        for (const key in newData) {
-          if (key === coinData) {
-            newData[key] += coin;
-            console.log((newData[key] += coin));
-          }
-        }
+  //       for (const key in newData) {
+  //         if (key === coinData) {
+  //           newData[key] += coin;
+  //           console.log((newData[key] += coin));
+  //         }
+  //       }
 
-        localStorage.setItem("_2DivData", JSON.stringify(newData));
+  //       localStorage.setItem("_2DivData", JSON.stringify(newData));
 
-        return newData;
-      });
-    } else if (selector === 1) {
-      setSingleDivCoinData((prevData) => {
-        const newData = { ...prevData };
+  //       return newData;
+  //     });
+  //   } else if (selector === 1) {
+  //     setSingleDivCoinData((prevData) => {
+  //       const newData = { ...prevData };
 
-        for (const key in newData) {
-          if (key === coinData) {
-            newData[key] += coin;
-            console.log((newData[key] += coin));
-          }
-        }
+  //       for (const key in newData) {
+  //         if (key === coinData) {
+  //           newData[key] += coin;
+  //           console.log((newData[key] += coin));
+  //         }
+  //       }
 
-        localStorage.setItem("_singleDivCoin", JSON.stringify(newData));
+  //       localStorage.setItem("_singleDivCoin", JSON.stringify(newData));
 
-        return newData;
-      });
-    } else if (selector === "2h") {
-      setDivSelect2DataHorizontal((prevData) => {
-        const newData = { ...prevData };
+  //       return newData;
+  //     });
+  //   } else if (selector === "2h") {
+  //     setDivSelect2DataHorizontal((prevData) => {
+  //       const newData = { ...prevData };
 
-        for (const key in newData) {
-          if (key === coinData) {
-            newData[key] += coin;
-            console.log((newData[key] += coin));
-          }
-        }
+  //       for (const key in newData) {
+  //         if (key === coinData) {
+  //           newData[key] += coin;
+  //           console.log((newData[key] += coin));
+  //         }
+  //       }
 
-        localStorage.setItem("_2DivDataHorizontal", JSON.stringify(newData));
+  //       localStorage.setItem("_2DivDataHorizontal", JSON.stringify(newData));
 
-        return newData;
-      });
-    } else if (selector === 3) {
-      setDivSelect3Data((prevData) => {
-        const newData = { ...prevData };
+  //       return newData;
+  //     });
+  //   } else if (selector === 3) {
+  //     setDivSelect3Data((prevData) => {
+  //       const newData = { ...prevData };
 
-        for (const key in newData) {
-          if (key === coinData) {
-            newData[key] += coin;
-            console.log((newData[key] += coin));
-          }
-        }
+  //       for (const key in newData) {
+  //         if (key === coinData) {
+  //           newData[key] += coin;
+  //           console.log((newData[key] += coin));
+  //         }
+  //       }
 
-        localStorage.setItem("_3DivData", JSON.stringify(newData));
+  //       localStorage.setItem("_3DivData", JSON.stringify(newData));
 
-        return newData;
-      });
-    } else if (selector === 4) {
-      setDivSelect4Data((prevData) => {
-        const newData = { ...prevData };
+  //       return newData;
+  //     });
+  //   } else if (selector === 4) {
+  //     setDivSelect4Data((prevData) => {
+  //       const newData = { ...prevData };
 
-        for (const key in newData) {
-          if (key === coinData) {
-            newData[key] += coin;
-            console.log((newData[key] += coin));
-          }
-        }
+  //       for (const key in newData) {
+  //         if (key === coinData) {
+  //           newData[key] += coin;
+  //           console.log((newData[key] += coin));
+  //         }
+  //       }
 
-        localStorage.setItem("_4DivData", JSON.stringify(newData));
+  //       localStorage.setItem("_4DivData", JSON.stringify(newData));
 
-        return newData;
-      });
-    } else if (selector === 6) {
-      setDivSelect6Data((prevData) => {
-        const newData = { ...prevData };
+  //       return newData;
+  //     });
+  //   } else if (selector === 6) {
+  //     setDivSelect6Data((prevData) => {
+  //       const newData = { ...prevData };
 
-        for (const key in newData) {
-          if (key === coinData) {
-            newData[key] += coin;
-            console.log((newData[key] += coin));
-          }
-        }
+  //       for (const key in newData) {
+  //         if (key === coinData) {
+  //           newData[key] += coin;
+  //           console.log((newData[key] += coin));
+  //         }
+  //       }
 
-        localStorage.setItem("_6DivData", JSON.stringify(newData));
+  //       localStorage.setItem("_6DivData", JSON.stringify(newData));
 
-        return newData;
-      });
-    } else if (selector === "lowerdivs") {
-      coinData += coin;
-      console.log(lowerDivs);
-    }
-  };
+  //       return newData;
+  //     });
+  //   } else if (selector === "lowerdivs") {
+  //     setLowerDivs((prevData) => {
+  //       const newData = { ...prevData };
 
-  const selectSingleDiv = (num, coin, coinData, selector) => {
-    setData((prevData) => {
-      const newData = { ...prevData };
+  //       for (const key in newData) {
+  //         if (key == coinData) {
+  //           newData[key] += coin;
+  //           console.log((newData[key] += coin));
+  //         }
+  //       }
 
-      for (const key in newData) {
-        if (key === num) {
-          newData[key] += coin * 35;
-        } else {
-          newData[key] -= coin;
-        }
-      }
+  //       localStorage.setItem("LowerDivs", JSON.stringify(newData));
 
-      localStorage.setItem("Data", JSON.stringify(newData));
-      return newData;
-    });
-    setCoinData(coin / 2, coinData, selector);
-  };
+  //       return newData;
+  //     });
+  //   }
+  // };
 
-  const MultiDivSelector = (numsArray, coin, length, coinData, selector) => {
-    setData((prevData) => {
-      const newData = { ...prevData };
+  // const selectSingleDiv = (
+  //   num,
+  //   coin,
+  //   coinData,
+  //   selector,
+  //   type,
+  //   ratio,
+  //   amount,
+  //   payout,
+  // ) => {
+  //   //num, coin, coinData, selector type ratio amount payout
+  //   setData((prevData) => {
+  //     const newData = { ...prevData };
 
-      numsArray.forEach((num) => {
-        if (newData.hasOwnProperty(num)) {
-          if (length === 4) {
-            newData[num] += coin * 8;
-          } else if (length === 6) {
-            newData[num] += coin * 5;
-          } else if (length === 2) {
-            newData[num] += coin * 17;
-          } else if (length === 12) {
-            newData[num] += coin * 2;
-          } else if (length === "1:1") {
-            newData[num] += coin * 1;
-          } else if (length === 3) {
-            newData[num] += coin * 11;
-          }
-        }
-      });
+  //     for (const key in newData) {
+  //       if (key === num) {
+  //         newData[key] += coin * 35;
+  //       } else {
+  //         newData[key] -= coin;
+  //       }
+  //     }
 
-      for (const key in newData) {
-        if (!numsArray.includes(key)) {
-          newData[key] -= coin;
-        }
-      }
+  //     localStorage.setItem("Data", JSON.stringify(newData));
+  //     return newData;
+  //   });
+  //   console.log("data : ", type, ratio, amount, payout);
 
-      localStorage.setItem("Data", JSON.stringify(newData));
-      return newData;
-    });
-    setCoinData(coin / 2, coinData, selector);
-  };
+  //   showRatioPopup(type, ratio, amount, payout);
+  //   setCoinData(coin / 2, coinData, selector);
+  // };
+
+  // const MultiDivSelector = (numsArray, coin, length, coinData, selector) => {
+  //   setData((prevData) => {
+  //     const newData = { ...prevData };
+
+  //     numsArray.forEach((num) => {
+  //       if (newData.hasOwnProperty(num)) {
+  //         if (length === 4) {
+  //           newData[num] += coin * 8;
+  //         } else if (length === 6) {
+  //           newData[num] += coin * 5;
+  //         } else if (length === 2) {
+  //           newData[num] += coin * 17;
+  //         } else if (length === 12) {
+  //           newData[num] += coin * 2;
+  //         } else if (length === "1:1") {
+  //           newData[num] += coin * 1;
+  //         } else if (length === 3) {
+  //           newData[num] += coin * 11;
+  //         }
+  //       }
+  //     });
+
+  //     for (const key in newData) {
+  //       if (!numsArray.includes(key)) {
+  //         newData[key] -= coin;
+  //       }
+  //     }
+
+  //     localStorage.setItem("Data", JSON.stringify(newData));
+  //     return newData;
+  //   });
+  //   setCoinData(coin / 2, coinData, selector);
+  // };
+
+  // const gridCell = (backgroundColor, num, selector, index) => (
+  //   <div
+  //     className="border w-[33.3%] text-white cursor-pointer relative flex items-center justify-center"
+  //     style={{ backgroundColor }}
+  //   >
+  //     {num}
+  //     <div
+  //       className="w-full h-full hover:bg-blue-500 hover:bg-opacity-50 absolute z-10 top-0 flex justify-center items-center"
+  //       onClick={() =>
+  //         selectSingleDiv(
+  //           selector,
+  //           coin,
+  //           _1divKeys[index],
+  //           1,
+  //           `${num} Straight-Up`,
+  //           35,
+  //           _1divData[index],
+  //           _singleDivData[index],
+  //         )
+  //       } //num, coin, coinData, selector type ratio amount payout
+  //       onMouseEnter={() =>
+  //         showRatioPopup(
+  //           `${num} Straight-Up`,
+  //           35,
+  //           _1divData[index],
+  //           _singleDivData[index],
+  //         )
+  //       }
+  //       onMouseLeave={() => removeRatioPopup()}
+  //     >
+  //       <div
+  //         className="w-5 h-5 bg-yellow-500 rounded-full text-xs flex justify-center items-center text-white md:rotate-90"
+  //         style={{ display: _1divData[index] > 0 ? "flex" : "none" }}
+  //       >
+  //         {_1divData[index]}
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
 
   const resetHandler = () => {
     setData((prevData) => {
@@ -521,369 +607,100 @@ function Project2() {
 
       return newData;
     });
+
+    setLowerDivs((prevData) => {
+      const newData = { ...prevData };
+
+      for (const key in newData) {
+        newData[key] = 0;
+      }
+
+      localStorage.setItem("LowerDivs", JSON.stringify(newData));
+
+      return newData;
+    });
+
+    setSinglenumJackpot(0);
   };
 
-  const gridCell = (backgroundColor, num, selector, index) => (
-    <div
-      className="border w-[33.3%] text-white cursor-pointer relative flex items-center justify-center"
-      style={{ backgroundColor }}
-    >
-      {num}
-      <div
-        className="w-full h-full hover:bg-blue-500 hover:bg-opacity-50 absolute z-10 top-0 flex justify-center items-center"
-        onClick={() => selectSingleDiv(selector, coin, _1divKeys[index], 1)}
-      >
-        <div
-          className="w-5 h-5 bg-yellow-500 rounded-full text-xs flex justify-center items-center text-white md:rotate-90"
-          style={{ display: _1divData[index] > 0 ? "flex" : "none" }}
-        >
-          {_1divData[index]}
-        </div>
-      </div>
-    </div>
-  );
+  const showRatioPopup = (type, ratio, amount, payout) => {
+    setRatioPopupData(() => {
+      const newData = { ...ratioPopupData };
+
+      newData.head = type;
+      newData.ratio = ratio;
+      newData.betAnmount = amount;
+      newData.payout = payout;
+
+      return newData;
+    });
+
+    setRatioPopup(true);
+  };
+
+  // head: "",
+  //   ratio: "",
+  //   betAnmount: 0,
+  //   payout: 0,
+
+  const removeRatioPopup = () => {
+    setRatioPopup(false);
+  };
+
   return (
     <div
       className="bg-slate-500 mx-auto px-3 h-[400vh]"
       style={{ maxWidth: "80rem" }}
     >
-      <div className="w-full flex justify-center items-center h-[30rem] bg-slate-300">
+      <div className="w-full flex justify-center items-center h-[30rem] bg-slate-900">
         {/* Roulette Grid */}
-
-        <div className="relative max-sm:w-full w-[23rem] max-sm:h-[100vh] max-lg:h-[95vh] xl:h-[50rem] h-[95vh] bg-red-500  md:-rotate-90 flex flex-col items-end">
-          {/* Top Zero's */}
-          <div className="w-[70%] h-[7%] bg-green-400 flex">
-            <div className="w-[50%]  border flex justify-center items-center text-white font-semibold">
-              00
-            </div>
-            <div className="w-[50%] border flex justify-center items-center text-white font-semibold">
-              00
-            </div>
-          </div>
-          {/* parent for both red & black grid n odd even btns */}
-          <div className="w-[100%] h-[90%] flex">
-            {/* side btns starts*/}
-            <div className="w-[30%] h-[100.6%] bg-green-600 flex">
-              <div className="w-[50%]">
-                <div
-                  className="h-[16.667%] bg-green-700 flex justify-center items-center border"
-                  onClick={() =>
-                    MultiDivSelector(
-                      one_eighteen,
-                      coin,
-                      "1:1",
-                      lowerDivs._1_18,
-                      "lowerdivs",
-                    )
-                  }
-                >
-                  <p className="rotate-90 text-white font-semibold">1 - 18</p>
-                </div>
-                <div className="h-[16.667%] bg-green-700 flex justify-center items-center border">
-                  <p
-                    className="rotate-90 text-white font-semibold"
-                    onClick={() =>
-                      MultiDivSelector(
-                        even_numbers,
-                        coin,
-                        "1:1",
-                        lowerDivs.Even,
-                        "lowerdivs",
-                      )
-                    }
-                  >
-                    EVEN
-                  </p>
-                </div>
-                <div className="h-[16.667%] bg-green-700 flex justify-center items-center border">
-                  <p
-                    className="rotate-90 text-white font-semibold"
-                    onClick={() =>
-                      MultiDivSelector(
-                        red,
-                        coin,
-                        "1:1",
-                        lowerDivs.red,
-                        "lowerdivs",
-                      )
-                    }
-                  >
-                    Red
-                  </p>
-                </div>
-                <div className="h-[16.667%] bg-green-700 flex justify-center items-center border">
-                  <p
-                    className="rotate-90 text-white font-semibold"
-                    onClick={() =>
-                      MultiDivSelector(
-                        black,
-                        coin,
-                        "1:1",
-                        lowerDivs.black,
-                        "lowerdivs",
-                      )
-                    }
-                  >
-                    Black
-                  </p>
-                </div>
-                <div className="h-[16.667%] bg-green-700 flex justify-center items-center border">
-                  <p
-                    className="rotate-90 text-white font-semibold"
-                    onClick={() =>
-                      MultiDivSelector(
-                        odd_numbers,
-                        coin,
-                        "1:1",
-                        lowerDivs.Odd,
-                        "lowerdivs",
-                      )
-                    }
-                  >
-                    ODD
-                  </p>
-                </div>
-                <div className="h-[16.667%] bg-green-700 flex justify-center items-center border">
-                  <p
-                    className="rotate-90 text-white font-semibold"
-                    onClick={() =>
-                      MultiDivSelector(
-                        nineteen_thirtysix,
-                        coin,
-                        "1:1",
-                        lowerDivs._19_36,
-                        "lowerdivs",
-                      )
-                    }
-                  >
-                    19 - 36
-                  </p>
-                </div>
-              </div>
-
-              <div className="w-[50%]">
-                <div
-                  className="h-[33.33%] bg-red-700 flex justify-center items-center border"
-                  onClick={() =>
-                    MultiDivSelector(
-                      first_12,
-                      coin,
-                      12,
-                      lowerDivs._1st_12,
-                      "lowerdivs",
-                    )
-                  }
-                >
-                  <p className="rotate-90 text-white font-semibold">1st 12</p>
-                </div>
-                <div
-                  className="h-[33.33%] bg-red-700 flex justify-center items-center border"
-                  onClick={() =>
-                    MultiDivSelector(
-                      second_12,
-                      coin,
-                      12,
-                      lowerDivs._2nd_12,
-                      "lowerdivs",
-                    )
-                  }
-                >
-                  <p className="rotate-90 text-white font-semibold">2nd 12</p>
-                </div>
-                <div
-                  className="h-[33.33%] bg-red-700 flex justify-center items-center border"
-                  onClick={() =>
-                    MultiDivSelector(
-                      third_12,
-                      coin,
-                      12,
-                      lowerDivs._3rd_12,
-                      "lowerdivs",
-                    )
-                  }
-                >
-                  <p className="rotate-90 text-white font-semibold">3rd 12</p>
-                </div>
-              </div>
-            </div>
-            {/* side btns ends */}
-            {/* black & red nums */}
-            <div className="w-[70%] h-[109%] bg-white flex flex-wrap">
-              {Data.map((item, index) =>
-                gridCell(
-                  item.bg,
-                  item.num,
-                  item.selector ? item.selector : "",
-                  index,
-                ),
-              )}
-
-              <div className="w-[100%] bg-green-700 flex">
-                <div className="w-[33.33%] border flex justify-center items-center">
-                  <p className="text-white font-semibold">2 - 1</p>
-                </div>
-
-                <div className="w-[33.33%] border flex justify-center items-center">
-                  <p className="text-white font-semibold">2 - 1</p>
-                </div>
-
-                <div className="w-[33.33%] border flex justify-center items-center">
-                  <p className="text-white font-semibold">2 - 1</p>
-                </div>
-              </div>
-            </div>
-            {/* black & red nums ends here */}
-          </div>
-
-          {listener4Div.map((item, index) => {
-            return (
-              <div
-                key={index}
-                className="w-5 h-4 rounded-full absolute cursor-pointer z-20 text-xs flex justify-center items-center text-white"
-                style={{
-                  top: item.top,
-                  right: item.right,
-                  // backgroundColor: item.bg ? item.bg : "yellow",
-                  // display: _2divData[index] > 0 ? "flex" : "none",
-                }}
-                onClick={() =>
-                  MultiDivSelector(
-                    item.num ? item.num : [],
-                    coin,
-                    4,
-                    _4divKeys[index],
-                    4,
-                  )
-                }
-              >
-                <div
-                  className="w-5 h-5 bg-yellow-500 rounded-full text-xs flex justify-center items-center text-white md:rotate-90"
-                  style={{ display: _4divData[index] > 0 ? "flex" : "none" }}
-                >
-                  {_4divData[index]}
-                </div>
-              </div>
-            );
-          })}
-
-          {listener6Div.map((item, index) => {
-            return (
-              <div
-                key={index}
-                className="w-5 h-4 rounded-full absolute cursor-pointer z-20"
-                style={{
-                  top: item.top,
-                  left: item.left,
-                  // backgroundColor: item.bg ? item.bg : "yellow",
-                }}
-                onClick={() =>
-                  MultiDivSelector(
-                    item.num ? item.num : [],
-                    coin,
-                    6,
-                    _6divKeys[index],
-                    6,
-                  )
-                }
-              >
-                <div
-                  className="w-5 h-5 bg-yellow-500 rounded-full text-xs flex justify-center items-center text-white md:rotate-90"
-                  style={{ display: _6divData[index] > 0 ? "flex" : "none" }}
-                >
-                  {_6divData[index]}
-                </div>
-              </div>
-            );
-          })}
-
-          {listener2DivVertical.map((item, index) => {
-            return (
-              <div
-                className="w-16 h-3  absolute cursor-pointer z-20 flex justify-center"
-                style={{
-                  top: item.top,
-                  right: item.right,
-                  // backgroundColor: item.bg ? item.bg : "",
-                }}
-                onClick={() =>
-                  MultiDivSelector(
-                    item.num ? item.num : [],
-                    coin,
-                    2,
-                    _2divKeys[index],
-                    "2v",
-                  )
-                }
-              >
-                <div
-                  className="w-5 h-5 bg-yellow-500 rounded-full -mt-1 text-xs flex justify-center items-center text-white md:rotate-90"
-                  style={{ display: _2divData[index] > 0 ? "flex" : "none" }}
-                >
-                  {_2divData[index]}
-                </div>
-              </div>
-            );
-          })}
-
-          {listener2DivHorizontal.map((item, index) => {
-            return (
-              <div
-                className="w-3 h-12 max-lg:h-8 absolute cursor-pointer z-20"
-                style={{
-                  top: item.top,
-                  left: item.left,
-                  // backgroundColor: item.bg ? item.bg : "",
-                }}
-                onClick={() =>
-                  MultiDivSelector(
-                    item.num ? item.num : [],
-                    coin,
-                    2,
-                    _2divHKeys[index],
-                    "2h",
-                  )
-                }
-              >
-                <div
-                  className="w-5 h-5 bg-yellow-500 rounded-full max-lg:mt-1.5 mt-3 -ml-1 text-xs flex justify-center items-center text-white md:rotate-90"
-                  style={{ display: _2divHData[index] > 0 ? "flex" : "none" }}
-                >
-                  {_2divHData[index]}
-                </div>
-              </div>
-            );
-          })}
-
-          {listener3div.map((item, index) => {
-            return (
-              <div
-                className="w-3 h-10 max-lg:h-8 absolute cursor-pointer z-20"
-                style={{
-                  top: item.top,
-                  left: item.left,
-                  // backgroundColor: item.bg ? item.bg : "",
-                }}
-                onClick={() =>
-                  MultiDivSelector(
-                    item.num ? item.num : [],
-                    coin,
-                    3,
-                    _3divKeys[index],
-                    3,
-                  )
-                }
-              >
-                {" "}
-                <div
-                  className="w-5 h-5 bg-yellow-500 rounded-full max-lg:mt-1.5 mt-3 -ml-0.5 text-xs flex justify-center items-center text-white md:rotate-90"
-                  style={{ display: _3divData[index] > 0 ? "flex" : "none" }}
-                >
-                  {_3divData[index]}
-                </div>
-              </div>
-            );
-          })}
+        <div>
+          <RouletteGrid
+            data={data}
+            setData={setData}
+            singleDivCoinData={singleDivCoinData}
+            setSingleDivCoinData={setSingleDivCoinData}
+            divSelect2Data={divSelect2Data}
+            setDivSelect2Data={setDivSelect2Data}
+            divSelect2DataHorizontal={divSelect2DataHorizontal}
+            setDivSelect2DataHorizontal={setDivSelect2DataHorizontal}
+            divSelect4Data={divSelect4Data}
+            setDivSelect4Data={setDivSelect4Data}
+            divSelect3Data={divSelect3Data}
+            setDivSelect3Data={setDivSelect3Data}
+            divSelect6Data={divSelect6Data}
+            setDivSelect6Data={setDivSelect6Data}
+            lowerDivs={lowerDivs}
+            setLowerDivs={setLowerDivs}
+            showRatioPopup={showRatioPopup}
+            removeRatioPopup={removeRatioPopup}
+            zero={zero}
+            setZero={setZero}
+            coin={coin}
+          />
         </div>
+        {/* info ratio box */}
+        <div
+          className="w-40 bg-customPurple absolute rotate-90 -top-40 -right-5 z-20"
+          style={{ display: ratioPopup ? "block" : "none" }}
+        >
+          <div className="w-full p-1 bg-darkBlue text-center font-semibold">
+            {ratioPopupData.head}
+          </div>
+          <div className="text-xs font-semibold">
+            <p className="p-1">Pays: {ratioPopupData.ratio}:1</p>
+            {ratioPopupData.betAnmount <= 0 || ratioPopupData.payout <= 0 ? (
+              ""
+            ) : (
+              <>
+                <p className="p-1">Bet: {ratioPopupData.betAnmount}</p>
+                <p className="p-1">Payout: {ratioPopupData.payout}</p>
+              </>
+            )}
+          </div>
+          {/* // head: "", // ratio: "", // betAnmount: 0, // payout: 0, */}
+        </div>
+
         {/* Roulette Grid Ends Here */}
       </div>
 
@@ -894,11 +711,52 @@ function Project2() {
       </div>
 
       <div className="w-full flex justify-center max-sm:justify-between gap-6 items-start bg-zinc-700 mt-5">
-        <div className="bg-blue-400 h-[40%] w-[30%]">a</div>
+        <div className="bg-blue-400 h-[40%] w-[30%] flex">
+          <button
+            className="bg-slate-500 h-14 w-14 rounded-full flex justify-center items-center text-white"
+            onClick={() => setCoin(1)}
+          >
+            1
+          </button>
+          <button
+            className="bg-blue-500 h-14 w-14 rounded-full flex justify-center items-center text-white"
+            onClick={() => setCoin(5)}
+          >
+            5
+          </button>
+          <button
+            className="bg-cyan-500 h-14 w-14 rounded-full flex justify-center items-center text-white"
+            onClick={() => setCoin(25)}
+          >
+            25
+          </button>
+          <button
+            className="bg-green-500 h-14 w-14 rounded-full flex justify-center items-center text-white"
+            onClick={() => setCoin(100)}
+          >
+            100
+          </button>
+
+          <button
+            className="bg-indigo-600 h-14 w-14 rounded-full flex justify-center items-center text-white"
+            onClick={() => setCoin(500)}
+          >
+            500
+          </button>
+
+          <button
+            className="bg-purple-600 h-14 w-14 rounded-full flex justify-center items-center text-white"
+            onClick={() => setCoin(1000)}
+          >
+            1K
+          </button>
+        </div>
+
+        <WheelCoverage data={data} type={zero} />
 
         <div className="w-full">
           <div
-            className="w-[10%] bg-red-500 flex flex-wrap md:-rotate-90 md:absolute mt-5 max-sm:w-[50%] max-sm:h-[100%]"
+            className="w-[10%] bg-red-500 flex flex-wrap md:-rotate-90 md:absolute md:h-[60%] mt-5 max-sm:w-[50%] max-sm:h-[100%]"
             style={{ maxHeight: "40rem" }}
           >
             {Data.map((item, index) => {
@@ -918,6 +776,21 @@ function Project2() {
       {/* <div className="w-full h-40 bg-black"></div>
       
       */}
+
+      <footer className="w-full">
+        <ul className="flex my-1">
+          <li className="border-r-2 px-1 text-xs font-semibold h-3">
+            <a href="#">Legcy RBA</a>
+          </li>
+          <li className="border-r-2 px-1 text-xs font-semibold h-3">
+            <a href="#">Roulette Systems</a>
+          </li>
+
+          <li className="px-1 text-xs font-semibold h-3">
+            <a href="#">How do I use this tool?</a>
+          </li>
+        </ul>
+      </footer>
     </div>
   );
 }

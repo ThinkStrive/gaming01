@@ -190,6 +190,10 @@ export const listener4Div = [
   // { top: "98.5%", left: "18.5%", num: ["_", "_", "_", "_"], bg: "blue" },
   // { top: "98.5%", left: "40.5%", num: ["_", "_", "_", "_"] },
 ];
+export const listener0 = [
+  { top: "6.1%", right: "21%", num: ["_00", "_", "_", "_"], bg: "blue" },
+  { top: "98.5%", left: "40.5%", num: ["_", "_", "_", "_"] },
+];
 //rgb(197,45,24) rgb(22,22,22)
 export const Data = [
   { num: 1, bg: "rgb(197,45,24)", selector: "_1" },

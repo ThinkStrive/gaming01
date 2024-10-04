@@ -14,7 +14,7 @@ const Nav = ({ theme, setTheme, navigate }) => {
 
   return (
     <div
-      className="flex items-center justify-between px-10 py-2 max-sm:px-3"
+      className="flex items-center justify-between px-10 py-2 max-sm:px-3 sticky top-0 z-40"
       style={{ backgroundColor: "rgb(81,29,91)" }}
     >
       <div className="mr-4" onClick={() => navigate(true)}>

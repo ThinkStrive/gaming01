@@ -1226,7 +1226,7 @@ const Project1 = ({ theme, setTheme }) => {
 
   return (
     <>
-      <div className="sticky top-0 z-40">
+      <div className="sticky lg:top-24 max-sm:top-20 md:top-16 z-40">
         {/* <Nav theme={theme} setTheme={setTheme} /> */}
         <div
           className="py-3 px-2 justify-between flex sm--navbar"
