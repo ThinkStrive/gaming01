@@ -3,12 +3,14 @@ import {
   MdKeyboardDoubleArrowUp,
   MdKeyboardDoubleArrowDown,
 } from "react-icons/md";
+import { IoMdAdd } from "react-icons/io";
 
 import {
   _1_34,
   _2_35,
   _3_36,
   black,
+  coinInfo,
   Data,
   even_numbers,
   first_12,
@@ -27,10 +29,16 @@ import {
 } from "../resources/mainCompData";
 import WheelCoverage from "../reuse/project2/WheelCoverage";
 import RouletteGrid from "../reuse/project2/RouletteGrid";
+import _1dlr from "../../assets/imgs/coin_imgs/bet-1.svg";
+import "../../Style/Project2.css";
 
 function Project2() {
   // const [showCoin, setShowCoin] = useState(false);
-  const [coin, setCoin] = useState(1);
+  const [coin, setCoin] = useState({ amt: 1, img: _1dlr });
+  const [coinPopup, setCoinPopup] = useState(false);
+  const [customCoinVal, setCustomCoinVal] = useState(0);
+  const [customCoinExists, setCustomCoinExists] = useState(false);
+  const customCoins = JSON.parse(localStorage.getItem("CustomCoins")) || [];
   const [zero, setZero] = useState("doubleZero");
   const [ratioPopup, setRatioPopup] = useState(false);
   const [ratioPopupData, setRatioPopupData] = useState({
@@ -41,6 +49,51 @@ function Project2() {
   });
 
   const [data, setData] = useState(() => {
+    const savedData = localStorage.getItem("Data");
+    return savedData
+      ? JSON.parse(savedData)
+      : {
+          _1: 0,
+          _2: 0,
+          _3: 0,
+          _4: 0,
+          _5: 0,
+          _6: 0,
+          _7: 0,
+          _8: 0,
+          _9: 0,
+          _10: 0,
+          _11: 0,
+          _12: 0,
+          _13: 0,
+          _14: 0,
+          _15: 0,
+          _16: 0,
+          _17: 0,
+          _18: 0,
+          _19: 0,
+          _20: 0,
+          _21: 0,
+          _22: 0,
+          _23: 0,
+          _24: 0,
+          _25: 0,
+          _26: 0,
+          _27: 0,
+          _28: 0,
+          _29: 0,
+          _30: 0,
+          _31: 0,
+          _32: 0,
+          _33: 0,
+          _34: 0,
+          _35: 0,
+          _36: 0,
+        };
+  });
+
+  // state for equity
+  const [equityData, setEquityData] = useState(() => {
     const savedData = localStorage.getItem("Data");
     return savedData
       ? JSON.parse(savedData)
@@ -293,6 +346,7 @@ function Project2() {
   });
 
   const win_lossObject = Object.values(data);
+  const equityPerSpot = Object.values(equityData);
   // const _1divKeys = Object.keys(singleDivCoinData);
   // const _1divData = Object.values(singleDivCoinData);
   // const _singleDivData = Object.values(data);
@@ -619,18 +673,16 @@ function Project2() {
 
       return newData;
     });
-
-    setSinglenumJackpot(0);
   };
 
-  const showRatioPopup = (type, ratio, amount, payout) => {
+  const showRatioPopup = (type, ratio, amount) => {
     setRatioPopupData(() => {
       const newData = { ...ratioPopupData };
 
       newData.head = type;
       newData.ratio = ratio;
       newData.betAnmount = amount;
-      newData.payout = payout;
+      newData.payout = amount * ratio;
 
       return newData;
     });
@@ -638,13 +690,23 @@ function Project2() {
     setRatioPopup(true);
   };
 
-  // head: "",
-  //   ratio: "",
-  //   betAnmount: 0,
-  //   payout: 0,
-
   const removeRatioPopup = () => {
     setRatioPopup(false);
+  };
+
+  // CustomCoins
+  const addCustomCoins = (coin) => {
+    const isCustomCoinExist = customCoins.some((item) => item === coin);
+    const isPredefinedCoin = coinInfo.some((item) => item.amount === coin);
+
+    if (!isCustomCoinExist && !isPredefinedCoin && coin !== 0) {
+      customCoins.push(coin);
+      localStorage.setItem("CustomCoins", JSON.stringify(customCoins));
+      setCoinPopup(false);
+      setCustomCoinExists(false);
+    } else {
+      setCustomCoinExists(true);
+    }
   };
 
   return (
@@ -652,7 +714,7 @@ function Project2() {
       className="bg-slate-500 mx-auto px-3 h-[400vh]"
       style={{ maxWidth: "80rem" }}
     >
-      <div className="w-full flex justify-center items-center h-[30rem] bg-slate-900">
+      <div className="w-full flex justify-center items-center h-[30rem] bg-slate-900 relative">
         {/* Roulette Grid */}
         <div>
           <RouletteGrid
@@ -679,9 +741,10 @@ function Project2() {
             coin={coin}
           />
         </div>
+        {/* Roulette Grid Ends Here */}
         {/* info ratio box */}
         <div
-          className="w-40 bg-customPurple absolute rotate-90 -top-40 -right-5 z-20"
+          className="w-40 bg-customPurple absolute top-14 right-5 z-20"
           style={{ display: ratioPopup ? "block" : "none" }}
         >
           <div className="w-full p-1 bg-darkBlue text-center font-semibold">
@@ -698,63 +761,123 @@ function Project2() {
               </>
             )}
           </div>
-          {/* // head: "", // ratio: "", // betAnmount: 0, // payout: 0, */}
         </div>
-
-        {/* Roulette Grid Ends Here */}
       </div>
 
+      {/* Reset btn */}
       <div>
         <button className="bg-stone-600 p-2 rounded-lg" onClick={resetHandler}>
           Reset
         </button>
       </div>
 
-      <div className="w-full flex justify-center max-sm:justify-between gap-6 items-start bg-zinc-700 mt-5">
-        <div className="bg-blue-400 h-[40%] w-[30%] flex">
-          <button
-            className="bg-slate-500 h-14 w-14 rounded-full flex justify-center items-center text-white"
-            onClick={() => setCoin(1)}
-          >
-            1
-          </button>
-          <button
-            className="bg-blue-500 h-14 w-14 rounded-full flex justify-center items-center text-white"
-            onClick={() => setCoin(5)}
-          >
-            5
-          </button>
-          <button
-            className="bg-cyan-500 h-14 w-14 rounded-full flex justify-center items-center text-white"
-            onClick={() => setCoin(25)}
-          >
-            25
-          </button>
-          <button
-            className="bg-green-500 h-14 w-14 rounded-full flex justify-center items-center text-white"
-            onClick={() => setCoin(100)}
-          >
-            100
-          </button>
+      <div className="w-full flex justify-center max-sm:justify-between gap-6 items-start bg-zinc-700 max-sm:mt-20">
+        {/* Coins section */}
+        <div className=" w-[20rem] flex items-center gap-3 overflow-x-scroll">
+          {coinInfo.map((item, index) => {
+            return (
+              <img
+                key={index}
+                src={item.img}
+                alt=""
+                className={
+                  item.amount === coin.amt
+                    ? "border border-neonGreen rounded-full p-1 hover:animate-pulse cursor-pointer"
+                    : "rounded-full p-1 cursor-pointer"
+                }
+                onClick={() =>
+                  setCoin((prevData) => {
+                    const newData = { ...prevData };
+                    newData.amt = item.amount;
+                    return newData;
+                  })
+                }
+              />
+            );
+          })}
 
-          <button
-            className="bg-indigo-600 h-14 w-14 rounded-full flex justify-center items-center text-white"
-            onClick={() => setCoin(500)}
-          >
-            500
-          </button>
+          {customCoins
+            ? customCoins.map((item) => {
+                return (
+                  <div
+                    className="bg-blue-500 w-[100%]"
+                    onClick={() =>
+                      setCoin((prevData) => {
+                        const newData = { ...prevData };
+                        newData.amt = item;
+                        return newData;
+                      })
+                    }
+                  >
+                    {item}
+                  </div>
+                );
+              })
+            : ""}
 
-          <button
-            className="bg-purple-600 h-14 w-14 rounded-full flex justify-center items-center text-white"
-            onClick={() => setCoin(1000)}
+          <div
+            className="px-4 h-[3.6rem] bg-gray-500 flex justify-center items-center rounded-full cursor-pointer"
+            onClick={() => setCoinPopup(coinPopup ? false : true)}
           >
-            1K
-          </button>
+            <IoMdAdd size={28} />
+          </div>
         </div>
 
-        <WheelCoverage data={data} type={zero} />
+        {/* Coin add Popup */}
+        <div
+          className="w-[15rem] h-[13rem] absolute p-2 flex flex-col justify-center items-center rounded-lg shadow-2xl backdrop-sepia bg-gray-900"
+          style={{ display: coinPopup ? "flex" : "none" }}
+        >
+          <h2 className="text-gray-300 font-semibold text-[1rem]">
+            Add Your custom Coin here!
+          </h2>
+          <div className="flex gap-5 flex-col justify-center items-center border border-gray-500 py-4 px-2 rounded-lg">
+            <div>
+              <input
+                type={customCoinVal}
+                className="bg-transparent border border-gray-700 py-1 rounded-md outline-none text-[.9rem] pl-1"
+                placeholder="Enter the amount"
+                onInput={(e) => setCustomCoinVal(e.target.value)}
+              />
+              <p
+                className="inline text-xs text-[rgb(204,0,0)] font-semibold"
+                style={{ display: customCoinExists ? "inline" : "none" }}
+              >
+                This coin already exists
+              </p>
+            </div>
+            <button
+              className="bg-white shadow-2xl w-[2rem] h-[2rem] flex justify-center items-center rounded-full text-gray-500"
+              onClick={() => addCustomCoins(Number(customCoinVal))}
+            >
+              <IoMdAdd size={20} />
+            </button>
+          </div>
+        </div>
+
+        {/* WheelCoverage */}
+        <div className="w-[16rem] max-sm:rotate-90">
+          <WheelCoverage data={data} type={zero} />
+        </div>
 
         <div className="w-full">
+          {/* Win/Loss per spot */}
+          <div
+            className="w-[20%] bg-red-500 flex flex-wrap md:-rotate-90 md:h-[40rem] mt-5 max-sm:w-[50%] max-sm:h-[100%]"
+            style={{ maxHeight: "40rem" }}
+          >
+            {Data.map((item, index) => {
+              return (
+                <div
+                  className="w-[33.33%] flex justify-center items-center text-white font-semibold border"
+                  style={{ backgroundColor: item.bg }}
+                >
+                  <p className="rotate-90">{win_lossObject[index]}</p>
+                </div>
+              );
+            })}
+          </div>
+
           <div
             className="w-[10%] bg-red-500 flex flex-wrap md:-rotate-90 md:absolute md:h-[60%] mt-5 max-sm:w-[50%] max-sm:h-[100%]"
             style={{ maxHeight: "40rem" }}
@@ -765,7 +888,7 @@ function Project2() {
                   className="w-[33.33%] flex justify-center items-center text-white font-semibold border"
                   style={{ backgroundColor: item.bg }}
                 >
-                  <p className="rotate-90">{win_lossObject[index]}</p>
+                  <p className="rotate-90">{equityPerSpot[index]}</p>
                 </div>
               );
             })}

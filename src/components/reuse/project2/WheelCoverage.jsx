@@ -1,8 +1,6 @@
 import React from "react";
 
 function WheelCoverage({ data, type }) {
-  console.log("ithu wheel coverage: ", data);
-
   let coverdNums = 0;
   let unCoveredNums = 0;
   const totalNums = type === "zero" ? 37 : 38;
@@ -16,22 +14,13 @@ function WheelCoverage({ data, type }) {
     }
   });
 
-  console.log(
-    "total : ",
-    totalNums,
-    "Covered : ",
-    coverdNums,
-    "UnCovered : ",
-    unCoveredNums,
-  );
-
   const win = (coverdNums / totalNums) * 100;
   const jackpot = (coverdNums / totalNums) * 100;
   const whack = (unCoveredNums / totalNums) * 100;
 
   return (
     <div
-      className="w-64 text-white text-center font-semibold"
+      className="w-64 max-sm:w-full text-white text-center font-semibold"
       style={{ backgroundColor: "rgb(34,34,34)" }}
     >
       Coverage

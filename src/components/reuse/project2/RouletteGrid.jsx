@@ -85,7 +85,6 @@ function RouletteGrid({
         for (const key in newData) {
           if (key === coinData) {
             newData[key] += coin;
-            console.log((newData[key] += coin));
           }
         }
 
@@ -179,7 +178,6 @@ function RouletteGrid({
     type,
     ratio,
     amount,
-    payout,
   ) => {
     //num, coin, coinData, selector type ratio amount payout
     setData((prevData) => {
@@ -196,9 +194,9 @@ function RouletteGrid({
       localStorage.setItem("Data", JSON.stringify(newData));
       return newData;
     });
-    console.log("data : ", type, ratio, amount, payout);
+    // console.log("data : ", type, ratio, amount, payout);
 
-    showRatioPopup(type, ratio, amount, payout);
+    showRatioPopup(type, ratio, amount);
     setCoinData(coin / 2, coinData, selector);
   };
 
@@ -247,7 +245,7 @@ function RouletteGrid({
         onClick={() =>
           selectSingleDiv(
             selector,
-            coin,
+            coin.amt,
             _1divKeys[index],
             1,
             `${num} Straight-Up`,
@@ -257,12 +255,7 @@ function RouletteGrid({
           )
         } //num, coin, coinData, selector type ratio amount payout
         onMouseEnter={() =>
-          showRatioPopup(
-            `${num} Straight-Up`,
-            35,
-            _1divData[index],
-            _singleDivData[index],
-          )
+          showRatioPopup(`${num} Straight-Up`, 35, _1divData[index])
         }
         onMouseLeave={() => removeRatioPopup()}
       >
@@ -332,13 +325,13 @@ function RouletteGrid({
               onClick={() =>
                 MultiDivSelector(
                   one_eighteen,
-                  coin,
+                  coin.amt,
                   "1:1",
                   "_1_18",
                   "lowerdivs",
                 )
               }
-              onMouseEnter={() => showRatioPopup()}
+              onMouseEnter={() => showRatioPopup(`1 - 18`, 1, lowerDivs._1_18)}
               onMouseLeave={() => removeRatioPopup()}
             >
               <p className="rotate-90 text-white font-semibold">1 - 18</p>
@@ -352,8 +345,16 @@ function RouletteGrid({
             <div
               className="h-[16.667%] bg-green-700 flex justify-center items-center border relative cursor-pointer"
               onClick={() =>
-                MultiDivSelector(even_numbers, coin, "1:1", "Even", "lowerdivs")
+                MultiDivSelector(
+                  even_numbers,
+                  coin.amt,
+                  "1:1",
+                  "Even",
+                  "lowerdivs",
+                )
               }
+              onMouseEnter={() => showRatioPopup(`EVEN`, 1, lowerDivs.Even)}
+              onMouseLeave={() => removeRatioPopup()}
             >
               <p className="rotate-90 text-white font-semibold">EVEN</p>
               <div
@@ -366,8 +367,10 @@ function RouletteGrid({
             <div
               className="h-[16.667%] bg-green-700 flex justify-center items-center border relative cursor-pointer"
               onClick={() =>
-                MultiDivSelector(red, coin, "1:1", "red", "lowerdivs")
+                MultiDivSelector(red, coin.amt, "1:1", "red", "lowerdivs")
               }
+              onMouseEnter={() => showRatioPopup(`RED`, 1, lowerDivs.red)}
+              onMouseLeave={() => removeRatioPopup()}
             >
               <p className="rotate-90 text-white font-semibold">Red</p>
               <div
@@ -380,8 +383,10 @@ function RouletteGrid({
             <div
               className="h-[16.667%] bg-green-700 flex justify-center items-center border relative cursor-pointer"
               onClick={() =>
-                MultiDivSelector(black, coin, "1:1", "black", "lowerdivs")
+                MultiDivSelector(black, coin.amt, "1:1", "black", "lowerdivs")
               }
+              onMouseEnter={() => showRatioPopup(`Black`, 1, lowerDivs.black)}
+              onMouseLeave={() => removeRatioPopup()}
             >
               <p className="rotate-90 text-white font-semibold">Black</p>
               <div
@@ -394,8 +399,16 @@ function RouletteGrid({
             <div
               className="h-[16.667%] bg-green-700 flex justify-center items-center border relative cursor-pointer"
               onClick={() =>
-                MultiDivSelector(odd_numbers, coin, "1:1", "Odd", "lowerdivs")
+                MultiDivSelector(
+                  odd_numbers,
+                  coin.amt,
+                  "1:1",
+                  "Odd",
+                  "lowerdivs",
+                )
               }
+              onMouseEnter={() => showRatioPopup(`ODD`, 1, lowerDivs.Odd)}
+              onMouseLeave={() => removeRatioPopup()}
             >
               <p className="rotate-90 text-white font-semibold">ODD</p>
               <div
@@ -410,12 +423,16 @@ function RouletteGrid({
               onClick={() =>
                 MultiDivSelector(
                   nineteen_thirtysix,
-                  coin,
+                  coin.amt,
                   "1:1",
                   "_19_36",
                   "lowerdivs",
                 )
               }
+              onMouseEnter={() =>
+                showRatioPopup(`19 - 36`, 1, lowerDivs._19_36)
+              }
+              onMouseLeave={() => removeRatioPopup()}
             >
               <p className="rotate-90 text-white font-semibold">19 - 36</p>
               <div
@@ -433,8 +450,12 @@ function RouletteGrid({
             <div
               className="h-[33.33%] bg-red-700 flex justify-center items-center border relative cursor-pointer"
               onClick={() =>
-                MultiDivSelector(first_12, coin, 12, "_1st_12", "lowerdivs")
+                MultiDivSelector(first_12, coin.amt, 12, "_1st_12", "lowerdivs")
               }
+              onMouseEnter={() =>
+                showRatioPopup(`1st Dozen`, 2, lowerDivs._1st_12)
+              }
+              onMouseLeave={() => removeRatioPopup()}
             >
               <p className="rotate-90 text-white font-semibold">1st 12</p>
               <div
@@ -449,8 +470,18 @@ function RouletteGrid({
             <div
               className="h-[33.33%] bg-red-700 flex justify-center items-center border relative cursor-pointer"
               onClick={() =>
-                MultiDivSelector(second_12, coin, 12, "_2nd_12", "lowerdivs")
+                MultiDivSelector(
+                  second_12,
+                  coin.amt,
+                  12,
+                  "_2nd_12",
+                  "lowerdivs",
+                )
               }
+              onMouseEnter={() =>
+                showRatioPopup(`2nd Dozen`, 2, lowerDivs._2nd_12)
+              }
+              onMouseLeave={() => removeRatioPopup()}
             >
               <p className="rotate-90 text-white font-semibold">2nd 12</p>
               <div
@@ -465,8 +496,12 @@ function RouletteGrid({
             <div
               className="h-[33.33%] bg-red-700 flex justify-center items-center border relative cursor-pointer"
               onClick={() =>
-                MultiDivSelector(third_12, coin, 12, "_3rd_12", "lowerdivs")
+                MultiDivSelector(third_12, coin.amt, 12, "_3rd_12", "lowerdivs")
               }
+              onMouseEnter={() =>
+                showRatioPopup(`3rd Dozen`, 2, lowerDivs._3rd_12)
+              }
+              onMouseLeave={() => removeRatioPopup()}
             >
               <p className="rotate-90 text-white font-semibold">3rd 12</p>
               <div
@@ -496,8 +531,12 @@ function RouletteGrid({
             <div
               className="w-[33.33%] border flex justify-center items-center cursor-pointer relative"
               onClick={() =>
-                MultiDivSelector(_1_34, coin, 12, "col_1_2_1", "lowerdivs")
+                MultiDivSelector(_1_34, coin.amt, 12, "col_1_2_1", "lowerdivs")
               }
+              onMouseEnter={() =>
+                showRatioPopup(`1st Column`, 2, lowerDivs.col_1_2_1)
+              }
+              onMouseLeave={() => removeRatioPopup()}
             >
               <p className="text-white font-semibold">2 - 1</p>
               <div
@@ -513,8 +552,12 @@ function RouletteGrid({
             <div
               className="w-[33.33%] border flex justify-center items-center cursor-pointer relative"
               onClick={() =>
-                MultiDivSelector(_2_35, coin, 12, "col_2_2_1", "lowerdivs")
+                MultiDivSelector(_2_35, coin.amt, 12, "col_2_2_1", "lowerdivs")
               }
+              onMouseEnter={() =>
+                showRatioPopup(`2nd Column`, 2, lowerDivs.col_2_2_1)
+              }
+              onMouseLeave={() => removeRatioPopup()}
             >
               <p className="text-white font-semibold">2 - 1</p>
               <div
@@ -530,8 +573,12 @@ function RouletteGrid({
             <div
               className="w-[33.33%] border flex justify-center items-center cursor-pointer relatives"
               onClick={() =>
-                MultiDivSelector(_3_36, coin, 12, "col_3_2_1", "lowerdivs")
+                MultiDivSelector(_3_36, coin.amt, 12, "col_3_2_1", "lowerdivs")
               }
+              onMouseEnter={() =>
+                showRatioPopup(`3rd Column`, 2, lowerDivs.col_3_2_1)
+              }
+              onMouseLeave={() => removeRatioPopup()}
             >
               <p className="text-white font-semibold">2 - 1</p>
               <div
@@ -560,12 +607,16 @@ function RouletteGrid({
             onClick={() =>
               MultiDivSelector(
                 item.num ? item.num : [],
-                coin,
+                coin.amt,
                 4,
                 _4divKeys[index],
                 4,
               )
             }
+            onMouseEnter={() =>
+              showRatioPopup(`${item.corner} Corner`, 8, _4divData[index])
+            }
+            onMouseLeave={() => removeRatioPopup()}
           >
             <div
               className="w-5 h-5 bg-yellow-500 rounded-full text-xs flex justify-center items-center text-white md:rotate-90"
@@ -590,12 +641,20 @@ function RouletteGrid({
             onClick={() =>
               MultiDivSelector(
                 item.num ? item.num : [],
-                coin,
+                coin.amt,
                 6,
                 _6divKeys[index],
                 6,
               )
             }
+            onMouseEnter={() =>
+              showRatioPopup(
+                `${item.double_street} Double Street`,
+                5,
+                _6divData[index],
+              )
+            }
+            onMouseLeave={() => removeRatioPopup()}
           >
             <div
               className="w-5 h-5 bg-yellow-500 rounded-full text-xs flex justify-center items-center text-white md:rotate-90"
@@ -619,12 +678,16 @@ function RouletteGrid({
             onClick={() =>
               MultiDivSelector(
                 item.num ? item.num : [],
-                coin,
+                coin.amt,
                 2,
                 _2divKeys[index],
                 "2v",
               )
             }
+            onMouseEnter={() =>
+              showRatioPopup(`${item.split} Split`, 17, _2divData[index])
+            }
+            onMouseLeave={() => removeRatioPopup()}
           >
             <div
               className="w-5 h-5 bg-yellow-500 rounded-full -mt-1 text-xs flex justify-center items-center text-white md:rotate-90"
@@ -648,12 +711,16 @@ function RouletteGrid({
             onClick={() =>
               MultiDivSelector(
                 item.num ? item.num : [],
-                coin,
+                coin.amt,
                 2,
                 _2divHKeys[index],
                 "2h",
               )
             }
+            onMouseEnter={() =>
+              showRatioPopup(`${item.split} Split`, 17, _2divHData[index])
+            }
+            onMouseLeave={() => removeRatioPopup()}
           >
             <div
               className="w-5 h-5 bg-yellow-500 rounded-full max-lg:mt-1.5 mt-3 -ml-1 text-xs flex justify-center items-center text-white md:rotate-90"
@@ -677,17 +744,24 @@ function RouletteGrid({
             onClick={() =>
               MultiDivSelector(
                 item.num ? item.num : [],
-                coin,
+                coin.amt,
                 3,
                 _3divKeys[index],
                 3,
               )
             }
+            onMouseEnter={() =>
+              showRatioPopup(`${item.street} Street`, 11, _3divData[index])
+            }
+            onMouseLeave={() => removeRatioPopup()}
           >
             {" "}
             <div
               className="w-5 h-5 bg-yellow-500 rounded-full max-lg:mt-1.5 mt-3 -ml-0.5 text-xs flex justify-center items-center text-white md:rotate-90"
-              style={{ display: _3divData[index] > 0 ? "flex" : "none" }}
+              style={{
+                display: _3divData[index] > 0 ? "flex" : "none",
+                background: `url(${coin.img}) center`,
+              }}
             >
               {_3divData[index]}
             </div>

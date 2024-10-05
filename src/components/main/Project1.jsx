@@ -1173,9 +1173,13 @@ const Project1 = ({ theme, setTheme }) => {
         </div>
         <div
           className={
-            count !== 0
-              ? "w-[33.3%] bg-goldenYellow flex items-center justify-center border max-md:text-sm"
-              : "w-[33.3%] bg-customGray text-black font-semibold flex items-center justify-center border max-md:text-sm"
+            count >= 6
+              ? "bg-darkBlue border hover:bg-softBlue hover:text-white w-[33.3%] flex items-center justify-center max-md:text-sm"
+              : count > 0 && count <= 2
+                ? "bg-lightBlue text-black border hover:bg-softBlue hover:text-white w-[33.3%] flex items-center justify-center max-md:text-sm"
+                : count > 2 && count <= 5
+                  ? "bg-mediumBlue text-white border hover:bg-softBlue hover:text-white w-[33.3%] flex items-center justify-center max-md:text-sm"
+                  : "bg-customGray text-black border hover:bg-softBlue hover:text-white w-[33.3%] flex items-center justify-center max-md:text-sm"
           }
           style={{
             borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
@@ -1186,9 +1190,13 @@ const Project1 = ({ theme, setTheme }) => {
 
         <div
           className={
-            lastHit !== 0
-              ? "w-[33.3%] bg-goldenYellow flex items-center justify-center border max-md:text-sm"
-              : "w-[33.3%] bg-customGray text-black font-semibold flex items-center justify-center border max-md:text-sm"
+            lastHit >= 11
+              ? "w-[33.3%] flex items-center justify-center max-md:text-sm bg-normalRed border hover:bg-softBlue"
+              : lastHit > 0 && lastHit <= 3
+                ? "bg-lightGreen text-black border hover:bg-softBlue hover:text-white w-[33.3%] flex items-center justify-center max-md:text-sm"
+                : lastHit > 3 && lastHit <= 10
+                  ? "bg-customYellow text-black border hover:bg-softBlue hover:text-white w-[33.3%] flex items-center justify-center max-md:text-sm"
+                  : "bg-customGray text-black border hover:bg-softBlue hover:text-white w-[33.3%] flex items-center justify-center max-md:text-sm"
           }
           style={{
             borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
