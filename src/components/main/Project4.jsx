@@ -36,6 +36,25 @@ const Project4 = ({ theme, setTheme }) => {
     const savedCountData = localStorage.getItem("rowData4");
     return savedCountData ? JSON.parse(savedCountData) : [];
   });
+  const [dozenRowData, setDozenRowData] = useState(() => {
+    const savedCountData = localStorage.getItem("dozenRowData4");
+    return savedCountData ? JSON.parse(savedCountData) : [];
+  });
+  const [colRowData, setColRowData] = useState(() => {
+    const savedCountData = localStorage.getItem("colRowData4");
+    return savedCountData ? JSON.parse(savedCountData) : [];
+  });
+
+  const [suggestion, setSuggestion] = useState(""); // State to store the suggestion
+  const [repeatLetter, setRepeatLetter] = useState(""); // State to store the repeated letter
+  const [repeatDozen, setRepeatDozen] = useState(""); // State to store the repeated letter
+  const [repeatCol, setRepeatCol] = useState(""); // State to store the repeated letter
+  const [suggestionActive, setSuggestionActive] = useState(false);
+  const [suggestionActiveDozen, setSuggestionActiveDozen] = useState(false);
+  const [suggestionActiveCol, setSuggestionActiveCol] = useState(false);
+  const [userMissedSuggestion, setUserMissedSuggestion] = useState(false);
+  const [userMissedSuggestionDozen, setUserMissedSuggestionDozen] = useState(false);
+  const [userMissedSuggestionCol, setUserMissedSuggestionCol] = useState(false);
 
   const [summaryData, setSummaryData] = useState(() => {
     const savedSummaryData = localStorage.getItem("summaryData4");
@@ -194,10 +213,7 @@ const Project4 = ({ theme, setTheme }) => {
     return savedHistoryData ? JSON.parse(savedHistoryData) : [];
   });
 
-  const [suggestion, setSuggestion] = useState(""); // State to store the suggestion
-  const [repeatLetter, setRepeatLetter] = useState(""); // State to store the repeated letter
-  const [suggestionActive, setSuggestionActive] = useState(false);
-  const [userMissedSuggestion, setUserMissedSuggestion] = useState(false);
+
 
   // Save `countData` to local storage whenever it changes
   useEffect(() => {
@@ -258,8 +274,34 @@ const Project4 = ({ theme, setTheme }) => {
     localStorage.setItem("previousData4", JSON.stringify(previousState));
   }, [previousState]);
 
+  useEffect(() => {
+    localStorage.setItem("rowData4", JSON.stringify(rowData));
+  }, [rowData]);
+
+  useEffect(() => {
+    localStorage.setItem("dozenRowData4", JSON.stringify(dozenRowData));
+  }, [dozenRowData]);
+
+  useEffect(() => {
+    localStorage.setItem("colRowData4", JSON.stringify(colRowData));
+  }, [colRowData]);
+
   // Handle reset button click
   const handleClickResetButton = () => {
+    setRowData([])
+    setRepeatLetter('')
+    setSuggestionActive(false)
+    setUserMissedSuggestion(false)
+    setSuggestion('')
+    setDozenRowData([])
+    setRepeatDozen('')
+    setSuggestionActiveDozen(false)
+    setUserMissedSuggestionDozen(false)
+    setColRowData([])
+    setRepeatCol('')
+    setSuggestionActiveCol(false)
+    setUserMissedSuggestionCol(false)
+
     const resetState = {
       red: 0,
       black: 0,
@@ -328,8 +370,13 @@ const Project4 = ({ theme, setTheme }) => {
     setCircleData(resetCircleData);
     setNonCircleData(resetCircleData);
 
+    let emptyArray = []
+
     // Also reset the data in local storage
     localStorage.setItem("countData4", JSON.stringify(resetState));
+    localStorage.setItem("rowData4", JSON.stringify(emptyArray));
+    localStorage.setItem("dozenRowData4", JSON.stringify(emptyArray));
+    localStorage.setItem("colRowData4", JSON.stringify(emptyArray));
     localStorage.setItem("summaryData4", JSON.stringify(resetState));
     localStorage.setItem("lastHitData4", JSON.stringify(resetState));
     localStorage.setItem("doubleStreetData4", JSON.stringify(resetDoubleData));
@@ -836,76 +883,383 @@ const Project4 = ({ theme, setTheme }) => {
     },
   };
 
-  console.log("row data", rowData);
+  console.log("row data", dozenRowData);
   console.log("suggestion", suggestion);
-  console.log("repeator", repeatLetter);
+  console.log("repeator letter", repeatLetter);
+  console.log("user missed suggestion", userMissedSuggestion);
+  console.log("suggestion active", suggestionActive);
 
-  const handleClickNumber = (key, number, letter) => {
-    const {
+  // const handleClickNumber = (key, number, letter) => {
+  //   const {
+  //     countUpdates,
+  //     summaryUpdates,
+  //     doubleStreetDataUpdates,
+  //     circleDataUpdates,
+  //     singleStreetDataUpdates,
+  //   } = updateMapping[key];
+
+  //   setPreviousState({
+  //     countData,
+  //     doubleStreetData,
+  //     singleStreetData,
+  //     summaryData,
+  //     lastHitNumber,
+  //     lastHitData,
+  //     nonDoubleStreetData,
+  //     nonCircleData,
+  //     circleData,
+  //     historyData,
+  //     nonSingleStreetData,
+  //   });
+
+  //   // Update countData
+  //   setCountData((prevState) => {
+  //     const updatedCounts = {};
+  //     Object.keys(countUpdates).forEach((field) => {
+  //       updatedCounts[field] = prevState[field] + countUpdates[field];
+  //     });
+  //     return { ...prevState, ...updatedCounts };
+  //   });
+
+  //   setDoubleStreetData((prevState) => {
+  //     const updatedCounts = {};
+  //     Object.keys(doubleStreetDataUpdates).forEach((field) => {
+  //       updatedCounts[field] =
+  //         prevState[field] + doubleStreetDataUpdates[field];
+  //     });
+  //     return { ...prevState, ...updatedCounts };
+  //   });
+
+  //   setSIngleStreetData((prevState) => {
+  //     const updatedCounts = {};
+  //     Object.keys(singleStreetDataUpdates).forEach((field) => {
+  //       updatedCounts[field] =
+  //         prevState[field] + singleStreetDataUpdates[field];
+  //     });
+  //     return { ...prevState, ...updatedCounts };
+  //   });
+
+  //   setSummaryData((prevState) => {
+  //     const updatedSummary = {};
+  //     Object.keys(summaryUpdates).forEach((field) => {
+  //       updatedSummary[field] = prevState[field] + summaryUpdates[field];
+  //     });
+  //     return { ...prevState, ...updatedSummary };
+  //   });
+
+  //   setCircleData((prevState) => {
+  //     const updatedSummary = {};
+  //     Object.keys(circleDataUpdates).forEach((field) => {
+  //       updatedSummary[field] = prevState[field] + circleDataUpdates[field];
+  //     });
+  //     return { ...prevState, ...updatedSummary };
+  //   });
+
+  //   const clickedDataUpdates = {
+  //     red: countUpdates.red || 0,
+  //     black: countUpdates.black || 0,
+  //     even: countUpdates.even || 0,
+  //     odd: countUpdates.odd || 0,
+  //     one_eighteen: countUpdates.one_eighteen || 0,
+  //     nineteen_thirtySix: countUpdates.nineteen_thirtySix || 0,
+  //     dozen_one: countUpdates.dozen_one || 0,
+  //     dozen_two: countUpdates.dozen_two || 0,
+  //     dozen_three: countUpdates.dozen_three || 0,
+  //     col_one: countUpdates.col_one || 0,
+  //     col_two: countUpdates.col_two || 0,
+  //     col_three: countUpdates.col_three || 0,
+  //   };
+
+  //   const clickedDataDoubleStreetData = {
+  //     one_six: doubleStreetDataUpdates.one_six || 0,
+  //     seven_twelve: doubleStreetDataUpdates.seven_twelve || 0,
+  //     thirteen_eighteen: doubleStreetDataUpdates.thirteen_eighteen || 0,
+  //     nineteen_twentyFour: doubleStreetDataUpdates.nineteen_twentyFour || 0,
+  //     twentyFive_thirty: doubleStreetDataUpdates.twentyFive_thirty || 0,
+  //     thirtyOne_thirtySix: doubleStreetDataUpdates.thirtyOne_thirtySix || 0,
+  //   };
+
+  //   const clickedDataSingleStreetData = {
+  //     one_three: singleStreetDataUpdates.one_three || 0,
+  //     four_six: singleStreetDataUpdates.four_six || 0,
+  //     seven_nine: singleStreetDataUpdates.seven_nine || 0,
+  //     ten_twelve: singleStreetDataUpdates.ten_twelve || 0,
+  //     thirteen_fifteen: singleStreetDataUpdates.thirteen_fifteen || 0,
+  //     sixteen_eighteen: singleStreetDataUpdates.sixteen_eighteen || 0,
+  //     nineteen_twentyOne: singleStreetDataUpdates.nineteen_twentyOne || 0,
+  //     twentyTwo_twentyFour: singleStreetDataUpdates.twentyTwo_twentyFour || 0,
+  //     twentyFive_twentySeven:
+  //       singleStreetDataUpdates.twentyFive_twentySeven || 0,
+  //     twentyEight_thirty: singleStreetDataUpdates.twentyEight_thirty || 0,
+  //     thirtyOne_thirtyThree: singleStreetDataUpdates.thirtyOne_thirtyThree || 0,
+  //     thirtyFour_thirtySix: singleStreetDataUpdates.thirtyFour_thirtySix || 0,
+  //   };
+
+  //   const clickedCircleData = {
+  //     zero: circleDataUpdates.zero || 0,
+  //     duZero: circleDataUpdates.duZero || 0,
+  //     orphe: circleDataUpdates.orphe || 0,
+  //     tires: circleDataUpdates.tires || 0,
+  //   };
+
+  //   setLastHitNumber({
+  //     number: number,
+  //     color:
+  //       clickedDataUpdates.red === 1
+  //         ? "red"
+  //         : clickedDataUpdates.black === 1
+  //           ? "black"
+  //           : "zero",
+  //   });
+
+  //   setLastHitData((prevLastHitData) => {
+  //     const updatedLastHitData = {};
+
+  //     Object.keys(prevLastHitData).forEach((field) => {
+  //       updatedLastHitData[field] =
+  //         clickedDataUpdates[field] > 0 ? 0 : prevLastHitData[field] + 1;
+  //     });
+
+  //     return updatedLastHitData;
+  //   });
+
+  //   setNonDoubleStreetData((prevLastHitData) => {
+  //     const updatedLastHitData = {};
+
+  //     Object.keys(prevLastHitData).forEach((field) => {
+  //       updatedLastHitData[field] =
+  //         clickedDataDoubleStreetData[field] > 0
+  //           ? 0
+  //           : prevLastHitData[field] + 1;
+  //     });
+
+  //     return updatedLastHitData;
+  //   });
+
+  //   setNonCircleData((prevLastHitData) => {
+  //     const updatedLastHitData = {};
+
+  //     Object.keys(prevLastHitData).forEach((field) => {
+  //       updatedLastHitData[field] =
+  //         clickedCircleData[field] > 0 ? 0 : prevLastHitData[field] + 1;
+  //     });
+
+  //     return updatedLastHitData;
+  //   });
+
+  //   setNonSingleStreetData((prevLastHitData) => {
+  //     const updatedLastHitData = {};
+
+  //     Object.keys(prevLastHitData).forEach((field) => {
+  //       updatedLastHitData[field] =
+  //         clickedDataSingleStreetData[field] > 0
+  //           ? 0
+  //           : prevLastHitData[field] + 1;
+  //     });
+
+  //     return updatedLastHitData;
+  //   });
+
+  //   let changedHistoryData = {
+  //     color:
+  //       clickedDataUpdates.red === 1
+  //         ? "red"
+  //         : clickedDataUpdates.black === 1
+  //           ? "black"
+  //           : "zero",
+  //     size:
+  //       clickedDataUpdates.one_eighteen === 1
+  //         ? "small"
+  //         : clickedDataUpdates.nineteen_thirtySix === 1
+  //           ? "large"
+  //           : "zero",
+  //     odd_even:
+  //       clickedDataUpdates.odd === 1
+  //         ? "odd"
+  //         : clickedDataUpdates.even === 1
+  //           ? "even"
+  //           : "zero",
+  //     dozen:
+  //       clickedDataUpdates.dozen_one === 1
+  //         ? "1st"
+  //         : clickedDataUpdates.dozen_two === 1
+  //           ? "2nd"
+  //           : clickedDataUpdates.dozen_three === 1
+  //             ? "3rd"
+  //             : "zero",
+  //     column:
+  //       clickedDataUpdates.col_one === 1
+  //         ? "1st"
+  //         : clickedDataUpdates.col_two === 1
+  //           ? "2nd"
+  //           : clickedDataUpdates.col_three === 1
+  //             ? "3rd"
+  //             : "zero",
+  //   };
+
+  //   setHistoryData([...historyData, changedHistoryData]);
+
+    
+  // };
+
+
+
+  
+  
+
+  // Effect to handle suggestions and repeated letters in each row
+  useEffect(() => {
+    if (rowData.length > 0) {
+      const lastRow = rowData[rowData.length - 1];
+      if (Object.keys(lastRow).length === 3) {
+        const values = Object.values(lastRow);
+        const occurrences = values.reduce((acc, letter) => {
+          acc[letter] = (acc[letter] || 0) + 1;
+          return acc;
+        }, {});
+        const repeatedLetter = Object.keys(occurrences).find(
+          (letter) => occurrences[letter] > 1,
+        );
+        if (repeatedLetter) {
+          setRepeatLetter(repeatedLetter);
+          setSuggestionActive(true);
+          setUserMissedSuggestion(false);
+          setSuggestion(`Suggestion: The repeated letter is ${repeatedLetter}`);
+        } else {
+          setSuggestion("");
+          setRepeatLetter("");
+          setSuggestionActive(false);
+        }
+      }
+    }
+  }, [rowData, repeatLetter, userMissedSuggestion]);
+
+  useEffect(() => {
+    if (dozenRowData.length > 0) {
+      const lastRow = dozenRowData[dozenRowData.length - 1];
+      if (Object.keys(lastRow).length === 3) {
+        const values = Object.values(lastRow);
+        const occurrences = values.reduce((acc, dozen) => {
+          acc[dozen] = (acc[dozen] || 0) + 1;
+          return acc;
+        }, {});
+        const repeatedDozen = Object.keys(occurrences).find(
+          (dozen) => occurrences[dozen] > 1,
+        );
+        if (repeatedDozen) {
+          setRepeatDozen(repeatedDozen);
+          setSuggestionActiveDozen(true);
+          setUserMissedSuggestionDozen(false);
+          setSuggestion(`Suggestion: The repeated letter is ${repeatedDozen}`);
+        } else {
+          setSuggestion("");
+          setRepeatDozen("");
+          setSuggestionActiveDozen(false);
+        }
+      }
+    }
+  }, [dozenRowData, repeatDozen, userMissedSuggestionDozen]);
+
+  useEffect(() => {
+    if (colRowData.length > 0) {
+      const lastRow = colRowData[colRowData.length - 1];
+      if (Object.keys(lastRow).length === 3) {
+        const values = Object.values(lastRow);
+        const occurrences = values.reduce((acc, dozen) => {
+          acc[dozen] = (acc[dozen] || 0) + 1;
+          return acc;
+        }, {});
+        const repeatedCol = Object.keys(occurrences).find(
+          (dozen) => occurrences[dozen] > 1,
+        );
+        if (repeatedCol) {
+          setRepeatCol(repeatedCol);
+          setSuggestionActiveCol(true);
+          setUserMissedSuggestionCol(false);
+          setSuggestion(`Suggestion: The repeated letter is ${repeatedCol}`);
+        } else {
+          setSuggestion("");
+          setRepeatCol("");
+          setSuggestionActiveCol(false);
+        }
+      }
+    }
+  }, [colRowData, repeatCol, userMissedSuggestionCol]);
+
+
+// Effect to handle missed suggestions (losses) based on repeated letters
+useEffect(() => {
+  if (rowData.length > 1) {
+    const previousRow = rowData[rowData.length - 2];
+    const lastRow = rowData[rowData.length - 1];
+
+    if (
+      Object.keys(previousRow).length === 3 &&
+      Object.keys(lastRow).length === 3 &&
+      repeatLetter
+    ) {
+      const lastRowValues = Object.values(lastRow);
+
+      if (!lastRowValues.includes(repeatLetter) && !userMissedSuggestion) {
+        showToast(`Loss ${repeatLetter}`, "error");
+        setUserMissedSuggestion(true);
+        setSuggestionActive(false);
+      }
+    }
+  }
+}, [rowData, repeatLetter, userMissedSuggestion]);
+
+useEffect(() => {
+  if (dozenRowData.length > 1) {
+    const previousRow = dozenRowData[dozenRowData.length - 2];
+    const lastRow = dozenRowData[dozenRowData.length - 1];
+
+    if (
+      Object.keys(previousRow).length === 3 &&
+      Object.keys(lastRow).length === 3 &&
+      repeatDozen
+    ) {
+      const lastRowValues = Object.values(lastRow);
+
+      if (!lastRowValues.includes(repeatDozen) && !userMissedSuggestionDozen) {
+        showToast(`Loss Dozen ${repeatDozen}`, "error");
+        setUserMissedSuggestionDozen(true);
+        setSuggestionActiveDozen(false);
+      }
+    }
+  }
+}, [dozenRowData, repeatDozen, userMissedSuggestionDozen]);
+
+useEffect(() => {
+  if (colRowData.length > 1) {
+    const previousRow = colRowData[colRowData.length - 2];
+    const lastRow = colRowData[colRowData.length - 1];
+
+    if (
+      Object.keys(previousRow).length === 3 &&
+      Object.keys(lastRow).length === 3 &&
+      repeatCol
+    ) {
+      const lastRowValues = Object.values(lastRow);
+
+      if (!lastRowValues.includes(repeatCol) && !userMissedSuggestionCol) {
+        showToast(`Loss Column ${repeatCol}`, "error");
+        setUserMissedSuggestionCol(true);
+        setSuggestionActiveCol(false);
+      }
+    }
+  }
+}, [colRowData, repeatCol, userMissedSuggestionCol]);
+
+// Handle when user clicks a letter/number
+const handleClickNumber = (key, number, letter, doz, col) => {
+const {
       countUpdates,
       summaryUpdates,
       doubleStreetDataUpdates,
       circleDataUpdates,
       singleStreetDataUpdates,
     } = updateMapping[key];
-
-    setPreviousState({
-      countData,
-      doubleStreetData,
-      singleStreetData,
-      summaryData,
-      lastHitNumber,
-      lastHitData,
-      nonDoubleStreetData,
-      nonCircleData,
-      circleData,
-      historyData,
-      nonSingleStreetData,
-    });
-
-    // Update countData
-    setCountData((prevState) => {
-      const updatedCounts = {};
-      Object.keys(countUpdates).forEach((field) => {
-        updatedCounts[field] = prevState[field] + countUpdates[field];
-      });
-      return { ...prevState, ...updatedCounts };
-    });
-
-    setDoubleStreetData((prevState) => {
-      const updatedCounts = {};
-      Object.keys(doubleStreetDataUpdates).forEach((field) => {
-        updatedCounts[field] =
-          prevState[field] + doubleStreetDataUpdates[field];
-      });
-      return { ...prevState, ...updatedCounts };
-    });
-
-    setSIngleStreetData((prevState) => {
-      const updatedCounts = {};
-      Object.keys(singleStreetDataUpdates).forEach((field) => {
-        updatedCounts[field] =
-          prevState[field] + singleStreetDataUpdates[field];
-      });
-      return { ...prevState, ...updatedCounts };
-    });
-
-    setSummaryData((prevState) => {
-      const updatedSummary = {};
-      Object.keys(summaryUpdates).forEach((field) => {
-        updatedSummary[field] = prevState[field] + summaryUpdates[field];
-      });
-      return { ...prevState, ...updatedSummary };
-    });
-
-    setCircleData((prevState) => {
-      const updatedSummary = {};
-      Object.keys(circleDataUpdates).forEach((field) => {
-        updatedSummary[field] = prevState[field] + circleDataUpdates[field];
-      });
-      return { ...prevState, ...updatedSummary };
-    });
-
     const clickedDataUpdates = {
       red: countUpdates.red || 0,
       black: countUpdates.black || 0,
@@ -920,40 +1274,7 @@ const Project4 = ({ theme, setTheme }) => {
       col_two: countUpdates.col_two || 0,
       col_three: countUpdates.col_three || 0,
     };
-
-    const clickedDataDoubleStreetData = {
-      one_six: doubleStreetDataUpdates.one_six || 0,
-      seven_twelve: doubleStreetDataUpdates.seven_twelve || 0,
-      thirteen_eighteen: doubleStreetDataUpdates.thirteen_eighteen || 0,
-      nineteen_twentyFour: doubleStreetDataUpdates.nineteen_twentyFour || 0,
-      twentyFive_thirty: doubleStreetDataUpdates.twentyFive_thirty || 0,
-      thirtyOne_thirtySix: doubleStreetDataUpdates.thirtyOne_thirtySix || 0,
-    };
-
-    const clickedDataSingleStreetData = {
-      one_three: singleStreetDataUpdates.one_three || 0,
-      four_six: singleStreetDataUpdates.four_six || 0,
-      seven_nine: singleStreetDataUpdates.seven_nine || 0,
-      ten_twelve: singleStreetDataUpdates.ten_twelve || 0,
-      thirteen_fifteen: singleStreetDataUpdates.thirteen_fifteen || 0,
-      sixteen_eighteen: singleStreetDataUpdates.sixteen_eighteen || 0,
-      nineteen_twentyOne: singleStreetDataUpdates.nineteen_twentyOne || 0,
-      twentyTwo_twentyFour: singleStreetDataUpdates.twentyTwo_twentyFour || 0,
-      twentyFive_twentySeven:
-        singleStreetDataUpdates.twentyFive_twentySeven || 0,
-      twentyEight_thirty: singleStreetDataUpdates.twentyEight_thirty || 0,
-      thirtyOne_thirtyThree: singleStreetDataUpdates.thirtyOne_thirtyThree || 0,
-      thirtyFour_thirtySix: singleStreetDataUpdates.thirtyFour_thirtySix || 0,
-    };
-
-    const clickedCircleData = {
-      zero: circleDataUpdates.zero || 0,
-      duZero: circleDataUpdates.duZero || 0,
-      orphe: circleDataUpdates.orphe || 0,
-      tires: circleDataUpdates.tires || 0,
-    };
-
-    setLastHitNumber({
+   setLastHitNumber({
       number: number,
       color:
         clickedDataUpdates.red === 1
@@ -963,181 +1284,74 @@ const Project4 = ({ theme, setTheme }) => {
             : "zero",
     });
 
-    setLastHitData((prevLastHitData) => {
-      const updatedLastHitData = {};
 
-      Object.keys(prevLastHitData).forEach((field) => {
-        updatedLastHitData[field] =
-          clickedDataUpdates[field] > 0 ? 0 : prevLastHitData[field] + 1;
-      });
-
-      return updatedLastHitData;
-    });
-
-    setNonDoubleStreetData((prevLastHitData) => {
-      const updatedLastHitData = {};
-
-      Object.keys(prevLastHitData).forEach((field) => {
-        updatedLastHitData[field] =
-          clickedDataDoubleStreetData[field] > 0
-            ? 0
-            : prevLastHitData[field] + 1;
-      });
-
-      return updatedLastHitData;
-    });
-
-    setNonCircleData((prevLastHitData) => {
-      const updatedLastHitData = {};
-
-      Object.keys(prevLastHitData).forEach((field) => {
-        updatedLastHitData[field] =
-          clickedCircleData[field] > 0 ? 0 : prevLastHitData[field] + 1;
-      });
-
-      return updatedLastHitData;
-    });
-
-    setNonSingleStreetData((prevLastHitData) => {
-      const updatedLastHitData = {};
-
-      Object.keys(prevLastHitData).forEach((field) => {
-        updatedLastHitData[field] =
-          clickedDataSingleStreetData[field] > 0
-            ? 0
-            : prevLastHitData[field] + 1;
-      });
-
-      return updatedLastHitData;
-    });
-
-    let changedHistoryData = {
-      color:
-        clickedDataUpdates.red === 1
-          ? "red"
-          : clickedDataUpdates.black === 1
-            ? "black"
-            : "zero",
-      size:
-        clickedDataUpdates.one_eighteen === 1
-          ? "small"
-          : clickedDataUpdates.nineteen_thirtySix === 1
-            ? "large"
-            : "zero",
-      odd_even:
-        clickedDataUpdates.odd === 1
-          ? "odd"
-          : clickedDataUpdates.even === 1
-            ? "even"
-            : "zero",
-      dozen:
-        clickedDataUpdates.dozen_one === 1
-          ? "1st"
-          : clickedDataUpdates.dozen_two === 1
-            ? "2nd"
-            : clickedDataUpdates.dozen_three === 1
-              ? "3rd"
-              : "zero",
-      column:
-        clickedDataUpdates.col_one === 1
-          ? "1st"
-          : clickedDataUpdates.col_two === 1
-            ? "2nd"
-            : clickedDataUpdates.col_three === 1
-              ? "3rd"
-              : "zero",
-    };
-
-    setHistoryData([...historyData, changedHistoryData]);
-
-    setRowData((prevRowData) => {
-      // Get the last object in rowData
-      const lastRow = prevRowData[prevRowData.length - 1];
-
-      // If no last row exists or the last row already has 3 keys, create a new row
-      if (!lastRow || Object.keys(lastRow).length >= 3) {
-        // Create a new row with the clicked letter as the first key
-        return [...prevRowData, { [`let1`]: letter }];
-      } else {
-        // The last row has less than 3 keys, add the new letter to it
-        const keyIndex = Object.keys(lastRow).length + 1; // Calculate the next key number (let1, let2, let3)
-        const updatedRow = { ...lastRow, [`let${keyIndex}`]: letter };
-
-        // Replace the last row with the updated one
-        return [...prevRowData.slice(0, -1), updatedRow];
-      }
-    });
-
-    // Handle suggestions
-    if (suggestionActive) {
-      if (letter === repeatLetter) {
-        // User clicked the repeated letter, stop suggestion for this object
-        console.log("User clicked the repeated letter: stop suggestion");
-        setSuggestionActive(false);
-        setSuggestion(""); // Clear the suggestion once the user follows it
-        setRepeatLetter("");
-      } else {
-        // Continue suggesting if the user clicks any other letter
-        setSuggestion(`Suggestion: The repeated letter is ${repeatLetter}`);
-      }
+  setRowData((prevRowData) => {
+    const lastRow = prevRowData[prevRowData.length - 1];
+    if (!lastRow || Object.keys(lastRow).length >= 3) {
+      return [...prevRowData, { [`let1`]: letter }];
+    } else {
+      const keyIndex = Object.keys(lastRow).length + 1;
+      const updatedRow = { ...lastRow, [`let${keyIndex}`]: letter };
+      return [...prevRowData.slice(0, -1), updatedRow];
     }
-  };
+  });
 
-  // Effect to handle suggestions based on the last completed object
-  useEffect(() => {
-    if (rowData.length > 0) {
-      const lastRow = rowData[rowData.length - 1];
-
-      // Check if the last object has exactly 3 letters
-      if (Object.keys(lastRow).length === 3) {
-        const values = Object.values(lastRow);
-
-        // Count occurrences of each letter
-        const occurrences = values.reduce((acc, letter) => {
-          acc[letter] = (acc[letter] || 0) + 1;
-          return acc;
-        }, {});
-
-        // Find if there's any repeated letter
-        const repeatedLetter = Object.keys(occurrences).find(
-          (letter) => occurrences[letter] > 1,
-        );
-
-        // If there's a repeated letter, prepare the suggestion for the next object
-        if (repeatedLetter) {
-          setRepeatLetter(repeatedLetter);
-          setSuggestionActive(true);
-          setUserMissedSuggestion(false); // Reset missed suggestion for new object
-          setSuggestion(`Suggestion: The repeated letter is ${repeatedLetter}`);
-        } else {
-          setSuggestion("");
-          setRepeatLetter("");
-          setSuggestionActive(false);
-        }
-      }
+  if (suggestionActive) {
+    if (letter === repeatLetter) {
+      console.log("User clicked the repeated letter: stop suggestion");
+      setSuggestionActive(false);
+      setSuggestion("");
+      setRepeatLetter("");
+    } else {
+      setSuggestion(`Suggestion: The repeated letter is ${repeatLetter}`);
     }
-  }, [rowData]);
-
-  useEffect(() => {
-    if (rowData.length > 1) {
-      const previousRow = rowData[rowData.length - 2];
-      const lastRow = rowData[rowData.length - 1];
-
-      if (
-        Object.keys(previousRow).length === 3 &&
-        Object.keys(lastRow).length === 3 &&
-        repeatLetter
-      ) {
-        const lastRowValues = Object.values(lastRow);
-
-        if (!lastRowValues.includes(repeatLetter) && !userMissedSuggestion) {
-          showToast(`Loss ${repeatLetter}`, "error");
-          setUserMissedSuggestion(true);
-          setSuggestionActive(false);
-        }
-      }
+  }
+  setDozenRowData((prevRowData) => {
+    const lastRow = prevRowData[prevRowData.length - 1];
+    if (!lastRow || Object.keys(lastRow).length >= 3) {
+      return [...prevRowData, { [`doz1`]: doz }];
+    } else {
+      const keyIndex = Object.keys(lastRow).length + 1;
+      const updatedRow = { ...lastRow, [`doz${keyIndex}`]: doz };
+      return [...prevRowData.slice(0, -1), updatedRow];
     }
-  }, [rowData, repeatLetter, userMissedSuggestion]);
+  });
+
+  if (suggestionActiveDozen) {
+    if (doz === repeatDozen) {
+      console.log("User clicked the repeated letter: stop suggestion");
+      setSuggestionActiveDozen(false);
+      setSuggestion("");
+      setRepeatDozen("");
+    } else {
+      setSuggestion(`Suggestion: The repeated letter is ${repeatLetter}`);
+    }
+  }
+
+  setColRowData((prevRowData) => {
+    const lastRow = prevRowData[prevRowData.length - 1];
+    if (!lastRow || Object.keys(lastRow).length >= 3) {
+      return [...prevRowData, { [`col1`]: col }];
+    } else {
+      const keyIndex = Object.keys(lastRow).length + 1;
+      const updatedRow = { ...lastRow, [`col${keyIndex}`]: col };
+      return [...prevRowData.slice(0, -1), updatedRow];
+    }
+  });
+
+  if (suggestionActiveCol) {
+    if (col === repeatCol) {
+      console.log("User clicked the repeated col: stop suggestion");
+      setSuggestionActiveCol(false);
+      setSuggestion("");
+      setRepeatCol("");
+    } else {
+      setSuggestion(`Suggestion: The repeated letter is ${repeatLetter}`);
+    }
+  }
+};
+
+  
 
   const handleClickUndoButton = () => {
     try {
@@ -1269,7 +1483,6 @@ const Project4 = ({ theme, setTheme }) => {
     }
   };
 
-  console.log(theme);
 
   return (
     <>
@@ -1369,7 +1582,7 @@ const Project4 = ({ theme, setTheme }) => {
             <img src={rouletteImg} alt="" className="w-full object-cover" />
           </div> */}
           <div className="flex gap-2">
-            <div className="bg-neutral-300 p-1 rounded-full">
+            {/* <div className="bg-neutral-300 p-1 rounded-full">
               <div
                 className="flex justify-center items-center bg-customBlack p-1.5 font-semibold cursor-pointer rounded-full hover:bg-gray-500"
                 onClick={() => setIsAlertAllowed(!isAlertAllowed)}
@@ -1385,16 +1598,36 @@ const Project4 = ({ theme, setTheme }) => {
                   {!isAlertAllowed ? "Off" : "On"}
                 </span>
               </div>
+            </div> */}
+            {
+              suggestionActiveDozen &&
+              <div className="p-1 rounded">
+              <div
+                className="flex justify-center items-center bg-[#58d68d] p-1.5 font-semibold cursor-pointer rounded hover:bg-gray-500 px-2"
+              >
+                Dozen {repeatDozen}
+              </div>
             </div>
+            }
+            {
+              suggestionActiveCol &&
+              <div className="p-1 rounded">
+              <div
+                className="flex justify-center items-center bg-[#58d68d] p-1.5 font-semibold cursor-pointer rounded hover:bg-gray-500 px-4"
+              >
+                Column {repeatCol}
+              </div>
+            </div>
+            }
 
-            <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
+            {/* <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
               <button
                 className="bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
                 onClick={handleClickUndoButton}
               >
                 Undo
               </button>
-            </div>
+            </div> */}
 
             <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
               <button
@@ -1419,7 +1652,7 @@ const Project4 = ({ theme, setTheme }) => {
             >
               <div className="w-full h-[7%] flex">
                 <div
-                  className="bg-customGreen w-[50%] flex justify-center items-center cursor-pointer border hover:bg-neonGreen"
+                  className={`${repeatLetter === 'A' ? 'bg-[#58d68d]' : 'bg-customGreen'} w-[50%] flex justify-center items-center cursor-pointer border hover:bg-neonGreen`}
                   onClick={() => handleClickNumber("zero", 0, "A")}
                   style={{
                     borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
@@ -1428,7 +1661,7 @@ const Project4 = ({ theme, setTheme }) => {
                   <p>0</p>
                 </div>
                 <div
-                  className="bg-customGreen w-[50%] flex justify-center items-center cursor-pointer border hover:bg-neonGreen"
+                  className={`${repeatLetter === 'A' ? 'bg-[#58d68d]' : 'bg-customGreen'} w-[50%] flex justify-center items-center cursor-pointer border hover:bg-neonGreen`}
                   onClick={() => handleClickNumber("doubleZero", "00", "A")}
                   style={{
                     borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
@@ -1444,7 +1677,7 @@ const Project4 = ({ theme, setTheme }) => {
                     <div
                       className={`w-[33.3%] flex justify-center items-center border cursor-pointer number--divs`}
                       onClick={() =>
-                        handleClickNumber(item.numString, item.num, item.letter)
+                        handleClickNumber(item.numString, item.num, item.letter, item.dozen, item.col)
                       }
                       style={{
                         backgroundColor:
@@ -1460,265 +1693,9 @@ const Project4 = ({ theme, setTheme }) => {
               </div>
             </div>
 
-            {/* <div>
-          <div className="flex items-center justify-evenly w-full">
-            <div
-              className="bg-green-500 h-full w-[50%] flex justify-center items-center cursor-pointer border"
-              onClick={() => handleClickNumber("zero", 0)}
-            >
-              <p>0</p>
-            </div>
-            <div
-              className="bg-green-500 h-full w-[50%] flex justify-center items-center cursor-pointer border"
-              onClick={() => handleClickNumber("doubleZero", "00")}
-            >
-              <p>00</p>
-            </div>
-          </div>
+          
 
-          <div className="flex items-center justify-evenly w-[30vw] h-[5vh] border-2">
-            <div
-              className="bg-red-500 h-full w-[33.3%] flex justify-center items-center cursor-pointer border-white border-x-2 border-y-2"
-              onClick={() => handleClickNumber("one", 1)}
-            >
-              <p>1</p>
-            </div>
-            <div
-              className="bg-black h-full w-[33.3%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("two", 2)}
-            >
-              <p>2</p>
-            </div>
-            <div
-              className="bg-red-500 h-full w-[33.3%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("three", 3)}
-            >
-              <p>3</p>
-            </div>
-          </div>
-          <div className="flex items-center justify-evenly w-[30vw] h-[5vh] border-2">
-            <div
-              className="bg-black h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("four", 4)}
-            >
-              <p>4</p>
-            </div>
-            <div
-              className="bg-red-500 h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("five", 5)}
-            >
-              <p>5</p>
-            </div>
-            <div
-              className="bg-black h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("six", 6)}
-            >
-              <p>6</p>
-            </div>
-          </div>
-          <div className="flex items-center justify-evenly w-[30vw] h-[5vh] border-2">
-            <div
-              className="bg-red-500 h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("seven", 7)}
-            >
-              <p>7</p>
-            </div>
-            <div
-              className="bg-black h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("eight", 8)}
-            >
-              <p>8</p>
-            </div>
-            <div
-              className="bg-red-500 h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("nine", 9)}
-            >
-              <p>9</p>
-            </div>
-          </div>
-          <div className="flex items-center justify-evenly w-[30vw] h-[5vh] border-2">
-            <div
-              className="bg-black h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("ten", 10)}
-            >
-              <p>10</p>
-            </div>
-            <div
-              className="bg-black h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("eleven", 11)}
-            >
-              <p>11</p>
-            </div>
-            <div
-              className="bg-red-500 h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("twelve", 12)}
-            >
-              <p>12</p>
-            </div>
-          </div>
-          <div className="flex items-center justify-evenly w-[30vw] h-[5vh] border-2">
-            <div
-              className="bg-black h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("thirteen", 13)}
-            >
-              <p>13</p>
-            </div>
-            <div
-              className="bg-red-500 h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("fourteen", 14)}
-            >
-              <p>14</p>
-            </div>
-            <div
-              className="bg-black h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("fifteen", 15)}
-            >
-              <p>15</p>
-            </div>
-          </div>
-          <div className="flex items-center justify-evenly w-[30vw] h-[5vh] border-2">
-            <div
-              className="bg-red-500 h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("sixteen", 16)}
-            >
-              <p>16</p>
-            </div>
-            <div
-              className="bg-black h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("seventeen", 17)}
-            >
-              <p>17</p>
-            </div>
-            <div
-              className="bg-red-500 h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("eighteen", 18)}
-            >
-              <p>18</p>
-            </div>
-          </div>
-          <div className="flex items-center justify-evenly w-[30vw] h-[5vh] border-2">
-            <div
-              className="bg-red-500 h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("nineteen", 19)}
-            >
-              <p>19</p>
-            </div>
-            <div
-              className="bg-black h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("twenty", 20)}
-            >
-              <p>20</p>
-            </div>
-            <div
-              className="bg-red-500 h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("twentyOne", 21)}
-            >
-              <p>21</p>
-            </div>
-          </div>
-          <div className="flex items-center justify-evenly w-[30vw] h-[5vh] border-2">
-            <div
-              className="bg-black h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("twentyTwo", 22)}
-            >
-              <p>22</p>
-            </div>
-            <div
-              className="bg-red-500 h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("twentyThree", 23)}
-            >
-              <p>23</p>
-            </div>
-            <div
-              className="bg-black h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("twentyFour", 24)}
-            >
-              <p>24</p>
-            </div>
-          </div>
-          <div className="flex items-center justify-evenly w-[30vw] h-[5vh] border-2">
-            <div
-              className="bg-red-500 h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("twentyFive", 25)}
-            >
-              <p>25</p>
-            </div>
-            <div
-              className="bg-black h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("twentySix", 26)}
-            >
-              <p>26</p>
-            </div>
-            <div
-              className="bg-red-500 h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("twentySeven", 27)}
-            >
-              <p>27</p>
-            </div>
-          </div>
-          <div className="flex items-center justify-evenly w-[30vw] h-[5vh] border-2">
-            <div
-              className="bg-black h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("twentyEight", 28)}
-            >
-              <p>28</p>
-            </div>
-            <div
-              className="bg-black h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("twentyNine", 29)}
-            >
-              <p>29</p>
-            </div>
-            <div
-              className="bg-red-500 h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("thirty", 30)}
-            >
-              <p>30</p>
-            </div>
-          </div>
-          <div className="flex items-center justify-evenly w-[30vw] h-[5vh] border-2">
-            <div
-              className="bg-black h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("thirtyOne", 31)}
-            >
-              <p>31</p>
-            </div>
-            <div
-              className="bg-red-500 h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("thirtyTwo", 32)}
-            >
-              <p>32</p>
-            </div>
-            <div
-              className="bg-black h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("thirtyThree", 33)}
-            >
-              <p>33</p>
-            </div>
-          </div>
-          <div className="flex items-center justify-evenly w-[30vw] h-[5vh] border-2">
-            <div
-              className="bg-red-500 h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("thirtyFour", 34)}
-            >
-              <p>34</p>
-            </div>
-            <div
-              className="bg-black h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("thirtyFive", 35)}
-            >
-              <p>35</p>
-            </div>
-            <div
-              className="bg-red-500 h-full w-[20%] flex justify-center items-center cursor-pointer"
-              onClick={() => handleClickNumber("thirtySix", 36)}
-            >
-              <p>36</p>
-            </div>
-          </div>
-        </div> */}
-
-            <table
+            {/* <table
               border="1"
               cellPadding="10"
               className="w-[30%] max-sm:w-[40%] table--1"
@@ -1773,69 +1750,10 @@ const Project4 = ({ theme, setTheme }) => {
                   countData.col_three,
                   lastHitData.col_three,
                 )}
-                {/* <tr>
-              <td>Red</td>
-              <td>{countData.red}</td>
-              <td>{lastHitData.red}</td>
-            </tr>
-            <tr>
-              <td>Black</td>
-              <td>{countData.black}</td>
-              <td>{lastHitData.black}</td>
-            </tr>
-            <tr>
-              <td>Even</td>
-              <td>{countData.even}</td>
-              <td>{lastHitData.even}</td>
-            </tr>
-            <tr>
-              <td>Odd</td>
-              <td>{countData.odd}</td>
-              <td>{lastHitData.odd}</td>
-            </tr>
-            <tr>
-              <td>1-18</td>
-              <td>{countData.one_eighteen}</td>
-              <td>{lastHitData.one_eighteen}</td>
-            </tr>
-            <tr>
-              <td>19-36</td>
-              <td>{countData.nineteen_thirtySix}</td>
-              <td>{lastHitData.nineteen_thirtySix}</td>
-            </tr>
-            <tr>
-              <td>1st Dozen</td>
-              <td>{countData.dozen_one}</td>
-              <td>{lastHitData.dozen_one}</td>
-            </tr>
-            <tr>
-              <td>2nd Dozen</td>
-              <td>{countData.dozen_two}</td>
-              <td>{lastHitData.dozen_two}</td>
-            </tr>
-            <tr>
-              <td>3rd Dozen</td>
-              <td>{countData.dozen_three}</td>
-              <td>{lastHitData.dozen_three}</td>
-            </tr>
-            <tr>
-              <td>1st Column</td>
-              <td>{countData.col_one}</td>
-              <td>{lastHitData.col_one}</td>
-            </tr>
-            <tr>
-              <td>2nd Column</td>
-              <td>{countData.col_two}</td>
-              <td>{lastHitData.col_two}</td>
-            </tr>
-            <tr>
-              <td>3rd Column</td>
-              <td>{countData.col_three}</td>
-              <td>{lastHitData.col_three}</td>
-            </tr> */}
               </tbody>
-            </table>
-            <table
+            </table> */}
+
+            {/* <table
               border="1"
               cellPadding="10"
               className="w-[30%] max-sm:mt-14 table--1 max-sm:hidden hidden"
@@ -1884,39 +1802,10 @@ const Project4 = ({ theme, setTheme }) => {
                   doubleStreetData.thirtyOne_thirtySix,
                   nonDoubleStreetData.thirtyOne_thirtySix,
                 )}
-
-                {/* <tr>
-              <td>one four</td>
-              <td>{doubleStreetData.one_six}</td>
-              <td>{nonDoubleStreetData.one_six}</td>
-            </tr>
-            <tr>
-              <td>seven ten</td>
-              <td>{doubleStreetData.seven_twelve}</td>
-              <td>{nonDoubleStreetData.seven_twelve}</td>
-            </tr>
-            <tr>
-              <td>thirteen sixteen</td>
-              <td>{doubleStreetData.thirteen_eighteen}</td>
-              <td>{nonDoubleStreetData.thirteen_eighteen}</td>
-            </tr>
-            <tr>
-              <td>nineteen twentyTwo</td>
-              <td>{doubleStreetData.nineteen_twentyFour}</td>
-              <td>{nonDoubleStreetData.nineteen_twentyFour}</td>
-            </tr>
-            <tr>
-              <td>twentyFive twentyEight</td>
-              <td>{doubleStreetData.twentyFive_thirty}</td>
-              <td>{nonDoubleStreetData.twentyFive_thirty}</td>
-            </tr>
-            <tr>
-              <td>thirtyOne thirtySix</td>
-              <td>{doubleStreetData.thirtyOne_thirtySix}</td>
-              <td>{nonDoubleStreetData.thirtyOne_thirtySix}</td>
-            </tr> */}
               </tbody>
-            </table>
+            </table> */}
+            
+{/*             
             <table
               border="1"
               cellPadding="10"
@@ -1997,82 +1886,10 @@ const Project4 = ({ theme, setTheme }) => {
                   nonSingleStreetData.thirtyFour_thirtySix,
                 )}
               </tbody>
-            </table>
+            </table> */}
           </div>
 
-          {/* <div className="w-2/5 small--screen--wrapper">
-            <table
-              border="1"
-              cellPadding="10"
-              className="text-center max-h-60 hidden max-sm:block table-408"
-            >
-              <thead>
-                <tr>
-                  <th className="border p-3 max-sm:p-1 bg-customGreen">
-                    Category
-                  </th>
-                  <th className="border p-3 max-sm:p-1 bg-customGreen">
-                    Count
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="bg-customGray border text-black font-semibold p-2 max-sm:text-xs">
-                    Voisins du Zero
-                  </td>
-                  <td
-                    className={
-                      circleData.duZero === 0
-                        ? "bg-gray-100 text-black"
-                        : "bg-customBlue"
-                    }
-                  >
-                    {circleData.duZero}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="bg-customGray border text-black font-semibold p-2 max-sm:text-xs">
-                    Orphelins
-                  </td>
-                  <td
-                    className={
-                      circleData.orphe === 0
-                        ? "bg-gray-100 text-black"
-                        : "bg-customBlue"
-                    }
-                  >
-                    {circleData.orphe}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="bg-customGray border text-black font-semibold p-2 max-sm:text-xs">
-                    Tiers du Cylindre
-                  </td>
-                  <td
-                    className={
-                      circleData.tires === 0
-                        ? "bg-gray-100 text-black"
-                        : "bg-customBlue"
-                    }
-                  >
-                    {circleData.tires}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div className="border max-sm:flex flex-wrap max-sm:text-xs w-40 mt-5 hidden table-408">
-              {renderSummaryData("LER", summaryData.lowEvenRed)}
-              {renderSummaryData("LEB", summaryData.lowEvenBlack)}
-              {renderSummaryData("LOR", summaryData.lowOddRed)}
-              {renderSummaryData("LOB", summaryData.lowOddBlack)}
-              {renderSummaryData("HER", summaryData.highEvenRed)}
-              {renderSummaryData("HOR", summaryData.highOddRed)}
-              {renderSummaryData("HEB", summaryData.highEvenBlack)}
-              {renderSummaryData("HOB", summaryData.highOddBlack)}
-            </div>
-          </div> */}
+  
         </div>
       </div>
     </>
