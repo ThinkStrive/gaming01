@@ -55,10 +55,6 @@ function RouletteGrid({
   setZeroData,
   zeroDivs,
   setZeroDivs,
-  setZeroEquityData,
-  zeroEquityData,
-  totalBetAmt,
-  setTotalBetAmt,
 }) {
   const _0divKeys = Object.keys(zeroData);
   const _0divData = Object.values(zeroData);
@@ -84,6 +80,7 @@ function RouletteGrid({
         for (const key in newData) {
           if (key === coinData) {
             newData[key] += coin;
+            console.log((newData[key] += coin));
           }
         }
 
@@ -112,6 +109,7 @@ function RouletteGrid({
         for (const key in newData) {
           if (key === coinData) {
             newData[key] += coin;
+            console.log((newData[key] += coin));
           }
         }
 
@@ -126,6 +124,7 @@ function RouletteGrid({
         for (const key in newData) {
           if (key === coinData) {
             newData[key] += coin;
+            console.log((newData[key] += coin));
           }
         }
 
@@ -140,6 +139,7 @@ function RouletteGrid({
         for (const key in newData) {
           if (key === coinData) {
             newData[key] += coin;
+            console.log((newData[key] += coin));
           }
         }
 
@@ -154,6 +154,7 @@ function RouletteGrid({
         for (const key in newData) {
           if (key === coinData) {
             newData[key] += coin;
+            console.log((newData[key] += coin));
           }
         }
 
@@ -172,20 +173,6 @@ function RouletteGrid({
         }
 
         localStorage.setItem("LowerDivs", JSON.stringify(newData));
-
-        return newData;
-      });
-    } else if (selector === "zeroDivs") {
-      setZeroData((prevData) => {
-        const newData = { ...prevData };
-
-        for (const key in newData) {
-          if (key == coinData) {
-            newData[key] += coin;
-          }
-        }
-
-        localStorage.setItem("zeroData", JSON.stringify(newData));
 
         return newData;
       });
@@ -217,21 +204,6 @@ function RouletteGrid({
       return newData;
     });
 
-    setZeroDivs((prevData) => {
-      const newData = { ...prevData };
-
-      for (const key in newData) {
-        if (key === num) {
-          newData[key] += coin * 35;
-        } else {
-          newData[key] -= coin;
-        }
-      }
-
-      localStorage.setItem("Data", JSON.stringify(newData));
-      return newData;
-    });
-
     setEquityData((prevData) => {
       const newData = { ...prevData };
 
@@ -241,32 +213,10 @@ function RouletteGrid({
         }
       }
 
-      localStorage.setItem("EquityData", JSON.stringify(newData));
+      // localStorage.setItem("Data", JSON.stringify(newData));
       return newData;
     });
     // console.log("data : ", type, ratio, amount, payout);
-
-    setZeroEquityData((prevData) => {
-      const newData = { ...prevData };
-
-      for (const key in newData) {
-        if (key === num) {
-          newData[key] += coin;
-        }
-      }
-
-      localStorage.setItem("zeroEquityData", JSON.stringify(newData));
-      return newData;
-    });
-
-    setTotalBetAmt((prevData) => {
-      const newData = { ...prevData };
-
-      newData.amt += coin;
-
-      localStorage.setItem("totalBetAmount", JSON.stringify(newData));
-      return newData;
-    });
 
     showRatioPopup(type, ratio, amount);
     setCoinData(coin, coinData, selector);
@@ -349,35 +299,7 @@ function RouletteGrid({
         }
       });
 
-      localStorage.setItem("EquityData", JSON.stringify(newData));
-      return newData;
-    });
-
-    setZeroEquityData((prevData) => {
-      const newData = { ...prevData };
-
-      numsArray.forEach((num) => {
-        if (newData.hasOwnProperty(num)) {
-          if (length === 3) {
-            newData[num] += coin / 3;
-          } else if (length === 2) {
-            newData[num] += coin / 2;
-          } else if (length === 1) {
-            newData[num] += coin + 1;
-          }
-        }
-      });
-
-      localStorage.setItem("zeroEquityData", JSON.stringify(newData));
-      return newData;
-    });
-
-    setTotalBetAmt((prevData) => {
-      const newData = { ...prevData };
-
-      newData.amt += coin;
-
-      localStorage.setItem("totalBetAmount", JSON.stringify(newData));
+      // localStorage.setItem("Data", JSON.stringify(newData));
       return newData;
     });
     setCoinData(coin, coinData, selector);
@@ -415,7 +337,7 @@ function RouletteGrid({
           display: data > 0 ? "flex" : "none",
         }}
       >
-        <div className="absolute w-full h-full top-0 left-0 bg-yellow-500 rounded-full">
+        <div className="absolute w-full h-full top-0 left-0 bg-yellow-500 rounded-full -z-10">
           <img src={renderCoinImg(data)} alt="" />
         </div>
         {data}
@@ -455,7 +377,7 @@ function RouletteGrid({
             background: `url(${coinImg.coin_1}) cover`,
           }}
         >
-          <div className="absolute w-full h-full top-0 left-0 bg-yellow-500 rounded-full">
+          <div className="absolute w-full h-full top-0 left-0 bg-yellow-500 rounded-full -z-10">
             <img src={renderCoinImg(_1divData[index])} alt="" />
           </div>
           {_1divData[index]}
@@ -484,48 +406,24 @@ function RouletteGrid({
       {/* Top Zero's */}
       <div className="w-[70%] h-[7%] bg-green-400 flex">
         <div
-          className="w-[50%]  border flex justify-center items-center text-white font-semibold relative"
+          className="w-[50%]  border flex justify-center items-center text-white font-semibold"
           style={{ width: zero === "zero" ? "100%" : "50%" }}
           onMouseEnter={() => showRatioPopup()}
           onMouseLeave={() => removeRatioPopup()}
         >
           0
           <div
-            className="w-full h-full absolute top-0 hover:bg-blue-600 hover:opacity-50"
-            onClick={() =>
-              selectSingleDiv(
-                "_0",
-                coin.amt,
-                "_0",
-                1,
-                `0 Straight-Up`,
-                35,
-                zeroData._0,
-                zeroDivs._0,
-              )
-            }
-          ></div>
+            className="w-5 h-5 bg-yellow-500 rounded-full text-xs flex justify-center items-center text-white md:rotate-90"
+            style={{ display: data._0 > 0 ? "flex" : "none" }}
+          >
+            {_1divData._0}
+          </div>
         </div>
         <div
-          className="w-[50%] border flex justify-center items-center text-white font-semibold relative"
+          className="w-[50%] border flex justify-center items-center text-white font-semibold"
           style={{ display: zero === "zero" ? "none" : "flex" }}
         >
           00
-          <div
-            className="w-full h-full absolute top-0 hover:bg-blue-600 hover:opacity-50"
-            onClick={() =>
-              selectSingleDiv(
-                "_00",
-                coin.amt,
-                "_00",
-                1,
-                `00 Straight-Up`,
-                35,
-                zeroData._00,
-                zeroDivs._00,
-              )
-            }
-          ></div>
           <div
             className="w-5 h-5 bg-yellow-500 rounded-full text-xs flex justify-center items-center text-white md:rotate-90"
             style={{ display: data._00 > 0 ? "flex" : "none" }}
@@ -935,15 +833,7 @@ function RouletteGrid({
               right: item.right,
               backgroundColor: item.bg ? item.bg : "red",
             }}
-            onClick={() =>
-              MultiDivSelector(
-                zero === "doubleZero" ? item._00.num : item._0.num,
-                coin.amt,
-                zero === "doubleZero" ? item._00.length : item._0.length,
-                _0divKeys[index],
-                "zeroDivs",
-              )
-            }
+            // onClick={() => divSelect6(item.num ? item.num : [], coin)}
           ></div>
         );
       })}

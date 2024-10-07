@@ -852,11 +852,12 @@ const Project4 = ({ theme }) => {
           style={{ backgroundColor: "#FFFBE3" }}
         >
           <div className="flex gap-4 pl-2 items-center sm--lasthit">
-            {/* <div>
+            <div>
               <h2 className="text-customPurple text-base font-bold">
                 Last Hit Number
               </h2>
-            </div> */}
+              {/* <p className="text-customPurple text-xs">Last Hit Number</p> */}
+            </div>
             <div
               className={`${
                 lastHitNumber?.color === "zero"
@@ -875,7 +876,7 @@ const Project4 = ({ theme }) => {
           </div>
 
           <div className="flex">
-            {/* <div
+            <div
               className="flex justify-center items-center p-0.5 py-0 rounded-md font-semibold text-sm text-gray-500"
               onClick={() => setIsAlertAllowed(!isAlertAllowed)}
             >
@@ -896,22 +897,7 @@ const Project4 = ({ theme }) => {
               onClick={handleClickResetButton}
             >
               Undo
-            </button> */}
-            {suggestionActiveDozen && (
-              <div className="p-1 rounded">
-                <div className="flex justify-center items-center bg-[#58d68d] p-1.5 font-semibold cursor-pointer rounded hover:bg-gray-500 px-2">
-                  Dozen {repeatDozen}
-                </div>
-              </div>
-            )}
-            {suggestionActiveCol && (
-              <div className="p-1 rounded">
-                <div className="flex justify-center items-center bg-[#58d68d] p-1.5 font-semibold cursor-pointer rounded hover:bg-gray-500 px-4">
-                  Column {repeatCol}
-                </div>
-              </div>
-            )}
-
+            </button>
 
             <button
               className="text-gray-500 py-1 px-1 rounded-full text-sm font-semibold"
@@ -978,13 +964,13 @@ const Project4 = ({ theme }) => {
           </div>
         </div>
       </div>
-      <div className="px-4 main border h-[full]">
+      <div className="px-4 main">
         <div
-          className="mt-1 w-full flex justify-center items-center md:h-[76vh] max-[800px]:h-[75vh] max-[600px]:h-[83.3vh] py-4"
+          className="mt-3 w-full flex justify-center items-center md:h-[73vh] max-[600px]:h-[100vh] "
           // style={{ height: "100vh" }}
         >
           <div
-            className="w-[60%] md:w-[25%] max-[466px]:w-[60%] flex justify-between items-center min-[600px]:w-[35%] min-[600px]:-rotate-90 min-[600px]:h-[70vw] max-sm:h-[100%] roulate--grid--proj--4"
+            className="w-[60%] md:w-[25%] max-[466px]:w-[80%] flex justify-between items-center min-[600px]:w-[35%] min-[600px]:-rotate-90 min-[600px]:h-[70vw] max-sm:h-[100%] roulate--grid--proj--4"
             // style={{ height: "70vw" }}
           >
             <div className="w-[100%] h-full max-sm:h-[100%] lg:h-[90%] md:h-[110%] xl:h-[50rem]">

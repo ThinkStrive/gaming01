@@ -48,10 +48,6 @@ function Project2() {
     payout: 0,
   });
   const [show, setShow] = useState("winloss");
-  const [totalBetAmt, setTotalBetAmt] = useState(() => {
-    const savedData = localStorage.getItem("totalBetAmount");
-    return savedData ? JSON.parse(savedData) : { amt: 0 };
-  });
 
   const [zeroDivs, setZeroDivs] = useState(() => {
     const savedData = localStorage.getItem("zeroDivs");
@@ -151,18 +147,6 @@ function Project2() {
           _36: 0,
         };
   });
-
-  const [zeroEquityData, setZeroEquityData] = useState(() => {
-    const savedData = localStorage.getItem("zeroEquityData");
-    return savedData
-      ? JSON.parse(savedData)
-      : {
-          _0: 0,
-          _00: 0,
-        };
-  });
-
-  // setZeroEquityData
 
   // coins data according to selectors
 
@@ -646,30 +630,7 @@ function Project2() {
         newData[key] = 0;
       }
 
-      localStorage.setItem("EquityData", JSON.stringify(newData));
-      return newData;
-    });
-
-    setZeroEquityData((prevData) => {
-      const newData = { ...prevData };
-
-      for (const key in newData) {
-        newData[key] = 0;
-      }
-
-      localStorage.setItem("zeroEquityData", JSON.stringify(newData));
-      return newData;
-    });
-
-    setZeroData((prevData) => {
-      const newData = { ...prevData };
-
-      for (const key in newData) {
-        newData[key] = 0;
-      }
-
-      localStorage.setItem("zeroData", JSON.stringify(newData));
-
+      //  localStorage.setItem("Data", JSON.stringify(newData));
       return newData;
     });
 
@@ -757,18 +718,6 @@ function Project2() {
 
       return newData;
     });
-
-    setTotalBetAmt((prevData) => {
-      const newData = { ...prevData };
-
-      for (const key in newData) {
-        newData[key] = 0;
-      }
-
-      localStorage.setItem("totalBetAmount", JSON.stringify(newData));
-
-      return newData;
-    });
   };
 
   const showRatioPopup = (type, ratio, amount) => {
@@ -811,8 +760,8 @@ function Project2() {
       style={{ maxWidth: "80rem" }}
     >
       <div className="w-full flex flex-col justify-center items-center h-[30rem] bg-slate-900  mt-10">
-        <div className="w-full py-3 px-3 bg-blue-700 flex justify-between items-center md:w-[68%] md:ml-10">
-          <div>Total Amt Bet {totalBetAmt.amt}</div>
+        {/* <div className="w-full py-3 px-3 bg-blue-700 flex justify-between items-center md:w-[68%] md:ml-10">
+          <div>Total Amt Bet 0</div>
           <div>EV/Spin 0</div>
           <div>Comp Val/Spin 0</div>
 
@@ -824,7 +773,7 @@ function Project2() {
               Reset
             </button>
           </div>
-        </div>
+        </div> */}
         {/* Roulette Grid */}
         <div className="w-full h-full relative flex justify-center items-center">
           <RouletteGrid
@@ -855,10 +804,6 @@ function Project2() {
             setZeroData={setZeroData}
             zeroDivs={zeroDivs}
             setZeroDivs={setZeroDivs}
-            setZeroEquityData={setZeroEquityData}
-            zeroEquityData={zeroEquityData}
-            totalBetAmt={totalBetAmt}
-            setTotalBetAmt={setTotalBetAmt}
           />
 
           {/* info ratio box */}
@@ -974,6 +919,15 @@ function Project2() {
           <div className="w-[16rem] max-sm:rotate-90">
             <WheelCoverage data={data} type={zero} />
           </div>
+
+          <div>
+            <button
+              className="bg-stone-600 p-2 rounded-lg"
+              onClick={resetHandler}
+            >
+              Reset
+            </button>
+          </div>
         </div>
 
         <div className="max-sm:w-[50%] w-[70%] border rounded-xl flex justify-center md:items-center max-[600px]:h-[100%] relative">
@@ -1017,15 +971,11 @@ function Project2() {
           >
             <div className="bg-customGreen w-full h-10 flex">
               <div className="w-[50%] h-full border flex justify-center items-center">
-                <p className="rotate-90">
-                  {zeroEquityData._0 > 0 ? zeroEquityData._0.toFixed(2) : ""}
-                </p>
+                <p className="rotate-90">00</p>
               </div>
 
               <div className="w-[50%] h-full border flex justify-center items-center">
-                <p className="rotate-90">
-                  {zeroEquityData._00 > 0 ? zeroEquityData._00.toFixed(2) : ""}
-                </p>
+                <p className="rotate-90">0</p>
               </div>
             </div>
 
