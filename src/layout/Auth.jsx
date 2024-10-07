@@ -18,12 +18,12 @@ const Auth = () => {
     <div className={`h-screen w-screen relative bg-[#141414]`}>
       <div className="">
         <Routes>
-          <Route
+          {/* <Route
             path="/login"
             element={
               <Login inputData={inputData} setInputData={setInputData} />
             }
-          />
+          /> */}
           {/* <Route
             path="/register"
             element={
