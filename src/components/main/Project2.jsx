@@ -47,6 +47,17 @@ function Project2() {
     betAnmount: 0,
     payout: 0,
   });
+  const [show, setShow] = useState("winloss");
+
+  const [zeroDivs, setZeroDivs] = useState(() => {
+    const savedData = localStorage.getItem("zeroDivs");
+    return savedData
+      ? JSON.parse(savedData)
+      : {
+          _0: 0,
+          _00: 0,
+        };
+  });
 
   const [data, setData] = useState(() => {
     const savedData = localStorage.getItem("Data");
@@ -94,7 +105,7 @@ function Project2() {
 
   // state for equity
   const [equityData, setEquityData] = useState(() => {
-    const savedData = localStorage.getItem("Data");
+    const savedData = localStorage.getItem("EquityData");
     return savedData
       ? JSON.parse(savedData)
       : {
@@ -136,7 +147,19 @@ function Project2() {
           _36: 0,
         };
   });
+
   // coins data according to selectors
+
+  const [zeroData, setZeroData] = useState(() => {
+    const savedData = localStorage.getItem("zeroData");
+    return savedData
+      ? JSON.parse(savedData)
+      : {
+          _0: 0,
+          _00: 0,
+        };
+  });
+
   const [singleDivCoinData, setSingleDivCoinData] = useState(() => {
     const savedData = localStorage.getItem("_singleDivCoin");
     return savedData
@@ -578,6 +601,17 @@ function Project2() {
   // );
 
   const resetHandler = () => {
+    setZeroDivs((prevData) => {
+      const newData = { ...prevData };
+
+      for (const key in newData) {
+        newData[key] = 0;
+      }
+
+      localStorage.setItem("zeroDivs", JSON.stringify(newData));
+      return newData;
+    });
+
     setData((prevData) => {
       const newData = { ...prevData };
 
@@ -586,6 +620,17 @@ function Project2() {
       }
 
       localStorage.setItem("Data", JSON.stringify(newData));
+      return newData;
+    });
+
+    setEquityData((prevData) => {
+      const newData = { ...prevData };
+
+      for (const key in newData) {
+        newData[key] = 0;
+      }
+
+      //  localStorage.setItem("Data", JSON.stringify(newData));
       return newData;
     });
 
@@ -711,15 +756,31 @@ function Project2() {
 
   return (
     <div
-      className="bg-slate-500 mx-auto px-3 h-[400vh]"
+      className="bg-slate-500 mx-auto px-3 h-auto"
       style={{ maxWidth: "80rem" }}
     >
-      <div className="w-full flex justify-center items-center h-[30rem] bg-slate-900 relative">
+      <div className="w-full flex flex-col justify-center items-center h-[30rem] bg-slate-900  mt-10">
+        {/* <div className="w-full py-3 px-3 bg-blue-700 flex justify-between items-center md:w-[68%] md:ml-10">
+          <div>Total Amt Bet 0</div>
+          <div>EV/Spin 0</div>
+          <div>Comp Val/Spin 0</div>
+
+          <div>
+            <button
+              className="bg-stone-600 p-2 rounded-lg"
+              onClick={resetHandler}
+            >
+              Reset
+            </button>
+          </div>
+        </div> */}
         {/* Roulette Grid */}
-        <div>
+        <div className="w-full h-full relative flex justify-center items-center">
           <RouletteGrid
             data={data}
             setData={setData}
+            equityData={equityData}
+            setEquityData={setEquityData}
             singleDivCoinData={singleDivCoinData}
             setSingleDivCoinData={setSingleDivCoinData}
             divSelect2Data={divSelect2Data}
@@ -739,159 +800,226 @@ function Project2() {
             zero={zero}
             setZero={setZero}
             coin={coin}
+            zeroData={zeroData}
+            setZeroData={setZeroData}
+            zeroDivs={zeroDivs}
+            setZeroDivs={setZeroDivs}
           />
+
+          {/* info ratio box */}
+          <div
+            className="w-40 bg-customPurple absolute top-14 right-5 z-20"
+            style={{ display: ratioPopup ? "block" : "none" }}
+          >
+            <div className="w-full p-1 bg-darkBlue text-center font-semibold">
+              {ratioPopupData.head}
+            </div>
+            <div className="text-xs font-semibold">
+              <p className="p-1">Pays: {ratioPopupData.ratio}:1</p>
+              {ratioPopupData.betAnmount <= 0 || ratioPopupData.payout <= 0 ? (
+                ""
+              ) : (
+                <>
+                  <p className="p-1">Bet: {ratioPopupData.betAnmount}</p>
+                  <p className="p-1">Payout: {ratioPopupData.payout}</p>
+                </>
+              )}
+            </div>
+          </div>
         </div>
         {/* Roulette Grid Ends Here */}
-        {/* info ratio box */}
-        <div
-          className="w-40 bg-customPurple absolute top-14 right-5 z-20"
-          style={{ display: ratioPopup ? "block" : "none" }}
-        >
-          <div className="w-full p-1 bg-darkBlue text-center font-semibold">
-            {ratioPopupData.head}
-          </div>
-          <div className="text-xs font-semibold">
-            <p className="p-1">Pays: {ratioPopupData.ratio}:1</p>
-            {ratioPopupData.betAnmount <= 0 || ratioPopupData.payout <= 0 ? (
-              ""
-            ) : (
-              <>
-                <p className="p-1">Bet: {ratioPopupData.betAnmount}</p>
-                <p className="p-1">Payout: {ratioPopupData.payout}</p>
-              </>
-            )}
-          </div>
-        </div>
       </div>
 
-      {/* Reset btn */}
-      <div>
-        <button className="bg-stone-600 p-2 rounded-lg" onClick={resetHandler}>
-          Reset
-        </button>
-      </div>
+      <div className="w-full h-[20rem] max-sm:h-[80vh] flex justify-between bg-zinc-700 max-sm:mt-20">
+        <div className="w-[30%] max-[600px]:w-[50%]">
+          {/* Coins section */}
+          <div className=" w-[20rem] flex items-center gap-3 overflow-x-scroll">
+            {coinInfo.map((item, index) => {
+              return (
+                <img
+                  key={index}
+                  src={item.img}
+                  alt=""
+                  className={
+                    item.amount === coin.amt
+                      ? "border border-neonGreen rounded-full p-1 hover:animate-pulse cursor-pointer"
+                      : "rounded-full p-1 cursor-pointer"
+                  }
+                  onClick={() =>
+                    setCoin((prevData) => {
+                      const newData = { ...prevData };
+                      newData.amt = item.amount;
+                      return newData;
+                    })
+                  }
+                />
+              );
+            })}
 
-      <div className="w-full flex justify-center max-sm:justify-between gap-6 items-start bg-zinc-700 max-sm:mt-20">
-        {/* Coins section */}
-        <div className=" w-[20rem] flex items-center gap-3 overflow-x-scroll">
-          {coinInfo.map((item, index) => {
-            return (
-              <img
-                key={index}
-                src={item.img}
-                alt=""
-                className={
-                  item.amount === coin.amt
-                    ? "border border-neonGreen rounded-full p-1 hover:animate-pulse cursor-pointer"
-                    : "rounded-full p-1 cursor-pointer"
-                }
-                onClick={() =>
-                  setCoin((prevData) => {
-                    const newData = { ...prevData };
-                    newData.amt = item.amount;
-                    return newData;
-                  })
-                }
-              />
-            );
-          })}
+            {customCoins
+              ? customCoins.map((item) => {
+                  return (
+                    <div
+                      className="bg-blue-500 w-[100%]"
+                      onClick={() =>
+                        setCoin((prevData) => {
+                          const newData = { ...prevData };
+                          newData.amt = item;
+                          return newData;
+                        })
+                      }
+                    >
+                      {item}
+                    </div>
+                  );
+                })
+              : ""}
 
-          {customCoins
-            ? customCoins.map((item) => {
-                return (
-                  <div
-                    className="bg-blue-500 w-[100%]"
-                    onClick={() =>
-                      setCoin((prevData) => {
-                        const newData = { ...prevData };
-                        newData.amt = item;
-                        return newData;
-                      })
-                    }
-                  >
-                    {item}
-                  </div>
-                );
-              })
-            : ""}
-
-          <div
-            className="px-4 h-[3.6rem] bg-gray-500 flex justify-center items-center rounded-full cursor-pointer"
-            onClick={() => setCoinPopup(coinPopup ? false : true)}
-          >
-            <IoMdAdd size={28} />
-          </div>
-        </div>
-
-        {/* Coin add Popup */}
-        <div
-          className="w-[15rem] h-[13rem] absolute p-2 flex flex-col justify-center items-center rounded-lg shadow-2xl backdrop-sepia bg-gray-900"
-          style={{ display: coinPopup ? "flex" : "none" }}
-        >
-          <h2 className="text-gray-300 font-semibold text-[1rem]">
-            Add Your custom Coin here!
-          </h2>
-          <div className="flex gap-5 flex-col justify-center items-center border border-gray-500 py-4 px-2 rounded-lg">
-            <div>
-              <input
-                type={customCoinVal}
-                className="bg-transparent border border-gray-700 py-1 rounded-md outline-none text-[.9rem] pl-1"
-                placeholder="Enter the amount"
-                onInput={(e) => setCustomCoinVal(e.target.value)}
-              />
-              <p
-                className="inline text-xs text-[rgb(204,0,0)] font-semibold"
-                style={{ display: customCoinExists ? "inline" : "none" }}
-              >
-                This coin already exists
-              </p>
-            </div>
-            <button
-              className="bg-white shadow-2xl w-[2rem] h-[2rem] flex justify-center items-center rounded-full text-gray-500"
-              onClick={() => addCustomCoins(Number(customCoinVal))}
+            <div
+              className="px-4 h-[3.6rem] bg-gray-500 flex justify-center items-center rounded-full cursor-pointer"
+              onClick={() => setCoinPopup(coinPopup ? false : true)}
             >
-              <IoMdAdd size={20} />
+              <IoMdAdd size={28} />
+            </div>
+          </div>
+
+          {/* Coin add Popup */}
+          <div
+            className="w-[15rem] h-[13rem] absolute p-2 flex flex-col justify-center items-center rounded-lg shadow-2xl backdrop-sepia bg-gray-900"
+            style={{ display: coinPopup ? "flex" : "none" }}
+          >
+            <h2 className="text-gray-300 font-semibold text-[1rem]">
+              Add Your custom Coin here!
+            </h2>
+            <div className="flex gap-5 flex-col justify-center items-center border border-gray-500 py-4 px-2 rounded-lg">
+              <div>
+                <input
+                  type={customCoinVal}
+                  className="bg-transparent border border-gray-700 py-1 rounded-md outline-none text-[.9rem] pl-1"
+                  placeholder="Enter the amount"
+                  onInput={(e) => setCustomCoinVal(e.target.value)}
+                />
+                <p
+                  className="inline text-xs text-[rgb(204,0,0)] font-semibold"
+                  style={{ display: customCoinExists ? "inline" : "none" }}
+                >
+                  This coin already exists
+                </p>
+              </div>
+              <button
+                className="bg-white shadow-2xl w-[2rem] h-[2rem] flex justify-center items-center rounded-full text-gray-500"
+                onClick={() => addCustomCoins(Number(customCoinVal))}
+              >
+                <IoMdAdd size={20} />
+              </button>
+            </div>
+          </div>
+
+          {/* WheelCoverage */}
+          <div className="w-[16rem] max-sm:rotate-90">
+            <WheelCoverage data={data} type={zero} />
+          </div>
+
+          <div>
+            <button
+              className="bg-stone-600 p-2 rounded-lg"
+              onClick={resetHandler}
+            >
+              Reset
             </button>
           </div>
         </div>
 
-        {/* WheelCoverage */}
-        <div className="w-[16rem] max-sm:rotate-90">
-          <WheelCoverage data={data} type={zero} />
-        </div>
-
-        <div className="w-full">
+        <div className="max-sm:w-[50%] w-[70%] border rounded-xl flex justify-center md:items-center max-[600px]:h-[100%] relative">
           {/* Win/Loss per spot */}
           <div
-            className="w-[20%] bg-red-500 flex flex-wrap md:-rotate-90 md:h-[40rem] mt-5 max-sm:w-[50%] max-sm:h-[100%]"
-            style={{ maxHeight: "40rem" }}
+            className="w-[20%] bg-red-500 md:-rotate-90 md:h-[55vw] mt-5 max-sm:w-[50%] h-[80%] md:-mt-10"
+            style={{
+              maxHeight: "40rem",
+              display: show === "winloss" ? "block" : "none",
+            }}
           >
-            {Data.map((item, index) => {
-              return (
-                <div
-                  className="w-[33.33%] flex justify-center items-center text-white font-semibold border"
-                  style={{ backgroundColor: item.bg }}
-                >
-                  <p className="rotate-90">{win_lossObject[index]}</p>
-                </div>
-              );
-            })}
+            <div className="bg-customGreen w-full h-10 flex">
+              <div className="w-[50%] h-full border flex justify-center items-center">
+                <p className="rotate-90">{zeroDivs._0}</p>
+              </div>
+
+              <div className="w-[50%] h-full border flex justify-center items-center">
+                <p className="rotate-90">{zeroDivs._00}</p>
+              </div>
+            </div>
+            <div className="flex flex-wrap h-full">
+              {Data.map((item, index) => {
+                return (
+                  <div
+                    className="w-[33.33%] flex justify-center items-center text-white font-semibold border"
+                    style={{ backgroundColor: item.bg }}
+                  >
+                    <p className="rotate-90">{win_lossObject[index]}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          {/* equity per spot */}
+          <div
+            className="w-[20%] hidden bg-red-500 flex-wrap md:-rotate-90 md:h-[55vw] mt-5 max-sm:w-[50%] h-[80%] md:-mt-10"
+            style={{
+              maxHeight: "40rem",
+              display: show === "quity" ? "flex" : "none",
+            }}
+          >
+            <div className="bg-customGreen w-full h-10 flex">
+              <div className="w-[50%] h-full border flex justify-center items-center">
+                <p className="rotate-90">00</p>
+              </div>
+
+              <div className="w-[50%] h-full border flex justify-center items-center">
+                <p className="rotate-90">0</p>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap h-full w-full">
+              {Data.map((item, index) => {
+                return (
+                  <div
+                    className="w-[33.33%] flex justify-center items-center text-white font-semibold border"
+                    style={{ backgroundColor: item.bg }}
+                  >
+                    <p className="rotate-90">
+                      {equityPerSpot[index] <= 0
+                        ? ""
+                        : equityPerSpot[index].toFixed(2)}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
-          <div
-            className="w-[10%] bg-red-500 flex flex-wrap md:-rotate-90 md:absolute md:h-[60%] mt-5 max-sm:w-[50%] max-sm:h-[100%]"
-            style={{ maxHeight: "40rem" }}
-          >
-            {Data.map((item, index) => {
-              return (
-                <div
-                  className="w-[33.33%] flex justify-center items-center text-white font-semibold border"
-                  style={{ backgroundColor: item.bg }}
-                >
-                  <p className="rotate-90">{equityPerSpot[index]}</p>
-                </div>
-              );
-            })}
+          <div className="w-full py-2 px-10 absolute left-0 bottom-0 border-t flex justify-around max-sm:hidden">
+            <div
+              className="bg-teal-600 p-2 rounded-lg text-sm font-semibold cursor-pointer"
+              onClick={() => setShow("winloss")}
+              style={{
+                backgroundColor: show === "winloss" ? "#FFC107" : "#008080",
+                border: show === "winloss" ? "black 1px solid" : "",
+                color: show === "winloss" ? "black" : "white",
+              }}
+            >
+              Win/Loss per spot
+            </div>
+            <div
+              className="bg-teal-600 p-2 rounded-lg text-sm font-semibold cursor-pointer"
+              onClick={() => setShow("quity")}
+              style={{
+                backgroundColor: show === "quity" ? "#FFC107" : "#008080",
+                border: show === "quity" ? "black 1px solid" : "",
+                color: show === "quity" ? "black" : "white",
+              }}
+            >
+              Equity per spot
+            </div>
           </div>
         </div>
       </div>

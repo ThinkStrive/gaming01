@@ -159,6 +159,12 @@
   }
 }
 
+@media only screen and (min-width: 640px) and (max-width: 767px) {
+  .roulate--grid--proj--4 {
+    margin-top: -6rem;
+  }
+}
+
 @media only screen and (min-width: 1045px) {
   .rit--table {
     width: 50% !important;

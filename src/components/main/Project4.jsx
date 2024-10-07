@@ -81,7 +81,7 @@ const Project4 = ({ theme }) => {
       return (
         JSON.parse(localStorage.getItem("userMissedSuggestionDozen4")) || false
       );
-    }
+    },
   );
 
   const [userMissedSuggestionCol, setUserMissedSuggestionCol] = useState(() => {
@@ -150,35 +150,35 @@ const Project4 = ({ theme }) => {
   useEffect(() => {
     localStorage.setItem(
       "suggestionActiveDozen4",
-      JSON.stringify(suggestionActiveDozen)
+      JSON.stringify(suggestionActiveDozen),
     );
   }, [suggestionActiveDozen]);
 
   useEffect(() => {
     localStorage.setItem(
       "suggestionActiveCol4",
-      JSON.stringify(suggestionActiveCol)
+      JSON.stringify(suggestionActiveCol),
     );
   }, [suggestionActiveCol]);
 
   useEffect(() => {
     localStorage.setItem(
       "userMissedSuggestion4",
-      JSON.stringify(userMissedSuggestion)
+      JSON.stringify(userMissedSuggestion),
     );
   }, [userMissedSuggestion]);
 
   useEffect(() => {
     localStorage.setItem(
       "userMissedSuggestionDozen4",
-      JSON.stringify(userMissedSuggestionDozen)
+      JSON.stringify(userMissedSuggestionDozen),
     );
   }, [userMissedSuggestionDozen]);
 
   useEffect(() => {
     localStorage.setItem(
       "userMissedSuggestionCol4",
-      JSON.stringify(userMissedSuggestionCol)
+      JSON.stringify(userMissedSuggestionCol),
     );
   }, [userMissedSuggestionCol]);
 
@@ -219,27 +219,27 @@ const Project4 = ({ theme }) => {
     localStorage.setItem("repeatCol4", initialRepeatCol);
     localStorage.setItem(
       "suggestionActive4",
-      JSON.stringify(initialSuggestionActive)
+      JSON.stringify(initialSuggestionActive),
     );
     localStorage.setItem(
       "userMissedSuggestion4",
-      JSON.stringify(initialUserMissedSuggestion)
+      JSON.stringify(initialUserMissedSuggestion),
     );
     localStorage.setItem(
       "suggestionActiveDozen4",
-      JSON.stringify(initialSuggestionActive)
+      JSON.stringify(initialSuggestionActive),
     );
     localStorage.setItem(
       "userMissedSuggestionDozen4",
-      JSON.stringify(initialUserMissedSuggestion)
+      JSON.stringify(initialUserMissedSuggestion),
     );
     localStorage.setItem(
       "suggestionActiveCol4",
-      JSON.stringify(initialSuggestionActive)
+      JSON.stringify(initialSuggestionActive),
     );
     localStorage.setItem(
       "userMissedSuggestionCol4",
-      JSON.stringify(initialUserMissedSuggestion)
+      JSON.stringify(initialUserMissedSuggestion),
     );
 
     const resetState = {
@@ -613,7 +613,7 @@ const Project4 = ({ theme }) => {
           return acc;
         }, {});
         const repeatedLetter = Object.keys(occurrences).find(
-          (letter) => occurrences[letter] > 1
+          (letter) => occurrences[letter] > 1,
         );
         if (repeatedLetter) {
           setRepeatLetter(repeatedLetter);
@@ -639,7 +639,7 @@ const Project4 = ({ theme }) => {
           return acc;
         }, {});
         const repeatedDozen = Object.keys(occurrences).find(
-          (dozen) => occurrences[dozen] > 1
+          (dozen) => occurrences[dozen] > 1,
         );
         if (repeatedDozen) {
           setRepeatDozen(repeatedDozen);
@@ -665,7 +665,7 @@ const Project4 = ({ theme }) => {
           return acc;
         }, {});
         const repeatedCol = Object.keys(occurrences).find(
-          (dozen) => occurrences[dozen] > 1
+          (dozen) => occurrences[dozen] > 1,
         );
         if (repeatedCol) {
           setRepeatCol(repeatedCol);
@@ -761,8 +761,8 @@ const Project4 = ({ theme }) => {
         clickedDataUpdates.red === 1
           ? "red"
           : clickedDataUpdates.black === 1
-          ? "black"
-          : "zero",
+            ? "black"
+            : "zero",
     });
 
     setRowData((prevRowData) => {
@@ -845,7 +845,7 @@ const Project4 = ({ theme }) => {
 
   return (
     <>
-      <div className="sticky top-0 z-40">
+      <div className="sticky lg:top-24 max-sm:top-20 md:top-16 z-40">
         {/* <Nav theme={theme} setTheme={setTheme} /> */}
         <div
           className="py-3 px-2 justify-between flex sm--navbar"
@@ -867,8 +867,8 @@ const Project4 = ({ theme }) => {
                 lastHitNumber?.color === "red"
                   ? "border-customRed text-customRed border-2"
                   : lastHitNumber?.color === "black"
-                  ? "border-customBlack text-customBlack border-2"
-                  : ""
+                    ? "border-customBlack text-customBlack border-2"
+                    : ""
               } flex justify-center items-center w-10 h-10 rounded-md mt-1 px-1`}
             >
               {lastHitNumber?.number}
@@ -922,8 +922,8 @@ const Project4 = ({ theme }) => {
                   lastHitNumber?.color === "red"
                     ? "bg-customRed"
                     : lastHitNumber.color === "black"
-                    ? "bg-black"
-                    : "bg-customGreen"
+                      ? "bg-black"
+                      : "bg-customGreen"
                 } py-1 flex justify-center items-center w-20 max-sm:w-14 rounded-full -ml-8 max-sm:-ml-7`}
               >
                 <p className="text-white ml-6 max-sm:text-xs">
@@ -966,14 +966,14 @@ const Project4 = ({ theme }) => {
       </div>
       <div className="px-4 main">
         <div
-          className="flex gap-2 mt-3 max-sm:flex-wrap rit-wrapper w-full"
-          style={{ height: "73vh" }}
+          className="mt-3 w-full flex justify-center items-center md:h-[73vh] max-[600px]:h-[100vh] "
+          // style={{ height: "100vh" }}
         >
-          <div className="w-full flex justify-between">
-            <div
-              className="w-[35%] max-sm:w-[50%] max-w-xs"
-              style={{ maxHeight: "100%" }}
-            >
+          <div
+            className="w-[60%] md:w-[25%] max-[466px]:w-[80%] flex justify-between items-center min-[600px]:w-[35%] min-[600px]:-rotate-90 min-[600px]:h-[70vw] max-sm:h-[100%] roulate--grid--proj--4"
+            // style={{ height: "70vw" }}
+          >
+            <div className="w-[100%] h-full max-sm:h-[100%] lg:h-[90%] md:h-[110%] xl:h-[50rem]">
               <div className="w-full h-[7%] flex">
                 <div
                   className={`${
@@ -1012,7 +1012,7 @@ const Project4 = ({ theme }) => {
                           item.num,
                           item.letter,
                           item.dozen,
-                          item.col
+                          item.col,
                         )
                       }
                       style={{

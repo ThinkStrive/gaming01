@@ -41,24 +41,31 @@ const OddEven = ({ historyData }) => {
     <div>
       {Array.from({ length: maxRows }).map((_, rowIndex) => (
         <div key={rowIndex} style={{ display: "flex", gap: "1px" }}>
-          {columns.map((col, colIndex) => (
-            <div key={colIndex} style={{ width: "50px", textAlign: "center" }}>
-              <div
-                className={`
-                  ${col[rowIndex] === "odd" ? "bg-blue-500 my-0.5 rounded-lg px-4" : ""}
-                  ${col[rowIndex] === "even" ? "bg-red-500 my-0.5 rounded-lg px-4" : ""}
-                  ${col[rowIndex] === "zero" ? "bg-green-500 my-0.5 rounded-lg px-4" : ""}
-                  text-white py-2
+          {columns.map((col, colIndex) =>
+            col[rowIndex] === "odd" ||
+            col[rowIndex] === "even" ||
+            col[rowIndex] === "zero" ? (
+              <div key={colIndex} style={{ textAlign: "center" }}>
+                <div
+                  className={`
+                  ${col[rowIndex] === "odd" ? "bg-blue-500 my-0.5 rounded-lg" : ""}
+                  ${col[rowIndex] === "even" ? "bg-red-500 my-0.5 rounded-lg" : ""}
+                  ${col[rowIndex] === "zero" ? "bg-green-500 my-0.5 rounded-lg" : ""}
+                  text-white 
                 `}
-              >
-                <p>
-                  {col[rowIndex] === "odd" ? "O" : ""}
-                  {col[rowIndex] === "even" ? "E" : ""}
-                  {col[rowIndex] === "zero" ? "Z" : ""}
-                </p>
+                  style={{ padding: ".5rem 1rem" }}
+                >
+                  <p>
+                    {col[rowIndex] === "odd" ? "O" : ""}
+                    {col[rowIndex] === "even" ? "E" : ""}
+                    {col[rowIndex] === "zero" ? "Z" : ""}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            ) : (
+              ""
+            ),
+          )}
         </div>
       ))}
     </div>

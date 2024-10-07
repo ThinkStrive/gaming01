@@ -41,24 +41,31 @@ const BigSmall = ({ historyData }) => {
     <div>
       {Array.from({ length: maxRows }).map((_, rowIndex) => (
         <div key={rowIndex} style={{ display: "flex", gap: "1px" }}>
-          {columns.map((col, colIndex) => (
-            <div key={colIndex} style={{ width: "50px", textAlign: "center" }}>
-              <div
-                className={`
-                  ${col[rowIndex] === "large" ? "bg-red-500 rounded-lg my-1 px-1" : ""}
-                  ${col[rowIndex] === "small" ? "bg-blue-500 rounded-lg my-1 px-1" : ""}
-                  ${col[rowIndex] === "zero" ? "bg-green-500 rounded-lg my-1 px-1" : ""}
+          {columns.map((col, colIndex) =>
+            col[rowIndex] === "large" ||
+            col[rowIndex] === "small" ||
+            col[rowIndex] === "zero" ? (
+              <div key={colIndex} style={{ textAlign: "center" }}>
+                <div
+                  className={`
+                  ${col[rowIndex] === "large" ? "bg-red-500 my-0.5 rounded-lg" : ""}
+                  ${col[rowIndex] === "small" ? "bg-blue-500 my-0.5 rounded-lg" : ""}
+                  ${col[rowIndex] === "zero" ? "bg-green-500 my-0.5 rounded-lg" : ""}
                   text-white py-2
                 `}
-              >
-                <p>
-                  {col[rowIndex] === "large" ? "B" : ""}
-                  {col[rowIndex] === "small" ? "S" : ""}
-                  {col[rowIndex] === "zero" ? "Z" : ""}
-                </p>
+                  style={{ padding: ".5rem 1rem" }}
+                >
+                  <p>
+                    {col[rowIndex] === "large" ? "B" : ""}
+                    {col[rowIndex] === "small" ? "S" : ""}
+                    {col[rowIndex] === "zero" ? "Z" : ""}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            ) : (
+              ""
+            ),
+          )}
         </div>
       ))}
     </div>

@@ -1,9 +1,10 @@
 import React from "react";
 
 function WheelCoverage({ data, type }) {
+  const american = type === "zero" ? false : true;
   let coverdNums = 0;
   let unCoveredNums = 0;
-  const totalNums = type === "zero" ? 37 : 38;
+  const totalNums = american ? 38 : 37;
   const nums = Object.values(data);
 
   nums.map((item) => {
@@ -13,6 +14,8 @@ function WheelCoverage({ data, type }) {
       coverdNums++;
     }
   });
+
+  american ? (unCoveredNums = unCoveredNums + 2) : unCoveredNums++;
 
   const win = (coverdNums / totalNums) * 100;
   const jackpot = (coverdNums / totalNums) * 100;
@@ -55,7 +58,7 @@ function WheelCoverage({ data, type }) {
         >
           {unCoveredNums}
         </div>
-        <div>{totalNums - 2 === unCoveredNums ? "0" : whack.toFixed(1)}%</div>
+        <div>{totalNums === unCoveredNums ? "0" : whack.toFixed(1)}%</div>
       </div>
     </div>
   );

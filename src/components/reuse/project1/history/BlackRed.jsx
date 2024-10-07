@@ -43,28 +43,35 @@ const BlackRed = ({ historyData }) => {
         <div key={rowIndex} style={{ display: "flex" }}>
           {" "}
           {/* gap: "20px" */}
-          {columns.map((col, colIndex) => (
-            <div
-              key={colIndex}
-              style={{ width: "50px", textAlign: "center" }}
-              className="border-r border-b"
-            >
+          {columns.map((col, colIndex) =>
+            col[rowIndex] === "red" ||
+            col[rowIndex] === "black" ||
+            col[rowIndex] === "zero" ? (
               <div
-                className={`
-                  ${col[rowIndex] === "red" ? "bg-red-500 rounded-lg" : ""}
-                  ${col[rowIndex] === "black" ? "bg-black rounded-lg" : ""}
-                  ${col[rowIndex] === "zero" ? "bg-green-500 rounded-lg" : ""}
+                key={colIndex}
+                style={{ textAlign: "center" }}
+                className="border-r border-b"
+              >
+                <div
+                  className={`
+                  ${col[rowIndex] === "red" ? "bg-red-500 my-0.5 rounded-lg" : ""}
+                  ${col[rowIndex] === "black" ? "bg-black my-0.5 rounded-lg" : ""}
+                  ${col[rowIndex] === "zero" ? "bg-green-500 my-0.5 rounded-lg" : ""}
                   text-white py-2
                 `}
-              >
-                <p>
-                  {col[rowIndex] === "red" ? "R" : ""}
-                  {col[rowIndex] === "black" ? "B" : ""}
-                  {col[rowIndex] === "zero" ? "Z" : ""}
-                </p>
+                  style={{ padding: ".5rem 1rem" }}
+                >
+                  <p>
+                    {col[rowIndex] === "red" ? "R" : ""}
+                    {col[rowIndex] === "black" ? "B" : ""}
+                    {col[rowIndex] === "zero" ? "Z" : ""}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            ) : (
+              ""
+            ),
+          )}
         </div>
       ))}
     </div>

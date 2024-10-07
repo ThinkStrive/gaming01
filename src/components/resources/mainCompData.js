@@ -10,6 +10,17 @@ import coin_50 from "../../assets/imgs/coin_imgs/bet-50.svg";
 import coin_100 from "../../assets/imgs/coin_imgs/bet-100.svg";
 import coin_500 from "../../assets/imgs/coin_imgs/bet-500.svg";
 
+export const coinImg = {
+  coin_1,
+  coin_2,
+  coin_5,
+  coin_10,
+  coin_25,
+  coin_50,
+  coin_100,
+  coin_500,
+};
+
 export const listener6Div = [
   {
     top: "13.6%",
@@ -239,58 +250,101 @@ export const listener4Div = [
   // { top: "98.5%", left: "40.5%", num: ["_", "_", "_", "_"] },
 ];
 export const listener0 = [
-  { top: "6.1%", right: "21%", num: ["_00", "_", "_", "_"], bg: "blue" },
-  { top: "98.5%", left: "40.5%", num: ["_", "_", "_", "_"] },
+  {
+    top: "5.7%",
+    right: "20.7%",
+    _00: { num: ["_00", "_2", "_3"], length: 3 },
+    _0: { num: ["_0", "_2", "_3"], length: 3 },
+  },
+  {
+    top: "5.7%",
+    right: "26.5%",
+    _00: { num: ["_00", "_2"], length: 2 },
+    _0: { num: ["_0", "_2"], length: 2 },
+  },
+  {
+    top: "5.7%",
+    right: "32.5%",
+    _00: { num: ["_00", "_0", "_2"], length: 3 },
+    _0: { num: ["_0", "_2"], length: 2 },
+  },
+  {
+    top: "5.7%",
+    right: "38%",
+    _00: { num: ["_0", "_2"], length: 2 },
+    _0: { num: ["_0", "_2"], length: 2 },
+  },
+  {
+    top: "5.7%",
+    right: "44%",
+    _00: { num: ["_0", "_1", "_2"], length: 3 },
+    _0: { num: ["_0", "_1", "_2"], length: 3 },
+  },
 ];
-//rgb(197,45,24) rgb(22,22,22)
+export const listener0_1_3 = [
+  {
+    top: "5.9%",
+    right: "4%",
+    _00: { num: ["_00", "_3"], length: 2 },
+    _0: { num: ["_0", "_3"], length: 2 },
+  },
+  {
+    top: "5.9%",
+    right: "51%",
+    _00: { num: ["_0", "_1"], length: 2 },
+    _0: { num: ["_0", "_1"], length: 2 },
+    bg: "blue",
+  },
+];
+//#FF0000 black
 export const Data = [
-  { num: 1, bg: "rgb(197,45,24)", selector: "_1" },
-  { num: 2, bg: "rgb(22,22,22)", selector: "_2" },
-  { num: 3, bg: "rgb(197,45,24)", selector: "_3" },
+  { num: 1, bg: "#FF0000", selector: "_1" },
+  { num: 2, bg: "black", selector: "_2" },
+  { num: 3, bg: "#FF0000", selector: "_3" },
 
-  { num: 4, bg: "rgb(22,22,22)", selector: "_4" },
-  { num: 5, bg: "rgb(197,45,24)", selector: "_5" },
-  { num: 6, bg: "rgb(22,22,22)", selector: "_6" },
+  { num: 4, bg: "black", selector: "_4" },
+  { num: 5, bg: "#FF0000", selector: "_5" },
+  { num: 6, bg: "black", selector: "_6" },
 
-  { num: 7, bg: "rgb(197,45,24)", selector: "_7" },
-  { num: 8, bg: "rgb(22,22,22)", selector: "_8" },
-  { num: 9, bg: "rgb(197,45,24)", selector: "_9" },
+  { num: 7, bg: "#FF0000", selector: "_7" },
+  { num: 8, bg: "black", selector: "_8" },
+  { num: 9, bg: "#FF0000", selector: "_9" },
 
-  { num: 10, bg: "rgb(22,22,22)", selector: "_10" },
-  { num: 11, bg: "rgb(22,22,22)", selector: "_11" },
-  { num: 12, bg: "rgb(197,45,24)", selector: "_12" },
+  { num: 10, bg: "black", selector: "_10" },
+  { num: 11, bg: "black", selector: "_11" },
+  { num: 12, bg: "#FF0000", selector: "_12" },
 
-  { num: 13, bg: "rgb(22,22,22)", selector: "_13" },
-  { num: 14, bg: "rgb(197,45,24)", selector: "_14" },
-  { num: 15, bg: "rgb(22,22,22)", selector: "_15" },
+  { num: 13, bg: "black", selector: "_13" },
+  { num: 14, bg: "#FF0000", selector: "_14" },
+  { num: 15, bg: "black", selector: "_15" },
 
-  { num: 16, bg: "rgb(197,45,24)", selector: "_16" },
-  { num: 17, bg: "rgb(22,22,22)", selector: "_17" },
-  { num: 18, bg: "rgb(197,45,24)", selector: "_18" },
+  { num: 16, bg: "#FF0000", selector: "_16" },
+  { num: 17, bg: "black", selector: "_17" },
+  { num: 18, bg: "#FF0000", selector: "_18" },
 
-  { num: 19, bg: "rgb(197,45,24)", selector: "_19" },
-  { num: 20, bg: "rgb(22,22,22)", selector: "_20" },
-  { num: 21, bg: "rgb(197,45,24)", selector: "_21" },
+  { num: 19, bg: "#FF0000", selector: "_19" },
+  { num: 20, bg: "black", selector: "_20" },
+  { num: 21, bg: "#FF0000", selector: "_21" },
 
-  { num: 22, bg: "rgb(22,22,22)", selector: "_22" },
-  { num: 23, bg: "rgb(197,45,24)", selector: "_23" },
-  { num: 24, bg: "rgb(22,22,22)", selector: "_24" },
+  { num: 22, bg: "black", selector: "_22" },
+  { num: 23, bg: "#FF0000", selector: "_23" },
+  { num: 24, bg: "black", selector: "_24" },
 
-  { num: 25, bg: "rgb(197,45,24)", selector: "_25" },
-  { num: 26, bg: "rgb(22,22,22)", selector: "_26" },
-  { num: 27, bg: "rgb(197,45,24)", selector: "_27" },
+  { num: 25, bg: "#FF0000", selector: "_25" },
+  { num: 26, bg: "black", selector: "_26" },
+  { num: 27, bg: "#FF0000", selector: "_27" },
 
-  { num: 28, bg: "rgb(22,22,22)", selector: "_28" },
-  { num: 29, bg: "rgb(22,22,22)", selector: "_29" },
-  { num: 30, bg: "rgb(197,45,24)", selector: "_30" },
+  { num: 28, bg: "black", selector: "_28" },
+  { num: 29, bg: "black", selector: "_29" },
+  { num: 30, bg: "#FF0000", selector: "_30" },
 
-  { num: 31, bg: "rgb(22,22,22)", selector: "_31" },
-  { num: 32, bg: "rgb(197,45,24)", selector: "_32" },
-  { num: 33, bg: "rgb(22,22,22)", selector: "_33" },
+  { num: 31, bg: "black", selector: "_31" },
+  { num: 32, bg: "#FF0000", selector: "_32" },
+  { num: 33, bg: "black", selector: "_33" },
 
-  { num: 34, bg: "rgb(197,45,24)", selector: "_34" },
-  { num: 35, bg: "rgb(22,22,22)", selector: "_35" },
-  { num: 36, bg: "rgb(197,45,24)", selector: "_36" },
+  { num: 34, bg: "#FF0000", selector: "_34" },
+  { num: 35, bg: "black", selector: "_35" },
+  { num: 36, bg: "#FF0000", selector: "_36" },
 ];
 
 export const listener2DivVertical = [
@@ -598,9 +652,6 @@ export const _1_34 = [
 ];
 
 export const coinInfo = [
-  // { amount: 0.1, img: coin_01 },
-  // { amount: 0.2, img: coin_02 },
-  // { amount: 0.5, img: coin_05 },
   { amount: 1, img: coin_1 },
   { amount: 2, img: coin_2 },
   { amount: 5, img: coin_5 },
