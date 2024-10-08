@@ -60,8 +60,10 @@ function RouletteGrid({
   totalBetAmt,
   setTotalBetAmt,
 }) {
-  const _0divKeys = Object.keys(zeroData);
-  const _0divData = Object.values(zeroData);
+  const _0divKeys = Object.keys(zeroData._0);
+  const _00divKeys = Object.keys(zeroData._00);
+  const _0divData = Object.values(zeroData._0);
+  const _00divData = Object.values(zeroData._00);
   const _1divKeys = Object.keys(singleDivCoinData);
   const _1divData = Object.values(singleDivCoinData);
   const _singleDivData = Object.values(data);
@@ -180,8 +182,10 @@ function RouletteGrid({
         const newData = { ...prevData };
 
         for (const key in newData) {
-          if (key == coinData) {
-            newData[key] += coin;
+          for (const subKey in newData[key]) {
+            if (subKey === coinData) {
+              newData[key][subKey] += coin;
+            }
           }
         }
 
@@ -244,7 +248,6 @@ function RouletteGrid({
       localStorage.setItem("EquityData", JSON.stringify(newData));
       return newData;
     });
-    // console.log("data : ", type, ratio, amount, payout);
 
     setZeroEquityData((prevData) => {
       const newData = { ...prevData };
@@ -273,6 +276,8 @@ function RouletteGrid({
   };
 
   const MultiDivSelector = (numsArray, coin, length, coinData, selector) => {
+    console.log("selected : ", coinData);
+
     setData((prevData) => {
       const newData = { ...prevData };
 
@@ -408,6 +413,26 @@ function RouletteGrid({
   };
 
   const renderCoinDiv = (data) => {
+    console.log("inside the renderCoinDiv: ", data);
+
+    return (
+      <div
+        className="w-6 h-6 bg-yellow-500 rounded-full text-xs flex justify-center items-center text-black font-semibold md:rotate-90 absolute"
+        style={{
+          display: data > 0 ? "flex" : "none",
+        }}
+      >
+        <div className="absolute w-full h-full top-0 left-0 bg-yellow-500 rounded-full">
+          <img src={renderCoinImg(data)} alt="" />
+        </div>
+        {data}
+      </div>
+    );
+  };
+
+  const renderCoinDivforZero = (data) => {
+    console.log("inside the renderCoinDivforzero: ", data);
+
     return (
       <div
         className="w-6 h-6 bg-yellow-500 rounded-full text-xs flex justify-center items-center text-black font-semibold md:rotate-90 absolute"
@@ -463,6 +488,13 @@ function RouletteGrid({
       </div>
     </div>
   );
+
+  const checkingFunction = (arg) => {
+    if (arg > 0) {
+      console.log("arg:", arg);
+    }
+    console.log("arg:", arg);
+  };
 
   return (
     <div className="relative max-sm:w-full w-[23rem] max-sm:h-[100vh] max-lg:h-[95vh] xl:h-[50rem] h-[95vh] bg-red-500  md:-rotate-90 flex flex-col items-end max-sm:mt-14">
@@ -753,6 +785,7 @@ function RouletteGrid({
         {/* black & red nums ends here */}
       </div>
 
+      {/* render and adding event listner to the divs */}
       {listener4Div.map((item, index) => {
         return (
           <div
@@ -903,6 +936,14 @@ function RouletteGrid({
       })}
 
       {listener0.map((item, index) => {
+        let a = item._00.selector;
+        console.log(
+          "hello",
+          zero === "doubleZero"
+            ? _00divData.toString(item._00.selector)
+            : _0divData.toString(item._0.selector),
+        );
+
         return (
           <div
             key={index}
@@ -917,11 +958,23 @@ function RouletteGrid({
                 zero === "doubleZero" ? item._00.num : item._0.num,
                 coin.amt,
                 zero === "doubleZero" ? item._00.length : item._0.length,
-                _0divKeys[index],
+                zero === "doubleZero" ? item._00.selector : item._0.selector,
                 "zeroDivs",
               )
             }
-          ></div>
+          >
+            {renderCoinDivforZero(
+              zero === "doubleZero"
+                ? _00divData.toString(item._00.selector)
+                : _0divData.toString(item._0.selector),
+            )}
+            {checkingFunction(
+              zero === "doubleZero"
+                ? _00divData.toString(item._00.selector)
+                : _0divData.toString(item._0.selector),
+            )}
+          </div>
+          // numsArray, coin, length, coinData, selector
         );
       })}
 
@@ -940,7 +993,7 @@ function RouletteGrid({
                 zero === "doubleZero" ? item._00.num : item._0.num,
                 coin.amt,
                 zero === "doubleZero" ? item._00.length : item._0.length,
-                _0divKeys[index],
+                zero === "doubleZero" ? item._00.selector : item._0.selector,
                 "zeroDivs",
               )
             }

@@ -695,7 +695,7 @@ const Project4 = ({ theme }) => {
         const lastRowValues = Object.values(lastRow);
 
         if (!lastRowValues.includes(repeatLetter) && !userMissedSuggestion) {
-          showToast(`Loss ${repeatLetter}`, "error");
+          showToast(`Book Your Loss ${repeatLetter}`, "error");
           setUserMissedSuggestion(true);
           setSuggestionActive(false);
         }
@@ -719,7 +719,7 @@ const Project4 = ({ theme }) => {
           !lastRowValues.includes(repeatDozen) &&
           !userMissedSuggestionDozen
         ) {
-          showToast(`Loss Dozen ${repeatDozen}`, "error");
+          showToast(`Book Your Loss ${repeatDozen}`, "error");
           setUserMissedSuggestionDozen(true);
           setSuggestionActiveDozen(false);
         }
@@ -740,7 +740,7 @@ const Project4 = ({ theme }) => {
         const lastRowValues = Object.values(lastRow);
 
         if (!lastRowValues.includes(repeatCol) && !userMissedSuggestionCol) {
-          showToast(`Loss Column ${repeatCol}`, "error");
+          showToast(`Book Your Loss ${repeatCol}`, "error");
           setUserMissedSuggestionCol(true);
           setSuggestionActiveCol(false);
         }
@@ -848,7 +848,7 @@ const Project4 = ({ theme }) => {
       <div className="sticky lg:top-24 max-sm:top-20 md:top-16 z-40">
         {/* <Nav theme={theme} setTheme={setTheme} /> */}
         <div
-          className="py-3 px-2 justify-between flex sm--navbar"
+          className="py-1 px-2 justify-between flex sm--navbar"
           style={{ backgroundColor: "#FFFBE3" }}
         >
           <div className="flex gap-4 pl-2 items-center sm--lasthit">
@@ -868,7 +868,7 @@ const Project4 = ({ theme }) => {
                   : lastHitNumber?.color === "black"
                     ? "border-customBlack text-customBlack border-2"
                     : ""
-              } flex justify-center items-center w-10 h-10 rounded-md mt-1 px-1`}
+              } flex justify-center items-center w-7 h-7 rounded-md mt-1 px-1`}
             >
               {lastHitNumber?.number}
             </div>
@@ -899,25 +899,24 @@ const Project4 = ({ theme }) => {
             </button> */}
             {suggestionActiveDozen && (
               <div className="p-1 rounded">
-                <div className="flex justify-center items-center bg-[#58d68d] p-1.5 font-semibold cursor-pointer rounded hover:bg-gray-500 px-2">
+                <div className="dozen--col flex justify-center items-center bg-[#58d68d] p-0.5 text-sm font-semibold cursor-pointer rounded hover:bg-gray-500 px-2">
                   Dozen {repeatDozen}
                 </div>
               </div>
             )}
             {suggestionActiveCol && (
               <div className="p-1 rounded">
-                <div className="flex justify-center items-center bg-[#58d68d] p-1.5 font-semibold cursor-pointer rounded hover:bg-gray-500 px-4">
+                <div className="dozen--col flex justify-center items-center bg-[#58d68d] p-0.5 text-sm font-semibold cursor-pointer rounded hover:bg-gray-500 px-4">
                   Column {repeatCol}
                 </div>
               </div>
             )}
 
-
             <button
               className="text-gray-500 py-1 px-1 rounded-full text-sm font-semibold"
               onClick={handleClickResetButton}
             >
-              <GrPowerReset className="inline mr-0.5 -mt-0.5" />
+              <GrPowerReset className="inline mr-0.5 -mt-0.5 reset-icon" />
               Reset
             </button>
           </div>
@@ -978,13 +977,13 @@ const Project4 = ({ theme }) => {
           </div>
         </div>
       </div>
-      <div className="px-4 main border h-[full]">
+      <div className="px-4 main md:border h-[75.5vh]">
         <div
-          className="mt-1 w-full flex justify-center items-center md:h-[76vh] max-[800px]:h-[75vh] max-[600px]:h-[83.3vh] py-4"
+          className="mt-1 w-full flex justify-center items-center md:h-[76vh] max-[800px]:h-[75vh] max-[600px]:h-full md:py-4"
           // style={{ height: "100vh" }}
         >
           <div
-            className="w-[60%] md:w-[25%] max-[466px]:w-[60%] flex justify-between items-center min-[600px]:w-[35%] min-[600px]:-rotate-90 min-[600px]:h-[70vw] max-sm:h-[100%] roulate--grid--proj--4"
+            className="w-[60%] md:w-[25%]  flex justify-between items-center min-[600px]:w-[35%] min-[600px]:-rotate-90 min-[600px]:h-[70vw] max-sm:h-[100%] roulate--grid--proj--4"
             // style={{ height: "70vw" }}
           >
             <div className="w-[100%] h-full max-sm:h-[100%] lg:h-[90%] md:h-[110%] xl:h-[50rem]">

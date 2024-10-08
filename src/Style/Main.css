@@ -7,6 +7,17 @@
   background-color: #4cd964 !important;
 }
 
+@media only screen and (max-width: 370px) {
+  .dozen--col {
+    font-size: 0.8rem !important;
+    width: 5.8rem;
+  }
+
+  .reset-icon {
+    display: none !important;
+  }
+}
+
 @media only screen and (max-width: 375px) {
   .btns {
     font-size: 0.8rem;
@@ -89,6 +100,12 @@
 
   .table-408 td {
     font-size: 0.7rem;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .roulate--grid--proj--4 {
+    width: 80% !important;
   }
 }
 

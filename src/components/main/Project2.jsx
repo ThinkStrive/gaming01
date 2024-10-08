@@ -171,8 +171,24 @@ function Project2() {
     return savedData
       ? JSON.parse(savedData)
       : {
-          _0: 0,
-          _00: 0,
+          _0: {
+            _0: 0,
+            _0_1: 0,
+            _0_1_2: 0,
+            _0_2: 0,
+            _0_2_3: 0,
+            _0_3: 0,
+          },
+          _00: {
+            _00: 0,
+            _0_1: 0,
+            _0_1_2: 0,
+            _0_2: 0,
+            _0_00_2: 0,
+            _00_2: 0,
+            _00_2_3: 0,
+            _00_3: 0,
+          },
         };
   });
 
@@ -665,7 +681,9 @@ function Project2() {
       const newData = { ...prevData };
 
       for (const key in newData) {
-        newData[key] = 0;
+        for (const subKey in newData[key]) {
+          newData[key][subKey] = 0;
+        }
       }
 
       localStorage.setItem("zeroData", JSON.stringify(newData));
