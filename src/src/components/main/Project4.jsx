@@ -3,7 +3,6 @@ import { data } from "../reuse/project4/logic/RouletteData.js";
 import "../../Style/Main.css";
 import { GrPowerReset } from "react-icons/gr";
 import { useToast } from "../resources/Toast.jsx";
-import Analyze from "../reuse/project4/Analyze.jsx";
 
 const Project4 = ({ theme }) => {
   const [isAlertAllowed, setIsAlertAllowed] = useState(false);
@@ -844,8 +843,6 @@ const Project4 = ({ theme }) => {
     }
   };
 
-  const [isAnalyzeOpen, setIsAnalyzeOpen] = useState(true);
-
   return (
     <>
       <div className="sticky lg:top-24 max-sm:top-20 md:top-16 z-40">
@@ -1047,11 +1044,6 @@ const Project4 = ({ theme }) => {
           </div>
         </div>
       </div>
-
-      {
-        isAnalyzeOpen && 
-        <Analyze />
-      }
     </>
   );
 };

@@ -2,9 +2,9 @@
 import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 
+
 import axios from "axios";
 import { useToast } from "../../resources/Toast";
-import logo from "../../../assets/imgs/RouletteRise Transperent Logo.png";
 // import { USER_LOGIN } from "../../api/ApiDetails";
 
 const Login = ({ inputData, setInputData }) => {
@@ -24,7 +24,7 @@ const Login = ({ inputData, setInputData }) => {
     let data = {
       userEmail: inputData.email,
       password: inputData.password,
-      role: "admin",
+      role : 'admin'
     };
     // await axios
     //   .post(USER_LOGIN, data)
@@ -48,22 +48,19 @@ const Login = ({ inputData, setInputData }) => {
     //     setLoading(false);
     //     showToast(err.response.data.data, "error");
     //   });
-    if (
-      inputData.email === "superadmin@gmail.com" &&
-      inputData.password === "password"
-    ) {
-      setLoading(false);
-      localStorage.setItem("user", JSON.stringify(data));
-      // setTheme(res.data.data.configuration.theme);
-      showToast("Login Successful", "success");
-      setInputData({
-        email: "",
-        password: "",
-      });
-    } else {
-      setLoading(false);
-      showToast("Invalid credentials", "error");
-    }
+      if(inputData.email === 'superadmin@gmail.com' && inputData.password === 'password'){
+        setLoading(false);
+          localStorage.setItem("user", JSON.stringify(data));
+          // setTheme(res.data.data.configuration.theme);
+          showToast("Login Successful", "success");
+          setInputData({
+            email: "",
+            password: "",
+          });
+      }else{
+        setLoading(false);
+        showToast('Invalid credentials', "error");
+      }
   };
   if (
     localStorage.getItem("user") &&
@@ -72,37 +69,32 @@ const Login = ({ inputData, setInputData }) => {
     return <Navigate to="/dashboard" replace />;
   }
   return (
-    <div
-      className="w-full h-screen flex flex-col gap-5 justify-center items-center"
-      style={{
-        background: "linear-gradient(135deg, #4B006E, #E63946)",
-        // backgroundColor: "rgb(81,29,91)",
-      }}
-    >
-      <div className="lg:w-[33vw] md:w-[55vw] w-[85vw] rounded-3xl flex gap-7 justify-center">
-        <img src={logo} alt="" className="w-14 h-14 md:w-16 md:h-16" />
-        <div>
-          <p className="font-semibold text-xl md:text-3xl">Data Driven</p>
-          <p className="text-sm md:text-lg">Roulette Tracker</p>
-        </div>
-      </div>
-      <div
-        className=" backdrop-sepia-0 shadow-2xl 2xl:h-[50rem] lg:h-[70vh] lg:w-[33vw] md:h-[65vh] md:w-[55vw] h-[75vh] w-[85vw] rounded-3xl px-10 py-6 flex flex-col justify-center gap-5"
-        // style={{ backgroundColor: "rgb(245,245,245)" }}
-      >
-        <h2 className="text-white lg:text-4xl md:text-wl text-lg font-medium text-center m-0">
+    <div className="flex justify-center items-center absolute right-[10vw] top-[15vh] z-3">
+      <div className="lg:h-[70vh] lg:w-[33vw] md:h-[65vh] md:w-[55vw] h-[55vh] w-[85vw] bg-white rounded-3xl px-10 py-6 shadow-lg flex flex-col justify-between items-start border">
+        <h2 className="text-black lg:text-4xl md:text-wl text-lg font-medium text-center m-0">
           Login
         </h2>
+        <p className="text-xs m-0">
+          Don't Have An Account ?{" "}
+          <Link to="/auth/login" className={``}>
+            sign up
+          </Link>
+        </p>
+        <div className="flex w-[100%] items-center justify-evenly">
+          <hr className={`border w-[30%] `} />
+          <p className="text-xs">Or Sign In with Email</p>
+          <hr className={`border w-[30%]`} />
+        </div>
 
         <form
           action=""
           onSubmit={handleAuthLoginButton}
-          className="flex flex-col justify-between items-start h-[53%] w-full mt-3"
+          className="flex flex-col justify-between items-start h-[53%] w-full"
         >
           <input
             type="email"
             placeholder="Enter your Email"
-            className="border-b border-gray-400 outline-none bg-transparent lg:w-[100%] w-[95%] shadow-lg px-1 py-2 text-sm lg:text-md font-semibold login-input"
+            className="border-2 lg:w-[100%] w-[95%] shadow-lg px-3 rounded-lg py-3 text-sm lg:text-md font-semibold login-input"
             name="email"
             id="email"
             value={inputData.email}
@@ -112,7 +104,7 @@ const Login = ({ inputData, setInputData }) => {
             <input
               type={`${isPasswordView ? "text" : "password"}`}
               placeholder="Enter your password"
-              className="border-b border-gray-400 outline-none bg-transparent lg:w-[100%] w-[100%] shadow-lg px-1 py-2 text-sm lg:text-md font-semibold login-input"
+              className="border-2 w-full px-3 shadow-lg rounded-lg py-3 text-sm lg:text-md font-semibold login-input"
               name="password"
               id="password"
               value={inputData.password}
@@ -135,25 +127,12 @@ const Login = ({ inputData, setInputData }) => {
           ) : (
             <button
               type="submit"
-              className={`w-[100%] bg-darkNavy py-2 shadow-2xl rounded-lg text-lg font-semibold text-white`}
-              style={{ backgroundColor: "rgb(239,68,68)" }}
+              className={`w-[100%] bg-red-400 py-3 shadow-lg rounded-lg text-lg font-semibold text-white`}
             >
               Login
             </button>
           )}
         </form>
-
-        <p className="text-xs m-0">
-          Don't Have An Account ?{" "}
-          <Link to="/auth/login" className={``}>
-            sign up
-          </Link>
-        </p>
-        <div className="flex w-[100%] items-center justify-evenly">
-          <hr className={`border max-sm:w-[23%] w-[30%]`} />
-          <p className="text-xs">Or Sign In with Email</p>
-          <hr className={`border max-sm:w-[23%] w-[30%]`} />
-        </div>
       </div>
     </div>
   );

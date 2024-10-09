@@ -791,36 +791,19 @@ function Project2() {
     });
   };
 
-  const showRatioPopup = (type, ratio, amount, listeners) => {
-    console.log("inside the ratio popup : ", amount);
+  const showRatioPopup = (type, ratio, amount) => {
+    setRatioPopupData(() => {
+      const newData = { ...ratioPopupData };
 
-    if (listeners === "zeroListeners") {
-      const amt = amount.find((item) => item > 0);
+      newData.head = type;
+      newData.ratio = ratio;
+      newData.betAnmount = amount;
+      newData.payout = amount * ratio;
 
-      setRatioPopupData(() => {
-        const newData = { ...ratioPopupData };
+      return newData;
+    });
 
-        newData.head = type;
-        newData.ratio = ratio;
-        newData.betAnmount = typeof amt === "number" ? amt : 0;
-        newData.payout = typeof amt === "number" ? amt * ratio : 0 * ratio;
-
-        return newData;
-      });
-      setRatioPopup(true);
-    } else {
-      setRatioPopupData(() => {
-        const newData = { ...ratioPopupData };
-
-        newData.head = type;
-        newData.ratio = ratio;
-        newData.betAnmount = amount;
-        newData.payout = amount * ratio;
-
-        return newData;
-      });
-      setRatioPopup(true);
-    }
+    setRatioPopup(true);
   };
 
   const removeRatioPopup = () => {
@@ -1044,7 +1027,7 @@ function Project2() {
           </div>
         </div>
 
-        <div className="max-sm:w-[50%] w-[70%] rounded-xl flex justify-center md:items-center max-[600px]:h-[100%] relative">
+        <div className="max-sm:w-[50%] w-[70%] border rounded-xl flex justify-center md:items-center max-[600px]:h-[100%] relative">
           {/* Win/Loss per spot */}
           <div
             className="w-[20%] bg-red-500 md:-rotate-90 md:h-[55vw] mt-5 max-sm:w-[90%] h-[85%] md:-mt-10 max-md:text-[.7rem] max-lg:text-[.8rem]"

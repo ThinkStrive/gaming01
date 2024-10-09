@@ -432,22 +432,18 @@ function RouletteGrid({
   };
 
   const renderCoinDiv = (data) => {
-    return data > 0 ? (
+    return (
       <div
-        className="w-6 h-6 bg-yellow-500 rounded-full text-xs flex justify-center items-center text-white font-semibold md:rotate-90 absolute"
-        style={
-          {
-            // display: data > 0 ? "flex" : "none",
-          }
-        }
+        className="w-6 h-6 bg-yellow-500 rounded-full text-xs flex justify-center items-center text-black font-semibold md:rotate-90 absolute"
+        style={{
+          display: data > 0 ? "flex" : "none",
+        }}
       >
         <div className="absolute w-full h-full top-0 left-0 bg-yellow-500 rounded-full">
           <img src={renderCoinImg(data)} alt="" />
         </div>
-        <p className="absolute z-10">{data}</p>
+        {data}
       </div>
-    ) : (
-      ""
     );
   };
 
@@ -455,7 +451,7 @@ function RouletteGrid({
     return data.map((item) =>
       item > 0 ? (
         <div
-          className="w-6 h-6 bg-yellow-500 rounded-full text-xs flex justify-center items-center text-white font-semibold md:rotate-90 absolute"
+          className="w-6 h-6 bg-yellow-500 rounded-full text-xs flex justify-center items-center text-black font-semibold md:rotate-90 absolute"
           style={{
             display: item > 0 ? "flex" : "none",
           }}
@@ -463,7 +459,7 @@ function RouletteGrid({
           <div className="absolute w-full h-full top-0 left-0 bg-yellow-500 rounded-full">
             <img src={renderCoinImg(item)} alt="" />
           </div>
-          <p className="absolute z-10">{item}</p>
+          {item}
         </div>
       ) : (
         ""
@@ -506,8 +502,7 @@ function RouletteGrid({
           <div className="absolute w-full h-full top-0 left-0 bg-yellow-500 rounded-full">
             <img src={renderCoinImg(_1divData[index])} alt="" />
           </div>
-
-          <p className="absolute z-10">{_1divData[index]}</p>
+          {_1divData[index]}
         </div>
       </div>
     </div>
@@ -558,11 +553,7 @@ function RouletteGrid({
             }
             onMouseLeave={() => removeRatioPopup()}
             // num,coin,coinData,selector,type,ratio,amount,
-          >
-            <div className="relative w-full h-full flex justify-center items-center">
-              {renderCoinDiv(zeroData._0._0)}
-            </div>
-          </div>
+          ></div>
         </div>
         <div
           className="w-[50%] border flex justify-center items-center text-white font-semibold relative"
@@ -582,15 +573,7 @@ function RouletteGrid({
                 zeroDivs._00._00,
               )
             }
-            onMouseEnter={() =>
-              showRatioPopup(`0 Straight-Up`, 35, zeroData._00._00)
-            }
-            onMouseLeave={() => removeRatioPopup()}
-          >
-            <div className="relative w-full h-full flex justify-center items-center">
-              {renderCoinDiv(zeroData._00._00)}
-            </div>
-          </div>
+          ></div>
           <div
             className="w-5 h-5 bg-yellow-500 rounded-full text-xs flex justify-center items-center text-white md:rotate-90"
             style={{ display: data._00 > 0 ? "flex" : "none" }}
@@ -988,21 +971,6 @@ function RouletteGrid({
                 "zeroDivs",
               )
             }
-            onMouseEnter={() =>
-              showRatioPopup(
-                zero === "doubleZero" ? item._00.type : item._0.type,
-                zero === "doubleZero" ? item._00.ratio : item._0.ratio,
-                zero === "doubleZero"
-                  ? _00divData.map((i) =>
-                      i[0] === item._00.selector ? i[1] : "",
-                    )
-                  : _0divData.map((i) =>
-                      i[0] === item._0.selector ? i[1] : "",
-                    ),
-                "zeroListeners",
-              )
-            }
-            onMouseLeave={() => removeRatioPopup()}
           >
             {renderCoinDivforZero(
               zero === "doubleZero"
@@ -1042,21 +1010,6 @@ function RouletteGrid({
                 "zeroDivs",
               )
             }
-            onMouseEnter={() =>
-              showRatioPopup(
-                zero === "doubleZero" ? item._00.type : item._0.type,
-                zero === "doubleZero" ? item._00.ratio : item._0.ratio,
-                zero === "doubleZero"
-                  ? _00divData.map((i) =>
-                      i[0] === item._00.selector ? i[1] : "",
-                    )
-                  : _0divData.map((i) =>
-                      i[0] === item._0.selector ? i[1] : "",
-                    ),
-                "zeroListeners",
-              )
-            }
-            onMouseLeave={() => removeRatioPopup()}
           >
             {renderCoinDivforZero(
               zero === "doubleZero"
