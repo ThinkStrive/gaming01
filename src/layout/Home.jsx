@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import html2canvas from "html2canvas";
+import { saveAs } from "file-saver";
 import {
   Link,
   Routes,
@@ -23,21 +25,58 @@ function Home() {
     return savedTheme ? savedTheme.theme : "light";
   });
 
-  const [navHeaderName, setNavHeaderName] = useState('project1')
+  const [navHeaderName, setNavHeaderName] = useState("project1");
 
   useEffect(() => {
     navigate("/project1/blackRed");
     // navigate('/project4')
   }, []);
+
+  // ScreenShot function
+  const elementToCaptureRef = useRef(null);
+
+  const captureScreenshot = async () => {
+    const canvas = await html2canvas(elementToCaptureRef.current);
+    canvas.toBlob((blob) => {
+      saveAs(blob, "screenshot.png"); // Save the screenshot as a file
+    });
+
+    // Optionally, share the screenshot on supported devices (mobile):
+    if (navigator.share) {
+      canvas.toBlob((blob) => {
+        const file = new File([blob], "screenshot.png", { type: "image/png" });
+        navigator
+          .share({
+            files: [file],
+            title: "Check this Out!",
+            text: "My Roulette Strategy analyzer!",
+          })
+          .then(() => console.log("Successfully shared"))
+          .catch((error) => console.log("Sharing failed", error));
+      });
+    } else {
+      console.log("Can't share in this  browser.");
+    }
+  };
   return (
     <div
+      ref={elementToCaptureRef}
       className={
         theme === "dark" ? "bg-slate-900 relative" : "bg-off_white relative"
       }
     >
-      <ProjectsNav setPopUp={setPopUp} popUp={popUp} setNavHeaderName={setNavHeaderName} />
+      <ProjectsNav
+        setPopUp={setPopUp}
+        popUp={popUp}
+        setNavHeaderName={setNavHeaderName}
+      />
 
-      <Nav theme={theme} setTheme={setTheme} navigate={setPopUp} navHeaderName={navHeaderName} />
+      <Nav
+        theme={theme}
+        setTheme={setTheme}
+        navigate={setPopUp}
+        navHeaderName={navHeaderName}
+      />
 
       <Routes>
         <Route
@@ -46,7 +85,13 @@ function Home() {
         />
         <Route
           path="project2/*"
-          element={<Project2 theme={theme} setTheme={setTheme} />}
+          element={
+            <Project2
+              theme={theme}
+              setTheme={setTheme}
+              captureScreenshot={captureScreenshot}
+            />
+          }
         />
         <Route
           path="project3/*"

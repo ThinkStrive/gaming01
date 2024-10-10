@@ -1,11 +1,11 @@
 import React, { useState, useRef } from "react";
-import html2canvas from "html2canvas";
-import { saveAs } from "file-saver";
+
 import {
   MdKeyboardDoubleArrowUp,
   MdKeyboardDoubleArrowDown,
 } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
+import { IoIosSwap } from "react-icons/io";
 
 import {
   _1_34,
@@ -34,7 +34,7 @@ import RouletteGrid from "../reuse/project2/RouletteGrid";
 import _1dlr from "../../assets/imgs/coin_imgs/bet-1.svg";
 import "../../Style/Project2.css";
 
-function Project2() {
+function Project2({ captureScreenshot, theme }) {
   // const [showCoin, setShowCoin] = useState(false);
   const [coin, setCoin] = useState({ amt: 1, img: _1dlr });
   const [coinPopup, setCoinPopup] = useState(false);
@@ -50,6 +50,7 @@ function Project2() {
     payout: 0,
   });
   const [show, setShow] = useState("winloss");
+  const [showTable, setShowTable] = useState("roulette");
   const [totalBetAmt, setTotalBetAmt] = useState(() => {
     const savedData = localStorage.getItem("totalBetAmount");
     return savedData ? JSON.parse(savedData) : { amt: 0 };
@@ -842,40 +843,16 @@ function Project2() {
     }
   };
 
-  // ScreenShot function
-  const elementToCaptureRef = useRef(null);
-
-  const captureScreenshot = async () => {
-    const canvas = await html2canvas(elementToCaptureRef.current);
-    canvas.toBlob((blob) => {
-      saveAs(blob, "screenshot.png"); // Save the screenshot as a file
-    });
-
-    // Optionally, share the screenshot on supported devices (mobile):
-    if (navigator.share) {
-      canvas.toBlob((blob) => {
-        const file = new File([blob], "screenshot.png", { type: "image/png" });
-        navigator
-          .share({
-            files: [file],
-            title: "Check this Out!",
-            text: "My Roulette Strategy analyzer!",
-          })
-          .then(() => console.log("Successfully shared"))
-          .catch((error) => console.log("Sharing failed", error));
-      });
-    } else {
-      console.log("Can't share in this  browser.");
-    }
-  };
-
   return (
     <div
-      ref={elementToCaptureRef}
-      className="bg-slate-500 bg-slate-900 mx-auto px-3 h-auto"
+      className={
+        theme === "dark"
+          ? "bg-slate-500 bg-slate-900 mx-auto px-3 h-auto"
+          : "bg-off_white mx-auto px-3 h-auto"
+      }
       style={{ maxWidth: "80rem" }}
     >
-      <div className="w-full flex flex-col justify-center items-center h-[30rem] bg-slate-900 bg-transparent mt-10">
+      <div className="w-full flex flex-col justify-center items-center h-[30rem] bg-slate-900 bg-transparent mt-10 max-sm:mt-0">
         <div className="w-full py-3 px-3 bg-black flex justify-between items-center md:w-[68%] md:ml-10 max-md:text-[.8rem] max-lg:text-[.8rem]">
           <div>Total Amt Bet {totalBetAmt.amt}</div>
           <div>EV/Spin 0</div>
@@ -883,7 +860,7 @@ function Project2() {
 
           <div>
             <button
-              className="bg-stone-600 p-2 rounded-lg"
+              className="bg-stone-600 p-2 max-sm:p-1 rounded-lg"
               onClick={resetHandler}
             >
               Reset
@@ -892,41 +869,118 @@ function Project2() {
         </div>
         {/* Roulette Grid */}
         <div className="w-full h-full relative flex justify-center items-center">
-          <RouletteGrid
-            data={data}
-            setData={setData}
-            equityData={equityData}
-            setEquityData={setEquityData}
-            singleDivCoinData={singleDivCoinData}
-            setSingleDivCoinData={setSingleDivCoinData}
-            divSelect2Data={divSelect2Data}
-            setDivSelect2Data={setDivSelect2Data}
-            divSelect2DataHorizontal={divSelect2DataHorizontal}
-            setDivSelect2DataHorizontal={setDivSelect2DataHorizontal}
-            divSelect4Data={divSelect4Data}
-            setDivSelect4Data={setDivSelect4Data}
-            divSelect3Data={divSelect3Data}
-            setDivSelect3Data={setDivSelect3Data}
-            divSelect6Data={divSelect6Data}
-            setDivSelect6Data={setDivSelect6Data}
-            lowerDivs={lowerDivs}
-            setLowerDivs={setLowerDivs}
-            showRatioPopup={showRatioPopup}
-            removeRatioPopup={removeRatioPopup}
-            zero={zero}
-            setZero={setZero}
-            coin={coin}
-            zeroData={zeroData}
-            setZeroData={setZeroData}
-            zeroDivs={zeroDivs}
-            setZeroDivs={setZeroDivs}
-            setZeroEquityData={setZeroEquityData}
-            zeroEquityData={zeroEquityData}
-            totalBetAmt={totalBetAmt}
-            setTotalBetAmt={setTotalBetAmt}
-            captureScreenshot={captureScreenshot}
-          />
+          {/* swap btn */}
+          <div
+            className="absolute max-sm:hidden text-white border py-1 px-3 rounded-full rotate-90 hover:bg-gray-400 hover:text-black cursor-pointer bottom-16 right-40"
+            style={{
+              border: theme === "dark" ? "gray 1px solid" : "black 1px solid",
+            }}
+            onClick={() =>
+              setShowTable(showTable === "roulette" ? "winloss" : "roulette")
+            }
+          >
+            <IoIosSwap
+              size={24}
+              color={theme === "dark" ? "rgb(255,255,255)" : "black"}
+            />
+          </div>
 
+          <div className="w-[90%] h-full flex justify-center items-center">
+            {showTable === "roulette" ? (
+              <RouletteGrid
+                data={data}
+                setData={setData}
+                equityData={equityData}
+                setEquityData={setEquityData}
+                singleDivCoinData={singleDivCoinData}
+                setSingleDivCoinData={setSingleDivCoinData}
+                divSelect2Data={divSelect2Data}
+                setDivSelect2Data={setDivSelect2Data}
+                divSelect2DataHorizontal={divSelect2DataHorizontal}
+                setDivSelect2DataHorizontal={setDivSelect2DataHorizontal}
+                divSelect4Data={divSelect4Data}
+                setDivSelect4Data={setDivSelect4Data}
+                divSelect3Data={divSelect3Data}
+                setDivSelect3Data={setDivSelect3Data}
+                divSelect6Data={divSelect6Data}
+                setDivSelect6Data={setDivSelect6Data}
+                lowerDivs={lowerDivs}
+                setLowerDivs={setLowerDivs}
+                showRatioPopup={showRatioPopup}
+                removeRatioPopup={removeRatioPopup}
+                zero={zero}
+                setZero={setZero}
+                coin={coin}
+                zeroData={zeroData}
+                setZeroData={setZeroData}
+                zeroDivs={zeroDivs}
+                setZeroDivs={setZeroDivs}
+                setZeroEquityData={setZeroEquityData}
+                zeroEquityData={zeroEquityData}
+                totalBetAmt={totalBetAmt}
+                setTotalBetAmt={setTotalBetAmt}
+                captureScreenshot={captureScreenshot}
+                theme={theme}
+              />
+            ) : (
+              ""
+            )}
+
+            {/* Win/Loss per spot */}
+            {showTable === "winloss" ? (
+              <div
+                className="w-[15%] bg-red-500 md:-rotate-90 md:h-[55vw] mt-5 max-sm:-mt-12 max-sm:w-[50%] h-[80%] md:-mt-10 max-md:text-[.7rem] max-lg:text-[.8rem]"
+                style={{
+                  maxHeight: "40rem",
+                  display: show === "winloss" ? "block" : "none",
+                }}
+              >
+                <div className="bg-customGreen w-full h-[9%] flex">
+                  <div className="w-[50%] h-full border flex justify-center items-center">
+                    <p className="rotate-90">
+                      {zeroDivs._0 === 0 ? "" : zeroDivs._0}
+                    </p>
+                  </div>
+
+                  <div className="w-[50%] h-full border flex justify-center items-center">
+                    <p className="rotate-90">
+                      {zeroDivs._00 === 0 ? "" : zeroDivs._00}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap h-full">
+                  {Data.map((item, index) => {
+                    return (
+                      <div
+                        className="w-[33.33%] flex justify-center items-center text-white font-semibold border"
+                        style={{ backgroundColor: item.bg }}
+                      >
+                        <p className="rotate-90">
+                          {win_lossObject[index] === 0
+                            ? ""
+                            : win_lossObject[index]}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
+
+          {/* side boxes for small screen */}
+          <div className="text-white h-full flex flex-col justify-center items-center md:hidden">
+            <div
+              className="text-gray-500 border border-gray-500 p-2 rounded-full hover:bg-gray-400 hover:text-black cursor-pointer bottom-16 right-40"
+              onClick={() =>
+                setShowTable(showTable === "roulette" ? "winloss" : "roulette")
+              }
+            >
+              <IoIosSwap size={18} />
+            </div>
+          </div>
           {/* info ratio box */}
           <div
             className="w-40 bg-customPurple absolute top-14 right-5 z-20"

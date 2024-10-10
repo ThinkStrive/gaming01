@@ -2,7 +2,9 @@ import React from "react";
 import {
   MdKeyboardDoubleArrowUp,
   MdKeyboardDoubleArrowDown,
+  MdOutlineCameraAlt,
 } from "react-icons/md";
+
 import {
   _1_34,
   _2_35,
@@ -60,6 +62,7 @@ function RouletteGrid({
   // totalBetAmt,
   setTotalBetAmt,
   captureScreenshot,
+  theme,
 }) {
   // const _0divKeys = Object.keys(zeroData._0);
   // const _00divKeys = Object.keys(zeroData._00);
@@ -515,23 +518,37 @@ function RouletteGrid({
 
   return (
     // Roulette Wrapper
-    <div className="relative max-sm:w-full w-[23rem] max-sm:h-[100vh] max-lg:h-[95vh] xl:h-[50rem] h-[95vh] md:-rotate-90 flex flex-col items-end max-sm:mt-14">
+    <div className="relative max-sm:w-[90%] w-[23rem] max-sm:-mt-10 max-sm:h-[70vh] max-lg:h-[95vh] xl:h-[50rem] h-[95vh] md:-rotate-90 flex flex-col items-end">
       {/* zero switch */}
       <div
-        className="absolute left-6 -top-7 max-sm:-top-8 w-12 h-24 text-black z-20 rotate-90 flex flex-col justify-center items-center cursor-pointer"
+        className="absolute left-6 -top-2 max-sm:-top-9 w-12 h-24 text-black z-20 rotate-90 flex flex-col justify-center items-center cursor-pointer"
         onClick={() => setZero(zero === "zero" ? "doubleZero" : "zero")}
       >
-        <MdKeyboardDoubleArrowUp size={28} color="rgb(255,255,255)" />
+        <MdKeyboardDoubleArrowUp
+          size={28}
+          color={theme === "dark" ? "rgb(255,255,255)" : "black"}
+        />
         <p
           className="text-lg font-semibold text-white"
           style={{ color: "rgb(91,214,49)" }}
         >
           {zero === "zero" ? "00" : "0"}
         </p>
-        <MdKeyboardDoubleArrowDown size={28} color="rgb(255,255,255)" />
+        <MdKeyboardDoubleArrowDown
+          size={28}
+          color={theme === "dark" ? "rgb(255,255,255)" : "black"}
+        />
       </div>
 
-      <button onClick={captureScreenshot}>Take a snap!</button>
+      <button
+        onClick={captureScreenshot}
+        className="max-sm:hidden"
+        style={{
+          color: theme === "dark" ? "white" : "black",
+        }}
+      >
+        <MdOutlineCameraAlt className="inline -mt-1" size={24} />
+      </button>
 
       {/* Top Zero's */}
       <div className="w-[70%] h-[7%] bg-green-400 flex">
@@ -602,7 +619,12 @@ function RouletteGrid({
       {/* parent for both red & black grid n odd even btns */}
       <div className="w-[100%] h-[90%] flex">
         {/* side btns starts*/}
-        <div className="w-[30%] h-[100.6%] flex">
+        <div
+          className="w-[30%] h-[100.6%] flex"
+          style={{
+            backgroundColor: theme === "dark" ? "" : "#104943",
+          }}
+        >
           <div className="w-[50%]">
             <div
               className="h-[16.667%] bg-darkGreen bg-transparent flex justify-center items-center border relative cursor-pointer"
@@ -768,7 +790,12 @@ function RouletteGrid({
             ),
           )}
 
-          <div className="w-[100%] bg-darkGreen bg-transparent flex">
+          <div
+            className="w-[100%] bg-darkGreen bg-transparent flex"
+            style={{
+              backgroundColor: theme === "dark" ? "" : "#104943",
+            }}
+          >
             <div
               className="w-[33.33%] border flex justify-center items-center cursor-pointer relative"
               onClick={() =>

@@ -30,6 +30,20 @@ const Project4 = ({ theme }) => {
         };
   });
 
+  const [analyzeData, setAnalyzeData] = useState(() => {
+    const savedCountData = localStorage.getItem("analyzeData4");
+    return savedCountData
+      ? JSON.parse(savedCountData)
+      : {
+          winPerData: 0,
+          lossPerData: 0,
+          dozenWinPer: 0,
+          dozenLossPer: 0,
+          colWinPer: 0,
+          colLossPer: 0,
+        };
+  });
+
   const [rowData, setRowData] = useState(() => {
     const savedCountData = localStorage.getItem("rowData4");
     return savedCountData ? JSON.parse(savedCountData) : [];
@@ -82,7 +96,7 @@ const Project4 = ({ theme }) => {
       return (
         JSON.parse(localStorage.getItem("userMissedSuggestionDozen4")) || false
       );
-    },
+    }
   );
 
   const [userMissedSuggestionCol, setUserMissedSuggestionCol] = useState(() => {
@@ -149,37 +163,41 @@ const Project4 = ({ theme }) => {
   }, [suggestionActive]);
 
   useEffect(() => {
+    localStorage.setItem("analyzeData4", JSON.stringify(analyzeData));
+  }, [analyzeData]);
+
+  useEffect(() => {
     localStorage.setItem(
       "suggestionActiveDozen4",
-      JSON.stringify(suggestionActiveDozen),
+      JSON.stringify(suggestionActiveDozen)
     );
   }, [suggestionActiveDozen]);
 
   useEffect(() => {
     localStorage.setItem(
       "suggestionActiveCol4",
-      JSON.stringify(suggestionActiveCol),
+      JSON.stringify(suggestionActiveCol)
     );
   }, [suggestionActiveCol]);
 
   useEffect(() => {
     localStorage.setItem(
       "userMissedSuggestion4",
-      JSON.stringify(userMissedSuggestion),
+      JSON.stringify(userMissedSuggestion)
     );
   }, [userMissedSuggestion]);
 
   useEffect(() => {
     localStorage.setItem(
       "userMissedSuggestionDozen4",
-      JSON.stringify(userMissedSuggestionDozen),
+      JSON.stringify(userMissedSuggestionDozen)
     );
   }, [userMissedSuggestionDozen]);
 
   useEffect(() => {
     localStorage.setItem(
       "userMissedSuggestionCol4",
-      JSON.stringify(userMissedSuggestionCol),
+      JSON.stringify(userMissedSuggestionCol)
     );
   }, [userMissedSuggestionCol]);
 
@@ -194,6 +212,14 @@ const Project4 = ({ theme }) => {
     const initialRepeatCol = "";
     const initialSuggestionActive = false;
     const initialUserMissedSuggestion = false;
+    const initialAnalyzeData = {
+      winPerData: 0,
+      lossPerData: 0,
+      dozenWinPer: 0,
+      dozenLossPer: 0,
+      colWinPer: 0,
+      colLossPer: 0,
+    };
 
     // Reset the component's state
     setRowData(initialRowData);
@@ -209,8 +235,10 @@ const Project4 = ({ theme }) => {
     setUserMissedSuggestionDozen(initialUserMissedSuggestion);
     setSuggestionActiveCol(initialSuggestionActive);
     setUserMissedSuggestionCol(initialUserMissedSuggestion);
+    setAnalyzeData(initialAnalyzeData);
 
     // Set the initial values in localStorage
+    localStorage.setItem("analyzeData4", JSON.stringify(initialAnalyzeData));
     localStorage.setItem("rowData4", JSON.stringify(initialRowData));
     localStorage.setItem("dozenRowData4", JSON.stringify(initialDozenRowData));
     localStorage.setItem("colRowData4", JSON.stringify(initialColRowData));
@@ -220,27 +248,27 @@ const Project4 = ({ theme }) => {
     localStorage.setItem("repeatCol4", initialRepeatCol);
     localStorage.setItem(
       "suggestionActive4",
-      JSON.stringify(initialSuggestionActive),
+      JSON.stringify(initialSuggestionActive)
     );
     localStorage.setItem(
       "userMissedSuggestion4",
-      JSON.stringify(initialUserMissedSuggestion),
+      JSON.stringify(initialUserMissedSuggestion)
     );
     localStorage.setItem(
       "suggestionActiveDozen4",
-      JSON.stringify(initialSuggestionActive),
+      JSON.stringify(initialSuggestionActive)
     );
     localStorage.setItem(
       "userMissedSuggestionDozen4",
-      JSON.stringify(initialUserMissedSuggestion),
+      JSON.stringify(initialUserMissedSuggestion)
     );
     localStorage.setItem(
       "suggestionActiveCol4",
-      JSON.stringify(initialSuggestionActive),
+      JSON.stringify(initialSuggestionActive)
     );
     localStorage.setItem(
       "userMissedSuggestionCol4",
-      JSON.stringify(initialUserMissedSuggestion),
+      JSON.stringify(initialUserMissedSuggestion)
     );
 
     const resetState = {
@@ -614,7 +642,7 @@ const Project4 = ({ theme }) => {
           return acc;
         }, {});
         const repeatedLetter = Object.keys(occurrences).find(
-          (letter) => occurrences[letter] > 1,
+          (letter) => occurrences[letter] > 1
         );
         if (repeatedLetter) {
           setRepeatLetter(repeatedLetter);
@@ -640,7 +668,7 @@ const Project4 = ({ theme }) => {
           return acc;
         }, {});
         const repeatedDozen = Object.keys(occurrences).find(
-          (dozen) => occurrences[dozen] > 1,
+          (dozen) => occurrences[dozen] > 1
         );
         if (repeatedDozen) {
           setRepeatDozen(repeatedDozen);
@@ -666,7 +694,7 @@ const Project4 = ({ theme }) => {
           return acc;
         }, {});
         const repeatedCol = Object.keys(occurrences).find(
-          (dozen) => occurrences[dozen] > 1,
+          (dozen) => occurrences[dozen] > 1
         );
         if (repeatedCol) {
           setRepeatCol(repeatedCol);
@@ -699,6 +727,7 @@ const Project4 = ({ theme }) => {
           showToast(`Book Your Loss ${repeatLetter}`, "error");
           setUserMissedSuggestion(true);
           setSuggestionActive(false);
+          setAnalyzeData((prev) => ({ ...prev, lossPerData: prev.lossPerData + 1 }));
         }
       }
     }
@@ -723,6 +752,7 @@ const Project4 = ({ theme }) => {
           showToast(`Book Your Loss ${repeatDozen}`, "error");
           setUserMissedSuggestionDozen(true);
           setSuggestionActiveDozen(false);
+          setAnalyzeData((prev) => ({ ...prev, dozenLossPer: prev.dozenLossPer + 1 }));
         }
       }
     }
@@ -744,6 +774,7 @@ const Project4 = ({ theme }) => {
           showToast(`Book Your Loss ${repeatCol}`, "error");
           setUserMissedSuggestionCol(true);
           setSuggestionActiveCol(false);
+          setAnalyzeData((prev) => ({ ...prev, colLossPer: prev.colLossPer + 1 }));
         }
       }
     }
@@ -762,8 +793,8 @@ const Project4 = ({ theme }) => {
         clickedDataUpdates.red === 1
           ? "red"
           : clickedDataUpdates.black === 1
-            ? "black"
-            : "zero",
+          ? "black"
+          : "zero",
     });
 
     setRowData((prevRowData) => {
@@ -782,7 +813,10 @@ const Project4 = ({ theme }) => {
         console.log("User clicked the repeated letter: stop suggestion");
         setSuggestionActive(false);
         setSuggestion("");
+        showToast(`Win Number ${repeatLetter}`, 'success')
         setRepeatLetter("");
+        // analyzeRowData(letter);
+        setAnalyzeData((prev) => ({ ...prev, winPerData: prev.winPerData + 1 }));
       } else {
         setSuggestion(`Suggestion: The repeated letter is ${repeatLetter}`);
       }
@@ -814,7 +848,9 @@ const Project4 = ({ theme }) => {
           console.log("User clicked the repeated letter: stop suggestion");
           setSuggestionActiveDozen(false);
           setSuggestion("");
+          showToast(`Win Dozen ${repeatDozen}`, 'success')
           setRepeatDozen("");
+          setAnalyzeData((prev) => ({ ...prev, dozenWinPer: prev.dozenWinPer + 1 }));
         } else {
           setSuggestion(`Suggestion: The repeated letter is ${repeatLetter}`);
         }
@@ -825,7 +861,9 @@ const Project4 = ({ theme }) => {
           console.log("User clicked the repeated col: stop suggestion");
           setSuggestionActiveCol(false);
           setSuggestion("");
+          showToast(`Win Column ${repeatCol}`, 'success')
           setRepeatCol("");
+          setAnalyzeData((prev) => ({ ...prev, colWinPer: prev.colWinPer + 1 }));
         } else {
           setSuggestion(`Suggestion: The repeated letter is ${repeatLetter}`);
         }
@@ -843,8 +881,6 @@ const Project4 = ({ theme }) => {
       localStorage.setItem("colRowData4", JSON.stringify([]));
     }
   };
-
-  const [isAnalyzeOpen, setIsAnalyzeOpen] = useState(true);
 
   return (
     <>
@@ -869,8 +905,8 @@ const Project4 = ({ theme }) => {
                 lastHitNumber?.color === "red"
                   ? "border-customRed text-customRed border-2"
                   : lastHitNumber?.color === "black"
-                    ? "border-customBlack text-customBlack border-2"
-                    : ""
+                  ? "border-customBlack text-customBlack border-2"
+                  : ""
               } flex justify-center items-center w-7 h-7 rounded-md mt-1 px-1`}
             >
               {lastHitNumber?.number}
@@ -938,8 +974,8 @@ const Project4 = ({ theme }) => {
                   lastHitNumber?.color === "red"
                     ? "bg-customRed"
                     : lastHitNumber.color === "black"
-                      ? "bg-black"
-                      : "bg-customGreen"
+                    ? "bg-black"
+                    : "bg-customGreen"
                 } py-1 flex justify-center items-center w-20 max-sm:w-14 rounded-full -ml-8 max-sm:-ml-7`}
               >
                 <p className="text-white ml-6 max-sm:text-xs">
@@ -1028,7 +1064,7 @@ const Project4 = ({ theme }) => {
                           item.num,
                           item.letter,
                           item.dozen,
-                          item.col,
+                          item.col
                         )
                       }
                       style={{
@@ -1047,11 +1083,14 @@ const Project4 = ({ theme }) => {
           </div>
         </div>
       </div>
-
-      {
-        isAnalyzeOpen && 
-        <Analyze />
-      }
+      <div className="h-[40vh] border">
+        <p>Win - {analyzeData.winPerData}</p>
+        <p>Loss - {analyzeData.lossPerData}</p>
+        <p>dozen win - {analyzeData.dozenWinPer}</p>
+        <p>dozen Loss - {analyzeData.dozenLossPer}</p>
+        <p>col win - {analyzeData.colWinPer}</p>
+        <p>col Loss - {analyzeData.colLossPer}</p>
+      </div>
     </>
   );
 };
