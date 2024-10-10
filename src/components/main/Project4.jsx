@@ -1051,7 +1051,7 @@ const Project4 = ({ theme }) => {
           // style={{ height: "100vh" }}
         >
           <div
-            className="w-[70%] md:w-[25%] flex justify-between items-center min-[600px]:w-[35%] min-[600px]:-rotate-90 min-[600px]:h-[70vw] max-sm:h-[100%] roulate--grid--proj--4"
+            className="w-[70%]  md:w-[45%] lg:w-[30%] flex justify-between items-center min-[600px]:w-[35%] min-[600px]:-rotate-90 min-[600px]:h-[70vw] max-sm:h-[100%] roulate--grid--proj--4"
             // style={{ height: "70vw" }}
           >
             <div className="w-[100%] h-full max-sm:h-[100%] lg:h-[90%] md:h-[110%] xl:h-[50rem]">
@@ -1084,7 +1084,7 @@ const Project4 = ({ theme }) => {
 
               <div className="w-full h-full flex">
                 {/* dozens */}
-                <div className="w-[17%] h-[86%]">
+                <div className="w-[17%] max-lg:w[30rem] h-[86%]">
                   <div
                     className="h-[33.33%] border flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold"
                     style={{
@@ -1093,7 +1093,9 @@ const Project4 = ({ theme }) => {
                       color: theme === "dark" ? "" : "black",
                     }}
                   >
-                    <p className="rotate-90 w-[10rem]">1st 12</p>
+                    <p className="rotate-90 w-[10rem] max-xl:text-sm max-sm:text-xs">
+                      1st 12
+                    </p>
                   </div>
 
                   <div
@@ -1104,7 +1106,9 @@ const Project4 = ({ theme }) => {
                       color: theme === "dark" ? "" : "black",
                     }}
                   >
-                    <p className="rotate-90 w-[10rem]">2nd 12</p>
+                    <p className="rotate-90 w-[10rem] max-xl:text-sm max-sm:text-xs">
+                      2nd 12
+                    </p>
                   </div>
 
                   <div
@@ -1115,7 +1119,9 @@ const Project4 = ({ theme }) => {
                       color: theme === "dark" ? "" : "black",
                     }}
                   >
-                    <p className="rotate-90 w-[10rem]">3rd 12</p>
+                    <p className="rotate-90 w-[10rem] max-xl:text-sm max-sm:text-xs">
+                      3rd 12
+                    </p>
                   </div>
                 </div>
                 <div className="w-full h-[93%] flex flex-wrap">
