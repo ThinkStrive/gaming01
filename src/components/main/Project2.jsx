@@ -56,6 +56,8 @@ function Project2({ captureScreenshot, theme }) {
     return savedData ? JSON.parse(savedData) : { amt: 0 };
   });
 
+  const previousData = JSON.parse(localStorage.getItem("previousData2")) || [];
+
   const [zeroDivs, setZeroDivs] = useState(() => {
     const savedData = localStorage.getItem("zeroDivs");
     return savedData
@@ -635,6 +637,140 @@ function Project2({ captureScreenshot, theme }) {
   //   </div>
   // );
 
+  const setCoinData = (coin, coinData, selector) => {
+    if (selector === "2v") {
+      setDivSelect2Data((prevData) => {
+        const newData = { ...prevData };
+
+        for (const key in newData) {
+          if (key === coinData) {
+            newData[key] += coin;
+          }
+        }
+
+        localStorage.setItem("_2DivData", JSON.stringify(newData));
+
+        return newData;
+      });
+    } else if (selector === 1) {
+      setSingleDivCoinData((prevData) => {
+        const newData = { ...prevData };
+
+        for (const key in newData) {
+          if (key === coinData) {
+            newData[key] += coin;
+          }
+        }
+
+        localStorage.setItem("_singleDivCoin", JSON.stringify(newData));
+
+        return newData;
+      });
+
+      setZeroData((prevData) => {
+        const newData = { ...prevData };
+
+        for (const key in newData) {
+          for (const subKey in newData[key]) {
+            if (subKey === coinData) {
+              newData[key][subKey] += coin;
+            }
+          }
+        }
+
+        localStorage.setItem("zeroData", JSON.stringify(newData));
+
+        return newData;
+      });
+    } else if (selector === "2h") {
+      setDivSelect2DataHorizontal((prevData) => {
+        const newData = { ...prevData };
+
+        for (const key in newData) {
+          if (key === coinData) {
+            newData[key] += coin;
+          }
+        }
+
+        localStorage.setItem("_2DivDataHorizontal", JSON.stringify(newData));
+
+        return newData;
+      });
+    } else if (selector === 3) {
+      setDivSelect3Data((prevData) => {
+        const newData = { ...prevData };
+
+        for (const key in newData) {
+          if (key === coinData) {
+            newData[key] += coin;
+          }
+        }
+
+        localStorage.setItem("_3DivData", JSON.stringify(newData));
+
+        return newData;
+      });
+    } else if (selector === 4) {
+      setDivSelect4Data((prevData) => {
+        const newData = { ...prevData };
+
+        for (const key in newData) {
+          if (key === coinData) {
+            newData[key] += coin;
+          }
+        }
+
+        localStorage.setItem("_4DivData", JSON.stringify(newData));
+
+        return newData;
+      });
+    } else if (selector === 6) {
+      setDivSelect6Data((prevData) => {
+        const newData = { ...prevData };
+
+        for (const key in newData) {
+          if (key === coinData) {
+            newData[key] += coin;
+          }
+        }
+
+        localStorage.setItem("_6DivData", JSON.stringify(newData));
+
+        return newData;
+      });
+    } else if (selector === "lowerdivs") {
+      setLowerDivs((prevData) => {
+        const newData = { ...prevData };
+
+        for (const key in newData) {
+          if (key == coinData) {
+            newData[key] += coin;
+          }
+        }
+
+        localStorage.setItem("LowerDivs", JSON.stringify(newData));
+
+        return newData;
+      });
+    } else if (selector === "zeroDivs") {
+      setZeroData((prevData) => {
+        const newData = { ...prevData };
+
+        for (const key in newData) {
+          for (const subKey in newData[key]) {
+            if (subKey === coinData) {
+              newData[key][subKey] += coin;
+            }
+          }
+        }
+
+        localStorage.setItem("zeroData", JSON.stringify(newData));
+
+        return newData;
+      });
+    }
+  };
+
   const resetHandler = () => {
     setZeroDivs((prevData) => {
       const newData = { ...prevData };
@@ -792,6 +928,125 @@ function Project2({ captureScreenshot, theme }) {
     });
   };
 
+  const undoHandler = () => {
+    // numsArray, coin, length, coinData, selector
+    // console.log("selected : ", coin, coinData, selector);
+    // previousData.push({ value: coin, selector: coinData, type: selector });
+    // localStorage.setItem("previousData2", JSON.stringify(previousData));
+    //     {
+    //     "value": 25,
+    //     "selector": "_2_3_5_8",
+    //     "type": 4
+    // }
+    const undoData = previousData.pop();
+    const { value, selector, type } = undoData;
+    console.log("undoData : ", undoData);
+
+    setData((prevData) => {
+      const newData = { ...prevData };
+
+      if (newData.hasOwnProperty(selector)) {
+        if (type === 4) {
+          newData[selector] -= value;
+        } else if (type === 6) {
+          newData[selector] -= value;
+        } else if (type === 2) {
+          newData[selector] -= value;
+        } else if (type === 12) {
+          newData[selector] -= value;
+        } else if (type === "1:1") {
+          newData[selector] -= value;
+        } else if (type === 3) {
+          newData[selector] -= value;
+        }
+      }
+
+      // for (const key in newData) {
+      //   if (!numsArray.includes(key)) {
+      //     newData[key] -= coin;
+      //   }
+      // }
+      localStorage.setItem("Data", JSON.stringify(newData));
+      return newData;
+    });
+
+    setZeroDivs((prevData) => {
+      const newData = { ...prevData };
+
+      if (newData.hasOwnProperty(num)) {
+        if (length === 3) {
+          newData[num] += coin * 11;
+        } else if (length === 2) {
+          newData[num] += coin * 17;
+        }
+      }
+
+      for (const key in newData) {
+        if (!numsArray.includes(key)) {
+          newData[key] -= coin;
+        }
+      }
+
+      localStorage.setItem("zeroDivs", JSON.stringify(newData));
+      return newData;
+    });
+
+    // Equity per spot
+    setEquityData((prevData) => {
+      const newData = { ...prevData };
+
+      numsArray.forEach((num) => {
+        if (newData.hasOwnProperty(num)) {
+          if (length === 4) {
+            newData[num] += coin / 4;
+          } else if (length === 6) {
+            newData[num] += coin / 6;
+          } else if (length === 2) {
+            newData[num] += coin / 2;
+          } else if (length === 12) {
+            newData[num] += coin / 12;
+          } else if (length === "1:1") {
+            newData[num] += coin / 18;
+          } else if (length === 3) {
+            newData[num] += coin / 3;
+          }
+        }
+      });
+
+      localStorage.setItem("EquityData", JSON.stringify(newData));
+      return newData;
+    });
+
+    setZeroEquityData((prevData) => {
+      const newData = { ...prevData };
+
+      numsArray.forEach((num) => {
+        if (newData.hasOwnProperty(num)) {
+          if (length === 3) {
+            newData[num] += coin / 3;
+          } else if (length === 2) {
+            newData[num] += coin / 2;
+          } else if (length === 1) {
+            newData[num] += coin + 1;
+          }
+        }
+      });
+
+      localStorage.setItem("zeroEquityData", JSON.stringify(newData));
+      return newData;
+    });
+
+    setTotalBetAmt((prevData) => {
+      const newData = { ...prevData };
+
+      newData.amt += coin;
+
+      localStorage.setItem("totalBetAmount", JSON.stringify(newData));
+      return newData;
+    });
+    setCoinData(coin, coinData, selector);
+  };
+
   const showRatioPopup = (type, ratio, amount, listeners) => {
     console.log("inside the ratio popup : ", amount);
 
@@ -919,6 +1174,8 @@ function Project2({ captureScreenshot, theme }) {
                 zeroEquityData={zeroEquityData}
                 totalBetAmt={totalBetAmt}
                 setTotalBetAmt={setTotalBetAmt}
+                previousData={previousData}
+                setCoinData={setCoinData}
                 captureScreenshot={captureScreenshot}
                 theme={theme}
               />
