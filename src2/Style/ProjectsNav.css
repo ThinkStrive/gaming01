@@ -1,0 +1,22 @@
+.side--nav {
+  /* margin-left: -16rem; */
+  animation: slideBar 0.25s ease-in-out;
+}
+
+@keyframes slideBar {
+  0% {
+    margin-left: -16rem;
+  }
+
+  50% {
+    margin-left: -10rem;
+  }
+
+  75% {
+    margin-left: -5rem;
+  }
+
+  100% {
+    margin-left: 0rem;
+  }
+}

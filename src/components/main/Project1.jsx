@@ -6,7 +6,7 @@ import "../../Style/Main.css";
 import Nav from "../nav/nav.jsx";
 import { GrPowerReset } from "react-icons/gr";
 
-const Project1 = ({ theme, setTheme }) => {
+const Project1 = ({ theme }) => {
   const [isa_Active, setIsa_Active] = useState(true);
   const [isb_Active, setIsb_Active] = useState(false);
   const [isc_Active, setIsc_Active] = useState(false);

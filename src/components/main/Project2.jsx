@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+
 import {
   MdKeyboardDoubleArrowUp,
   MdKeyboardDoubleArrowDown,
 } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
+import { IoIosSwap } from "react-icons/io";
+import { MdOutlineCameraAlt } from "react-icons/md";
 
 import {
   _1_34,
@@ -32,7 +35,7 @@ import RouletteGrid from "../reuse/project2/RouletteGrid";
 import _1dlr from "../../assets/imgs/coin_imgs/bet-1.svg";
 import "../../Style/Project2.css";
 
-function Project2() {
+function Project2({ captureScreenshot, theme }) {
   // const [showCoin, setShowCoin] = useState(false);
   const [coin, setCoin] = useState({ amt: 1, img: _1dlr });
   const [coinPopup, setCoinPopup] = useState(false);
@@ -48,10 +51,13 @@ function Project2() {
     payout: 0,
   });
   const [show, setShow] = useState("winloss");
+  const [showTable, setShowTable] = useState("roulette");
   const [totalBetAmt, setTotalBetAmt] = useState(() => {
     const savedData = localStorage.getItem("totalBetAmount");
     return savedData ? JSON.parse(savedData) : { amt: 0 };
   });
+
+  const previousData = JSON.parse(localStorage.getItem("previousData2")) || [];
 
   const [zeroDivs, setZeroDivs] = useState(() => {
     const savedData = localStorage.getItem("zeroDivs");
@@ -171,8 +177,24 @@ function Project2() {
     return savedData
       ? JSON.parse(savedData)
       : {
-          _0: 0,
-          _00: 0,
+          _0: {
+            _0: 0,
+            _0_1: 0,
+            _0_1_2: 0,
+            _0_2: 0,
+            _0_2_3: 0,
+            _0_3: 0,
+          },
+          _00: {
+            _00: 0,
+            _0_1: 0,
+            _0_1_2: 0,
+            _0_2: 0,
+            _0_00_2: 0,
+            _00_2: 0,
+            _00_2_3: 0,
+            _00_3: 0,
+          },
         };
   });
 
@@ -616,6 +638,146 @@ function Project2() {
   //   </div>
   // );
 
+  const setCoinData = (coin, coinData, selector, ops) => {
+    console.log("insde the set coin : !!!", ops);
+
+    if (selector === "2v") {
+      setDivSelect2Data((prevData) => {
+        const newData = { ...prevData };
+
+        for (const key in newData) {
+          if (key === coinData) {
+            ops === "add" ? (newData[key] += coin) : (newData[key] -= coin);
+          }
+        }
+
+        localStorage.setItem("_2DivData", JSON.stringify(newData));
+
+        return newData;
+      });
+    } else if (selector === 1) {
+      setSingleDivCoinData((prevData) => {
+        const newData = { ...prevData };
+
+        for (const key in newData) {
+          if (key === coinData) {
+            ops === "add" ? (newData[key] += coin) : (newData[key] -= coin);
+          }
+        }
+
+        localStorage.setItem("_singleDivCoin", JSON.stringify(newData));
+
+        return newData;
+      });
+
+      setZeroData((prevData) => {
+        const newData = { ...prevData };
+
+        for (const key in newData) {
+          for (const subKey in newData[key]) {
+            if (subKey === coinData) {
+              ops === "add"
+                ? (newData[key][subKey] += coin)
+                : (newData[key][subKey] -= coin);
+            }
+          }
+        }
+
+        localStorage.setItem("zeroData", JSON.stringify(newData));
+
+        return newData;
+      });
+    } else if (selector === "2h") {
+      setDivSelect2DataHorizontal((prevData) => {
+        const newData = { ...prevData };
+
+        for (const key in newData) {
+          if (key === coinData) {
+            ops === "add" ? (newData[key] += coin) : (newData[key] -= coin);
+          }
+        }
+
+        localStorage.setItem("_2DivDataHorizontal", JSON.stringify(newData));
+
+        return newData;
+      });
+    } else if (selector === 3) {
+      setDivSelect3Data((prevData) => {
+        const newData = { ...prevData };
+
+        for (const key in newData) {
+          if (key === coinData) {
+            ops === "add" ? (newData[key] += coin) : (newData[key] -= coin);
+          }
+        }
+
+        localStorage.setItem("_3DivData", JSON.stringify(newData));
+
+        return newData;
+      });
+    } else if (selector === 4) {
+      setDivSelect4Data((prevData) => {
+        const newData = { ...prevData };
+
+        for (const key in newData) {
+          if (key === coinData) {
+            ops === "add" ? (newData[key] += coin) : (newData[key] -= coin);
+          }
+        }
+
+        localStorage.setItem("_4DivData", JSON.stringify(newData));
+
+        return newData;
+      });
+    } else if (selector === 6) {
+      setDivSelect6Data((prevData) => {
+        const newData = { ...prevData };
+
+        for (const key in newData) {
+          if (key === coinData) {
+            ops === "add" ? (newData[key] += coin) : (newData[key] -= coin);
+          }
+        }
+
+        localStorage.setItem("_6DivData", JSON.stringify(newData));
+
+        return newData;
+      });
+    } else if (selector === "lowerdivs") {
+      setLowerDivs((prevData) => {
+        const newData = { ...prevData };
+
+        for (const key in newData) {
+          if (key == coinData) {
+            ops === "add" ? (newData[key] += coin) : (newData[key] -= coin);
+          }
+        }
+
+        localStorage.setItem("LowerDivs", JSON.stringify(newData));
+
+        return newData;
+      });
+    } else if (selector === "zeroDivs") {
+      setZeroData((prevData) => {
+        const newData = { ...prevData };
+
+        for (const key in newData) {
+          for (const subKey in newData[key]) {
+            if (subKey === coinData) {
+              ops === "add"
+                ? (newData[key][subKey] += coin)
+                : (newData[key][subKey] -= coin);
+            }
+          }
+        }
+
+        localStorage.setItem("zeroData", JSON.stringify(newData));
+
+        return newData;
+      });
+    }
+  };
+
   const resetHandler = () => {
     setZeroDivs((prevData) => {
       const newData = { ...prevData };
@@ -665,7 +827,9 @@ function Project2() {
       const newData = { ...prevData };
 
       for (const key in newData) {
-        newData[key] = 0;
+        for (const subKey in newData[key]) {
+          newData[key][subKey] = 0;
+        }
       }
 
       localStorage.setItem("zeroData", JSON.stringify(newData));
@@ -771,19 +935,150 @@ function Project2() {
     });
   };
 
-  const showRatioPopup = (type, ratio, amount) => {
-    setRatioPopupData(() => {
-      const newData = { ...ratioPopupData };
+  const undoHandler = () => {
+    // numsArray, coin, length, coinData, selector
+    // console.log("selected : ", coin, coinData, selector);
+    // previousData.push({ value: coin, selector: coinData, type: selector });
+    // localStorage.setItem("previousData2", JSON.stringify(previousData));
+    //     {
+    //     "value": 25,
+    //     "selector": "_2_3_5_8",
+    //     "type": 4
+    // }
 
-      newData.head = type;
-      newData.ratio = ratio;
-      newData.betAnmount = amount;
-      newData.payout = amount * ratio;
+    if (previousData.length > 0) {
+      const undoData = previousData.pop();
+      localStorage.setItem("previousData2", JSON.stringify(previousData));
+      const { value, selector, type } = undoData;
+      console.log("undoData : ", undoData);
 
-      return newData;
-    });
+      setData((prevData) => {
+        const newData = { ...prevData };
 
-    setRatioPopup(true);
+        if (type === 4) {
+          newData[selector] -= value * 8;
+        } else if (type === 6) {
+          newData[selector] -= value * 5;
+        } else if (type === 2) {
+          newData[selector] -= value * 17;
+        } else if (type === 12) {
+          newData[selector] -= value * 2;
+        } else if (type === "1:1") {
+          newData[selector] -= value * 1;
+        } else if (type === 3) {
+          newData[selector] -= value * 11;
+        }
+
+        for (const key in newData) {
+          newData[key] -= value;
+        }
+
+        localStorage.setItem("Data", JSON.stringify(newData));
+        return newData;
+      });
+
+      setZeroDivs((prevData) => {
+        const newData = { ...prevData };
+
+        if (newData.hasOwnProperty(value)) {
+          if (type === 3) {
+            newData[value] -= value * 11;
+          } else if (type === 2) {
+            newData[value] -= value * 17;
+          }
+        }
+
+        for (const key in newData) {
+          newData[key] -= value;
+        }
+
+        localStorage.setItem("zeroDivs", JSON.stringify(newData));
+        return newData;
+      });
+
+      // Equity per spot
+      setEquityData((prevData) => {
+        const newData = { ...prevData };
+
+        if (newData.hasOwnProperty(selector)) {
+          if (type === 4) {
+            newData[selector] -= coin / 4;
+          } else if (type === 6) {
+            newData[selector] -= coin / 6;
+          } else if (type === 2) {
+            newData[selector] -= coin / 2;
+          } else if (type === 12) {
+            newData[selector] -= coin / 12;
+          } else if (type === "1:1") {
+            newData[selector] -= coin / 18;
+          } else if (type === 3) {
+            newData[selector] -= coin / 3;
+          }
+        }
+
+        localStorage.setItem("EquityData", JSON.stringify(newData));
+        return newData;
+      });
+
+      setZeroEquityData((prevData) => {
+        const newData = { ...prevData };
+
+        if (newData.hasOwnProperty(selector)) {
+          if (type === 3) {
+            newData[selector] -= coin / 3;
+          } else if (type === 2) {
+            newData[selector] -= coin / 2;
+          } else if (type === 1) {
+            newData[selector] -= coin + 1;
+          }
+        }
+
+        localStorage.setItem("zeroEquityData", JSON.stringify(newData));
+        return newData;
+      });
+
+      setTotalBetAmt((prevData) => {
+        const newData = { ...prevData };
+
+        newData.amt -= value;
+
+        localStorage.setItem("totalBetAmount", JSON.stringify(newData));
+        return newData;
+      });
+      setCoinData(value, selector, type, "undo");
+    }
+  };
+
+  const showRatioPopup = (type, ratio, amount, listeners) => {
+    console.log("inside the ratio popup : ", amount);
+
+    if (listeners === "zeroListeners") {
+      const amt = amount.find((item) => item > 0);
+
+      setRatioPopupData(() => {
+        const newData = { ...ratioPopupData };
+
+        newData.head = type;
+        newData.ratio = ratio;
+        newData.betAnmount = typeof amt === "number" ? amt : 0;
+        newData.payout = typeof amt === "number" ? amt * ratio : 0 * ratio;
+
+        return newData;
+      });
+      setRatioPopup(true);
+    } else {
+      setRatioPopupData(() => {
+        const newData = { ...ratioPopupData };
+
+        newData.head = type;
+        newData.ratio = ratio;
+        newData.betAnmount = amount;
+        newData.payout = amount * ratio;
+
+        return newData;
+      });
+      setRatioPopup(true);
+    }
   };
 
   const removeRatioPopup = () => {
@@ -807,60 +1102,170 @@ function Project2() {
 
   return (
     <div
-      className="bg-slate-500 mx-auto px-3 h-auto"
+      className={
+        theme === "dark"
+          ? "bg-slate-500 bg-slate-900 mx-auto px-3 h-auto"
+          : "bg-off_white mx-auto px-3 h-auto"
+      }
       style={{ maxWidth: "80rem" }}
     >
-      <div className="w-full flex flex-col justify-center items-center h-[30rem] bg-slate-900  mt-10">
-        <div className="w-full py-3 px-3 bg-blue-700 flex justify-between items-center md:w-[68%] md:ml-10">
+      <div className="w-full flex flex-col justify-center items-center h-[30rem] bg-slate-900 bg-transparent mt-10 max-sm:mt-0">
+        <div className="w-full py-3 px-3 bg-black flex justify-between items-center md:w-[68%] md:ml-10 max-md:text-[.8rem] max-lg:text-[.8rem]">
           <div>Total Amt Bet {totalBetAmt.amt}</div>
-          <div>EV/Spin 0</div>
-          <div>Comp Val/Spin 0</div>
+          {/* <div>EV/Spin 0</div>
+          <div>Comp Val/Spin 0</div> */}
 
           <div>
             <button
-              className="bg-stone-600 p-2 rounded-lg"
+              className="bg-stone-600 p-2 max-sm:p-1 rounded-lg"
               onClick={resetHandler}
             >
               Reset
             </button>
           </div>
+
+          <div>
+            <button
+              className="bg-stone-600 p-2 max-sm:p-1 rounded-lg"
+              onClick={undoHandler}
+            >
+              undo
+            </button>
+          </div>
         </div>
         {/* Roulette Grid */}
         <div className="w-full h-full relative flex justify-center items-center">
-          <RouletteGrid
-            data={data}
-            setData={setData}
-            equityData={equityData}
-            setEquityData={setEquityData}
-            singleDivCoinData={singleDivCoinData}
-            setSingleDivCoinData={setSingleDivCoinData}
-            divSelect2Data={divSelect2Data}
-            setDivSelect2Data={setDivSelect2Data}
-            divSelect2DataHorizontal={divSelect2DataHorizontal}
-            setDivSelect2DataHorizontal={setDivSelect2DataHorizontal}
-            divSelect4Data={divSelect4Data}
-            setDivSelect4Data={setDivSelect4Data}
-            divSelect3Data={divSelect3Data}
-            setDivSelect3Data={setDivSelect3Data}
-            divSelect6Data={divSelect6Data}
-            setDivSelect6Data={setDivSelect6Data}
-            lowerDivs={lowerDivs}
-            setLowerDivs={setLowerDivs}
-            showRatioPopup={showRatioPopup}
-            removeRatioPopup={removeRatioPopup}
-            zero={zero}
-            setZero={setZero}
-            coin={coin}
-            zeroData={zeroData}
-            setZeroData={setZeroData}
-            zeroDivs={zeroDivs}
-            setZeroDivs={setZeroDivs}
-            setZeroEquityData={setZeroEquityData}
-            zeroEquityData={zeroEquityData}
-            totalBetAmt={totalBetAmt}
-            setTotalBetAmt={setTotalBetAmt}
-          />
+          {/* swap btn */}
+          <div
+            className="absolute max-sm:hidden text-white border py-1 px-3 rounded-full rotate-90 hover:bg-gray-400 hover:text-black cursor-pointer bottom-16 right-40"
+            style={{
+              border: theme === "dark" ? "gray 1px solid" : "black 1px solid",
+            }}
+            onClick={() =>
+              setShowTable(showTable === "roulette" ? "winloss" : "roulette")
+            }
+          >
+            <IoIosSwap
+              size={24}
+              color={theme === "dark" ? "rgb(255,255,255)" : "black"}
+            />
+          </div>
 
+          <div className="w-[90%] h-full flex justify-center items-center">
+            {showTable === "roulette" ? (
+              <RouletteGrid
+                data={data}
+                setData={setData}
+                equityData={equityData}
+                setEquityData={setEquityData}
+                singleDivCoinData={singleDivCoinData}
+                setSingleDivCoinData={setSingleDivCoinData}
+                divSelect2Data={divSelect2Data}
+                setDivSelect2Data={setDivSelect2Data}
+                divSelect2DataHorizontal={divSelect2DataHorizontal}
+                setDivSelect2DataHorizontal={setDivSelect2DataHorizontal}
+                divSelect4Data={divSelect4Data}
+                setDivSelect4Data={setDivSelect4Data}
+                divSelect3Data={divSelect3Data}
+                setDivSelect3Data={setDivSelect3Data}
+                divSelect6Data={divSelect6Data}
+                setDivSelect6Data={setDivSelect6Data}
+                lowerDivs={lowerDivs}
+                setLowerDivs={setLowerDivs}
+                showRatioPopup={showRatioPopup}
+                removeRatioPopup={removeRatioPopup}
+                zero={zero}
+                setZero={setZero}
+                coin={coin}
+                zeroData={zeroData}
+                setZeroData={setZeroData}
+                zeroDivs={zeroDivs}
+                setZeroDivs={setZeroDivs}
+                setZeroEquityData={setZeroEquityData}
+                zeroEquityData={zeroEquityData}
+                totalBetAmt={totalBetAmt}
+                setTotalBetAmt={setTotalBetAmt}
+                previousData={previousData}
+                setCoinData={setCoinData}
+                captureScreenshot={captureScreenshot}
+                theme={theme}
+              />
+            ) : (
+              ""
+            )}
+
+            {/* Win/Loss per spot */}
+            {showTable === "winloss" ? (
+              <div
+                className="w-[25%] h-[80%] bg-red-500 md:-rotate-90 md:h-[55vw] mt-5 max-sm:-mt-12 max-sm:w-[70%] md:-mt-10 max-md:text-[.7rem] max-lg:text-[.8rem]"
+                style={{
+                  maxHeight: "40rem",
+                  display: show === "winloss" ? "block" : "none",
+                }}
+              >
+                <div className="bg-customGreen w-full h-[9%] flex">
+                  <div
+                    className="w-[50%] h-full border flex justify-center items-center"
+                    style={{ width: zero === "doubleZero" ? "50%" : "100%" }}
+                  >
+                    <p className="rotate-90">
+                      {zeroDivs._0 === 0 ? "" : zeroDivs._0}
+                    </p>
+                  </div>
+
+                  {zero === "doubleZero" ? (
+                    <div className="w-[50%] h-full border flex justify-center items-center">
+                      <p className="rotate-90">
+                        {zeroDivs._00 === 0 ? "" : zeroDivs._00}
+                      </p>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </div>
+                <div className="flex flex-wrap h-full">
+                  {Data.map((item, index) => {
+                    return (
+                      <div
+                        className="w-[33.33%] flex justify-center items-center text-white font-semibold border"
+                        style={{ backgroundColor: item.bg }}
+                      >
+                        <p className="rotate-90">
+                          {win_lossObject[index] === 0
+                            ? ""
+                            : win_lossObject[index]}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
+
+          {/* side boxes for small screen */}
+          <div className="text-white h-full flex flex-col justify-center gap-5 items-center md:hidden">
+            <div
+              className="text-gray-500 border border-gray-500 p-2 rounded-full"
+              onClick={() =>
+                setShowTable(showTable === "roulette" ? "winloss" : "roulette")
+              }
+            >
+              <IoIosSwap size={18} />
+            </div>
+
+            <button
+              onClick={captureScreenshot}
+              className=""
+              style={{
+                color: theme === "dark" ? "gray" : "black",
+              }}
+            >
+              <MdOutlineCameraAlt className="inline -mt-1" size={24} />
+            </button>
+          </div>
           {/* info ratio box */}
           <div
             className="w-40 bg-customPurple absolute top-14 right-5 z-20"
@@ -885,10 +1290,16 @@ function Project2() {
         {/* Roulette Grid Ends Here */}
       </div>
 
-      <div className="w-full h-[20rem] max-sm:h-[80vh] flex justify-between bg-zinc-700 max-sm:mt-20">
-        <div className="w-[30%] max-[600px]:w-[50%]">
+      <div className="w-full h-[20rem] max-sm:h-[80vh] flex justify-between  pt-12 relative">
+        <div className="absolute top-0 left-0 w-full bg-black text-white py-1 text-center text-lg font-semibold">
+          Win/Loss per Spot{" "}
+          <span className="text-xs font-normal absolute right-2 top-3">
+            (Roulette Rise.com)
+          </span>
+        </div>
+        <div className="w-[30%] max-[600px]:w-[50%] bg-red-500 bg-transparent flex flex-col justify-evenly items-center">
           {/* Coins section */}
-          <div className=" w-[20rem] flex items-center gap-3 overflow-x-scroll">
+          {/* <div className="bg-teal-600 py-2 w-[9rem] h-20 max-sm:w-full flex flex-wrap items-center justify-evenly gap-3 overflow-y-scroll overflow-x-hidden">
             {coinInfo.map((item, index) => {
               return (
                 <img
@@ -897,8 +1308,8 @@ function Project2() {
                   alt=""
                   className={
                     item.amount === coin.amt
-                      ? "border border-neonGreen rounded-full p-1 hover:animate-pulse cursor-pointer"
-                      : "rounded-full p-1 cursor-pointer"
+                      ? "border border-neonGreen rounded-full p-1 hover:animate-pulse cursor-pointer w-12"
+                      : "rounded-full p-1 cursor-pointer w-12"
                   }
                   onClick={() =>
                     setCoin((prevData) => {
@@ -915,7 +1326,7 @@ function Project2() {
               ? customCoins.map((item) => {
                   return (
                     <div
-                      className="bg-blue-500 w-[100%]"
+                      className="bg-blue-500 w-[5rem]"
                       onClick={() =>
                         setCoin((prevData) => {
                           const newData = { ...prevData };
@@ -936,7 +1347,7 @@ function Project2() {
             >
               <IoMdAdd size={28} />
             </div>
-          </div>
+          </div> */}
 
           {/* Coin add Popup */}
           <div
@@ -969,30 +1380,40 @@ function Project2() {
               </button>
             </div>
           </div>
-
           {/* WheelCoverage */}
-          <div className="w-[16rem] max-sm:rotate-90">
+          <div className="w-[14rem] lg:h-[65%] md:h-[50%] -mt-10 max-sm:rotate-90 wheel--coverage">
             <WheelCoverage data={data} type={zero} />
           </div>
         </div>
 
-        <div className="max-sm:w-[50%] w-[70%] border rounded-xl flex justify-center md:items-center max-[600px]:h-[100%] relative">
+        <div className="max-sm:w-[50%] w-[80%]  rounded-xl flex justify-center md:items-center max-[600px]:h-[100%] relative">
           {/* Win/Loss per spot */}
           <div
-            className="w-[20%] bg-red-500 md:-rotate-90 md:h-[55vw] mt-5 max-sm:w-[50%] h-[80%] md:-mt-10"
+            className="w-[20%] max-xl:w-[25%] bg-red-500 md:-rotate-90 md:h-[55vw] mt-5 max-sm:w-[90%] h-[85%] md:-mt-10 max-md:text-[.7rem] max-lg:text-[.8rem]"
             style={{
               maxHeight: "40rem",
               display: show === "winloss" ? "block" : "none",
             }}
           >
-            <div className="bg-customGreen w-full h-10 flex">
-              <div className="w-[50%] h-full border flex justify-center items-center">
-                <p className="rotate-90">{zeroDivs._0}</p>
+            <div className="bg-customGreen w-full h-[9%] flex">
+              <div
+                className="w-[50%] h-full border flex justify-center items-center"
+                style={{ width: zero === "doubleZero" ? "50%" : "100%" }}
+              >
+                <p className="rotate-90">
+                  {zeroDivs._0 === 0 ? "" : zeroDivs._0}
+                </p>
               </div>
 
-              <div className="w-[50%] h-full border flex justify-center items-center">
-                <p className="rotate-90">{zeroDivs._00}</p>
-              </div>
+              {zero === "doubleZero" ? (
+                <div className="w-[50%] h-full border flex justify-center items-center">
+                  <p className="rotate-90">
+                    {zeroDivs._00 === 0 ? "" : zeroDivs._00}
+                  </p>
+                </div>
+              ) : (
+                ""
+              )}
             </div>
             <div className="flex flex-wrap h-full">
               {Data.map((item, index) => {
@@ -1001,75 +1422,59 @@ function Project2() {
                     className="w-[33.33%] flex justify-center items-center text-white font-semibold border"
                     style={{ backgroundColor: item.bg }}
                   >
-                    <p className="rotate-90">{win_lossObject[index]}</p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          {/* equity per spot */}
-          <div
-            className="w-[20%] hidden bg-red-500 flex-wrap md:-rotate-90 md:h-[55vw] mt-5 max-sm:w-[50%] h-[80%] md:-mt-10"
-            style={{
-              maxHeight: "40rem",
-              display: show === "quity" ? "flex" : "none",
-            }}
-          >
-            <div className="bg-customGreen w-full h-10 flex">
-              <div className="w-[50%] h-full border flex justify-center items-center">
-                <p className="rotate-90">
-                  {zeroEquityData._0 > 0 ? zeroEquityData._0.toFixed(2) : ""}
-                </p>
-              </div>
-
-              <div className="w-[50%] h-full border flex justify-center items-center">
-                <p className="rotate-90">
-                  {zeroEquityData._00 > 0 ? zeroEquityData._00.toFixed(2) : ""}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex flex-wrap h-full w-full">
-              {Data.map((item, index) => {
-                return (
-                  <div
-                    className="w-[33.33%] flex justify-center items-center text-white font-semibold border"
-                    style={{ backgroundColor: item.bg }}
-                  >
                     <p className="rotate-90">
-                      {equityPerSpot[index] <= 0
-                        ? ""
-                        : equityPerSpot[index].toFixed(2)}
+                      {win_lossObject[index] === 0 ? "" : win_lossObject[index]}
                     </p>
                   </div>
                 );
               })}
             </div>
           </div>
+        </div>
+      </div>
 
-          <div className="w-full py-2 px-10 absolute left-0 bottom-0 border-t flex justify-around max-sm:hidden">
+      <div className="w-full flex justify-center items-center gap-10 h-[18rem] max-sm:h-[90vh] relative mt-10">
+        <div className="absolute -top-10 left-0 w-full bg-black text-white py-1 text-center text-lg font-semibold">
+          Equity per Spot
+        </div>
+        {/* equity per spot */}
+        <div className="w-[15%] bg-red-500 flex flex-wrap md:-rotate-90 md:h-[55vw] mt-5 max-sm:w-[50%] h-[80%] md:-mt-10 max-md:text-[.7rem] max-lg:text-[.8rem]">
+          <div className="bg-customGreen w-full h-[8%] flex">
             <div
-              className="bg-teal-600 p-2 rounded-lg text-sm font-semibold cursor-pointer"
-              onClick={() => setShow("winloss")}
-              style={{
-                backgroundColor: show === "winloss" ? "#FFC107" : "#008080",
-                border: show === "winloss" ? "black 1px solid" : "",
-                color: show === "winloss" ? "black" : "white",
-              }}
+              className="w-[50%] h-full border flex justify-center items-center"
+              style={{ width: zero === "doubleZero" ? "50%" : "100%" }}
             >
-              Win/Loss per spot
+              <p className="rotate-90">
+                {zeroEquityData._0 > 0 ? zeroEquityData._0.toFixed(2) : ""}
+              </p>
             </div>
-            <div
-              className="bg-teal-600 p-2 rounded-lg text-sm font-semibold cursor-pointer"
-              onClick={() => setShow("quity")}
-              style={{
-                backgroundColor: show === "quity" ? "#FFC107" : "#008080",
-                border: show === "quity" ? "black 1px solid" : "",
-                color: show === "quity" ? "black" : "white",
-              }}
-            >
-              Equity per spot
-            </div>
+
+            {zero === "doubleZero" ? (
+              <div className="w-[50%] h-full border flex justify-center items-center">
+                <p className="rotate-90">
+                  {zeroEquityData._00 > 0 ? zeroEquityData._00.toFixed(2) : ""}
+                </p>
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
+
+          <div className="flex flex-wrap h-full w-full">
+            {Data.map((item, index) => {
+              return (
+                <div
+                  className="w-[33.33%] h-[8.4%] flex justify-center items-center text-white font-semibold border"
+                  style={{ backgroundColor: item.bg }}
+                >
+                  <p className="rotate-90">
+                    {equityPerSpot[index] <= 0
+                      ? ""
+                      : equityPerSpot[index].toFixed(2)}
+                  </p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -1081,10 +1486,10 @@ function Project2() {
       <footer className="w-full">
         <ul className="flex my-1">
           <li className="border-r-2 px-1 text-xs font-semibold h-3">
-            <a href="#">Legcy RBA</a>
+            <a href="#">Legcy RSA</a>
           </li>
           <li className="border-r-2 px-1 text-xs font-semibold h-3">
-            <a href="#">Roulette Systems</a>
+            <a href="#">Roulette Strategy</a>
           </li>
 
           <li className="px-1 text-xs font-semibold h-3">

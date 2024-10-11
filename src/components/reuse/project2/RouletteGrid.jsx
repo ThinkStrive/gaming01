@@ -2,7 +2,9 @@ import React from "react";
 import {
   MdKeyboardDoubleArrowUp,
   MdKeyboardDoubleArrowDown,
+  MdOutlineCameraAlt,
 } from "react-icons/md";
+
 import {
   _1_34,
   _2_35,
@@ -30,7 +32,7 @@ import {
 function RouletteGrid({
   data,
   setData,
-  equityData,
+  // equityData,
   setEquityData,
   singleDivCoinData,
   setSingleDivCoinData,
@@ -56,15 +58,21 @@ function RouletteGrid({
   zeroDivs,
   setZeroDivs,
   setZeroEquityData,
-  zeroEquityData,
-  totalBetAmt,
+  // zeroEquityData,
+  // totalBetAmt,
   setTotalBetAmt,
+  previousData,
+  setCoinData,
+  captureScreenshot,
+  theme,
 }) {
-  const _0divKeys = Object.keys(zeroData);
-  const _0divData = Object.values(zeroData);
+  // const _0divKeys = Object.keys(zeroData._0);
+  // const _00divKeys = Object.keys(zeroData._00);
+  const _0divData = Object.entries(zeroData._0);
+  const _00divData = Object.entries(zeroData._00);
   const _1divKeys = Object.keys(singleDivCoinData);
   const _1divData = Object.values(singleDivCoinData);
-  const _singleDivData = Object.values(data);
+  // const _singleDivData = Object.values(data);
   const _2divKeys = Object.keys(divSelect2Data);
   const _2divData = Object.values(divSelect2Data);
   const _2divHKeys = Object.keys(divSelect2DataHorizontal);
@@ -76,122 +84,6 @@ function RouletteGrid({
   const _6divKeys = Object.keys(divSelect6Data);
   const _6divData = Object.values(divSelect6Data);
 
-  const setCoinData = (coin, coinData, selector) => {
-    if (selector === "2v") {
-      setDivSelect2Data((prevData) => {
-        const newData = { ...prevData };
-
-        for (const key in newData) {
-          if (key === coinData) {
-            newData[key] += coin;
-          }
-        }
-
-        localStorage.setItem("_2DivData", JSON.stringify(newData));
-
-        return newData;
-      });
-    } else if (selector === 1) {
-      setSingleDivCoinData((prevData) => {
-        const newData = { ...prevData };
-
-        for (const key in newData) {
-          if (key === coinData) {
-            newData[key] += coin;
-          }
-        }
-
-        localStorage.setItem("_singleDivCoin", JSON.stringify(newData));
-
-        return newData;
-      });
-    } else if (selector === "2h") {
-      setDivSelect2DataHorizontal((prevData) => {
-        const newData = { ...prevData };
-
-        for (const key in newData) {
-          if (key === coinData) {
-            newData[key] += coin;
-          }
-        }
-
-        localStorage.setItem("_2DivDataHorizontal", JSON.stringify(newData));
-
-        return newData;
-      });
-    } else if (selector === 3) {
-      setDivSelect3Data((prevData) => {
-        const newData = { ...prevData };
-
-        for (const key in newData) {
-          if (key === coinData) {
-            newData[key] += coin;
-          }
-        }
-
-        localStorage.setItem("_3DivData", JSON.stringify(newData));
-
-        return newData;
-      });
-    } else if (selector === 4) {
-      setDivSelect4Data((prevData) => {
-        const newData = { ...prevData };
-
-        for (const key in newData) {
-          if (key === coinData) {
-            newData[key] += coin;
-          }
-        }
-
-        localStorage.setItem("_4DivData", JSON.stringify(newData));
-
-        return newData;
-      });
-    } else if (selector === 6) {
-      setDivSelect6Data((prevData) => {
-        const newData = { ...prevData };
-
-        for (const key in newData) {
-          if (key === coinData) {
-            newData[key] += coin;
-          }
-        }
-
-        localStorage.setItem("_6DivData", JSON.stringify(newData));
-
-        return newData;
-      });
-    } else if (selector === "lowerdivs") {
-      setLowerDivs((prevData) => {
-        const newData = { ...prevData };
-
-        for (const key in newData) {
-          if (key == coinData) {
-            newData[key] += coin;
-          }
-        }
-
-        localStorage.setItem("LowerDivs", JSON.stringify(newData));
-
-        return newData;
-      });
-    } else if (selector === "zeroDivs") {
-      setZeroData((prevData) => {
-        const newData = { ...prevData };
-
-        for (const key in newData) {
-          if (key == coinData) {
-            newData[key] += coin;
-          }
-        }
-
-        localStorage.setItem("zeroData", JSON.stringify(newData));
-
-        return newData;
-      });
-    }
-  };
-
   const selectSingleDiv = (
     num,
     coin,
@@ -202,6 +94,10 @@ function RouletteGrid({
     amount,
   ) => {
     //num, coin, coinData, selector type ratio amount payout
+    // console.log("setCoin data parameters", coin, coinData, selector);
+    previousData.push({ value: coin, selector: coinData, type: selector });
+    localStorage.setItem("previousData2", JSON.stringify(previousData));
+
     setData((prevData) => {
       const newData = { ...prevData };
 
@@ -228,7 +124,7 @@ function RouletteGrid({
         }
       }
 
-      localStorage.setItem("Data", JSON.stringify(newData));
+      localStorage.setItem("zeroDivs", JSON.stringify(newData));
       return newData;
     });
 
@@ -244,7 +140,6 @@ function RouletteGrid({
       localStorage.setItem("EquityData", JSON.stringify(newData));
       return newData;
     });
-    // console.log("data : ", type, ratio, amount, payout);
 
     setZeroEquityData((prevData) => {
       const newData = { ...prevData };
@@ -269,10 +164,14 @@ function RouletteGrid({
     });
 
     showRatioPopup(type, ratio, amount);
-    setCoinData(coin, coinData, selector);
+    setCoinData(coin, coinData, selector, "add");
   };
 
   const MultiDivSelector = (numsArray, coin, length, coinData, selector) => {
+    // console.log("selected : ", coin, coinData, selector);
+    previousData.push({ value: coin, selector: coinData, type: selector });
+    localStorage.setItem("previousData2", JSON.stringify(previousData));
+
     setData((prevData) => {
       const newData = { ...prevData };
 
@@ -323,7 +222,7 @@ function RouletteGrid({
         }
       }
 
-      localStorage.setItem("Data", JSON.stringify(newData));
+      localStorage.setItem("zeroDivs", JSON.stringify(newData));
       return newData;
     });
 
@@ -380,7 +279,7 @@ function RouletteGrid({
       localStorage.setItem("totalBetAmount", JSON.stringify(newData));
       return newData;
     });
-    setCoinData(coin, coinData, selector);
+    setCoinData(coin, coinData, selector, "add");
   };
 
   const renderCoinImg = (amount) => {
@@ -408,18 +307,42 @@ function RouletteGrid({
   };
 
   const renderCoinDiv = (data) => {
-    return (
+    return data > 0 ? (
       <div
-        className="w-6 h-6 bg-yellow-500 rounded-full text-xs flex justify-center items-center text-black font-semibold md:rotate-90 absolute"
-        style={{
-          display: data > 0 ? "flex" : "none",
-        }}
+        className="w-6 h-6 bg-yellow-500 rounded-full text-xs flex justify-center items-center text-white font-semibold md:rotate-90 absolute"
+        style={
+          {
+            // display: data > 0 ? "flex" : "none",
+          }
+        }
       >
         <div className="absolute w-full h-full top-0 left-0 bg-yellow-500 rounded-full">
           <img src={renderCoinImg(data)} alt="" />
         </div>
-        {data}
+        <p className="absolute z-10">{data}</p>
       </div>
+    ) : (
+      ""
+    );
+  };
+
+  const renderCoinDivforZero = (data) => {
+    return data.map((item) =>
+      item > 0 ? (
+        <div
+          className="w-6 h-6 bg-yellow-500 rounded-full text-xs flex justify-center items-center text-white font-semibold md:rotate-90 absolute"
+          style={{
+            display: item > 0 ? "flex" : "none",
+          }}
+        >
+          <div className="absolute w-full h-full top-0 left-0 bg-yellow-500 rounded-full">
+            <img src={renderCoinImg(item)} alt="" />
+          </div>
+          <p className="absolute z-10">{item}</p>
+        </div>
+      ) : (
+        ""
+      ),
     );
   };
 
@@ -440,9 +363,9 @@ function RouletteGrid({
             `${num} Straight-Up`,
             35,
             _1divData[index],
-            _singleDivData[index],
+            // _singleDivData[index],
           )
-        } //num, coin, coinData, selector type ratio amount payout
+        } //num, coin, coinData, selector type ratio amount
         onMouseEnter={() =>
           showRatioPopup(`${num} Straight-Up`, 35, _1divData[index])
         }
@@ -458,36 +381,52 @@ function RouletteGrid({
           <div className="absolute w-full h-full top-0 left-0 bg-yellow-500 rounded-full">
             <img src={renderCoinImg(_1divData[index])} alt="" />
           </div>
-          {_1divData[index]}
+
+          <p className="absolute z-10">{_1divData[index]}</p>
         </div>
       </div>
     </div>
   );
 
   return (
-    <div className="relative max-sm:w-full w-[23rem] max-sm:h-[100vh] max-lg:h-[95vh] xl:h-[50rem] h-[95vh] bg-red-500  md:-rotate-90 flex flex-col items-end max-sm:mt-14">
+    // Roulette Wrapper
+    <div className="relative max-sm:w-[90%] w-[23rem] max-sm:-mt-10 max-sm:h-[70vh] max-lg:h-[95vh] xl:h-[50rem] h-[95vh] md:-rotate-90 flex flex-col items-end">
       {/* zero switch */}
       <div
-        className="absolute left-6 -top-7 max-sm:-top-8 w-12 h-24 text-black z-20 rotate-90 flex flex-col justify-center items-center cursor-pointer"
+        className="absolute left-6 -top-2 max-sm:-top-9 w-12 h-24 text-black z-20 rotate-90 flex flex-col justify-center items-center cursor-pointer"
         onClick={() => setZero(zero === "zero" ? "doubleZero" : "zero")}
       >
-        <MdKeyboardDoubleArrowUp size={28} color="rgb(255,255,255)" />
+        <MdKeyboardDoubleArrowUp
+          size={28}
+          color={theme === "dark" ? "rgb(255,255,255)" : "black"}
+        />
         <p
           className="text-lg font-semibold text-white"
           style={{ color: "rgb(91,214,49)" }}
         >
           {zero === "zero" ? "00" : "0"}
         </p>
-        <MdKeyboardDoubleArrowDown size={28} color="rgb(255,255,255)" />
+        <MdKeyboardDoubleArrowDown
+          size={28}
+          color={theme === "dark" ? "rgb(255,255,255)" : "black"}
+        />
       </div>
+
+      <button
+        onClick={captureScreenshot}
+        className="max-sm:hidden"
+        style={{
+          color: theme === "dark" ? "white" : "black",
+        }}
+      >
+        <MdOutlineCameraAlt className="inline -mt-1" size={24} />
+      </button>
 
       {/* Top Zero's */}
       <div className="w-[70%] h-[7%] bg-green-400 flex">
         <div
           className="w-[50%]  border flex justify-center items-center text-white font-semibold relative"
           style={{ width: zero === "zero" ? "100%" : "50%" }}
-          onMouseEnter={() => showRatioPopup()}
-          onMouseLeave={() => removeRatioPopup()}
         >
           0
           <div
@@ -500,11 +439,19 @@ function RouletteGrid({
                 1,
                 `0 Straight-Up`,
                 35,
-                zeroData._0,
-                zeroDivs._0,
+                zeroDivs._0._0,
               )
             }
-          ></div>
+            onMouseEnter={() =>
+              showRatioPopup(`0 Straight-Up`, 35, zeroData._0._0)
+            }
+            onMouseLeave={() => removeRatioPopup()}
+            // num,coin,coinData,selector,type,ratio,amount,
+          >
+            <div className="relative w-full h-full flex justify-center items-center">
+              {renderCoinDiv(zeroData._0._0)}
+            </div>
+          </div>
         </div>
         <div
           className="w-[50%] border flex justify-center items-center text-white font-semibold relative"
@@ -521,11 +468,18 @@ function RouletteGrid({
                 1,
                 `00 Straight-Up`,
                 35,
-                zeroData._00,
-                zeroDivs._00,
+                zeroDivs._00._00,
               )
             }
-          ></div>
+            onMouseEnter={() =>
+              showRatioPopup(`0 Straight-Up`, 35, zeroData._00._00)
+            }
+            onMouseLeave={() => removeRatioPopup()}
+          >
+            <div className="relative w-full h-full flex justify-center items-center">
+              {renderCoinDiv(zeroData._00._00)}
+            </div>
+          </div>
           <div
             className="w-5 h-5 bg-yellow-500 rounded-full text-xs flex justify-center items-center text-white md:rotate-90"
             style={{ display: data._00 > 0 ? "flex" : "none" }}
@@ -537,10 +491,15 @@ function RouletteGrid({
       {/* parent for both red & black grid n odd even btns */}
       <div className="w-[100%] h-[90%] flex">
         {/* side btns starts*/}
-        <div className="w-[30%] h-[100.6%] flex">
+        <div
+          className="w-[30%] h-[100.6%] flex"
+          style={{
+            backgroundColor: theme === "dark" ? "" : "#104943",
+          }}
+        >
           <div className="w-[50%]">
             <div
-              className="h-[16.667%] bg-darkGreen flex justify-center items-center border relative cursor-pointer"
+              className="h-[16.667%] bg-darkGreen bg-transparent flex justify-center items-center border relative cursor-pointer"
               onClick={() =>
                 MultiDivSelector(
                   one_eighteen,
@@ -558,7 +517,7 @@ function RouletteGrid({
               {renderCoinDiv(lowerDivs._1_18)}
             </div>
             <div
-              className="h-[16.667%] bg-darkGreen flex justify-center items-center border relative cursor-pointer"
+              className="h-[16.667%] bg-darkGreen bg-transparent flex justify-center items-center border relative cursor-pointer"
               onClick={() =>
                 MultiDivSelector(
                   even_numbers,
@@ -576,7 +535,7 @@ function RouletteGrid({
               {renderCoinDiv(lowerDivs.Even)}
             </div>
             <div
-              className="h-[16.667%] bg-customRed flex justify-center items-center border relative cursor-pointer"
+              className="h-[16.667%] bg-customRed bg-transparent flex justify-center items-center border relative cursor-pointer"
               onClick={() =>
                 MultiDivSelector(red, coin.amt, "1:1", "red", "lowerdivs")
               }
@@ -588,7 +547,7 @@ function RouletteGrid({
               {renderCoinDiv(lowerDivs.red)}
             </div>
             <div
-              className="h-[16.667%] bg-black flex justify-center items-center border relative cursor-pointer"
+              className="h-[16.667%] bg-black bg-transparent flex justify-center items-center border relative cursor-pointer"
               onClick={() =>
                 MultiDivSelector(black, coin.amt, "1:1", "black", "lowerdivs")
               }
@@ -601,7 +560,7 @@ function RouletteGrid({
             </div>
 
             <div
-              className="h-[16.667%] bg-darkGreen flex justify-center items-center border relative cursor-pointer"
+              className="h-[16.667%] bg-darkGreen bg-transparent flex justify-center items-center border relative cursor-pointer"
               onClick={() =>
                 MultiDivSelector(
                   odd_numbers,
@@ -619,7 +578,7 @@ function RouletteGrid({
               {renderCoinDiv(lowerDivs.Odd)}
             </div>
             <div
-              className="h-[16.667%] bg-darkGreen flex justify-center items-center border relative cursor-pointer"
+              className="h-[16.667%] bg-darkGreen bg-transparent flex justify-center items-center border relative cursor-pointer"
               onClick={() =>
                 MultiDivSelector(
                   nineteen_thirtysix,
@@ -642,7 +601,7 @@ function RouletteGrid({
 
           <div className="w-[50%]">
             <div
-              className="h-[33.33%] bg-darkGreen flex justify-center items-center border relative cursor-pointer"
+              className="h-[33.33%] bg-darkGreen bg-transparent flex justify-center items-center border relative cursor-pointer"
               onClick={() =>
                 MultiDivSelector(first_12, coin.amt, 12, "_1st_12", "lowerdivs")
               }
@@ -656,7 +615,7 @@ function RouletteGrid({
               {renderCoinDiv(lowerDivs._1st_12)}
             </div>
             <div
-              className="h-[33.33%] bg-darkGreen flex justify-center items-center border relative cursor-pointer"
+              className="h-[33.33%] bg-darkGreen bg-transparent flex justify-center items-center border relative cursor-pointer"
               onClick={() =>
                 MultiDivSelector(
                   second_12,
@@ -676,7 +635,7 @@ function RouletteGrid({
               {renderCoinDiv(lowerDivs._2nd_12)}
             </div>
             <div
-              className="h-[33.33%] bg-darkGreen flex justify-center items-center border relative cursor-pointer"
+              className="h-[33.33%] bg-darkGreen bg-transparent flex justify-center items-center border relative cursor-pointer"
               onClick={() =>
                 MultiDivSelector(third_12, coin.amt, 12, "_3rd_12", "lowerdivs")
               }
@@ -693,7 +652,7 @@ function RouletteGrid({
         </div>
         {/* side btns ends */}
         {/* black & red nums */}
-        <div className="w-[70%] h-[109%] bg-white flex flex-wrap">
+        <div className="w-[70%] h-[109%] flex flex-wrap">
           {Data.map((item, index) =>
             gridCell(
               item.bg,
@@ -703,7 +662,12 @@ function RouletteGrid({
             ),
           )}
 
-          <div className="w-[100%] bg-darkGreen flex">
+          <div
+            className="w-[100%] bg-darkGreen bg-transparent flex"
+            style={{
+              backgroundColor: theme === "dark" ? "" : "#104943",
+            }}
+          >
             <div
               className="w-[33.33%] border flex justify-center items-center cursor-pointer relative"
               onClick={() =>
@@ -753,6 +717,7 @@ function RouletteGrid({
         {/* black & red nums ends here */}
       </div>
 
+      {/* render and adding event listner to the divs */}
       {listener4Div.map((item, index) => {
         return (
           <div
@@ -761,6 +726,7 @@ function RouletteGrid({
             style={{
               top: item.top,
               right: item.right,
+              // backgroundColor: item.bg || "blue",
             }}
             onClick={() =>
               MultiDivSelector(
@@ -789,7 +755,7 @@ function RouletteGrid({
             style={{
               top: item.top,
               left: item.left,
-              // backgroundColor: item.bg ? item.bg : "yellow",
+              // backgroundColor: item.bg || "yellow",
             }}
             onClick={() =>
               MultiDivSelector(
@@ -822,7 +788,7 @@ function RouletteGrid({
             style={{
               top: item.top,
               right: item.right,
-              // backgroundColor: item.bg ? item.bg : "",
+              // backgroundColor: item.bg || "yellow",
             }}
             onClick={() =>
               MultiDivSelector(
@@ -850,7 +816,7 @@ function RouletteGrid({
             style={{
               top: item.top,
               left: item.left,
-              // backgroundColor: item.bg ? item.bg : "",
+              // backgroundColor: item.bg || "green",
             }}
             onClick={() =>
               MultiDivSelector(
@@ -879,7 +845,7 @@ function RouletteGrid({
             style={{
               top: item.top,
               left: item.left,
-              // backgroundColor: item.bg ? item.bg : "",
+              // backgroundColor: item.bg || "green",
             }}
             onClick={() =>
               MultiDivSelector(
@@ -906,22 +872,53 @@ function RouletteGrid({
         return (
           <div
             key={index}
-            className="w-5 h-5 bg-gray-50 rounded-full absolute cursor-pointer z-20"
+            className="w-5 h-5 rounded-full absolute cursor-pointer z-20"
             style={{
               top: item.top,
               right: item.right,
-              backgroundColor: item.bg ? item.bg : "yellow",
+              // backgroundColor: item.bg ? item.bg : "yellow",
             }}
             onClick={() =>
               MultiDivSelector(
                 zero === "doubleZero" ? item._00.num : item._0.num,
                 coin.amt,
                 zero === "doubleZero" ? item._00.length : item._0.length,
-                _0divKeys[index],
+                zero === "doubleZero" ? item._00.selector : item._0.selector,
                 "zeroDivs",
               )
             }
-          ></div>
+            onMouseEnter={() =>
+              showRatioPopup(
+                zero === "doubleZero" ? item._00.type : item._0.type,
+                zero === "doubleZero" ? item._00.ratio : item._0.ratio,
+                zero === "doubleZero"
+                  ? _00divData.map((i) =>
+                      i[0] === item._00.selector ? i[1] : "",
+                    )
+                  : _0divData.map((i) =>
+                      i[0] === item._0.selector ? i[1] : "",
+                    ),
+                "zeroListeners",
+              )
+            }
+            onMouseLeave={() => removeRatioPopup()}
+          >
+            {renderCoinDivforZero(
+              zero === "doubleZero"
+                ? _00divData.map((i) =>
+                    i[0] === item._00.selector ? i[1] : "",
+                  )
+                : _0divData.map((i) => (i[0] === item._0.selector ? i[1] : "")),
+            )}
+            {/* {checkingFunction(
+              zero === "doubleZero"
+                ? _00divData.map((i) =>
+                    i[0] === item._00.selector ? i[1] : "",
+                  )
+                : _0divData.map((i) => (i[0] === item._0.selector ? i[1] : "")),
+            )} */}
+          </div>
+          // numsArray, coin, length, coinData, selector
         );
       })}
 
@@ -929,22 +926,45 @@ function RouletteGrid({
         return (
           <div
             key={index}
-            className="w-14 h-5 bg-gray-50 absolute cursor-pointer z-20"
+            className="w-14 h-5 absolute cursor-pointer z-20 flex justify-center items-center"
             style={{
               top: item.top,
               right: item.right,
-              backgroundColor: item.bg ? item.bg : "red",
+              // backgroundColor: item.bg ? item.bg : "red",
             }}
             onClick={() =>
               MultiDivSelector(
                 zero === "doubleZero" ? item._00.num : item._0.num,
                 coin.amt,
                 zero === "doubleZero" ? item._00.length : item._0.length,
-                _0divKeys[index],
+                zero === "doubleZero" ? item._00.selector : item._0.selector,
                 "zeroDivs",
               )
             }
-          ></div>
+            onMouseEnter={() =>
+              showRatioPopup(
+                zero === "doubleZero" ? item._00.type : item._0.type,
+                zero === "doubleZero" ? item._00.ratio : item._0.ratio,
+                zero === "doubleZero"
+                  ? _00divData.map((i) =>
+                      i[0] === item._00.selector ? i[1] : "",
+                    )
+                  : _0divData.map((i) =>
+                      i[0] === item._0.selector ? i[1] : "",
+                    ),
+                "zeroListeners",
+              )
+            }
+            onMouseLeave={() => removeRatioPopup()}
+          >
+            {renderCoinDivforZero(
+              zero === "doubleZero"
+                ? _00divData.map((i) =>
+                    i[0] === item._00.selector ? i[1] : "",
+                  )
+                : _0divData.map((i) => (i[0] === item._0.selector ? i[1] : "")),
+            )}
+          </div>
         );
       })}
     </div>
