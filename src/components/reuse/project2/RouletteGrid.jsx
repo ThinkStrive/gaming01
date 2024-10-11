@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   MdKeyboardDoubleArrowUp,
   MdKeyboardDoubleArrowDown,
@@ -27,7 +27,7 @@ import {
   red,
   second_12,
   third_12,
-} from "../../resources/mainCompData";
+} from "../../resources/Project2CompnentRenderData";
 
 function RouletteGrid({
   data,
@@ -66,6 +66,16 @@ function RouletteGrid({
   captureScreenshot,
   theme,
 }) {
+  const [screenSize, setScreenSize] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenSize(window.innerWidth);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   // const _0divKeys = Object.keys(zeroData._0);
   // const _00divKeys = Object.keys(zeroData._00);
   const _0divData = Object.entries(zeroData._0);
@@ -95,8 +105,8 @@ function RouletteGrid({
   ) => {
     //num, coin, coinData, selector type ratio amount payout
     // console.log("setCoin data parameters", coin, coinData, selector);
-    previousData.push({ value: coin, selector: coinData, type: selector });
-    localStorage.setItem("previousData2", JSON.stringify(previousData));
+    let undoVal = 0,
+      equity = 0;
 
     setData((prevData) => {
       const newData = { ...prevData };
@@ -104,6 +114,7 @@ function RouletteGrid({
       for (const key in newData) {
         if (key === num) {
           newData[key] += coin * 35;
+          undoVal = coin * 35;
         } else {
           newData[key] -= coin;
         }
@@ -119,6 +130,7 @@ function RouletteGrid({
       for (const key in newData) {
         if (key === num) {
           newData[key] += coin * 35;
+          undoVal = coin * 35;
         } else {
           newData[key] -= coin;
         }
@@ -134,6 +146,7 @@ function RouletteGrid({
       for (const key in newData) {
         if (key === num) {
           newData[key] += coin;
+          equity = coin;
         }
       }
 
@@ -147,6 +160,7 @@ function RouletteGrid({
       for (const key in newData) {
         if (key === num) {
           newData[key] += coin;
+          equity = coin;
         }
       }
 
@@ -165,12 +179,25 @@ function RouletteGrid({
 
     showRatioPopup(type, ratio, amount);
     setCoinData(coin, coinData, selector, "add");
+    console.log(
+      `undoVal : ${undoVal} | equityVal : ${equity} | selector : ${coinData} | type : ${selector} | Coin : ${coin}`,
+    );
+
+    console.log("hello");
+
+    previousData.push({
+      value: undoVal,
+      equityVal: equity,
+      selector: coinData,
+      type: selector,
+      Coin: coin,
+    });
+    localStorage.setItem("previousData2", JSON.stringify(previousData));
   };
 
   const MultiDivSelector = (numsArray, coin, length, coinData, selector) => {
     // console.log("selected : ", coin, coinData, selector);
-    previousData.push({ value: coin, selector: coinData, type: selector });
-    localStorage.setItem("previousData2", JSON.stringify(previousData));
+    let undoVal, equity;
 
     setData((prevData) => {
       const newData = { ...prevData };
@@ -179,16 +206,22 @@ function RouletteGrid({
         if (newData.hasOwnProperty(num)) {
           if (length === 4) {
             newData[num] += coin * 8;
+            undoVal = coin * 8;
           } else if (length === 6) {
             newData[num] += coin * 5;
+            undoVal = coin * 5;
           } else if (length === 2) {
             newData[num] += coin * 17;
+            undoVal = coin * 17;
           } else if (length === 12) {
             newData[num] += coin * 2;
+            undoVal = coin * 2;
           } else if (length === "1:1") {
             newData[num] += coin * 1;
+            undoVal = coin * 1;
           } else if (length === 3) {
             newData[num] += coin * 11;
+            undoVal = coin * 11;
           }
         }
       });
@@ -210,8 +243,10 @@ function RouletteGrid({
         if (newData.hasOwnProperty(num)) {
           if (length === 3) {
             newData[num] += coin * 11;
+            undoVal = coin * 11;
           } else if (length === 2) {
             newData[num] += coin * 17;
+            undoVal = coin * 17;
           }
         }
       });
@@ -234,16 +269,22 @@ function RouletteGrid({
         if (newData.hasOwnProperty(num)) {
           if (length === 4) {
             newData[num] += coin / 4;
+            equity = coin / 4;
           } else if (length === 6) {
             newData[num] += coin / 6;
+            equity = coin / 6;
           } else if (length === 2) {
             newData[num] += coin / 2;
+            equity = coin / 2;
           } else if (length === 12) {
             newData[num] += coin / 12;
+            equity = coin / 12;
           } else if (length === "1:1") {
             newData[num] += coin / 18;
+            equity = coin / 18;
           } else if (length === 3) {
             newData[num] += coin / 3;
+            equity = coin / 3;
           }
         }
       });
@@ -259,10 +300,13 @@ function RouletteGrid({
         if (newData.hasOwnProperty(num)) {
           if (length === 3) {
             newData[num] += coin / 3;
+            equity = coin / 3;
           } else if (length === 2) {
             newData[num] += coin / 2;
+            equity = coin / 2;
           } else if (length === 1) {
             newData[num] += coin + 1;
+            equity = coin + 1;
           }
         }
       });
@@ -279,6 +323,15 @@ function RouletteGrid({
       localStorage.setItem("totalBetAmount", JSON.stringify(newData));
       return newData;
     });
+    previousData.push({
+      value: undoVal,
+      equity: equity,
+      selector: coinData,
+      type: selector,
+      coin: coin,
+    });
+    localStorage.setItem("previousData2", JSON.stringify(previousData));
+
     setCoinData(coin, coinData, selector, "add");
   };
 
@@ -401,7 +454,7 @@ function RouletteGrid({
           color={theme === "dark" ? "rgb(255,255,255)" : "black"}
         />
         <p
-          className="text-lg font-semibold text-white"
+          className="text-lg font-semibold text-white max-sm:text-[.9rem]"
           style={{ color: "rgb(91,214,49)" }}
         >
           {zero === "zero" ? "00" : "0"}
@@ -492,7 +545,7 @@ function RouletteGrid({
       <div className="w-[100%] h-[90%] flex">
         {/* side btns starts*/}
         <div
-          className="w-[30%] h-[100.6%] flex"
+          className="w-[30%] h-[100.6%] flex max-sm:text-[.8rem]"
           style={{
             backgroundColor: theme === "dark" ? "" : "#104943",
           }}
@@ -663,13 +716,13 @@ function RouletteGrid({
           )}
 
           <div
-            className="w-[100%] bg-darkGreen bg-transparent flex"
+            className="w-[100%] bg-darkGreen bg-transparent flex max-sm:text-[.8rem]"
             style={{
               backgroundColor: theme === "dark" ? "" : "#104943",
             }}
           >
             <div
-              className="w-[33.33%] border flex justify-center items-center cursor-pointer relative"
+              className="w-[33.33%] border flex justify-center items-center cursor-pointer relative py-1"
               onClick={() =>
                 MultiDivSelector(_1_34, coin.amt, 12, "col_1_2_1", "lowerdivs")
               }
@@ -719,13 +772,20 @@ function RouletteGrid({
 
       {/* render and adding event listner to the divs */}
       {listener4Div.map((item, index) => {
+        const topPosition =
+          screenSize < 640
+            ? item.smtop
+            : screenSize < 1024
+              ? item.mdtop
+              : item.top;
+        const side = screenSize < 640 ? item.smSide : item.right;
         return (
           <div
             key={index}
             className="w-5 h-4 rounded-full absolute cursor-pointer z-20 text-xs flex justify-center items-center text-white"
             style={{
-              top: item.top,
-              right: item.right,
+              top: topPosition,
+              right: side,
               // backgroundColor: item.bg || "blue",
             }}
             onClick={() =>
@@ -782,12 +842,20 @@ function RouletteGrid({
       })}
 
       {listener2DivVertical.map((item, index) => {
+        const topPosition =
+          screenSize < 640
+            ? item.smtop
+            : screenSize < 1024
+              ? item.mdtop
+              : item.top;
+
+        const side = screenSize < 640 ? item.smSide : item.right;
         return (
           <div
-            className="w-16 h-3  absolute cursor-pointer z-20 flex justify-center items-center"
+            className="w-16 h-3 max-sm:w-12  absolute cursor-pointer z-20 flex justify-center items-center"
             style={{
-              top: item.top,
-              right: item.right,
+              top: topPosition,
+              right: side,
               // backgroundColor: item.bg || "yellow",
             }}
             onClick={() =>
@@ -810,11 +878,17 @@ function RouletteGrid({
       })}
 
       {listener2DivHorizontal.map((item, index) => {
+        const topPosition =
+          screenSize < 640
+            ? item.smtop
+            : screenSize < 1024
+              ? item.mdtop
+              : item.top;
         return (
           <div
-            className="w-3 h-12 max-lg:h-8 absolute cursor-pointer z-20 flex justify-center items-center"
+            className={`w-3 h-8 max-lg:h-4 absolute cursor-pointer z-20 flex justify-center items-center`}
             style={{
-              top: item.top,
+              top: topPosition,
               left: item.left,
               // backgroundColor: item.bg || "green",
             }}

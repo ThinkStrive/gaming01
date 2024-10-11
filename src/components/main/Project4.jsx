@@ -5,6 +5,7 @@ import { GrPowerReset } from "react-icons/gr";
 import { useToast } from "../resources/Toast.jsx";
 import Analyze from "../reuse/project4/Analyze.jsx";
 import { CgInsights } from "react-icons/cg";
+import background from "../../assets/imgs/2002.i029.002_realistic-poker-club-illustration.jpg";
 import MoneyManagementTable from "../reuse/project4/MoneyManagementTable.jsx";
 
 const Project4 = ({ theme }) => {
@@ -99,7 +100,7 @@ const Project4 = ({ theme }) => {
       return (
         JSON.parse(localStorage.getItem("userMissedSuggestionDozen4")) || false
       );
-    }
+    },
   );
 
   const [userMissedSuggestionCol, setUserMissedSuggestionCol] = useState(() => {
@@ -156,7 +157,7 @@ const Project4 = ({ theme }) => {
   useEffect(() => {
     localStorage.setItem(
       "moneyManagement4",
-      JSON.stringify(moneyManagementData)
+      JSON.stringify(moneyManagementData),
     );
   }, [moneyManagementData]);
 
@@ -203,35 +204,35 @@ const Project4 = ({ theme }) => {
   useEffect(() => {
     localStorage.setItem(
       "suggestionActiveDozen4",
-      JSON.stringify(suggestionActiveDozen)
+      JSON.stringify(suggestionActiveDozen),
     );
   }, [suggestionActiveDozen]);
 
   useEffect(() => {
     localStorage.setItem(
       "suggestionActiveCol4",
-      JSON.stringify(suggestionActiveCol)
+      JSON.stringify(suggestionActiveCol),
     );
   }, [suggestionActiveCol]);
 
   useEffect(() => {
     localStorage.setItem(
       "userMissedSuggestion4",
-      JSON.stringify(userMissedSuggestion)
+      JSON.stringify(userMissedSuggestion),
     );
   }, [userMissedSuggestion]);
 
   useEffect(() => {
     localStorage.setItem(
       "userMissedSuggestionDozen4",
-      JSON.stringify(userMissedSuggestionDozen)
+      JSON.stringify(userMissedSuggestionDozen),
     );
   }, [userMissedSuggestionDozen]);
 
   useEffect(() => {
     localStorage.setItem(
       "userMissedSuggestionCol4",
-      JSON.stringify(userMissedSuggestionCol)
+      JSON.stringify(userMissedSuggestionCol),
     );
   }, [userMissedSuggestionCol]);
 
@@ -284,27 +285,27 @@ const Project4 = ({ theme }) => {
     localStorage.setItem("repeatCol4", initialRepeatCol);
     localStorage.setItem(
       "suggestionActive4",
-      JSON.stringify(initialSuggestionActive)
+      JSON.stringify(initialSuggestionActive),
     );
     localStorage.setItem(
       "userMissedSuggestion4",
-      JSON.stringify(initialUserMissedSuggestion)
+      JSON.stringify(initialUserMissedSuggestion),
     );
     localStorage.setItem(
       "suggestionActiveDozen4",
-      JSON.stringify(initialSuggestionActive)
+      JSON.stringify(initialSuggestionActive),
     );
     localStorage.setItem(
       "userMissedSuggestionDozen4",
-      JSON.stringify(initialUserMissedSuggestion)
+      JSON.stringify(initialUserMissedSuggestion),
     );
     localStorage.setItem(
       "suggestionActiveCol4",
-      JSON.stringify(initialSuggestionActive)
+      JSON.stringify(initialSuggestionActive),
     );
     localStorage.setItem(
       "userMissedSuggestionCol4",
-      JSON.stringify(initialUserMissedSuggestion)
+      JSON.stringify(initialUserMissedSuggestion),
     );
 
     const resetState = {
@@ -678,7 +679,7 @@ const Project4 = ({ theme }) => {
           return acc;
         }, {});
         const repeatedLetter = Object.keys(occurrences).find(
-          (letter) => occurrences[letter] > 1
+          (letter) => occurrences[letter] > 1,
         );
         if (repeatedLetter) {
           setRepeatLetter(repeatedLetter);
@@ -704,7 +705,7 @@ const Project4 = ({ theme }) => {
           return acc;
         }, {});
         const repeatedDozen = Object.keys(occurrences).find(
-          (dozen) => occurrences[dozen] > 1
+          (dozen) => occurrences[dozen] > 1,
         );
         if (repeatedDozen) {
           setRepeatDozen(repeatedDozen);
@@ -730,7 +731,7 @@ const Project4 = ({ theme }) => {
           return acc;
         }, {});
         const repeatedCol = Object.keys(occurrences).find(
-          (dozen) => occurrences[dozen] > 1
+          (dozen) => occurrences[dozen] > 1,
         );
         if (repeatedCol) {
           setRepeatCol(repeatedCol);
@@ -871,8 +872,8 @@ const Project4 = ({ theme }) => {
         clickedDataUpdates.red === 1
           ? "red"
           : clickedDataUpdates.black === 1
-          ? "black"
-          : "zero",
+            ? "black"
+            : "zero",
     });
 
     let newMoneyManagementData = [...moneyManagementData];
@@ -1017,8 +1018,8 @@ const Project4 = ({ theme }) => {
                 lastHitNumber?.color === "red"
                   ? "border-customRed text-customRed border-2"
                   : lastHitNumber?.color === "black"
-                  ? "border-customBlack text-customBlack border-2"
-                  : ""
+                    ? "border-customBlack text-customBlack border-2"
+                    : ""
               } flex justify-center items-center w-7 h-7 rounded-md mt-1 px-1`}
             >
               {lastHitNumber?.number}
@@ -1086,8 +1087,8 @@ const Project4 = ({ theme }) => {
                   lastHitNumber?.color === "red"
                     ? "bg-customRed"
                     : lastHitNumber.color === "black"
-                    ? "bg-black"
-                    : "bg-customGreen"
+                      ? "bg-black"
+                      : "bg-customGreen"
                 } py-1 flex justify-center items-center w-20 max-sm:w-14 rounded-full -ml-8 max-sm:-ml-7`}
               >
                 <p className="text-white ml-6 max-sm:text-xs">
@@ -1227,7 +1228,7 @@ const Project4 = ({ theme }) => {
                             item.num,
                             item.letter,
                             item.dozen,
-                            item.col
+                            item.col,
                           )
                         }
                         style={{
@@ -1284,7 +1285,7 @@ const Project4 = ({ theme }) => {
 
         <div className="w-[10%] h-full hidden max-sm:flex flex-col justify-center">
           <div
-            className="border rounded-full flex justify-center items-center relative z-40"
+            className="border rounded-full flex justify-center items-center relative z-30"
             onClick={() => setShowPopup(!showPopup)}
           >
             <CgInsights size={24} />
@@ -1344,10 +1345,6 @@ const Project4 = ({ theme }) => {
         <p>col Loss - {analyzeData.colLossPer}</p>
       </div> */}
 
-<div className="h-[50vh] w-full border bg-slate-400" >
-          <MoneyManagementTable moneyManagementData={moneyManagementData} />
-          </div>
-
       <div
         className="w-full h-screen absolute top-0 flex justify-center items-center"
         style={{
@@ -1359,43 +1356,43 @@ const Project4 = ({ theme }) => {
         <div className="max-sm:mr-4">
           <table className="border w-[20rem] max-sm:w-[13rem]">
             <tr>
-              <th className="w-[33.3%] bg-yellow-500 text-black">Catagory</th>
+              <th className="w-[33.3%] bg-yellow-500 text-black">Catgory</th>
               <th className="w-[33.3%] bg-green-600 p-1">Win</th>
               <th className="w-[33.3%] bg-red-600 p-1">Loss</th>
             </tr>
 
             <tr>
-              <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 Numbers
               </td>
-              <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 {analyzeData.winPerData}
               </td>
-              <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 {analyzeData.lossPerData}
               </td>
             </tr>
 
             <tr>
-              <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 Dozen
               </td>
-              <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 {analyzeData.dozenWinPer}
               </td>
-              <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 {analyzeData.dozenLossPer}
               </td>
             </tr>
 
             <tr>
-              <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 Column
               </td>
-              <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 {analyzeData.colWinPer}
               </td>
-              <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 {analyzeData.colLossPer}
               </td>
             </tr>
@@ -1407,9 +1404,27 @@ const Project4 = ({ theme }) => {
         <p>dozen Loss - {analyzeData.dozenLossPer}</p>
         <p>col win - {analyzeData.colWinPer}</p>
         <p>col Loss - {analyzeData.colLossPer}</p> */}
-
-          
         </div>
+      </div>
+
+      <div
+        className="h-[50vh] mt-5 w-full overflow-y-scroll rounded-xl p-2 scrollOff"
+        style={{
+          background:
+            theme === "dark"
+              ? `linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)),url(${background}) center center no-repeat`
+              : `linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 255.9)),url(${background}) center center no-repeat`,
+          backgroundSize: "cover",
+          backgroundPositionX: "center",
+          backgroundPositionY: "center",
+          backgroundRepeat: "no-repeat",
+          border: theme === "dark" ? "white 2px solid" : "black 2px solid",
+        }}
+      >
+        <MoneyManagementTable
+          moneyManagementData={moneyManagementData}
+          theme={theme}
+        />
       </div>
     </>
   );

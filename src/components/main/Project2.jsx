@@ -6,7 +6,8 @@ import {
 } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
 import { IoIosSwap } from "react-icons/io";
-import { MdOutlineCameraAlt } from "react-icons/md";
+import { MdOutlineCameraAlt, MdDataSaverOff } from "react-icons/md";
+import { GrAnalytics } from "react-icons/gr";
 
 import {
   _1_34,
@@ -29,7 +30,7 @@ import {
   red,
   second_12,
   third_12,
-} from "../resources/mainCompData";
+} from "../resources/Project2CompnentRenderData";
 import WheelCoverage from "../reuse/project2/WheelCoverage";
 import RouletteGrid from "../reuse/project2/RouletteGrid";
 import _1dlr from "../../assets/imgs/coin_imgs/bet-1.svg";
@@ -52,6 +53,8 @@ function Project2({ captureScreenshot, theme }) {
   });
   const [show, setShow] = useState("winloss");
   const [showTable, setShowTable] = useState("roulette");
+  // const [showWheelCoverage, setShowWheelCoverage] = useState(false);
+  const [showPopup, setShowPopup] = useState({ show: false, showWhat: "" });
   const [totalBetAmt, setTotalBetAmt] = useState(() => {
     const savedData = localStorage.getItem("totalBetAmount");
     return savedData ? JSON.parse(savedData) : { amt: 0 };
@@ -405,6 +408,8 @@ function Project2({ captureScreenshot, theme }) {
           col_3_2_1: 0,
         };
   });
+
+  console.log("showPopup : ", showPopup.show);
 
   const win_lossObject = Object.values(data);
   const equityPerSpot = Object.values(equityData);
@@ -970,7 +975,7 @@ function Project2({ captureScreenshot, theme }) {
         }
 
         for (const key in newData) {
-          newData[key] -= value;
+          newData[key] += value;
         }
 
         localStorage.setItem("Data", JSON.stringify(newData));
@@ -989,7 +994,7 @@ function Project2({ captureScreenshot, theme }) {
         }
 
         for (const key in newData) {
-          newData[key] -= value;
+          newData[key] += value;
         }
 
         localStorage.setItem("zeroDivs", JSON.stringify(newData));
@@ -1247,23 +1252,50 @@ function Project2({ captureScreenshot, theme }) {
 
           {/* side boxes for small screen */}
           <div className="text-white h-full flex flex-col justify-center gap-5 items-center md:hidden">
+            <button
+              onClick={() =>
+                setShowPopup({
+                  show: (showPopup.show = true),
+                  showWhat: "equity",
+                })
+              }
+              className="relative z-40"
+              style={{
+                color: theme === "dark" ? "gray" : "black",
+              }}
+            >
+              <MdDataSaverOff className="inline -mt-1" size={24} />
+            </button>
             <div
-              className="text-gray-500 border border-gray-500 p-2 rounded-full"
+              className="text-gray-500 border border-gray-500 p-1 rounded-full"
               onClick={() =>
                 setShowTable(showTable === "roulette" ? "winloss" : "roulette")
               }
             >
               <IoIosSwap size={18} />
             </div>
-
             <button
               onClick={captureScreenshot}
-              className=""
+              className="relative z-40"
               style={{
                 color: theme === "dark" ? "gray" : "black",
               }}
             >
               <MdOutlineCameraAlt className="inline -mt-1" size={24} />
+            </button>
+            <button
+              onClick={() =>
+                setShowPopup({
+                  show: (showPopup.show = true),
+                  showWhat: "wheelCoverage",
+                })
+              }
+              className="relative z-40"
+              style={{
+                color: theme === "dark" ? "gray" : "black",
+              }}
+            >
+              <GrAnalytics className="inline -mt-1" size={24} />
             </button>
           </div>
           {/* info ratio box */}
@@ -1290,7 +1322,7 @@ function Project2({ captureScreenshot, theme }) {
         {/* Roulette Grid Ends Here */}
       </div>
 
-      <div className="w-full h-[20rem] max-sm:h-[80vh] flex justify-between  pt-12 relative">
+      <div className="max-sm:hidden w-full h-[20rem] max-sm:h-[80vh] flex justify-between  pt-12 relative">
         <div className="absolute top-0 left-0 w-full bg-black text-white py-1 text-center text-lg font-semibold">
           Win/Loss per Spot{" "}
           <span className="text-xs font-normal absolute right-2 top-3">
@@ -1433,7 +1465,7 @@ function Project2({ captureScreenshot, theme }) {
         </div>
       </div>
 
-      <div className="w-full flex justify-center items-center gap-10 h-[18rem] max-sm:h-[90vh] relative mt-10">
+      <div className="max-sm:hidden w-full flex justify-center items-center gap-10 h-[18rem] max-sm:h-[90vh] relative mt-10">
         <div className="absolute -top-10 left-0 w-full bg-black text-white py-1 text-center text-lg font-semibold">
           Equity per Spot
         </div>
@@ -1482,6 +1514,74 @@ function Project2({ captureScreenshot, theme }) {
       {/* <div className="w-full h-40 bg-black"></div>
       
       */}
+
+      <div
+        className="w-full h-screen bg-black absolute top-0 left-0 z-20 flex justify-center items-center"
+        style={{
+          display: showPopup.show ? "flex" : "none",
+          background: `linear-gradient(rgba(0, 0, 0, 0.99), rgba(0, 0, 0, 0.9))`,
+        }}
+        onClick={() =>
+          setShowPopup({
+            show: (showPopup.show = false),
+            showWhat: "",
+          })
+        }
+      >
+        <div
+          className="w-[14rem] lg:h-[65%] md:h-[50%] wheel--coverage"
+          style={{
+            display: showPopup.showWhat === "wheelCoverage" ? "block" : "none",
+          }}
+        >
+          {/*  */}
+          <WheelCoverage data={data} type={zero} />
+        </div>
+
+        {/* equity per spot */}
+        <div
+          className="w-[15%] bg-red-500 flex flex-wrap md:-rotate-90 md:h-[55vw] mt-10 max-sm:w-[50%] h-[75%] md:-mt-10 max-md:text-[.7rem] max-lg:text-[.8rem]"
+          style={{ display: showPopup.showWhat === "equity" ? "flex" : "none" }}
+        >
+          <div className="bg-customGreen w-full h-[8%] flex">
+            <div
+              className="w-[50%] h-full border flex justify-center items-center"
+              style={{ width: zero === "doubleZero" ? "50%" : "100%" }}
+            >
+              <p className="rotate-90">
+                {zeroEquityData._0 > 0 ? zeroEquityData._0.toFixed(2) : ""}
+              </p>
+            </div>
+
+            {zero === "doubleZero" ? (
+              <div className="w-[50%] h-full border flex justify-center items-center">
+                <p className="rotate-90">
+                  {zeroEquityData._00 > 0 ? zeroEquityData._00.toFixed(2) : ""}
+                </p>
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
+
+          <div className="flex flex-wrap h-full w-full">
+            {Data.map((item, index) => {
+              return (
+                <div
+                  className="w-[33.33%] h-[8.4%] flex justify-center items-center text-white font-semibold border"
+                  style={{ backgroundColor: item.bg }}
+                >
+                  <p className="rotate-90">
+                    {equityPerSpot[index] <= 0
+                      ? ""
+                      : equityPerSpot[index].toFixed(2)}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
 
       <footer className="w-full">
         <ul className="flex my-1">
