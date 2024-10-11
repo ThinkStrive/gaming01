@@ -94,7 +94,9 @@ function RouletteGrid({
     amount,
   ) => {
     //num, coin, coinData, selector type ratio amount payout
-    console.log("setCoin data parameters", coin, coinData, selector);
+    // console.log("setCoin data parameters", coin, coinData, selector);
+    previousData.push({ value: coin, selector: coinData, type: selector });
+    localStorage.setItem("previousData2", JSON.stringify(previousData));
 
     setData((prevData) => {
       const newData = { ...prevData };
@@ -162,7 +164,7 @@ function RouletteGrid({
     });
 
     showRatioPopup(type, ratio, amount);
-    setCoinData(coin, coinData, selector);
+    setCoinData(coin, coinData, selector, "add");
   };
 
   const MultiDivSelector = (numsArray, coin, length, coinData, selector) => {
@@ -277,7 +279,7 @@ function RouletteGrid({
       localStorage.setItem("totalBetAmount", JSON.stringify(newData));
       return newData;
     });
-    setCoinData(coin, coinData, selector);
+    setCoinData(coin, coinData, selector, "add");
   };
 
   const renderCoinImg = (amount) => {

@@ -6,6 +6,7 @@ import {
 } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
 import { IoIosSwap } from "react-icons/io";
+import { MdOutlineCameraAlt } from "react-icons/md";
 
 import {
   _1_34,
@@ -637,14 +638,16 @@ function Project2({ captureScreenshot, theme }) {
   //   </div>
   // );
 
-  const setCoinData = (coin, coinData, selector) => {
+  const setCoinData = (coin, coinData, selector, ops) => {
+    console.log("insde the set coin : !!!", ops);
+
     if (selector === "2v") {
       setDivSelect2Data((prevData) => {
         const newData = { ...prevData };
 
         for (const key in newData) {
           if (key === coinData) {
-            newData[key] += coin;
+            ops === "add" ? (newData[key] += coin) : (newData[key] -= coin);
           }
         }
 
@@ -658,7 +661,7 @@ function Project2({ captureScreenshot, theme }) {
 
         for (const key in newData) {
           if (key === coinData) {
-            newData[key] += coin;
+            ops === "add" ? (newData[key] += coin) : (newData[key] -= coin);
           }
         }
 
@@ -673,7 +676,9 @@ function Project2({ captureScreenshot, theme }) {
         for (const key in newData) {
           for (const subKey in newData[key]) {
             if (subKey === coinData) {
-              newData[key][subKey] += coin;
+              ops === "add"
+                ? (newData[key][subKey] += coin)
+                : (newData[key][subKey] -= coin);
             }
           }
         }
@@ -688,7 +693,7 @@ function Project2({ captureScreenshot, theme }) {
 
         for (const key in newData) {
           if (key === coinData) {
-            newData[key] += coin;
+            ops === "add" ? (newData[key] += coin) : (newData[key] -= coin);
           }
         }
 
@@ -702,7 +707,7 @@ function Project2({ captureScreenshot, theme }) {
 
         for (const key in newData) {
           if (key === coinData) {
-            newData[key] += coin;
+            ops === "add" ? (newData[key] += coin) : (newData[key] -= coin);
           }
         }
 
@@ -716,7 +721,7 @@ function Project2({ captureScreenshot, theme }) {
 
         for (const key in newData) {
           if (key === coinData) {
-            newData[key] += coin;
+            ops === "add" ? (newData[key] += coin) : (newData[key] -= coin);
           }
         }
 
@@ -730,7 +735,7 @@ function Project2({ captureScreenshot, theme }) {
 
         for (const key in newData) {
           if (key === coinData) {
-            newData[key] += coin;
+            ops === "add" ? (newData[key] += coin) : (newData[key] -= coin);
           }
         }
 
@@ -744,7 +749,7 @@ function Project2({ captureScreenshot, theme }) {
 
         for (const key in newData) {
           if (key == coinData) {
-            newData[key] += coin;
+            ops === "add" ? (newData[key] += coin) : (newData[key] -= coin);
           }
         }
 
@@ -759,7 +764,9 @@ function Project2({ captureScreenshot, theme }) {
         for (const key in newData) {
           for (const subKey in newData[key]) {
             if (subKey === coinData) {
-              newData[key][subKey] += coin;
+              ops === "add"
+                ? (newData[key][subKey] += coin)
+                : (newData[key][subKey] -= coin);
             }
           }
         }
@@ -938,113 +945,108 @@ function Project2({ captureScreenshot, theme }) {
     //     "selector": "_2_3_5_8",
     //     "type": 4
     // }
-    const undoData = previousData.pop();
-    const { value, selector, type } = undoData;
-    console.log("undoData : ", undoData);
 
-    setData((prevData) => {
-      const newData = { ...prevData };
+    if (previousData.length > 0) {
+      const undoData = previousData.pop();
+      localStorage.setItem("previousData2", JSON.stringify(previousData));
+      const { value, selector, type } = undoData;
+      console.log("undoData : ", undoData);
 
-      if (newData.hasOwnProperty(selector)) {
+      setData((prevData) => {
+        const newData = { ...prevData };
+
         if (type === 4) {
-          newData[selector] -= value;
+          newData[selector] -= value * 8;
         } else if (type === 6) {
-          newData[selector] -= value;
+          newData[selector] -= value * 5;
         } else if (type === 2) {
-          newData[selector] -= value;
+          newData[selector] -= value * 17;
         } else if (type === 12) {
-          newData[selector] -= value;
+          newData[selector] -= value * 2;
         } else if (type === "1:1") {
-          newData[selector] -= value;
+          newData[selector] -= value * 1;
         } else if (type === 3) {
-          newData[selector] -= value;
+          newData[selector] -= value * 11;
         }
-      }
 
-      // for (const key in newData) {
-      //   if (!numsArray.includes(key)) {
-      //     newData[key] -= coin;
-      //   }
-      // }
-      localStorage.setItem("Data", JSON.stringify(newData));
-      return newData;
-    });
-
-    setZeroDivs((prevData) => {
-      const newData = { ...prevData };
-
-      if (newData.hasOwnProperty(num)) {
-        if (length === 3) {
-          newData[num] += coin * 11;
-        } else if (length === 2) {
-          newData[num] += coin * 17;
+        for (const key in newData) {
+          newData[key] -= value;
         }
-      }
 
-      for (const key in newData) {
-        if (!numsArray.includes(key)) {
-          newData[key] -= coin;
-        }
-      }
-
-      localStorage.setItem("zeroDivs", JSON.stringify(newData));
-      return newData;
-    });
-
-    // Equity per spot
-    setEquityData((prevData) => {
-      const newData = { ...prevData };
-
-      numsArray.forEach((num) => {
-        if (newData.hasOwnProperty(num)) {
-          if (length === 4) {
-            newData[num] += coin / 4;
-          } else if (length === 6) {
-            newData[num] += coin / 6;
-          } else if (length === 2) {
-            newData[num] += coin / 2;
-          } else if (length === 12) {
-            newData[num] += coin / 12;
-          } else if (length === "1:1") {
-            newData[num] += coin / 18;
-          } else if (length === 3) {
-            newData[num] += coin / 3;
-          }
-        }
+        localStorage.setItem("Data", JSON.stringify(newData));
+        return newData;
       });
 
-      localStorage.setItem("EquityData", JSON.stringify(newData));
-      return newData;
-    });
+      setZeroDivs((prevData) => {
+        const newData = { ...prevData };
 
-    setZeroEquityData((prevData) => {
-      const newData = { ...prevData };
-
-      numsArray.forEach((num) => {
-        if (newData.hasOwnProperty(num)) {
-          if (length === 3) {
-            newData[num] += coin / 3;
-          } else if (length === 2) {
-            newData[num] += coin / 2;
-          } else if (length === 1) {
-            newData[num] += coin + 1;
+        if (newData.hasOwnProperty(value)) {
+          if (type === 3) {
+            newData[value] -= value * 11;
+          } else if (type === 2) {
+            newData[value] -= value * 17;
           }
         }
+
+        for (const key in newData) {
+          newData[key] -= value;
+        }
+
+        localStorage.setItem("zeroDivs", JSON.stringify(newData));
+        return newData;
       });
 
-      localStorage.setItem("zeroEquityData", JSON.stringify(newData));
-      return newData;
-    });
+      // Equity per spot
+      setEquityData((prevData) => {
+        const newData = { ...prevData };
 
-    setTotalBetAmt((prevData) => {
-      const newData = { ...prevData };
+        if (newData.hasOwnProperty(selector)) {
+          if (type === 4) {
+            newData[selector] -= coin / 4;
+          } else if (type === 6) {
+            newData[selector] -= coin / 6;
+          } else if (type === 2) {
+            newData[selector] -= coin / 2;
+          } else if (type === 12) {
+            newData[selector] -= coin / 12;
+          } else if (type === "1:1") {
+            newData[selector] -= coin / 18;
+          } else if (type === 3) {
+            newData[selector] -= coin / 3;
+          }
+        }
 
-      newData.amt += coin;
+        localStorage.setItem("EquityData", JSON.stringify(newData));
+        return newData;
+      });
 
-      localStorage.setItem("totalBetAmount", JSON.stringify(newData));
-      return newData;
-    });
-    setCoinData(coin, coinData, selector);
+      setZeroEquityData((prevData) => {
+        const newData = { ...prevData };
+
+        if (newData.hasOwnProperty(selector)) {
+          if (type === 3) {
+            newData[selector] -= coin / 3;
+          } else if (type === 2) {
+            newData[selector] -= coin / 2;
+          } else if (type === 1) {
+            newData[selector] -= coin + 1;
+          }
+        }
+
+        localStorage.setItem("zeroEquityData", JSON.stringify(newData));
+        return newData;
+      });
+
+      setTotalBetAmt((prevData) => {
+        const newData = { ...prevData };
+
+        newData.amt -= value;
+
+        localStorage.setItem("totalBetAmount", JSON.stringify(newData));
+        return newData;
+      });
+      setCoinData(value, selector, type, "undo");
+    }
   };
 
   const showRatioPopup = (type, ratio, amount, listeners) => {
@@ -1110,8 +1112,8 @@ function Project2({ captureScreenshot, theme }) {
       <div className="w-full flex flex-col justify-center items-center h-[30rem] bg-slate-900 bg-transparent mt-10 max-sm:mt-0">
         <div className="w-full py-3 px-3 bg-black flex justify-between items-center md:w-[68%] md:ml-10 max-md:text-[.8rem] max-lg:text-[.8rem]">
           <div>Total Amt Bet {totalBetAmt.amt}</div>
-          <div>EV/Spin 0</div>
-          <div>Comp Val/Spin 0</div>
+          {/* <div>EV/Spin 0</div>
+          <div>Comp Val/Spin 0</div> */}
 
           <div>
             <button
@@ -1119,6 +1121,15 @@ function Project2({ captureScreenshot, theme }) {
               onClick={resetHandler}
             >
               Reset
+            </button>
+          </div>
+
+          <div>
+            <button
+              className="bg-stone-600 p-2 max-sm:p-1 rounded-lg"
+              onClick={undoHandler}
+            >
+              undo
             </button>
           </div>
         </div>
@@ -1186,24 +1197,31 @@ function Project2({ captureScreenshot, theme }) {
             {/* Win/Loss per spot */}
             {showTable === "winloss" ? (
               <div
-                className="w-[15%] bg-red-500 md:-rotate-90 md:h-[55vw] mt-5 max-sm:-mt-12 max-sm:w-[50%] h-[80%] md:-mt-10 max-md:text-[.7rem] max-lg:text-[.8rem]"
+                className="w-[25%] h-[80%] bg-red-500 md:-rotate-90 md:h-[55vw] mt-5 max-sm:-mt-12 max-sm:w-[70%] md:-mt-10 max-md:text-[.7rem] max-lg:text-[.8rem]"
                 style={{
                   maxHeight: "40rem",
                   display: show === "winloss" ? "block" : "none",
                 }}
               >
                 <div className="bg-customGreen w-full h-[9%] flex">
-                  <div className="w-[50%] h-full border flex justify-center items-center">
+                  <div
+                    className="w-[50%] h-full border flex justify-center items-center"
+                    style={{ width: zero === "doubleZero" ? "50%" : "100%" }}
+                  >
                     <p className="rotate-90">
                       {zeroDivs._0 === 0 ? "" : zeroDivs._0}
                     </p>
                   </div>
 
-                  <div className="w-[50%] h-full border flex justify-center items-center">
-                    <p className="rotate-90">
-                      {zeroDivs._00 === 0 ? "" : zeroDivs._00}
-                    </p>
-                  </div>
+                  {zero === "doubleZero" ? (
+                    <div className="w-[50%] h-full border flex justify-center items-center">
+                      <p className="rotate-90">
+                        {zeroDivs._00 === 0 ? "" : zeroDivs._00}
+                      </p>
+                    </div>
+                  ) : (
+                    ""
+                  )}
                 </div>
                 <div className="flex flex-wrap h-full">
                   {Data.map((item, index) => {
@@ -1228,15 +1246,25 @@ function Project2({ captureScreenshot, theme }) {
           </div>
 
           {/* side boxes for small screen */}
-          <div className="text-white h-full flex flex-col justify-center items-center md:hidden">
+          <div className="text-white h-full flex flex-col justify-center gap-5 items-center md:hidden">
             <div
-              className="text-gray-500 border border-gray-500 p-2 rounded-full hover:bg-gray-400 hover:text-black cursor-pointer bottom-16 right-40"
+              className="text-gray-500 border border-gray-500 p-2 rounded-full"
               onClick={() =>
                 setShowTable(showTable === "roulette" ? "winloss" : "roulette")
               }
             >
               <IoIosSwap size={18} />
             </div>
+
+            <button
+              onClick={captureScreenshot}
+              className=""
+              style={{
+                color: theme === "dark" ? "gray" : "black",
+              }}
+            >
+              <MdOutlineCameraAlt className="inline -mt-1" size={24} />
+            </button>
           </div>
           {/* info ratio box */}
           <div
@@ -1262,13 +1290,16 @@ function Project2({ captureScreenshot, theme }) {
         {/* Roulette Grid Ends Here */}
       </div>
 
-      <div className="w-full h-[20rem] max-sm:h-[80vh] flex justify-between max-sm:mt-40 pt-12 relative">
+      <div className="w-full h-[20rem] max-sm:h-[80vh] flex justify-between  pt-12 relative">
         <div className="absolute top-0 left-0 w-full bg-black text-white py-1 text-center text-lg font-semibold">
-          Win/Loss per Spot
+          Win/Loss per Spot{" "}
+          <span className="text-xs font-normal absolute right-2 top-3">
+            (Roulette Rise.com)
+          </span>
         </div>
         <div className="w-[30%] max-[600px]:w-[50%] bg-red-500 bg-transparent flex flex-col justify-evenly items-center">
           {/* Coins section */}
-          <div className="bg-teal-600 py-2 w-[9rem] h-20 max-sm:w-full flex flex-wrap items-center justify-evenly gap-3 overflow-y-scroll overflow-x-hidden">
+          {/* <div className="bg-teal-600 py-2 w-[9rem] h-20 max-sm:w-full flex flex-wrap items-center justify-evenly gap-3 overflow-y-scroll overflow-x-hidden">
             {coinInfo.map((item, index) => {
               return (
                 <img
@@ -1316,7 +1347,7 @@ function Project2({ captureScreenshot, theme }) {
             >
               <IoMdAdd size={28} />
             </div>
-          </div>
+          </div> */}
 
           {/* Coin add Popup */}
           <div
@@ -1350,32 +1381,39 @@ function Project2({ captureScreenshot, theme }) {
             </div>
           </div>
           {/* WheelCoverage */}
-          <div className="w-[14rem] max-sm:rotate-90 wheel--coverage">
+          <div className="w-[14rem] lg:h-[65%] md:h-[50%] -mt-10 max-sm:rotate-90 wheel--coverage">
             <WheelCoverage data={data} type={zero} />
           </div>
         </div>
 
-        <div className="max-sm:w-[50%] w-[70%] rounded-xl flex justify-center md:items-center max-[600px]:h-[100%] relative">
+        <div className="max-sm:w-[50%] w-[80%]  rounded-xl flex justify-center md:items-center max-[600px]:h-[100%] relative">
           {/* Win/Loss per spot */}
           <div
-            className="w-[20%] bg-red-500 md:-rotate-90 md:h-[55vw] mt-5 max-sm:w-[90%] h-[85%] md:-mt-10 max-md:text-[.7rem] max-lg:text-[.8rem]"
+            className="w-[20%] max-xl:w-[25%] bg-red-500 md:-rotate-90 md:h-[55vw] mt-5 max-sm:w-[90%] h-[85%] md:-mt-10 max-md:text-[.7rem] max-lg:text-[.8rem]"
             style={{
               maxHeight: "40rem",
               display: show === "winloss" ? "block" : "none",
             }}
           >
             <div className="bg-customGreen w-full h-[9%] flex">
-              <div className="w-[50%] h-full border flex justify-center items-center">
+              <div
+                className="w-[50%] h-full border flex justify-center items-center"
+                style={{ width: zero === "doubleZero" ? "50%" : "100%" }}
+              >
                 <p className="rotate-90">
                   {zeroDivs._0 === 0 ? "" : zeroDivs._0}
                 </p>
               </div>
 
-              <div className="w-[50%] h-full border flex justify-center items-center">
-                <p className="rotate-90">
-                  {zeroDivs._00 === 0 ? "" : zeroDivs._00}
-                </p>
-              </div>
+              {zero === "doubleZero" ? (
+                <div className="w-[50%] h-full border flex justify-center items-center">
+                  <p className="rotate-90">
+                    {zeroDivs._00 === 0 ? "" : zeroDivs._00}
+                  </p>
+                </div>
+              ) : (
+                ""
+              )}
             </div>
             <div className="flex flex-wrap h-full">
               {Data.map((item, index) => {
@@ -1395,24 +1433,31 @@ function Project2({ captureScreenshot, theme }) {
         </div>
       </div>
 
-      <div className="w-full flex justify-center items-center h-[18rem] max-sm:h-[90vh] relative mt-10">
-        <div className="absolute top-0 left-0 w-full bg-black text-white py-1 text-center text-lg font-semibold">
+      <div className="w-full flex justify-center items-center gap-10 h-[18rem] max-sm:h-[90vh] relative mt-10">
+        <div className="absolute -top-10 left-0 w-full bg-black text-white py-1 text-center text-lg font-semibold">
           Equity per Spot
         </div>
         {/* equity per spot */}
-        <div className="w-[12%] bg-red-500 flex flex-wrap md:-rotate-90 md:h-[50vw] mt-5 max-sm:w-[40%] h-[80%] md:-mt-10 max-md:text-[.7rem] max-lg:text-[.8rem]">
+        <div className="w-[15%] bg-red-500 flex flex-wrap md:-rotate-90 md:h-[55vw] mt-5 max-sm:w-[50%] h-[80%] md:-mt-10 max-md:text-[.7rem] max-lg:text-[.8rem]">
           <div className="bg-customGreen w-full h-[8%] flex">
-            <div className="w-[50%] h-full border flex justify-center items-center">
+            <div
+              className="w-[50%] h-full border flex justify-center items-center"
+              style={{ width: zero === "doubleZero" ? "50%" : "100%" }}
+            >
               <p className="rotate-90">
                 {zeroEquityData._0 > 0 ? zeroEquityData._0.toFixed(2) : ""}
               </p>
             </div>
 
-            <div className="w-[50%] h-full border flex justify-center items-center">
-              <p className="rotate-90">
-                {zeroEquityData._00 > 0 ? zeroEquityData._00.toFixed(2) : ""}
-              </p>
-            </div>
+            {zero === "doubleZero" ? (
+              <div className="w-[50%] h-full border flex justify-center items-center">
+                <p className="rotate-90">
+                  {zeroEquityData._00 > 0 ? zeroEquityData._00.toFixed(2) : ""}
+                </p>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
 
           <div className="flex flex-wrap h-full w-full">
@@ -1441,10 +1486,10 @@ function Project2({ captureScreenshot, theme }) {
       <footer className="w-full">
         <ul className="flex my-1">
           <li className="border-r-2 px-1 text-xs font-semibold h-3">
-            <a href="#">Legcy RBA</a>
+            <a href="#">Legcy RSA</a>
           </li>
           <li className="border-r-2 px-1 text-xs font-semibold h-3">
-            <a href="#">Roulette Systems</a>
+            <a href="#">Roulette Strategy</a>
           </li>
 
           <li className="px-1 text-xs font-semibold h-3">

@@ -23,7 +23,7 @@ function WheelCoverage({ data, type }) {
 
   return (
     <div
-      className="w-64 max-sm:w-full text-white text-center font-semibold"
+      className="w-64 h-full max-sm:w-full text-white text-center font-semibold"
       style={{ backgroundColor: "rgb(34,34,34)" }}
     >
       Coverage
