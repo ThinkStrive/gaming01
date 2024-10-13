@@ -202,3 +202,7 @@
 .streak-div::-webkit-scrollbar {
   display: none;
 }
+
+.scrollOff::-webkit-scrollbar {
+  display: none;
+}

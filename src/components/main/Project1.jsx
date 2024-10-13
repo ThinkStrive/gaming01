@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import History from "../reuse/project1/history/History.jsx";
 import background from "../../assets/imgs/2002.i029.002_realistic-poker-club-illustration.jpg";
-import { data } from "../reuse/project1/logic/mainComponetRenderData.js";
+import { data } from "../reuse/project1/logic/Project1ComponetRenderData.js";
 import "../../Style/Main.css";
 import Nav from "../nav/nav.jsx";
 import { GrPowerReset } from "react-icons/gr";

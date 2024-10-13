@@ -5,6 +5,8 @@ import { GrPowerReset } from "react-icons/gr";
 import { useToast } from "../resources/Toast.jsx";
 import Analyze from "../reuse/project4/Analyze.jsx";
 import { CgInsights } from "react-icons/cg";
+import background from "../../assets/imgs/2002.i029.002_realistic-poker-club-illustration.jpg";
+import MoneyManagementTable from "../reuse/project4/MoneyManagementTable.jsx";
 
 const Project4 = ({ theme }) => {
   const [isAlertAllowed, setIsAlertAllowed] = useState(false);
@@ -117,6 +119,26 @@ const Project4 = ({ theme }) => {
     return savedHistoryData ? JSON.parse(savedHistoryData) : [];
   });
 
+  const [moneyManagementData, setMoneyManagementData] = useState(() => {
+    const savedHistoryData = localStorage.getItem("moneyManagement4");
+    return savedHistoryData ? JSON.parse(savedHistoryData) : [];
+  });
+
+  const [unitData, setUnitData] = useState(() => {
+    const savedHistoryData = localStorage.getItem("unitData4");
+    return savedHistoryData ? JSON.parse(savedHistoryData) : 1;
+  });
+
+  // moneyManagementData = {
+  //   spin : '',
+  //   winLoss : '',
+  //   unit : '',
+  //   total : '',
+  //   covered : ''
+  // }
+
+  console.log(moneyManagementData, "moneyManagementData");
+
   // Save `countData` to local storage whenever it changes
   useEffect(() => {
     localStorage.setItem("countData4", JSON.stringify(countData));
@@ -131,6 +153,17 @@ const Project4 = ({ theme }) => {
   useEffect(() => {
     localStorage.setItem("historyData4", JSON.stringify(historyData));
   }, [historyData]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "moneyManagement4",
+      JSON.stringify(moneyManagementData),
+    );
+  }, [moneyManagementData]);
+
+  useEffect(() => {
+    localStorage.setItem("unitData4", JSON.stringify(unitData));
+  }, [unitData]);
 
   useEffect(() => {
     localStorage.setItem("rowData4", JSON.stringify(rowData));
@@ -238,12 +271,14 @@ const Project4 = ({ theme }) => {
     setSuggestionActiveCol(initialSuggestionActive);
     setUserMissedSuggestionCol(initialUserMissedSuggestion);
     setAnalyzeData(initialAnalyzeData);
+    setMoneyManagementData([]);
 
     // Set the initial values in localStorage
     localStorage.setItem("analyzeData4", JSON.stringify(initialAnalyzeData));
     localStorage.setItem("rowData4", JSON.stringify(initialRowData));
     localStorage.setItem("dozenRowData4", JSON.stringify(initialDozenRowData));
     localStorage.setItem("colRowData4", JSON.stringify(initialColRowData));
+    localStorage.setItem("moneyManagement4", JSON.stringify([]));
     localStorage.setItem("suggestion4", initialSuggestion);
     localStorage.setItem("repeatLetter4", initialRepeatLetter);
     localStorage.setItem("repeatDozen4", initialRepeatDozen);
@@ -712,84 +747,117 @@ const Project4 = ({ theme }) => {
     }
   }, [colRowData, repeatCol, userMissedSuggestionCol]);
 
-  // Effect to handle missed suggestions (losses) based on repeated letters
+  // Effect to handle multiple losses (letter, dozen, and column)
   useEffect(() => {
+    let newLossEntries = [];
+
+    // Check letter loss
     if (rowData.length > 1) {
       const previousRow = rowData[rowData.length - 2];
       const lastRow = rowData[rowData.length - 1];
-
       if (
         Object.keys(previousRow).length === 3 &&
         Object.keys(lastRow).length === 3 &&
-        repeatLetter
+        repeatLetter &&
+        !Object.values(lastRow).includes(repeatLetter) &&
+        !userMissedSuggestion
       ) {
-        const lastRowValues = Object.values(lastRow);
+        showToast(`Book Your Loss!`, "error");
+        setUserMissedSuggestion(true);
+        setSuggestionActive(false);
+        setAnalyzeData((prev) => ({
+          ...prev,
+          lossPerData: prev.lossPerData + 1,
+        }));
 
-        if (!lastRowValues.includes(repeatLetter) && !userMissedSuggestion) {
-          showToast(`Book Your Loss!`, "error");
-          setUserMissedSuggestion(true);
-          setSuggestionActive(false);
-          setAnalyzeData((prev) => ({
-            ...prev,
-            lossPerData: prev.lossPerData + 1,
-          }));
-        }
+        // Prepare the letter loss entry
+        newLossEntries.push({
+          spin: lastHitNumber,
+          winLoss: "L",
+          unit: unitData,
+          total: repeatLetter === "A" ? -11.5 : -12,
+          covered: repeatLetter === "A" ? 13 : 12,
+        });
       }
     }
-  }, [rowData, repeatLetter, userMissedSuggestion]);
 
-  useEffect(() => {
+    // Check dozen loss
     if (dozenRowData.length > 1) {
       const previousRow = dozenRowData[dozenRowData.length - 2];
       const lastRow = dozenRowData[dozenRowData.length - 1];
-
       if (
         Object.keys(previousRow).length === 3 &&
         Object.keys(lastRow).length === 3 &&
-        repeatDozen
+        repeatDozen &&
+        !Object.values(lastRow).includes(repeatDozen) &&
+        !userMissedSuggestionDozen
       ) {
-        const lastRowValues = Object.values(lastRow);
+        showToast(`Book Your Loss!`, "error");
+        setUserMissedSuggestionDozen(true);
+        setSuggestionActiveDozen(false);
+        setAnalyzeData((prev) => ({
+          ...prev,
+          dozenLossPer: prev.dozenLossPer + 1,
+        }));
 
-        if (
-          !lastRowValues.includes(repeatDozen) &&
-          !userMissedSuggestionDozen
-        ) {
-          showToast(`Book Your Loss!`, "error");
-          setUserMissedSuggestionDozen(true);
-          setSuggestionActiveDozen(false);
-          setAnalyzeData((prev) => ({
-            ...prev,
-            dozenLossPer: prev.dozenLossPer + 1,
-          }));
-        }
+        // Prepare the dozen loss entry
+        newLossEntries.push({
+          spin: lastHitNumber,
+          winLoss: "L",
+          unit: unitData,
+          total: -12,
+          covered:
+            repeatDozen === "1" ? "D1" : repeatDozen === "2" ? "D2" : "D3",
+        });
       }
     }
-  }, [dozenRowData, repeatDozen, userMissedSuggestionDozen]);
 
-  useEffect(() => {
+    // Check column loss
     if (colRowData.length > 1) {
       const previousRow = colRowData[colRowData.length - 2];
       const lastRow = colRowData[colRowData.length - 1];
-
       if (
         Object.keys(previousRow).length === 3 &&
         Object.keys(lastRow).length === 3 &&
-        repeatCol
+        repeatCol &&
+        !Object.values(lastRow).includes(repeatCol) &&
+        !userMissedSuggestionCol
       ) {
-        const lastRowValues = Object.values(lastRow);
+        showToast(`Book Your Loss!`, "error");
+        setUserMissedSuggestionCol(true);
+        setSuggestionActiveCol(false);
+        setAnalyzeData((prev) => ({
+          ...prev,
+          colLossPer: prev.colLossPer + 1,
+        }));
 
-        if (!lastRowValues.includes(repeatCol) && !userMissedSuggestionCol) {
-          showToast(`Book Your Loss!`, "error");
-          setUserMissedSuggestionCol(true);
-          setSuggestionActiveCol(false);
-          setAnalyzeData((prev) => ({
-            ...prev,
-            colLossPer: prev.colLossPer + 1,
-          }));
-        }
+        // Prepare the column loss entry
+        newLossEntries.push({
+          spin: lastHitNumber,
+          winLoss: "L",
+          unit: unitData,
+          total: -12,
+          covered:
+            repeatCol === "1" ? "Col1" : repeatCol === "2" ? "Col2" : "Col3",
+        });
       }
     }
-  }, [colRowData, repeatCol, userMissedSuggestionCol]);
+
+    // If there are any losses, update the money management data once
+    if (newLossEntries.length > 0) {
+      setMoneyManagementData((prevData) => [...prevData, ...newLossEntries]);
+    }
+  }, [
+    rowData,
+    dozenRowData,
+    colRowData,
+    repeatLetter,
+    repeatDozen,
+    repeatCol,
+    userMissedSuggestion,
+    userMissedSuggestionDozen,
+    userMissedSuggestionCol,
+  ]);
 
   // Handle when user clicks a letter/number
   const handleClickNumber = (key, number, letter, doz, col) => {
@@ -807,6 +875,8 @@ const Project4 = ({ theme }) => {
             ? "black"
             : "zero",
     });
+
+    let newMoneyManagementData = [...moneyManagementData];
 
     setRowData((prevRowData) => {
       const lastRow = prevRowData[prevRowData.length - 1];
@@ -831,6 +901,13 @@ const Project4 = ({ theme }) => {
           ...prev,
           winPerData: prev.winPerData + 1,
         }));
+        newMoneyManagementData.push({
+          spin: lastHitNumber,
+          winLoss: "W",
+          unit: unitData,
+          total: letter === "A" ? 23 : 24,
+          covered: letter === "A" ? 13 : 12,
+        });
       } else {
         setSuggestion(`Suggestion: The repeated letter is ${repeatLetter}`);
       }
@@ -868,6 +945,13 @@ const Project4 = ({ theme }) => {
             ...prev,
             dozenWinPer: prev.dozenWinPer + 1,
           }));
+          newMoneyManagementData.push({
+            spin: lastHitNumber,
+            winLoss: "W",
+            unit: unitData,
+            total: 24,
+            covered: doz === "1" ? "D1" : doz === "2" ? "D2" : "D3",
+          });
         } else {
           setSuggestion(`Suggestion: The repeated letter is ${repeatLetter}`);
         }
@@ -884,6 +968,13 @@ const Project4 = ({ theme }) => {
             ...prev,
             colWinPer: prev.colWinPer + 1,
           }));
+          newMoneyManagementData.push({
+            spin: lastHitNumber,
+            winLoss: "W",
+            unit: unitData,
+            total: 24,
+            covered: col === "1" ? "Col1" : col === "2" ? "Col2" : "Col3",
+          });
         } else {
           setSuggestion(`Suggestion: The repeated letter is ${repeatLetter}`);
         }
@@ -900,6 +991,8 @@ const Project4 = ({ theme }) => {
       localStorage.setItem("dozenRowData4", JSON.stringify([]));
       localStorage.setItem("colRowData4", JSON.stringify([]));
     }
+
+    setMoneyManagementData(newMoneyManagementData);
   };
 
   return (
@@ -1192,7 +1285,7 @@ const Project4 = ({ theme }) => {
 
         <div className="w-[10%] h-full hidden max-sm:flex flex-col justify-center">
           <div
-            className="border rounded-full flex justify-center items-center relative z-40"
+            className="border rounded-full flex justify-center items-center relative z-30"
             onClick={() => setShowPopup(!showPopup)}
           >
             <CgInsights size={24} />
@@ -1263,43 +1356,43 @@ const Project4 = ({ theme }) => {
         <div className="max-sm:mr-4">
           <table className="border w-[20rem] max-sm:w-[13rem]">
             <tr>
-              <th className="w-[33.3%] bg-yellow-500 text-black">Catagory</th>
+              <th className="w-[33.3%] bg-yellow-500 text-black">Catgory</th>
               <th className="w-[33.3%] bg-green-600 p-1">Win</th>
               <th className="w-[33.3%] bg-red-600 p-1">Loss</th>
             </tr>
 
             <tr>
-              <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 Numbers
               </td>
-              <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 {analyzeData.winPerData}
               </td>
-              <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 {analyzeData.lossPerData}
               </td>
             </tr>
 
             <tr>
-              <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 Dozen
               </td>
-              <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 {analyzeData.dozenWinPer}
               </td>
-              <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 {analyzeData.dozenLossPer}
               </td>
             </tr>
 
             <tr>
-              <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 Column
               </td>
-              <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 {analyzeData.colWinPer}
               </td>
-              <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 {analyzeData.colLossPer}
               </td>
             </tr>
@@ -1312,6 +1405,26 @@ const Project4 = ({ theme }) => {
         <p>col win - {analyzeData.colWinPer}</p>
         <p>col Loss - {analyzeData.colLossPer}</p> */}
         </div>
+      </div>
+
+      <div
+        className="h-[50vh] mt-5 w-full overflow-y-scroll rounded-xl p-2 scrollOff"
+        style={{
+          background:
+            theme === "dark"
+              ? `linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)),url(${background}) center center no-repeat`
+              : `linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 255.9)),url(${background}) center center no-repeat`,
+          backgroundSize: "cover",
+          backgroundPositionX: "center",
+          backgroundPositionY: "center",
+          backgroundRepeat: "no-repeat",
+          border: theme === "dark" ? "white 2px solid" : "black 2px solid",
+        }}
+      >
+        <MoneyManagementTable
+          moneyManagementData={moneyManagementData}
+          theme={theme}
+        />
       </div>
     </>
   );
