@@ -6,3 +6,8 @@
 .wheel--coverage::-webkit-scrollbar {
   display: none;
 }
+
+.animation--class {
+  transition: all ease-in-out 0.25s;
+  /* transform: ; */
+}

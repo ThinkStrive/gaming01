@@ -14,6 +14,7 @@ import {
   _2_35,
   _3_36,
   black,
+  coinImg,
   coinInfo,
   Data,
   even_numbers,
@@ -59,6 +60,8 @@ function Project2({ captureScreenshot, theme }) {
     const savedData = localStorage.getItem("totalBetAmount");
     return savedData ? JSON.parse(savedData) : { amt: 0 };
   });
+
+  const [isbtnClicked, setIsbtnClicked] = useState(false);
 
   const previousData = JSON.parse(localStorage.getItem("previousData2")) || [];
 
@@ -1105,6 +1108,17 @@ function Project2({ captureScreenshot, theme }) {
     }
   };
 
+  const setCoinValue = (amt, img) => {
+    setCoin((prevData) => {
+      const newData = { ...prevData };
+      newData.amt = amt;
+      newData.img = img;
+      return newData;
+    });
+
+    setIsbtnClicked(false);
+  };
+
   return (
     <div
       className={
@@ -1114,7 +1128,121 @@ function Project2({ captureScreenshot, theme }) {
       }
       style={{ maxWidth: "80rem" }}
     >
-      <div className="w-full flex flex-col justify-center items-center h-[30rem] bg-slate-900 bg-transparent mt-10 max-sm:mt-0">
+      <div className="w-full flex flex-col justify-center items-center h-[30rem] bg-slate-900 bg-transparent mt-10 max-sm:mt-0 relative">
+        <div
+          className={
+            isbtnClicked
+              ? "w-[12rem] h-[12rem] rounded-full absolute -top-10 rotate-180 z-30 max-sm:hidden"
+              : "w-[12rem] h-[2rem] rounded-full absolute top-14 rotate-180 z-10 max-sm:hidden"
+          }
+        >
+          {/* z-30 rotate-180 bg-blue-600 */}
+          <button
+            className={
+              isbtnClicked
+                ? "w-[2rem] absolute top-[2rem] left-[1rem] animation--class"
+                : "w-[2rem] absolute top-[43%] left-[35%] animation--class"
+            }
+            onClick={() => setCoinValue(1, coinImg.coin_1)}
+          >
+            <img src={coinImg.coin_1} alt="" />
+          </button>
+
+          <button
+            className={
+              isbtnClicked
+                ? "w-[2rem] absolute top-[.5rem] left-[3rem] animation--class"
+                : "w-[2rem] absolute top-[43%] right-[37%] animation--class"
+            }
+            onClick={() => setCoinValue(2, coinImg.coin_2)}
+          >
+            <img src={coinImg.coin_2} alt="" />
+          </button>
+
+          <button
+            className={
+              isbtnClicked
+                ? "w-[2rem] absolute top-[0] left-[45%] animation--class"
+                : "w-[2rem] absolute top-[43%] right-[42%] animation--class"
+            }
+            onClick={() => setCoinValue(5, coinImg.coin_5)}
+          >
+            <img src={coinImg.coin_5} alt="" />
+          </button>
+
+          <button
+            className={
+              isbtnClicked
+                ? "w-[2rem] absolute top-[.8rem] right-[2.3rem] animation--class"
+                : "w-[2rem] absolute top-[43%] right-[42%] animation--class"
+            }
+            onClick={() => setCoinValue(10, coinImg.coin_10)}
+          >
+            <img src={coinImg.coin_10} alt="" />
+          </button>
+
+          <button
+            className={
+              isbtnClicked
+                ? "w-[2rem] absolute top-[2.7rem] right-[.6rem] animation--class"
+                : "w-[2rem] absolute top-[43%] right-[42%] animation--class"
+            }
+            onClick={() => setCoinValue(25, coinImg.coin_25)}
+          >
+            <img src={coinImg.coin_25} alt="" />
+          </button>
+
+          <button
+            className={
+              isbtnClicked
+                ? "w-[2rem] absolute top-[42%] right-[0rem] animation--class"
+                : "w-[2rem] absolute top-[43%] right-[42%] animation--class"
+            }
+            onClick={() => setCoinValue(50, coinImg.coin_50)}
+          >
+            <img src={coinImg.coin_50} alt="" />
+          </button>
+
+          <button
+            className={
+              isbtnClicked
+                ? "w-[2rem] absolute top-[4.5rem] left-[0rem] animation--class"
+                : "w-[2rem] absolute top-[43%] right-[42%] animation--class"
+            }
+            onClick={() => setCoinValue(100, coinImg.coin_100)}
+          >
+            <img src={coinImg.coin_100} alt="" />
+          </button>
+
+          <button
+            className={
+              isbtnClicked
+                ? "w-[2rem] absolute top-[60%] left-[.5rem] animation--class"
+                : "w-[2rem] absolute top-[43%] right-[42%] animation--class"
+            }
+            onClick={() => setCoinValue(500, coinImg.coin_500)}
+          >
+            <img src={coinImg.coin_500} alt="" />
+          </button>
+
+          <button
+            className={
+              isbtnClicked
+                ? "w-[2rem] absolute top-[63%] right-[.7rem] animation--class"
+                : "w-[2rem] absolute top-[43%] right-[42%] animation--class"
+            }
+            onClick={() => setCoinValue(500, coinImg.coin_500)}
+          >
+            <img src={coinImg.coin_500} alt="" />
+          </button>
+
+          <button
+            className="w-[2.7rem] absolute top-[40%] left-[38%] p-1 border border-neonGreen rounded-full z-30"
+            onClick={() => setIsbtnClicked(!isbtnClicked)}
+          >
+            <img src={coin.img} alt="" />
+          </button>
+        </div>
         <div className="w-full py-3 px-3 bg-black flex justify-between items-center md:w-[68%] md:ml-10 max-md:text-[.8rem] max-lg:text-[.8rem]">
           <div>Total Amt Bet {totalBetAmt.amt}</div>
           {/* <div>EV/Spin 0</div>
