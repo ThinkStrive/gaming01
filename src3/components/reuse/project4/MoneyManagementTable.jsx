@@ -107,7 +107,7 @@ const MoneyManagementTable = ({ moneyManagementData, theme }) => {
                 {data.spin?.number}
               </td>
               <td
-                className={`${data.winLoss === "W" ? "bg-green-500" : data.winLoss === 'L' ? "bg-brightRed" : 'bg-transparent'} border p-2 max-sm:p-1 text-center`}
+                className={`${data.winLoss === "W" ? "bg-green-500" : "bg-brightRed"} border p-2 max-sm:p-1 text-center`}
                 style={{
                   border:
                     theme === "dark" ? "white solid 2px" : "black solid 2px",

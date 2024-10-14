@@ -100,7 +100,7 @@ const Project4 = ({ theme }) => {
       return (
         JSON.parse(localStorage.getItem("userMissedSuggestionDozen4")) || false
       );
-    }
+    },
   );
 
   const [userMissedSuggestionCol, setUserMissedSuggestionCol] = useState(() => {
@@ -129,7 +129,6 @@ const Project4 = ({ theme }) => {
     return savedHistoryData ? JSON.parse(savedHistoryData) : 1;
   });
 
-
   // moneyManagementData = {
   //   spin : '',
   //   winLoss : '',
@@ -138,6 +137,7 @@ const Project4 = ({ theme }) => {
   //   covered : ''
   // }
 
+  console.log(moneyManagementData, "moneyManagementData");
 
   // Save `countData` to local storage whenever it changes
   useEffect(() => {
@@ -157,7 +157,7 @@ const Project4 = ({ theme }) => {
   useEffect(() => {
     localStorage.setItem(
       "moneyManagement4",
-      JSON.stringify(moneyManagementData)
+      JSON.stringify(moneyManagementData),
     );
   }, [moneyManagementData]);
 
@@ -204,35 +204,35 @@ const Project4 = ({ theme }) => {
   useEffect(() => {
     localStorage.setItem(
       "suggestionActiveDozen4",
-      JSON.stringify(suggestionActiveDozen)
+      JSON.stringify(suggestionActiveDozen),
     );
   }, [suggestionActiveDozen]);
 
   useEffect(() => {
     localStorage.setItem(
       "suggestionActiveCol4",
-      JSON.stringify(suggestionActiveCol)
+      JSON.stringify(suggestionActiveCol),
     );
   }, [suggestionActiveCol]);
 
   useEffect(() => {
     localStorage.setItem(
       "userMissedSuggestion4",
-      JSON.stringify(userMissedSuggestion)
+      JSON.stringify(userMissedSuggestion),
     );
   }, [userMissedSuggestion]);
 
   useEffect(() => {
     localStorage.setItem(
       "userMissedSuggestionDozen4",
-      JSON.stringify(userMissedSuggestionDozen)
+      JSON.stringify(userMissedSuggestionDozen),
     );
   }, [userMissedSuggestionDozen]);
 
   useEffect(() => {
     localStorage.setItem(
       "userMissedSuggestionCol4",
-      JSON.stringify(userMissedSuggestionCol)
+      JSON.stringify(userMissedSuggestionCol),
     );
   }, [userMissedSuggestionCol]);
 
@@ -285,27 +285,27 @@ const Project4 = ({ theme }) => {
     localStorage.setItem("repeatCol4", initialRepeatCol);
     localStorage.setItem(
       "suggestionActive4",
-      JSON.stringify(initialSuggestionActive)
+      JSON.stringify(initialSuggestionActive),
     );
     localStorage.setItem(
       "userMissedSuggestion4",
-      JSON.stringify(initialUserMissedSuggestion)
+      JSON.stringify(initialUserMissedSuggestion),
     );
     localStorage.setItem(
       "suggestionActiveDozen4",
-      JSON.stringify(initialSuggestionActive)
+      JSON.stringify(initialSuggestionActive),
     );
     localStorage.setItem(
       "userMissedSuggestionDozen4",
-      JSON.stringify(initialUserMissedSuggestion)
+      JSON.stringify(initialUserMissedSuggestion),
     );
     localStorage.setItem(
       "suggestionActiveCol4",
-      JSON.stringify(initialSuggestionActive)
+      JSON.stringify(initialSuggestionActive),
     );
     localStorage.setItem(
       "userMissedSuggestionCol4",
-      JSON.stringify(initialUserMissedSuggestion)
+      JSON.stringify(initialUserMissedSuggestion),
     );
 
     const resetState = {
@@ -669,7 +669,6 @@ const Project4 = ({ theme }) => {
       },
     },
   };
-
   useEffect(() => {
     if (rowData.length > 0) {
       const lastRow = rowData[rowData.length - 1];
@@ -680,22 +679,13 @@ const Project4 = ({ theme }) => {
           return acc;
         }, {});
         const repeatedLetter = Object.keys(occurrences).find(
-          (letter) => occurrences[letter] > 1
+          (letter) => occurrences[letter] > 1,
         );
         if (repeatedLetter) {
           setRepeatLetter(repeatedLetter);
           setSuggestionActive(true);
           setUserMissedSuggestion(false);
           setSuggestion(`Suggestion: The repeated letter is ${repeatedLetter}`);
-            let newMoneyData = moneyManagementData; // Copy the array
-              newMoneyData.push({
-                spin: lastHitNumber,
-                winLoss: "-",
-                unit: unitData,
-                total: 0,
-                covered: repeatedLetter === "A" ? 13 : 12,
-              });
-              setMoneyManagementData(newMoneyData);
         } else {
           setSuggestion("");
           setRepeatLetter("");
@@ -715,27 +705,13 @@ const Project4 = ({ theme }) => {
           return acc;
         }, {});
         const repeatedDozen = Object.keys(occurrences).find(
-          (dozen) => occurrences[dozen] > 1
+          (dozen) => occurrences[dozen] > 1,
         );
         if (repeatedDozen) {
           setRepeatDozen(repeatedDozen);
           setSuggestionActiveDozen(true);
           setUserMissedSuggestionDozen(false);
           setSuggestion(`Suggestion: The repeated letter is ${repeatedDozen}`);
-          let newMoneyData = moneyManagementData;
-          newMoneyData.push({
-            spin: lastHitNumber,
-            winLoss: "-",
-            unit: unitData,
-            total: 0,
-            covered:
-              repeatedDozen === "1"
-                ? "D1"
-                : repeatedDozen === "2"
-                ? "D2"
-                : "D3",
-          });
-          setMoneyManagementData(newMoneyData);
         } else {
           setSuggestion("");
           setRepeatDozen("");
@@ -755,27 +731,13 @@ const Project4 = ({ theme }) => {
           return acc;
         }, {});
         const repeatedCol = Object.keys(occurrences).find(
-          (dozen) => occurrences[dozen] > 1
+          (dozen) => occurrences[dozen] > 1,
         );
         if (repeatedCol) {
           setRepeatCol(repeatedCol);
           setSuggestionActiveCol(true);
           setUserMissedSuggestionCol(false);
           setSuggestion(`Suggestion: The repeated letter is ${repeatedCol}`);
-          let newMoneyData = moneyManagementData;
-          newMoneyData.push({
-            spin: lastHitNumber,
-            winLoss: "-",
-            unit: unitData,
-            total: 0,
-            covered:
-              repeatedCol === "1"
-                ? "Col1"
-                : repeatedCol === "2"
-                ? "Col2"
-                : "Col3",
-          });
-          setMoneyManagementData(newMoneyData);
         } else {
           setSuggestion("");
           setRepeatCol("");
@@ -910,8 +872,8 @@ const Project4 = ({ theme }) => {
         clickedDataUpdates.red === 1
           ? "red"
           : clickedDataUpdates.black === 1
-          ? "black"
-          : "zero",
+            ? "black"
+            : "zero",
     });
 
     let newMoneyManagementData = [...moneyManagementData];
@@ -929,6 +891,7 @@ const Project4 = ({ theme }) => {
 
     if (suggestionActive) {
       if (letter === repeatLetter) {
+        console.log("User clicked the repeated letter: stop suggestion");
         setSuggestionActive(false);
         setSuggestion("");
         showToast(`Win Number!`, "success");
@@ -939,15 +902,7 @@ const Project4 = ({ theme }) => {
           winPerData: prev.winPerData + 1,
         }));
         newMoneyManagementData.push({
-          spin: {
-            number: number,
-            color:
-              clickedDataUpdates.red === 1
-                ? "red"
-                : clickedDataUpdates.black === 1
-                ? "black"
-                : "zero",
-          },
+          spin: lastHitNumber,
           winLoss: "W",
           unit: unitData,
           total: letter === "A" ? 23 : 24,
@@ -981,6 +936,7 @@ const Project4 = ({ theme }) => {
       });
       if (suggestionActiveDozen) {
         if (doz === repeatDozen) {
+          console.log("User clicked the repeated letter: stop suggestion");
           setSuggestionActiveDozen(false);
           setSuggestion("");
           showToast(`Win Dozen!`, "success");
@@ -990,15 +946,7 @@ const Project4 = ({ theme }) => {
             dozenWinPer: prev.dozenWinPer + 1,
           }));
           newMoneyManagementData.push({
-            spin: {
-              number: number,
-              color:
-                clickedDataUpdates.red === 1
-                  ? "red"
-                  : clickedDataUpdates.black === 1
-                  ? "black"
-                  : "zero",
-            },
+            spin: lastHitNumber,
             winLoss: "W",
             unit: unitData,
             total: 24,
@@ -1011,6 +959,7 @@ const Project4 = ({ theme }) => {
 
       if (suggestionActiveCol) {
         if (col === repeatCol) {
+          console.log("User clicked the repeated col: stop suggestion");
           setSuggestionActiveCol(false);
           setSuggestion("");
           showToast(`Win Column!`, "success");
@@ -1020,15 +969,7 @@ const Project4 = ({ theme }) => {
             colWinPer: prev.colWinPer + 1,
           }));
           newMoneyManagementData.push({
-            spin: {
-              number: number,
-              color:
-                clickedDataUpdates.red === 1
-                  ? "red"
-                  : clickedDataUpdates.black === 1
-                  ? "black"
-                  : "zero",
-            },
+            spin: lastHitNumber,
             winLoss: "W",
             unit: unitData,
             total: 24,
@@ -1077,8 +1018,8 @@ const Project4 = ({ theme }) => {
                 lastHitNumber?.color === "red"
                   ? "border-customRed text-customRed border-2"
                   : lastHitNumber?.color === "black"
-                  ? "border-customBlack text-customBlack border-2"
-                  : ""
+                    ? "border-customBlack text-customBlack border-2"
+                    : ""
               } flex justify-center items-center w-7 h-7 rounded-md mt-1 px-1`}
             >
               {lastHitNumber?.number}
@@ -1146,8 +1087,8 @@ const Project4 = ({ theme }) => {
                   lastHitNumber?.color === "red"
                     ? "bg-customRed"
                     : lastHitNumber.color === "black"
-                    ? "bg-black"
-                    : "bg-customGreen"
+                      ? "bg-black"
+                      : "bg-customGreen"
                 } py-1 flex justify-center items-center w-20 max-sm:w-14 rounded-full -ml-8 max-sm:-ml-7`}
               >
                 <p className="text-white ml-6 max-sm:text-xs">
@@ -1197,7 +1138,7 @@ const Project4 = ({ theme }) => {
           </div>
         </div>
       </div>
-      <div className="px-4 main h-[75.5vh] flex">
+      <div className="px-4 main md:border h-[75.5vh] flex">
         <div
           className="mt-1 w-[90%] flex justify-center items-center md:h-[76vh] max-[800px]:h-[75vh] max-[600px]:h-full md:py-4"
           // style={{ height: "100vh" }}
@@ -1287,7 +1228,7 @@ const Project4 = ({ theme }) => {
                             item.num,
                             item.letter,
                             item.dozen,
-                            item.col
+                            item.col,
                           )
                         }
                         style={{
