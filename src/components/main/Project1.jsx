@@ -1952,7 +1952,7 @@ const Project1 = ({ theme }) => {
                   nonSingleStreetData.thirtyOne_thirtyThree,
                 )}
                 {tableRow(
-                  "31 - 33",
+                  "34 - 36",
                   singleStreetData.thirtyFour_thirtySix,
                   nonSingleStreetData.thirtyFour_thirtySix,
                 )}
@@ -2259,7 +2259,7 @@ const Project1 = ({ theme }) => {
                     "small",
                   )}
                   {tableRow(
-                    "31 - 33",
+                    "34 - 36",
                     singleStreetData.thirtyFour_thirtySix,
                     nonSingleStreetData.thirtyFour_thirtySix,
                     "small",

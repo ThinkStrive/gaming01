@@ -129,7 +129,6 @@ const Project4 = ({ theme }) => {
     return savedHistoryData ? JSON.parse(savedHistoryData) : 1;
   });
 
-
   // moneyManagementData = {
   //   spin : '',
   //   winLoss : '',
@@ -137,7 +136,6 @@ const Project4 = ({ theme }) => {
   //   total : '',
   //   covered : ''
   // }
-
 
   // Save `countData` to local storage whenever it changes
   useEffect(() => {
@@ -670,10 +668,20 @@ const Project4 = ({ theme }) => {
     },
   };
 
+  const [suggestionProcessedRow, setSuggestionProcessedRow] = useState(null); // Track for each row
+  const [suggestionProcessedDoz, setSuggestionProcessedDoz] = useState(null); // Track for each row
+  const [suggestionProcessedCol, setSuggestionProcessedCol] = useState(null); // Track for each row
+
   useEffect(() => {
     if (rowData.length > 0) {
-      const lastRow = rowData[rowData.length - 1];
-      if (Object.keys(lastRow).length === 3) {
+      const lastRowIndex = rowData.length - 1;
+      const lastRow = rowData[lastRowIndex];
+
+      // Only process if we haven't already processed this row's first column
+      if (
+        Object.keys(lastRow).length === 3 &&
+        suggestionProcessedRow !== lastRowIndex
+      ) {
         const values = Object.values(lastRow);
         const occurrences = values.reduce((acc, letter) => {
           acc[letter] = (acc[letter] || 0) + 1;
@@ -682,33 +690,56 @@ const Project4 = ({ theme }) => {
         const repeatedLetter = Object.keys(occurrences).find(
           (letter) => occurrences[letter] > 1
         );
-        if (repeatedLetter) {
+
+        // Check if the repeated letter is in the first column
+        if (repeatedLetter && values[0] === repeatedLetter) {
+          // Only trigger the suggestion if it hasn't been processed for this row
           setRepeatLetter(repeatedLetter);
           setSuggestionActive(true);
           setUserMissedSuggestion(false);
           setSuggestion(`Suggestion: The repeated letter is ${repeatedLetter}`);
-            let newMoneyData = moneyManagementData; // Copy the array
-              newMoneyData.push({
-                spin: lastHitNumber,
-                winLoss: "-",
-                unit: unitData,
-                total: 0,
-                covered: repeatedLetter === "A" ? 13 : 12,
-              });
-              setMoneyManagementData(newMoneyData);
-        } else {
+
+          // Add data to moneyManagementData only for the first column
+          const newEntry = {
+            spin: lastHitNumber,
+            winLoss: "-",
+            unit: unitData,
+            total: repeatedLetter === "A" ? 23 : 24,
+            covered: repeatedLetter === "A" ? 13 : 12,
+          };
+
+          setMoneyManagementData((prevData) => {
+            const updatedData = [...prevData, newEntry];
+            localStorage.setItem(
+              "moneyManagement4",
+              JSON.stringify(updatedData)
+            );
+            return updatedData;
+          });
+
+          // Mark this row as processed to prevent duplicate additions for this row
+          setSuggestionProcessedRow(lastRowIndex);
+        } else if (!repeatedLetter) {
+          // Reset if there's no repeated letter
           setSuggestion("");
           setRepeatLetter("");
           setSuggestionActive(false);
+          setSuggestionProcessedRow(null); // Reset flag if no suggestion
         }
       }
     }
-  }, [rowData, repeatLetter, userMissedSuggestion]);
+  }, [rowData, repeatLetter, userMissedSuggestion, lastHitNumber, unitData]);
 
   useEffect(() => {
     if (dozenRowData.length > 0) {
-      const lastRow = dozenRowData[dozenRowData.length - 1];
-      if (Object.keys(lastRow).length === 3) {
+      const lastRowIndex = dozenRowData.length - 1;
+      const lastRow = dozenRowData[lastRowIndex];
+
+      // Only process if we haven't already processed this row's first column
+      if (
+        Object.keys(lastRow).length === 3 &&
+        suggestionProcessedDoz !== lastRowIndex
+      ) {
         const values = Object.values(lastRow);
         const occurrences = values.reduce((acc, dozen) => {
           acc[dozen] = (acc[dozen] || 0) + 1;
@@ -717,78 +748,112 @@ const Project4 = ({ theme }) => {
         const repeatedDozen = Object.keys(occurrences).find(
           (dozen) => occurrences[dozen] > 1
         );
-        if (repeatedDozen) {
+
+        // Check if the repeated dozen is in the first column
+        if (repeatedDozen && values[0] === repeatedDozen) {
+          // Only trigger the suggestion if it hasn't been processed for this row
           setRepeatDozen(repeatedDozen);
           setSuggestionActiveDozen(true);
           setUserMissedSuggestionDozen(false);
-          setSuggestion(`Suggestion: The repeated letter is ${repeatedDozen}`);
-          let newMoneyData = moneyManagementData;
-          newMoneyData.push({
+          setSuggestion(`Suggestion: The repeated dozen is ${repeatedDozen}`);
+
+          // Add data to moneyManagementData only for the first column
+          const newEntry = {
             spin: lastHitNumber,
             winLoss: "-",
             unit: unitData,
-            total: 0,
-            covered:
-              repeatedDozen === "1"
-                ? "D1"
-                : repeatedDozen === "2"
-                ? "D2"
-                : "D3",
+            total: 24,
+            covered: repeatedDozen === "1" ? "D1" : repeatedDozen === "2" ? "D2" : "D3",
+          };
+
+          setMoneyManagementData((prevData) => {
+            const updatedData = [...prevData, newEntry];
+            localStorage.setItem(
+              "moneyManagement4",
+              JSON.stringify(updatedData)
+            );
+            return updatedData;
           });
-          setMoneyManagementData(newMoneyData);
-        } else {
+
+          // Mark this row as processed to prevent duplicate additions for this row
+          setSuggestionProcessedDoz(lastRowIndex);
+        } else if (!repeatedDozen) {
+          // Reset if there's no repeated dozen
           setSuggestion("");
           setRepeatDozen("");
           setSuggestionActiveDozen(false);
+          setSuggestionProcessedDoz(null); // Reset flag if no suggestion
         }
       }
     }
-  }, [dozenRowData, repeatDozen, userMissedSuggestionDozen]);
+  }, [
+    dozenRowData,
+    repeatDozen,
+    userMissedSuggestionDozen,
+    lastHitNumber,
+    unitData,
+  ]);
 
   useEffect(() => {
     if (colRowData.length > 0) {
-      const lastRow = colRowData[colRowData.length - 1];
-      if (Object.keys(lastRow).length === 3) {
+      const lastRowIndex = colRowData.length - 1;
+      const lastRow = colRowData[lastRowIndex];
+
+      // Only process if we haven't already processed this row's first column
+      if (
+        Object.keys(lastRow).length === 3 &&
+        suggestionProcessedCol !== lastRowIndex
+      ) {
         const values = Object.values(lastRow);
-        const occurrences = values.reduce((acc, dozen) => {
-          acc[dozen] = (acc[dozen] || 0) + 1;
+        const occurrences = values.reduce((acc, col) => {
+          acc[col] = (acc[col] || 0) + 1;
           return acc;
         }, {});
         const repeatedCol = Object.keys(occurrences).find(
-          (dozen) => occurrences[dozen] > 1
+          (col) => occurrences[col] > 1
         );
-        if (repeatedCol) {
+
+        // Check if the repeated col is in the first column
+        if (repeatedCol && values[0] === repeatedCol) {
+          // Only trigger the suggestion if it hasn't been processed for this row
           setRepeatCol(repeatedCol);
           setSuggestionActiveCol(true);
           setUserMissedSuggestionCol(false);
-          setSuggestion(`Suggestion: The repeated letter is ${repeatedCol}`);
-          let newMoneyData = moneyManagementData;
-          newMoneyData.push({
+          setSuggestion(`Suggestion: The repeated column is ${repeatedCol}`);
+
+          // Add data to moneyManagementData only for the first column
+          const newEntry = {
             spin: lastHitNumber,
             winLoss: "-",
             unit: unitData,
-            total: 0,
-            covered:
-              repeatedCol === "1"
-                ? "Col1"
-                : repeatedCol === "2"
-                ? "Col2"
-                : "Col3",
+            total: 24,
+            covered: repeatedCol === "1" ? "Col1" : repeatedCol === "2" ? "Col2" : "Col3",
+          };
+
+          setMoneyManagementData((prevData) => {
+            const updatedData = [...prevData, newEntry];
+            localStorage.setItem(
+              "moneyManagement4",
+              JSON.stringify(updatedData)
+            );
+            return updatedData;
           });
-          setMoneyManagementData(newMoneyData);
-        } else {
+
+          // Mark this row as processed to prevent duplicate additions for this row
+          setSuggestionProcessedCol(lastRowIndex);
+        } else if (!repeatedCol) {
+          // Reset if there's no repeated col
           setSuggestion("");
           setRepeatCol("");
           setSuggestionActiveCol(false);
+          setSuggestionProcessedCol(null); // Reset flag if no suggestion
         }
       }
     }
-  }, [colRowData, repeatCol, userMissedSuggestionCol]);
+  }, [colRowData, repeatCol, userMissedSuggestionCol, lastHitNumber, unitData]);
 
   // Effect to handle multiple losses (letter, dozen, and column)
   useEffect(() => {
-    let newLossEntries = [];
-
     // Check letter loss
     if (rowData.length > 1) {
       const previousRow = rowData[rowData.length - 2];
@@ -807,15 +872,6 @@ const Project4 = ({ theme }) => {
           ...prev,
           lossPerData: prev.lossPerData + 1,
         }));
-
-        // Prepare the letter loss entry
-        newLossEntries.push({
-          spin: lastHitNumber,
-          winLoss: "L",
-          unit: unitData,
-          total: repeatLetter === "A" ? -11.5 : -12,
-          covered: repeatLetter === "A" ? 13 : 12,
-        });
       }
     }
 
@@ -837,16 +893,6 @@ const Project4 = ({ theme }) => {
           ...prev,
           dozenLossPer: prev.dozenLossPer + 1,
         }));
-
-        // Prepare the dozen loss entry
-        newLossEntries.push({
-          spin: lastHitNumber,
-          winLoss: "L",
-          unit: unitData,
-          total: -12,
-          covered:
-            repeatDozen === "1" ? "D1" : repeatDozen === "2" ? "D2" : "D3",
-        });
       }
     }
 
@@ -868,22 +914,7 @@ const Project4 = ({ theme }) => {
           ...prev,
           colLossPer: prev.colLossPer + 1,
         }));
-
-        // Prepare the column loss entry
-        newLossEntries.push({
-          spin: lastHitNumber,
-          winLoss: "L",
-          unit: unitData,
-          total: -12,
-          covered:
-            repeatCol === "1" ? "Col1" : repeatCol === "2" ? "Col2" : "Col3",
-        });
       }
-    }
-
-    // If there are any losses, update the money management data once
-    if (newLossEntries.length > 0) {
-      setMoneyManagementData((prevData) => [...prevData, ...newLossEntries]);
     }
   }, [
     rowData,
@@ -938,21 +969,6 @@ const Project4 = ({ theme }) => {
           ...prev,
           winPerData: prev.winPerData + 1,
         }));
-        newMoneyManagementData.push({
-          spin: {
-            number: number,
-            color:
-              clickedDataUpdates.red === 1
-                ? "red"
-                : clickedDataUpdates.black === 1
-                ? "black"
-                : "zero",
-          },
-          winLoss: "W",
-          unit: unitData,
-          total: letter === "A" ? 23 : 24,
-          covered: letter === "A" ? 13 : 12,
-        });
       } else {
         setSuggestion(`Suggestion: The repeated letter is ${repeatLetter}`);
       }
@@ -989,21 +1005,6 @@ const Project4 = ({ theme }) => {
             ...prev,
             dozenWinPer: prev.dozenWinPer + 1,
           }));
-          newMoneyManagementData.push({
-            spin: {
-              number: number,
-              color:
-                clickedDataUpdates.red === 1
-                  ? "red"
-                  : clickedDataUpdates.black === 1
-                  ? "black"
-                  : "zero",
-            },
-            winLoss: "W",
-            unit: unitData,
-            total: 24,
-            covered: doz === "1" ? "D1" : doz === "2" ? "D2" : "D3",
-          });
         } else {
           setSuggestion(`Suggestion: The repeated letter is ${repeatLetter}`);
         }
@@ -1019,21 +1020,6 @@ const Project4 = ({ theme }) => {
             ...prev,
             colWinPer: prev.colWinPer + 1,
           }));
-          newMoneyManagementData.push({
-            spin: {
-              number: number,
-              color:
-                clickedDataUpdates.red === 1
-                  ? "red"
-                  : clickedDataUpdates.black === 1
-                  ? "black"
-                  : "zero",
-            },
-            winLoss: "W",
-            unit: unitData,
-            total: 24,
-            covered: col === "1" ? "Col1" : col === "2" ? "Col2" : "Col3",
-          });
         } else {
           setSuggestion(`Suggestion: The repeated letter is ${repeatLetter}`);
         }
@@ -1050,8 +1036,6 @@ const Project4 = ({ theme }) => {
       localStorage.setItem("dozenRowData4", JSON.stringify([]));
       localStorage.setItem("colRowData4", JSON.stringify([]));
     }
-
-    setMoneyManagementData(newMoneyManagementData);
   };
 
   return (
