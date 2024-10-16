@@ -175,15 +175,24 @@ const Project4 = ({ theme }) => {
     localStorage.setItem("unitData4", JSON.stringify(unitData));
   }, [unitData]);
   useEffect(() => {
-    localStorage.setItem("suggestionProcessedRow4", JSON.stringify(suggestionProcessedRow));
+    localStorage.setItem(
+      "suggestionProcessedRow4",
+      JSON.stringify(suggestionProcessedRow)
+    );
   }, [suggestionProcessedRow]);
 
   useEffect(() => {
-    localStorage.setItem("suggestionProcessedDoz4", JSON.stringify(suggestionProcessedDoz));
+    localStorage.setItem(
+      "suggestionProcessedDoz4",
+      JSON.stringify(suggestionProcessedDoz)
+    );
   }, [suggestionProcessedDoz]);
 
   useEffect(() => {
-    localStorage.setItem("suggestionProcessedCol4", JSON.stringify(suggestionProcessedCol));
+    localStorage.setItem(
+      "suggestionProcessedCol4",
+      JSON.stringify(suggestionProcessedCol)
+    );
   }, [suggestionProcessedCol]);
 
   useEffect(() => {
@@ -293,10 +302,10 @@ const Project4 = ({ theme }) => {
     setUserMissedSuggestionCol(initialUserMissedSuggestion);
     setAnalyzeData(initialAnalyzeData);
     setMoneyManagementData([]);
-    setSuggestionProcessedRow(null)
-    setSuggestionProcessedDoz(null)
-    setSuggestionProcessedCol(null)
-    setUnitData(1)
+    setSuggestionProcessedRow(null);
+    setSuggestionProcessedDoz(null);
+    setSuggestionProcessedCol(null);
+    setUnitData(1);
 
     // Set the initial values in localStorage
     localStorage.setItem("analyzeData4", JSON.stringify(initialAnalyzeData));
@@ -698,8 +707,6 @@ const Project4 = ({ theme }) => {
     },
   };
 
-
-
   useEffect(() => {
     if (rowData.length > 0) {
       const lastRowIndex = rowData.length - 1;
@@ -729,10 +736,10 @@ const Project4 = ({ theme }) => {
 
           // Add data to moneyManagementData only for the first column
           const newEntry = {
-            spin: lastHitNumber,
-            winLoss: "-",
+            spin: "",
+            winLoss: "",
             unit: unitData,
-            total: repeatedLetter === "A" ? 23 : 24,
+            total: 0,
             covered: repeatedLetter === "A" ? 13 : 12,
           };
 
@@ -787,11 +794,16 @@ const Project4 = ({ theme }) => {
 
           // Add data to moneyManagementData only for the first column
           const newEntry = {
-            spin: lastHitNumber,
-            winLoss: "-",
+            spin: "",
+            winLoss: "",
             unit: unitData,
-            total: unitData * 24,
-            covered: repeatedDozen === "1" ? "D1" : repeatedDozen === "2" ? "D2" : "D3",
+            total: 0,
+            covered:
+              repeatedDozen === "1"
+                ? "D1"
+                : repeatedDozen === "2"
+                ? "D2"
+                : "D3",
           };
 
           setMoneyManagementData((prevData) => {
@@ -851,11 +863,16 @@ const Project4 = ({ theme }) => {
 
           // Add data to moneyManagementData only for the first column
           const newEntry = {
-            spin: lastHitNumber,
-            winLoss: "-",
+            spin: "",
+            winLoss: "",
             unit: unitData,
-            total: unitData * 24,
-            covered: repeatedCol === "1" ? "Col1" : repeatedCol === "2" ? "Col2" : "Col3",
+            total: 0,
+            covered:
+              repeatedCol === "1"
+                ? "C1"
+                : repeatedCol === "2"
+                ? "C2"
+                : "C3",
           };
 
           setMoneyManagementData((prevData) => {
@@ -896,7 +913,7 @@ const Project4 = ({ theme }) => {
         !userMissedSuggestion
       ) {
         showToast(`Book Your Loss!`, "error");
-        setUnitData(1)
+        setUnitData(1);
         setUserMissedSuggestion(true);
         setSuggestionActive(false);
         setAnalyzeData((prev) => ({
@@ -909,7 +926,7 @@ const Project4 = ({ theme }) => {
           spin: lastHitNumber,
           winLoss: "L",
           unit: unitData,
-          total: repeatLetter === "A" ? (unitData * (-11.5)) : (unitData * (-12)),
+          total: repeatLetter === "A" ? unitData * -11.5 : unitData * -12,
           covered: repeatLetter === "A" ? 13 : 12,
         });
       }
@@ -927,7 +944,7 @@ const Project4 = ({ theme }) => {
         !userMissedSuggestionDozen
       ) {
         showToast(`Book Your Loss!`, "error");
-        setUnitData(1)
+        setUnitData(1);
         setUserMissedSuggestionDozen(true);
         setSuggestionActiveDozen(false);
         setAnalyzeData((prev) => ({
@@ -940,7 +957,7 @@ const Project4 = ({ theme }) => {
           spin: lastHitNumber,
           winLoss: "L",
           unit: unitData,
-          total: unitData * (-12),
+          total: unitData * -1,
           covered:
             repeatDozen === "1" ? "D1" : repeatDozen === "2" ? "D2" : "D3",
         });
@@ -959,7 +976,7 @@ const Project4 = ({ theme }) => {
         !userMissedSuggestionCol
       ) {
         showToast(`Book Your Loss!`, "error");
-        setUnitData(1)
+        setUnitData(1);
         setUserMissedSuggestionCol(true);
         setSuggestionActiveCol(false);
         setAnalyzeData((prev) => ({
@@ -972,9 +989,9 @@ const Project4 = ({ theme }) => {
           spin: lastHitNumber,
           winLoss: "L",
           unit: unitData,
-          total: unitData * (-12),
+          total: unitData * -1,
           covered:
-            repeatCol === "1" ? "Col1" : repeatCol === "2" ? "Col2" : "Col3",
+            repeatCol === "1" ? "C1" : repeatCol === "2" ? "C2" : "C3",
         });
       }
     }
@@ -995,192 +1012,190 @@ const Project4 = ({ theme }) => {
     userMissedSuggestionCol,
   ]);
 
-// Handle when user clicks a letter/number
-const handleClickNumber = (key, number, letter, doz, col) => {
-  const { countUpdates } = updateMapping[key];
-  const clickedDataUpdates = {
-    red: countUpdates.red || 0,
-    black: countUpdates.black || 0,
+  // Handle when user clicks a letter/number
+  const handleClickNumber = (key, number, letter, doz, col) => {
+    const { countUpdates } = updateMapping[key];
+    const clickedDataUpdates = {
+      red: countUpdates.red || 0,
+      black: countUpdates.black || 0,
+    };
+    setLastHitNumber({
+      number: number,
+      color:
+        clickedDataUpdates.red === 1
+          ? "red"
+          : clickedDataUpdates.black === 1
+          ? "black"
+          : "zero",
+    });
+
+    // Set Row Data for Letter
+    setRowData((prevRowData) => {
+      const lastRow = prevRowData[prevRowData.length - 1];
+      if (!lastRow || Object.keys(lastRow).length >= 3) {
+        return [...prevRowData, { [`let1`]: letter }];
+      } else {
+        const keyIndex = Object.keys(lastRow).length + 1;
+        const updatedRow = { ...lastRow, [`let${keyIndex}`]: letter };
+        return [...prevRowData.slice(0, -1), updatedRow];
+      }
+    });
+
+    // Handle suggestion for letters (RowData)
+    if (suggestionActive) {
+      if (letter === repeatLetter) {
+        setSuggestionActive(false);
+        setSuggestion("");
+        showToast(`Win Number!`, "success");
+        setUnitData(unitData + 1);
+        setRepeatLetter("");
+        setAnalyzeData((prev) => ({
+          ...prev,
+          winPerData: prev.winPerData + 1,
+        }));
+
+        console.log("moneyMangementData", moneyManagementData);
+
+        // Add data to MoneyManagement only if the letter matches
+        setMoneyManagementData((prevData) => [
+          ...prevData,
+          {
+            spin: {
+              number: number,
+              color:
+                clickedDataUpdates.red === 1
+                  ? "red"
+                  : clickedDataUpdates.black === 1
+                  ? "black"
+                  : "zero",
+            },
+            winLoss: "W",
+            unit: unitData,
+            total: letter === "A" ? unitData * 23 : unitData * 24,
+            covered: letter === "A" ? 13 : 12,
+          },
+        ]);
+      } else {
+        setSuggestion(`Suggestion: The repeated letter is ${repeatLetter}`);
+      }
+    }
+
+    console.log("moneyMangementData", moneyManagementData);
+
+    // Handle Dozen and Column Data
+    if (doz !== 0 || col !== 0) {
+      setDozenRowData((prevRowData) => {
+        const lastRow = prevRowData[prevRowData.length - 1];
+        if (!lastRow || Object.keys(lastRow).length >= 3) {
+          return [...prevRowData, { [`doz1`]: doz }];
+        } else {
+          const keyIndex = Object.keys(lastRow).length + 1;
+          const updatedRow = { ...lastRow, [`doz${keyIndex}`]: doz };
+          return [...prevRowData.slice(0, -1), updatedRow];
+        }
+      });
+
+      setColRowData((prevRowData) => {
+        const lastRow = prevRowData[prevRowData.length - 1];
+        if (!lastRow || Object.keys(lastRow).length >= 3) {
+          return [...prevRowData, { [`col1`]: col }];
+        } else {
+          const keyIndex = Object.keys(lastRow).length + 1;
+          const updatedRow = { ...lastRow, [`col${keyIndex}`]: col };
+          return [...prevRowData.slice(0, -1), updatedRow];
+        }
+      });
+
+      // Handle suggestions for Dozen
+      if (suggestionActiveDozen) {
+        if (doz === repeatDozen) {
+          setSuggestionActiveDozen(false);
+          setSuggestion("");
+          showToast(`Win Dozen!`, "success");
+          setUnitData(unitData + 1);
+          setRepeatDozen("");
+          setAnalyzeData((prev) => ({
+            ...prev,
+            dozenWinPer: prev.dozenWinPer + 1,
+          }));
+
+          console.log("moneyMangementData", moneyManagementData);
+
+          // Add to money management for dozens
+          setMoneyManagementData((prevData) => [
+            ...prevData,
+            {
+              spin: {
+                number: number,
+                color:
+                  clickedDataUpdates.red === 1
+                    ? "red"
+                    : clickedDataUpdates.black === 1
+                    ? "black"
+                    : "zero",
+              },
+              winLoss: "W",
+              unit: unitData,
+              total: unitData * 2,
+              covered: doz === "1" ? "D1" : doz === "2" ? "D2" : "D3",
+            },
+          ]);
+        } else {
+          setSuggestion(`Suggestion: The repeated dozen is ${repeatDozen}`);
+        }
+      }
+
+      // Handle suggestions for Column
+      if (suggestionActiveCol) {
+        if (col === repeatCol) {
+          setSuggestionActiveCol(false);
+          setSuggestion("");
+          showToast(`Win Column!`, "success");
+          setUnitData(unitData + 1);
+          setRepeatCol("");
+          setAnalyzeData((prev) => ({
+            ...prev,
+            colWinPer: prev.colWinPer + 1,
+          }));
+
+          console.log("moneyMangementData", moneyManagementData);
+
+          // Add to money management for columns
+          setMoneyManagementData((prevData) => [
+            ...prevData,
+            {
+              spin: {
+                number: number,
+                color:
+                  clickedDataUpdates.red === 1
+                    ? "red"
+                    : clickedDataUpdates.black === 1
+                    ? "black"
+                    : "zero",
+              },
+              winLoss: "W",
+              unit: unitData,
+              total: unitData * 2,
+              covered: col === "1" ? "C1" : col === "2" ? "C2" : "C3",
+            },
+          ]);
+        } else {
+          setSuggestion(`Suggestion: The repeated column is ${repeatCol}`);
+        }
+      }
+    } else {
+      setDozenRowData([]);
+      setRepeatDozen("");
+      setSuggestionActiveDozen(false);
+      setUserMissedSuggestionDozen(false);
+      setColRowData([]);
+      setRepeatCol("");
+      setSuggestionActiveCol(false);
+      setUserMissedSuggestionCol(false);
+      localStorage.setItem("dozenRowData4", JSON.stringify([]));
+      localStorage.setItem("colRowData4", JSON.stringify([]));
+    }
   };
-  setLastHitNumber({
-    number: number,
-    color:
-      clickedDataUpdates.red === 1
-        ? "red"
-        : clickedDataUpdates.black === 1
-        ? "black"
-        : "zero",
-  });
-
-  // Set Row Data for Letter
-  setRowData((prevRowData) => {
-    const lastRow = prevRowData[prevRowData.length - 1];
-    if (!lastRow || Object.keys(lastRow).length >= 3) {
-      return [...prevRowData, { [`let1`]: letter }];
-    } else {
-      const keyIndex = Object.keys(lastRow).length + 1;
-      const updatedRow = { ...lastRow, [`let${keyIndex}`]: letter };
-      return [...prevRowData.slice(0, -1), updatedRow];
-    }
-  });
-
-  // Handle suggestion for letters (RowData)
-  if (suggestionActive) {
-    if (letter === repeatLetter) {
-      setSuggestionActive(false);
-      setSuggestion("");
-      showToast(`Win Number!`, "success");
-      setUnitData(unitData + 1)
-      setRepeatLetter("");
-      setAnalyzeData((prev) => ({
-        ...prev,
-        winPerData: prev.winPerData + 1,
-      }));
-
-      console.log('moneyMangementData', moneyManagementData);
-
-      // Add data to MoneyManagement only if the letter matches
-      setMoneyManagementData((prevData) => [
-        ...prevData,
-        {
-          spin: {
-            number: number,
-            color:
-              clickedDataUpdates.red === 1
-                ? "red"
-                : clickedDataUpdates.black === 1
-                ? "black"
-                : "zero",
-          },
-          winLoss: "W",
-          unit: unitData,
-          total: letter === "A" ? unitData * 23 : unitData * 24,
-          covered: letter === "A" ? 13 : 12,
-        },
-      ]);
-    } else {
-      setSuggestion(`Suggestion: The repeated letter is ${repeatLetter}`);
-    }
-  }
-
-
-  console.log('moneyMangementData', moneyManagementData);
-
-  // Handle Dozen and Column Data
-  if (doz !== 0 || col !== 0) {
-    setDozenRowData((prevRowData) => {
-      const lastRow = prevRowData[prevRowData.length - 1];
-      if (!lastRow || Object.keys(lastRow).length >= 3) {
-        return [...prevRowData, { [`doz1`]: doz }];
-      } else {
-        const keyIndex = Object.keys(lastRow).length + 1;
-        const updatedRow = { ...lastRow, [`doz${keyIndex}`]: doz };
-        return [...prevRowData.slice(0, -1), updatedRow];
-      }
-    });
-
-    setColRowData((prevRowData) => {
-      const lastRow = prevRowData[prevRowData.length - 1];
-      if (!lastRow || Object.keys(lastRow).length >= 3) {
-        return [...prevRowData, { [`col1`]: col }];
-      } else {
-        const keyIndex = Object.keys(lastRow).length + 1;
-        const updatedRow = { ...lastRow, [`col${keyIndex}`]: col };
-        return [...prevRowData.slice(0, -1), updatedRow];
-      }
-    });
-
-    // Handle suggestions for Dozen
-    if (suggestionActiveDozen) {
-      if (doz === repeatDozen) {
-        setSuggestionActiveDozen(false);
-        setSuggestion("");
-        showToast(`Win Dozen!`, "success");
-        setUnitData(unitData + 1)
-        setRepeatDozen("");
-        setAnalyzeData((prev) => ({
-          ...prev,
-          dozenWinPer: prev.dozenWinPer + 1,
-        }));
-
-        console.log('moneyMangementData', moneyManagementData);
-
-        // Add to money management for dozens
-        setMoneyManagementData((prevData) => [
-          ...prevData,
-          {
-            spin: {
-              number: number,
-              color:
-                clickedDataUpdates.red === 1
-                  ? "red"
-                  : clickedDataUpdates.black === 1
-                  ? "black"
-                  : "zero",
-            },
-            winLoss: "W",
-            unit: unitData,
-            total: unitData * 24,
-            covered: doz === "1" ? "D1" : doz === "2" ? "D2" : "D3",
-          },
-        ]);
-      } else {
-        setSuggestion(`Suggestion: The repeated dozen is ${repeatDozen}`);
-      }
-    }
-
-    // Handle suggestions for Column
-    if (suggestionActiveCol) {
-      if (col === repeatCol) {
-        setSuggestionActiveCol(false);
-        setSuggestion("");
-        showToast(`Win Column!`, "success");
-        setUnitData(unitData + 1)
-        setRepeatCol("");
-        setAnalyzeData((prev) => ({
-          ...prev,
-          colWinPer: prev.colWinPer + 1,
-        }));
-
-        console.log('moneyMangementData', moneyManagementData);
-
-        // Add to money management for columns
-        setMoneyManagementData((prevData) => [
-          ...prevData,
-          {
-            spin: {
-              number: number,
-              color:
-                clickedDataUpdates.red === 1
-                  ? "red"
-                  : clickedDataUpdates.black === 1
-                  ? "black"
-                  : "zero",
-            },
-            winLoss: "W",
-            unit: unitData,
-            total: unitData * 24,
-            covered: col === "1" ? "Col1" : col === "2" ? "Col2" : "Col3",
-          },
-        ]);
-      } else {
-        setSuggestion(`Suggestion: The repeated column is ${repeatCol}`);
-      }
-    }
-  } else {
-    setDozenRowData([]);
-    setRepeatDozen("");
-    setSuggestionActiveDozen(false);
-    setUserMissedSuggestionDozen(false);
-    setColRowData([]);
-    setRepeatCol("");
-    setSuggestionActiveCol(false);
-    setUserMissedSuggestionCol(false);
-    localStorage.setItem("dozenRowData4", JSON.stringify([]));
-    localStorage.setItem("colRowData4", JSON.stringify([]));
-  }
-};
-
 
   return (
     <>
@@ -1543,44 +1558,109 @@ const handleClickNumber = (key, number, letter, doz, col) => {
         <div className="max-sm:mr-4">
           <table className="border w-[20rem] max-sm:w-[13rem]">
             <tr>
-              <th className="w-[33.3%] bg-yellow-500 text-black">Catgory</th>
-              <th className="w-[33.3%] bg-green-600 p-1">Win</th>
-              <th className="w-[33.3%] bg-red-600 p-1">Loss</th>
+              <th className="w-[50%] bg-yellow-500 text-black">Category</th>
+              <th className="w-[50%] bg-yellow-500 text-black p-1">Hot/Cold</th>
             </tr>
 
+            {/* Numbers */}
             <tr>
               <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 Numbers
               </td>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                {analyzeData.winPerData}
-              </td>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                {analyzeData.lossPerData}
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = analyzeData.winPerData;
+                  const lossPer = analyzeData.lossPerData;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = analyzeData.winPerData;
+                  const lossPer = analyzeData.lossPerData;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
               </td>
             </tr>
 
+            {/* Dozen */}
             <tr>
               <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 Dozen
               </td>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                {analyzeData.dozenWinPer}
-              </td>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                {analyzeData.dozenLossPer}
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = analyzeData.dozenWinPer;
+                  const lossPer = analyzeData.dozenLossPer;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = analyzeData.dozenWinPer;
+                  const lossPer = analyzeData.dozenLossPer;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
               </td>
             </tr>
 
+            {/* Column */}
             <tr>
               <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 Column
               </td>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                {analyzeData.colWinPer}
-              </td>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                {analyzeData.colLossPer}
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = analyzeData.colWinPer;
+                  const lossPer = analyzeData.colLossPer;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = analyzeData.colWinPer;
+                  const lossPer = analyzeData.colLossPer;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
               </td>
             </tr>
           </table>
@@ -1595,7 +1675,7 @@ const handleClickNumber = (key, number, letter, doz, col) => {
       </div>
 
       <div
-        className="h-[50vh] mt-5 w-full overflow-y-scroll rounded-xl p-2 scrollOff"
+        className="h-[65vh] mt-5 w-full overflow-y-scroll rounded-xl p-2 scrollOff"
         style={{
           background:
             theme === "dark"
@@ -1608,6 +1688,7 @@ const handleClickNumber = (key, number, letter, doz, col) => {
           border: theme === "dark" ? "white 2px solid" : "black 2px solid",
         }}
       >
+        <button onClick={() => setMoneyManagementData([])} className="border py-1 px-4 rounded-lg mb-2 mx-2" >Reset</button>
         <MoneyManagementTable
           moneyManagementData={moneyManagementData}
           theme={theme}

@@ -11,7 +11,7 @@ const MoneyManagementTable = ({ moneyManagementData, theme }) => {
   console.log(totalAmt);
 
   let duplicateData = [...moneyManagementData].reverse();
-  
+
   return (
     <table
       border="1"
@@ -99,7 +99,7 @@ const MoneyManagementTable = ({ moneyManagementData, theme }) => {
           duplicateData.map((data, index) => (
             <tr key={index}>
               <td
-                className={`${data.spin?.color === "red" ? "bg-customRed" : "bg-black"} border p-2 max-sm:p-1 text-center`}
+                className={`${data.spin?.color === "red" ? "bg-customRed" : "bg-transparent"} border p-2 max-sm:p-1 text-center`}
                 style={{
                   border:
                     theme === "dark" ? "white solid 2px" : "black solid 2px",

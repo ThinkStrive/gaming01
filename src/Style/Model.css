@@ -82,6 +82,14 @@
   .modal-content::-webkit-scrollbar-thumb {
       background-color: #888; 
   }
+  .modal-content2::-webkit-scrollbar {
+      width: 5px;
+      display: none;
+  }
+  
+  .modal-content2::-webkit-scrollbar-thumb {
+      background-color: #888; 
+  }
   
   
   /* .modal-button {
