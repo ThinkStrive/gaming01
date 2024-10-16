@@ -128,6 +128,18 @@ const Project4 = ({ theme }) => {
     const savedHistoryData = localStorage.getItem("unitData4");
     return savedHistoryData ? JSON.parse(savedHistoryData) : 1;
   });
+  const [suggestionProcessedRow, setSuggestionProcessedRow] = useState(() => {
+    const savedHistoryData = localStorage.getItem("suggestionProcessedRow4");
+    return savedHistoryData ? JSON.parse(savedHistoryData) : null;
+  });
+  const [suggestionProcessedDoz, setSuggestionProcessedDoz] = useState(() => {
+    const savedHistoryData = localStorage.getItem("suggestionProcessedDoz4");
+    return savedHistoryData ? JSON.parse(savedHistoryData) : null;
+  });
+  const [suggestionProcessedCol, setSuggestionProcessedCol] = useState(() => {
+    const savedHistoryData = localStorage.getItem("suggestionProcessedCol4");
+    return savedHistoryData ? JSON.parse(savedHistoryData) : null;
+  });
 
   // moneyManagementData = {
   //   spin : '',
@@ -162,6 +174,17 @@ const Project4 = ({ theme }) => {
   useEffect(() => {
     localStorage.setItem("unitData4", JSON.stringify(unitData));
   }, [unitData]);
+  useEffect(() => {
+    localStorage.setItem("suggestionProcessedRow4", JSON.stringify(suggestionProcessedRow));
+  }, [suggestionProcessedRow]);
+
+  useEffect(() => {
+    localStorage.setItem("suggestionProcessedDoz4", JSON.stringify(suggestionProcessedDoz));
+  }, [suggestionProcessedDoz]);
+
+  useEffect(() => {
+    localStorage.setItem("suggestionProcessedCol4", JSON.stringify(suggestionProcessedCol));
+  }, [suggestionProcessedCol]);
 
   useEffect(() => {
     localStorage.setItem("rowData4", JSON.stringify(rowData));
@@ -270,6 +293,9 @@ const Project4 = ({ theme }) => {
     setUserMissedSuggestionCol(initialUserMissedSuggestion);
     setAnalyzeData(initialAnalyzeData);
     setMoneyManagementData([]);
+    setSuggestionProcessedRow(null)
+    setSuggestionProcessedDoz(null)
+    setSuggestionProcessedCol(null)
 
     // Set the initial values in localStorage
     localStorage.setItem("analyzeData4", JSON.stringify(initialAnalyzeData));
@@ -277,6 +303,9 @@ const Project4 = ({ theme }) => {
     localStorage.setItem("dozenRowData4", JSON.stringify(initialDozenRowData));
     localStorage.setItem("colRowData4", JSON.stringify(initialColRowData));
     localStorage.setItem("moneyManagement4", JSON.stringify([]));
+    localStorage.setItem("suggestionProcessedRow4", JSON.stringify(null));
+    localStorage.setItem("suggestionProcessedDoz4", JSON.stringify(null));
+    localStorage.setItem("suggestionProcessedCol4", JSON.stringify(null));
     localStorage.setItem("suggestion4", initialSuggestion);
     localStorage.setItem("repeatLetter4", initialRepeatLetter);
     localStorage.setItem("repeatDozen4", initialRepeatDozen);
@@ -668,9 +697,7 @@ const Project4 = ({ theme }) => {
     },
   };
 
-  const [suggestionProcessedRow, setSuggestionProcessedRow] = useState(null); // Track for each row
-  const [suggestionProcessedDoz, setSuggestionProcessedDoz] = useState(null); // Track for each row
-  const [suggestionProcessedCol, setSuggestionProcessedCol] = useState(null); // Track for each row
+
 
   useEffect(() => {
     if (rowData.length > 0) {
