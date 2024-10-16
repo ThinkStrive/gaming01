@@ -854,6 +854,8 @@ const Project4 = ({ theme }) => {
 
   // Effect to handle multiple losses (letter, dozen, and column)
   useEffect(() => {
+    let newLossEntries = [];
+
     // Check letter loss
     if (rowData.length > 1) {
       const previousRow = rowData[rowData.length - 2];
@@ -872,6 +874,15 @@ const Project4 = ({ theme }) => {
           ...prev,
           lossPerData: prev.lossPerData + 1,
         }));
+
+        // Prepare the letter loss entry
+        newLossEntries.push({
+          spin: lastHitNumber,
+          winLoss: "L",
+          unit: unitData,
+          total: repeatLetter === "A" ? -11.5 : -12,
+          covered: repeatLetter === "A" ? 13 : 12,
+        });
       }
     }
 
@@ -893,6 +904,16 @@ const Project4 = ({ theme }) => {
           ...prev,
           dozenLossPer: prev.dozenLossPer + 1,
         }));
+
+        // Prepare the dozen loss entry
+        newLossEntries.push({
+          spin: lastHitNumber,
+          winLoss: "L",
+          unit: unitData,
+          total: -12,
+          covered:
+            repeatDozen === "1" ? "D1" : repeatDozen === "2" ? "D2" : "D3",
+        });
       }
     }
 
@@ -914,7 +935,22 @@ const Project4 = ({ theme }) => {
           ...prev,
           colLossPer: prev.colLossPer + 1,
         }));
+
+        // Prepare the column loss entry
+        newLossEntries.push({
+          spin: lastHitNumber,
+          winLoss: "L",
+          unit: unitData,
+          total: -12,
+          covered:
+            repeatCol === "1" ? "Col1" : repeatCol === "2" ? "Col2" : "Col3",
+        });
       }
+    }
+
+    // If there are any losses, update the money management data once
+    if (newLossEntries.length > 0) {
+      setMoneyManagementData((prevData) => [...prevData, ...newLossEntries]);
     }
   }, [
     rowData,
@@ -928,115 +964,189 @@ const Project4 = ({ theme }) => {
     userMissedSuggestionCol,
   ]);
 
-  // Handle when user clicks a letter/number
-  const handleClickNumber = (key, number, letter, doz, col) => {
-    const { countUpdates } = updateMapping[key];
-    const clickedDataUpdates = {
-      red: countUpdates.red || 0,
-      black: countUpdates.black || 0,
-    };
-    setLastHitNumber({
-      number: number,
-      color:
-        clickedDataUpdates.red === 1
-          ? "red"
-          : clickedDataUpdates.black === 1
-          ? "black"
-          : "zero",
-    });
+// Handle when user clicks a letter/number
+const handleClickNumber = (key, number, letter, doz, col) => {
+  const { countUpdates } = updateMapping[key];
+  const clickedDataUpdates = {
+    red: countUpdates.red || 0,
+    black: countUpdates.black || 0,
+  };
+  setLastHitNumber({
+    number: number,
+    color:
+      clickedDataUpdates.red === 1
+        ? "red"
+        : clickedDataUpdates.black === 1
+        ? "black"
+        : "zero",
+  });
 
-    let newMoneyManagementData = [...moneyManagementData];
+  // Set Row Data for Letter
+  setRowData((prevRowData) => {
+    const lastRow = prevRowData[prevRowData.length - 1];
+    if (!lastRow || Object.keys(lastRow).length >= 3) {
+      return [...prevRowData, { [`let1`]: letter }];
+    } else {
+      const keyIndex = Object.keys(lastRow).length + 1;
+      const updatedRow = { ...lastRow, [`let${keyIndex}`]: letter };
+      return [...prevRowData.slice(0, -1), updatedRow];
+    }
+  });
 
-    setRowData((prevRowData) => {
+  // Handle suggestion for letters (RowData)
+  if (suggestionActive) {
+    if (letter === repeatLetter) {
+      setSuggestionActive(false);
+      setSuggestion("");
+      showToast(`Win Number!`, "success");
+      setRepeatLetter("");
+      setAnalyzeData((prev) => ({
+        ...prev,
+        winPerData: prev.winPerData + 1,
+      }));
+
+      console.log('moneyMangementData', moneyManagementData);
+
+      // Add data to MoneyManagement only if the letter matches
+      setMoneyManagementData((prevData) => [
+        ...prevData,
+        {
+          spin: {
+            number: number,
+            color:
+              clickedDataUpdates.red === 1
+                ? "red"
+                : clickedDataUpdates.black === 1
+                ? "black"
+                : "zero",
+          },
+          winLoss: "W",
+          unit: unitData,
+          total: letter === "A" ? 23 : 24,
+          covered: letter === "A" ? 13 : 12,
+        },
+      ]);
+    } else {
+      setSuggestion(`Suggestion: The repeated letter is ${repeatLetter}`);
+    }
+  }
+
+
+  console.log('moneyMangementData', moneyManagementData);
+
+  // Handle Dozen and Column Data
+  if (doz !== 0 || col !== 0) {
+    setDozenRowData((prevRowData) => {
       const lastRow = prevRowData[prevRowData.length - 1];
       if (!lastRow || Object.keys(lastRow).length >= 3) {
-        return [...prevRowData, { [`let1`]: letter }];
+        return [...prevRowData, { [`doz1`]: doz }];
       } else {
         const keyIndex = Object.keys(lastRow).length + 1;
-        const updatedRow = { ...lastRow, [`let${keyIndex}`]: letter };
+        const updatedRow = { ...lastRow, [`doz${keyIndex}`]: doz };
         return [...prevRowData.slice(0, -1), updatedRow];
       }
     });
 
-    if (suggestionActive) {
-      if (letter === repeatLetter) {
-        setSuggestionActive(false);
+    setColRowData((prevRowData) => {
+      const lastRow = prevRowData[prevRowData.length - 1];
+      if (!lastRow || Object.keys(lastRow).length >= 3) {
+        return [...prevRowData, { [`col1`]: col }];
+      } else {
+        const keyIndex = Object.keys(lastRow).length + 1;
+        const updatedRow = { ...lastRow, [`col${keyIndex}`]: col };
+        return [...prevRowData.slice(0, -1), updatedRow];
+      }
+    });
+
+    // Handle suggestions for Dozen
+    if (suggestionActiveDozen) {
+      if (doz === repeatDozen) {
+        setSuggestionActiveDozen(false);
         setSuggestion("");
-        showToast(`Win Number!`, "success");
-        setRepeatLetter("");
-        // analyzeRowData(letter);
+        showToast(`Win Dozen!`, "success");
+        setRepeatDozen("");
         setAnalyzeData((prev) => ({
           ...prev,
-          winPerData: prev.winPerData + 1,
+          dozenWinPer: prev.dozenWinPer + 1,
         }));
+
+        console.log('moneyMangementData', moneyManagementData);
+
+        // Add to money management for dozens
+        setMoneyManagementData((prevData) => [
+          ...prevData,
+          {
+            spin: {
+              number: number,
+              color:
+                clickedDataUpdates.red === 1
+                  ? "red"
+                  : clickedDataUpdates.black === 1
+                  ? "black"
+                  : "zero",
+            },
+            winLoss: "W",
+            unit: unitData,
+            total: 24,
+            covered: doz === "1" ? "D1" : doz === "2" ? "D2" : "D3",
+          },
+        ]);
       } else {
-        setSuggestion(`Suggestion: The repeated letter is ${repeatLetter}`);
+        setSuggestion(`Suggestion: The repeated dozen is ${repeatDozen}`);
       }
     }
 
-    if (doz !== 0 || col !== 0) {
-      setDozenRowData((prevRowData) => {
-        const lastRow = prevRowData[prevRowData.length - 1];
-        if (!lastRow || Object.keys(lastRow).length >= 3) {
-          return [...prevRowData, { [`doz1`]: doz }];
-        } else {
-          const keyIndex = Object.keys(lastRow).length + 1;
-          const updatedRow = { ...lastRow, [`doz${keyIndex}`]: doz };
-          return [...prevRowData.slice(0, -1), updatedRow];
-        }
-      });
-      setColRowData((prevRowData) => {
-        const lastRow = prevRowData[prevRowData.length - 1];
-        if (!lastRow || Object.keys(lastRow).length >= 3) {
-          return [...prevRowData, { [`col1`]: col }];
-        } else {
-          const keyIndex = Object.keys(lastRow).length + 1;
-          const updatedRow = { ...lastRow, [`col${keyIndex}`]: col };
-          return [...prevRowData.slice(0, -1), updatedRow];
-        }
-      });
-      if (suggestionActiveDozen) {
-        if (doz === repeatDozen) {
-          setSuggestionActiveDozen(false);
-          setSuggestion("");
-          showToast(`Win Dozen!`, "success");
-          setRepeatDozen("");
-          setAnalyzeData((prev) => ({
-            ...prev,
-            dozenWinPer: prev.dozenWinPer + 1,
-          }));
-        } else {
-          setSuggestion(`Suggestion: The repeated letter is ${repeatLetter}`);
-        }
-      }
+    // Handle suggestions for Column
+    if (suggestionActiveCol) {
+      if (col === repeatCol) {
+        setSuggestionActiveCol(false);
+        setSuggestion("");
+        showToast(`Win Column!`, "success");
+        setRepeatCol("");
+        setAnalyzeData((prev) => ({
+          ...prev,
+          colWinPer: prev.colWinPer + 1,
+        }));
 
-      if (suggestionActiveCol) {
-        if (col === repeatCol) {
-          setSuggestionActiveCol(false);
-          setSuggestion("");
-          showToast(`Win Column!`, "success");
-          setRepeatCol("");
-          setAnalyzeData((prev) => ({
-            ...prev,
-            colWinPer: prev.colWinPer + 1,
-          }));
-        } else {
-          setSuggestion(`Suggestion: The repeated letter is ${repeatLetter}`);
-        }
+        console.log('moneyMangementData', moneyManagementData);
+
+        // Add to money management for columns
+        setMoneyManagementData((prevData) => [
+          ...prevData,
+          {
+            spin: {
+              number: number,
+              color:
+                clickedDataUpdates.red === 1
+                  ? "red"
+                  : clickedDataUpdates.black === 1
+                  ? "black"
+                  : "zero",
+            },
+            winLoss: "W",
+            unit: unitData,
+            total: 24,
+            covered: col === "1" ? "Col1" : col === "2" ? "Col2" : "Col3",
+          },
+        ]);
+      } else {
+        setSuggestion(`Suggestion: The repeated column is ${repeatCol}`);
       }
-    } else {
-      setDozenRowData([]);
-      setRepeatDozen("");
-      setSuggestionActiveDozen(false);
-      setUserMissedSuggestionDozen(false);
-      setColRowData([]);
-      setRepeatCol("");
-      setSuggestionActiveCol(false);
-      setUserMissedSuggestionCol(false);
-      localStorage.setItem("dozenRowData4", JSON.stringify([]));
-      localStorage.setItem("colRowData4", JSON.stringify([]));
     }
-  };
+  } else {
+    setDozenRowData([]);
+    setRepeatDozen("");
+    setSuggestionActiveDozen(false);
+    setUserMissedSuggestionDozen(false);
+    setColRowData([]);
+    setRepeatCol("");
+    setSuggestionActiveCol(false);
+    setUserMissedSuggestionCol(false);
+    localStorage.setItem("dozenRowData4", JSON.stringify([]));
+    localStorage.setItem("colRowData4", JSON.stringify([]));
+  }
+};
+
 
   return (
     <>

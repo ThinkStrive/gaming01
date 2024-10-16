@@ -10,6 +10,8 @@ const MoneyManagementTable = ({ moneyManagementData, theme }) => {
 
   console.log(totalAmt);
 
+  let duplicateData = [...moneyManagementData].reverse();
+  
   return (
     <table
       border="1"
@@ -93,8 +95,8 @@ const MoneyManagementTable = ({ moneyManagementData, theme }) => {
         </tr>
       </thead>
       <tbody>
-        {moneyManagementData.reverse().length > 0 ? (
-          moneyManagementData.map((data, index) => (
+        {duplicateData.length > 0 ? (
+          duplicateData.map((data, index) => (
             <tr key={index}>
               <td
                 className={`${data.spin?.color === "red" ? "bg-customRed" : "bg-black"} border p-2 max-sm:p-1 text-center`}
