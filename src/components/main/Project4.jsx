@@ -296,6 +296,7 @@ const Project4 = ({ theme }) => {
     setSuggestionProcessedRow(null)
     setSuggestionProcessedDoz(null)
     setSuggestionProcessedCol(null)
+    setUnitData(1)
 
     // Set the initial values in localStorage
     localStorage.setItem("analyzeData4", JSON.stringify(initialAnalyzeData));
@@ -789,7 +790,7 @@ const Project4 = ({ theme }) => {
             spin: lastHitNumber,
             winLoss: "-",
             unit: unitData,
-            total: 24,
+            total: unitData * 24,
             covered: repeatedDozen === "1" ? "D1" : repeatedDozen === "2" ? "D2" : "D3",
           };
 
@@ -853,7 +854,7 @@ const Project4 = ({ theme }) => {
             spin: lastHitNumber,
             winLoss: "-",
             unit: unitData,
-            total: 24,
+            total: unitData * 24,
             covered: repeatedCol === "1" ? "Col1" : repeatedCol === "2" ? "Col2" : "Col3",
           };
 
@@ -895,6 +896,7 @@ const Project4 = ({ theme }) => {
         !userMissedSuggestion
       ) {
         showToast(`Book Your Loss!`, "error");
+        setUnitData(1)
         setUserMissedSuggestion(true);
         setSuggestionActive(false);
         setAnalyzeData((prev) => ({
@@ -907,7 +909,7 @@ const Project4 = ({ theme }) => {
           spin: lastHitNumber,
           winLoss: "L",
           unit: unitData,
-          total: repeatLetter === "A" ? -11.5 : -12,
+          total: repeatLetter === "A" ? (unitData * (-11.5)) : (unitData * (-12)),
           covered: repeatLetter === "A" ? 13 : 12,
         });
       }
@@ -925,6 +927,7 @@ const Project4 = ({ theme }) => {
         !userMissedSuggestionDozen
       ) {
         showToast(`Book Your Loss!`, "error");
+        setUnitData(1)
         setUserMissedSuggestionDozen(true);
         setSuggestionActiveDozen(false);
         setAnalyzeData((prev) => ({
@@ -937,7 +940,7 @@ const Project4 = ({ theme }) => {
           spin: lastHitNumber,
           winLoss: "L",
           unit: unitData,
-          total: -12,
+          total: unitData * (-12),
           covered:
             repeatDozen === "1" ? "D1" : repeatDozen === "2" ? "D2" : "D3",
         });
@@ -956,6 +959,7 @@ const Project4 = ({ theme }) => {
         !userMissedSuggestionCol
       ) {
         showToast(`Book Your Loss!`, "error");
+        setUnitData(1)
         setUserMissedSuggestionCol(true);
         setSuggestionActiveCol(false);
         setAnalyzeData((prev) => ({
@@ -968,7 +972,7 @@ const Project4 = ({ theme }) => {
           spin: lastHitNumber,
           winLoss: "L",
           unit: unitData,
-          total: -12,
+          total: unitData * (-12),
           covered:
             repeatCol === "1" ? "Col1" : repeatCol === "2" ? "Col2" : "Col3",
         });
@@ -1026,6 +1030,7 @@ const handleClickNumber = (key, number, letter, doz, col) => {
       setSuggestionActive(false);
       setSuggestion("");
       showToast(`Win Number!`, "success");
+      setUnitData(unitData + 1)
       setRepeatLetter("");
       setAnalyzeData((prev) => ({
         ...prev,
@@ -1049,7 +1054,7 @@ const handleClickNumber = (key, number, letter, doz, col) => {
           },
           winLoss: "W",
           unit: unitData,
-          total: letter === "A" ? 23 : 24,
+          total: letter === "A" ? unitData * 23 : unitData * 24,
           covered: letter === "A" ? 13 : 12,
         },
       ]);
@@ -1091,6 +1096,7 @@ const handleClickNumber = (key, number, letter, doz, col) => {
         setSuggestionActiveDozen(false);
         setSuggestion("");
         showToast(`Win Dozen!`, "success");
+        setUnitData(unitData + 1)
         setRepeatDozen("");
         setAnalyzeData((prev) => ({
           ...prev,
@@ -1114,7 +1120,7 @@ const handleClickNumber = (key, number, letter, doz, col) => {
             },
             winLoss: "W",
             unit: unitData,
-            total: 24,
+            total: unitData * 24,
             covered: doz === "1" ? "D1" : doz === "2" ? "D2" : "D3",
           },
         ]);
@@ -1129,6 +1135,7 @@ const handleClickNumber = (key, number, letter, doz, col) => {
         setSuggestionActiveCol(false);
         setSuggestion("");
         showToast(`Win Column!`, "success");
+        setUnitData(unitData + 1)
         setRepeatCol("");
         setAnalyzeData((prev) => ({
           ...prev,
@@ -1152,7 +1159,7 @@ const handleClickNumber = (key, number, letter, doz, col) => {
             },
             winLoss: "W",
             unit: unitData,
-            total: 24,
+            total: unitData * 24,
             covered: col === "1" ? "Col1" : col === "2" ? "Col2" : "Col3",
           },
         ]);
