@@ -128,14 +128,17 @@ const Project4 = ({ theme }) => {
     const savedHistoryData = localStorage.getItem("unitData4");
     return savedHistoryData ? JSON.parse(savedHistoryData) : 1;
   });
+
   const [suggestionProcessedRow, setSuggestionProcessedRow] = useState(() => {
     const savedHistoryData = localStorage.getItem("suggestionProcessedRow4");
     return savedHistoryData ? JSON.parse(savedHistoryData) : null;
   });
+
   const [suggestionProcessedDoz, setSuggestionProcessedDoz] = useState(() => {
     const savedHistoryData = localStorage.getItem("suggestionProcessedDoz4");
     return savedHistoryData ? JSON.parse(savedHistoryData) : null;
   });
+
   const [suggestionProcessedCol, setSuggestionProcessedCol] = useState(() => {
     const savedHistoryData = localStorage.getItem("suggestionProcessedCol4");
     return savedHistoryData ? JSON.parse(savedHistoryData) : null;
@@ -734,6 +737,8 @@ const Project4 = ({ theme }) => {
           setUserMissedSuggestion(false);
           setSuggestion(`Suggestion: The repeated letter is ${repeatedLetter}`);
 
+          setUnitData(1);
+
           // Add data to moneyManagementData only for the first column
           const newEntry = {
             spin: "",
@@ -791,6 +796,8 @@ const Project4 = ({ theme }) => {
           setSuggestionActiveDozen(true);
           setUserMissedSuggestionDozen(false);
           setSuggestion(`Suggestion: The repeated dozen is ${repeatedDozen}`);
+
+          setUnitData(1);
 
           // Add data to moneyManagementData only for the first column
           const newEntry = {
@@ -860,6 +867,8 @@ const Project4 = ({ theme }) => {
           setSuggestionActiveCol(true);
           setUserMissedSuggestionCol(false);
           setSuggestion(`Suggestion: The repeated column is ${repeatedCol}`);
+
+          setUnitData(1);
 
           // Add data to moneyManagementData only for the first column
           const newEntry = {
