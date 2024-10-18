@@ -730,7 +730,7 @@ const Project4 = ({ theme }) => {
         );
 
         // Check if the repeated letter is in the first column
-        if (repeatedLetter && values[0] === repeatedLetter) {
+        if (repeatedLetter) {
           // Only trigger the suggestion if it hasn't been processed for this row
           setRepeatLetter(repeatedLetter);
           setSuggestionActive(true);
@@ -789,8 +789,11 @@ const Project4 = ({ theme }) => {
           (dozen) => occurrences[dozen] > 1
         );
 
+        console.log('repeatedDozen', repeatedDozen);
+        console.log('values', values);
+
         // Check if the repeated dozen is in the first column
-        if (repeatedDozen && values[0] === repeatedDozen) {
+        if (repeatedDozen) {
           // Only trigger the suggestion if it hasn't been processed for this row
           setRepeatDozen(repeatedDozen);
           setSuggestionActiveDozen(true);
@@ -861,7 +864,7 @@ const Project4 = ({ theme }) => {
         );
 
         // Check if the repeated col is in the first column
-        if (repeatedCol && values[0] === repeatedCol) {
+        if (repeatedCol) {
           // Only trigger the suggestion if it hasn't been processed for this row
           setRepeatCol(repeatedCol);
           setSuggestionActiveCol(true);
@@ -1092,7 +1095,7 @@ const Project4 = ({ theme }) => {
     console.log("moneyMangementData", moneyManagementData);
 
     // Handle Dozen and Column Data
-    if (doz !== 0 || col !== 0) {
+    // if (doz !== 0 || col !== 0) {
       setDozenRowData((prevRowData) => {
         const lastRow = prevRowData[prevRowData.length - 1];
         if (!lastRow || Object.keys(lastRow).length >= 3) {
@@ -1192,19 +1195,22 @@ const Project4 = ({ theme }) => {
           setSuggestion(`Suggestion: The repeated column is ${repeatCol}`);
         }
       }
-    } else {
-      setDozenRowData([]);
-      setRepeatDozen("");
-      setSuggestionActiveDozen(false);
-      setUserMissedSuggestionDozen(false);
-      setColRowData([]);
-      setRepeatCol("");
-      setSuggestionActiveCol(false);
-      setUserMissedSuggestionCol(false);
-      localStorage.setItem("dozenRowData4", JSON.stringify([]));
-      localStorage.setItem("colRowData4", JSON.stringify([]));
-    }
+    // } 
+    // else {
+    //   setDozenRowData([]);
+    //   setRepeatDozen("");
+    //   setSuggestionActiveDozen(false);
+    //   setUserMissedSuggestionDozen(false);
+    //   setColRowData([]);
+    //   setRepeatCol("");
+    //   setSuggestionActiveCol(false);
+    //   setUserMissedSuggestionCol(false);
+    //   localStorage.setItem("dozenRowData4", JSON.stringify([]));
+    //   localStorage.setItem("colRowData4", JSON.stringify([]));
+    // }
   };
+
+  console.log('dozen data', dozenRowData)
 
   return (
     <>

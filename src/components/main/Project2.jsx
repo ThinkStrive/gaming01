@@ -416,6 +416,7 @@ function Project2({ captureScreenshot, theme }) {
   console.log("showPopup : ", showPopup.show);
 
   const [isNotesOpen, setIsNotesOpen] = useState(false);
+  const [isNotesContentOpen, setIsNotesContentOpen] = useState(true);
 
   const [notesData, setNotesData] = useState(() => {
     const storedNotes = localStorage.getItem("notes4");
@@ -1463,7 +1464,7 @@ function Project2({ captureScreenshot, theme }) {
       
 
       <div>
-        {notesData !== null ? (
+        {notesData !== null && isNotesContentOpen === true  ? (
           <div className="flex flex-wrap">
             <div className="w-[100vw] flex flex-wrap justify-between items-center">
               <div className="w-[30%]">
@@ -1525,7 +1526,13 @@ function Project2({ captureScreenshot, theme }) {
         )}
       </div>
 
-      <div className="w-[100%] flex justify-end my-4" >
+      <div className="w-[100%] flex justify-between my-4" >
+        <button
+          className="px-4 py-2 bg-slate-700 rounded-lg cursor-pointer text-sm"
+          onClick={() => setIsNotesContentOpen(false)}
+        >
+          Close
+        </button>
         <button
           className="px-4 py-2 bg-slate-700 rounded-lg cursor-pointer text-sm"
           onClick={() => setIsNotesOpen(true)}
