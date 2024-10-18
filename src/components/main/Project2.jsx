@@ -1529,9 +1529,9 @@ function Project2({ captureScreenshot, theme }) {
       <div className="w-[100%] flex justify-between my-4" >
         <button
           className="px-4 py-2 bg-slate-700 rounded-lg cursor-pointer text-sm"
-          onClick={() => setIsNotesContentOpen(false)}
+          onClick={() => setIsNotesContentOpen(!isNotesContentOpen)}
         >
-          Close
+          {isNotesContentOpen === true ? 'Close' : 'Open'}
         </button>
         <button
           className="px-4 py-2 bg-slate-700 rounded-lg cursor-pointer text-sm"
