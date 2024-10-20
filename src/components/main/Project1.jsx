@@ -1110,6 +1110,21 @@ const Project1 = ({ theme }) => {
   console.log("summary data", summaryData);
   console.log("previous state", nonSummaryData);
 
+
+
+  const calculatePercentage = (numerator, denominator1, denominator2, denominator3) => {
+    const total = denominator1 + denominator2 + denominator3;
+  
+    // Return 0 if the total is 0 to avoid NaN
+    if (total === 0) {
+      return "0%";
+    }
+  
+    // Calculate the percentage and round to nearest integer
+    const percentage = Math.round((numerator / total) * 100);
+    return `${percentage}%`;
+  };
+
   const tableRow = (category, count, lastHit, screen) => {
     return (
       <tr className="text-center">
@@ -1713,17 +1728,17 @@ const Project1 = ({ theme }) => {
                 )}
                 {tableRow(
                   "1st Dozen",
-                  countData.dozen_one,
+                  calculatePercentage(countData.dozen_one, countData.dozen_one,countData.dozen_two,countData.dozen_three),
                   lastHitData.dozen_one,
                 )}
                 {tableRow(
                   "2nd Dozen",
-                  countData.dozen_two,
+                  calculatePercentage(countData.dozen_two, countData.dozen_one,countData.dozen_two,countData.dozen_three),
                   lastHitData.dozen_two,
                 )}
                 {tableRow(
                   "3rd Dozen",
-                  countData.dozen_three,
+                  calculatePercentage(countData.dozen_three, countData.dozen_one,countData.dozen_two,countData.dozen_three),
                   lastHitData.dozen_three,
                 )}
                 {tableRow("1st Column", countData.col_one, lastHitData.col_one)}
