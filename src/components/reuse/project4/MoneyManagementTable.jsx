@@ -8,8 +8,6 @@ const MoneyManagementTable = ({ moneyManagementData, theme }) => {
     }
   });
 
-  console.log(totalAmt);
-
   let duplicateData = [...moneyManagementData].reverse();
 
   return (

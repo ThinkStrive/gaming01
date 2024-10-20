@@ -9,9 +9,8 @@ import background from "../../assets/imgs/2002.i029.002_realistic-poker-club-ill
 import MoneyManagementTable from "../reuse/project4/MoneyManagementTable.jsx";
 
 const Project4 = ({ theme }) => {
-  const [isAlertAllowed, setIsAlertAllowed] = useState(false);
+  const [isAlertAllowed, setIsAlertAllowed] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
-
   const showToast = useToast();
 
   const [countData, setCountData] = useState(() => {
@@ -789,9 +788,6 @@ const Project4 = ({ theme }) => {
           (dozen) => occurrences[dozen] > 1
         );
 
-        console.log('repeatedDozen', repeatedDozen);
-        console.log('values', values);
-
         // Check if the repeated dozen is in the first column
         if (repeatedDozen) {
           // Only trigger the suggestion if it hasn't been processed for this row
@@ -880,11 +876,7 @@ const Project4 = ({ theme }) => {
             unit: unitData,
             total: 0,
             covered:
-              repeatedCol === "1"
-                ? "C1"
-                : repeatedCol === "2"
-                ? "C2"
-                : "C3",
+              repeatedCol === "1" ? "C1" : repeatedCol === "2" ? "C2" : "C3",
           };
 
           setMoneyManagementData((prevData) => {
@@ -924,7 +916,9 @@ const Project4 = ({ theme }) => {
         !Object.values(lastRow).includes(repeatLetter) &&
         !userMissedSuggestion
       ) {
-        showToast(`Book Your Loss!`, "error");
+        if (isAlertAllowed) {
+          showToast(`Book Your Loss!`, "error");
+        }
         setUnitData(1);
         setUserMissedSuggestion(true);
         setSuggestionActive(false);
@@ -955,7 +949,9 @@ const Project4 = ({ theme }) => {
         !Object.values(lastRow).includes(repeatDozen) &&
         !userMissedSuggestionDozen
       ) {
-        showToast(`Book Your Loss!`, "error");
+        if (isAlertAllowed) {
+          showToast(`Book Your Loss!`, "error");
+        }
         setUnitData(1);
         setUserMissedSuggestionDozen(true);
         setSuggestionActiveDozen(false);
@@ -987,7 +983,9 @@ const Project4 = ({ theme }) => {
         !Object.values(lastRow).includes(repeatCol) &&
         !userMissedSuggestionCol
       ) {
-        showToast(`Book Your Loss!`, "error");
+        if (isAlertAllowed) {
+          showToast(`Book Your Loss!`, "error");
+        }
         setUnitData(1);
         setUserMissedSuggestionCol(true);
         setSuggestionActiveCol(false);
@@ -1002,8 +1000,7 @@ const Project4 = ({ theme }) => {
           winLoss: "L",
           unit: unitData,
           total: unitData * -1,
-          covered:
-            repeatCol === "1" ? "C1" : repeatCol === "2" ? "C2" : "C3",
+          covered: repeatCol === "1" ? "C1" : repeatCol === "2" ? "C2" : "C3",
         });
       }
     }
@@ -1058,15 +1055,15 @@ const Project4 = ({ theme }) => {
       if (letter === repeatLetter) {
         setSuggestionActive(false);
         setSuggestion("");
-        showToast(`Win Number!`, "success");
+        if (isAlertAllowed) {
+          showToast(`Win Number!`, "success");
+        }
         setUnitData(unitData + 1);
         setRepeatLetter("");
         setAnalyzeData((prev) => ({
           ...prev,
           winPerData: prev.winPerData + 1,
         }));
-
-        console.log("moneyMangementData", moneyManagementData);
 
         // Add data to MoneyManagement only if the letter matches
         setMoneyManagementData((prevData) => [
@@ -1092,110 +1089,108 @@ const Project4 = ({ theme }) => {
       }
     }
 
-    console.log("moneyMangementData", moneyManagementData);
-
     // Handle Dozen and Column Data
     // if (doz !== 0 || col !== 0) {
-      setDozenRowData((prevRowData) => {
-        const lastRow = prevRowData[prevRowData.length - 1];
-        if (!lastRow || Object.keys(lastRow).length >= 3) {
-          return [...prevRowData, { [`doz1`]: doz }];
-        } else {
-          const keyIndex = Object.keys(lastRow).length + 1;
-          const updatedRow = { ...lastRow, [`doz${keyIndex}`]: doz };
-          return [...prevRowData.slice(0, -1), updatedRow];
-        }
-      });
+    setDozenRowData((prevRowData) => {
+      const lastRow = prevRowData[prevRowData.length - 1];
+      if (!lastRow || Object.keys(lastRow).length >= 3) {
+        return [...prevRowData, { [`doz1`]: doz }];
+      } else {
+        const keyIndex = Object.keys(lastRow).length + 1;
+        const updatedRow = { ...lastRow, [`doz${keyIndex}`]: doz };
+        return [...prevRowData.slice(0, -1), updatedRow];
+      }
+    });
 
-      setColRowData((prevRowData) => {
-        const lastRow = prevRowData[prevRowData.length - 1];
-        if (!lastRow || Object.keys(lastRow).length >= 3) {
-          return [...prevRowData, { [`col1`]: col }];
-        } else {
-          const keyIndex = Object.keys(lastRow).length + 1;
-          const updatedRow = { ...lastRow, [`col${keyIndex}`]: col };
-          return [...prevRowData.slice(0, -1), updatedRow];
-        }
-      });
+    setColRowData((prevRowData) => {
+      const lastRow = prevRowData[prevRowData.length - 1];
+      if (!lastRow || Object.keys(lastRow).length >= 3) {
+        return [...prevRowData, { [`col1`]: col }];
+      } else {
+        const keyIndex = Object.keys(lastRow).length + 1;
+        const updatedRow = { ...lastRow, [`col${keyIndex}`]: col };
+        return [...prevRowData.slice(0, -1), updatedRow];
+      }
+    });
 
-      // Handle suggestions for Dozen
-      if (suggestionActiveDozen) {
-        if (doz === repeatDozen) {
-          setSuggestionActiveDozen(false);
-          setSuggestion("");
+    // Handle suggestions for Dozen
+    if (suggestionActiveDozen) {
+      if (doz === repeatDozen) {
+        setSuggestionActiveDozen(false);
+        setSuggestion("");
+        if (isAlertAllowed) {
           showToast(`Win Dozen!`, "success");
-          setUnitData(unitData + 1);
-          setRepeatDozen("");
-          setAnalyzeData((prev) => ({
-            ...prev,
-            dozenWinPer: prev.dozenWinPer + 1,
-          }));
-
-          console.log("moneyMangementData", moneyManagementData);
-
-          // Add to money management for dozens
-          setMoneyManagementData((prevData) => [
-            ...prevData,
-            {
-              spin: {
-                number: number,
-                color:
-                  clickedDataUpdates.red === 1
-                    ? "red"
-                    : clickedDataUpdates.black === 1
-                    ? "black"
-                    : "zero",
-              },
-              winLoss: "W",
-              unit: unitData,
-              total: unitData * 2,
-              covered: doz === "1" ? "D1" : doz === "2" ? "D2" : "D3",
-            },
-          ]);
-        } else {
-          setSuggestion(`Suggestion: The repeated dozen is ${repeatDozen}`);
         }
-      }
+        setUnitData(unitData + 1);
+        setRepeatDozen("");
+        setAnalyzeData((prev) => ({
+          ...prev,
+          dozenWinPer: prev.dozenWinPer + 1,
+        }));
 
-      // Handle suggestions for Column
-      if (suggestionActiveCol) {
-        if (col === repeatCol) {
-          setSuggestionActiveCol(false);
-          setSuggestion("");
+        // Add to money management for dozens
+        setMoneyManagementData((prevData) => [
+          ...prevData,
+          {
+            spin: {
+              number: number,
+              color:
+                clickedDataUpdates.red === 1
+                  ? "red"
+                  : clickedDataUpdates.black === 1
+                  ? "black"
+                  : "zero",
+            },
+            winLoss: "W",
+            unit: unitData,
+            total: unitData * 2,
+            covered: doz === "1" ? "D1" : doz === "2" ? "D2" : "D3",
+          },
+        ]);
+      } else {
+        setSuggestion(`Suggestion: The repeated dozen is ${repeatDozen}`);
+      }
+    }
+
+    // Handle suggestions for Column
+    if (suggestionActiveCol) {
+      if (col === repeatCol) {
+        setSuggestionActiveCol(false);
+        setSuggestion("");
+        if (isAlertAllowed) {
           showToast(`Win Column!`, "success");
-          setUnitData(unitData + 1);
-          setRepeatCol("");
-          setAnalyzeData((prev) => ({
-            ...prev,
-            colWinPer: prev.colWinPer + 1,
-          }));
-
-          console.log("moneyMangementData", moneyManagementData);
-
-          // Add to money management for columns
-          setMoneyManagementData((prevData) => [
-            ...prevData,
-            {
-              spin: {
-                number: number,
-                color:
-                  clickedDataUpdates.red === 1
-                    ? "red"
-                    : clickedDataUpdates.black === 1
-                    ? "black"
-                    : "zero",
-              },
-              winLoss: "W",
-              unit: unitData,
-              total: unitData * 2,
-              covered: col === "1" ? "C1" : col === "2" ? "C2" : "C3",
-            },
-          ]);
-        } else {
-          setSuggestion(`Suggestion: The repeated column is ${repeatCol}`);
         }
+        setUnitData(unitData + 1);
+        setRepeatCol("");
+        setAnalyzeData((prev) => ({
+          ...prev,
+          colWinPer: prev.colWinPer + 1,
+        }));
+
+        // Add to money management for columns
+        setMoneyManagementData((prevData) => [
+          ...prevData,
+          {
+            spin: {
+              number: number,
+              color:
+                clickedDataUpdates.red === 1
+                  ? "red"
+                  : clickedDataUpdates.black === 1
+                  ? "black"
+                  : "zero",
+            },
+            winLoss: "W",
+            unit: unitData,
+            total: unitData * 2,
+            covered: col === "1" ? "C1" : col === "2" ? "C2" : "C3",
+          },
+        ]);
+      } else {
+        setSuggestion(`Suggestion: The repeated column is ${repeatCol}`);
       }
-    // } 
+    }
+    // }
     // else {
     //   setDozenRowData([]);
     //   setRepeatDozen("");
@@ -1210,7 +1205,9 @@ const Project4 = ({ theme }) => {
     // }
   };
 
-  console.log('dozen data', dozenRowData)
+  console.log("dozen data", dozenRowData);
+  console.log("col data", colRowData);
+  console.log("row data", rowData);
 
   return (
     <>
@@ -1244,7 +1241,7 @@ const Project4 = ({ theme }) => {
           </div>
 
           <div className="flex">
-            {/* <div
+            <div
               className="flex justify-center items-center p-0.5 py-0 rounded-md font-semibold text-sm text-gray-500"
               onClick={() => setIsAlertAllowed(!isAlertAllowed)}
             >
@@ -1262,10 +1259,10 @@ const Project4 = ({ theme }) => {
 
             <button
               className="text-gray-500 py-1 px-1 rounded-full text-sm font-semibold"
-              onClick={handleClickResetButton}
+              // onClick={handleClickResetButton}
             >
               Undo
-            </button> */}
+            </button>
             {/* {suggestionActiveDozen && (
               <div className="p-1 rounded">
                 <div className="dozen--col flex justify-center items-center bg-[#58d68d] p-0.5 text-sm font-semibold cursor-pointer rounded hover:bg-gray-500 px-2">
@@ -1334,6 +1331,30 @@ const Project4 = ({ theme }) => {
                 </div>
               </div>
             )} */}
+            <div
+              className="flex justify-center items-center py-0 font-semibold text-sm text-gray-500 bg-neutral-300 p-1 rounded-full hover:bg-gray-400"
+              onClick={() => setIsAlertAllowed(!isAlertAllowed)}
+            >
+              <div className="bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen cursor-pointer">
+                Alerts{" "}
+                <span
+                  className={
+                    !isAlertAllowed ? "text-red-500" : "text-neonGreen"
+                  }
+                >
+                  {!isAlertAllowed ? "Off!" : "On!"}
+                </span>
+              </div>
+            </div>
+
+            <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400 flex justify-center items-center">
+              <button
+                className="bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
+                // onClick={handleClickResetButton}
+              >
+                Undo
+              </button>
+            </div>
 
             <div
               className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400"
@@ -1703,7 +1724,12 @@ const Project4 = ({ theme }) => {
           border: theme === "dark" ? "white 2px solid" : "black 2px solid",
         }}
       >
-        <button onClick={() => setMoneyManagementData([])} className="border py-1 px-4 rounded-lg mb-2 mx-2" >Reset</button>
+        <button
+          onClick={() => setMoneyManagementData([])}
+          className="border py-1 px-4 rounded-lg mb-2 mx-2"
+        >
+          Reset
+        </button>
         <MoneyManagementTable
           moneyManagementData={moneyManagementData}
           theme={theme}
