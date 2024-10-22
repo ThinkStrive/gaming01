@@ -12,6 +12,9 @@ const Project4 = ({ theme }) => {
   const [isAlertAllowed, setIsAlertAllowed] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
   const showToast = useToast();
+  const [rowHoverEffect, setRowHoverEffect] = useState(false);
+  const [dozenHoverEffect, setDozenHoverEffect] = useState(false);
+  const [colHoverEffect, setColHoverEffect] = useState(false);
 
   const [countData, setCountData] = useState(() => {
     const savedCountData = localStorage.getItem("countData4");
@@ -32,6 +35,16 @@ const Project4 = ({ theme }) => {
           col_three: 0,
         };
   });
+
+  const handleClickRowHoverData = () => {
+    setRowHoverEffect(!rowHoverEffect);
+  };
+  const handleClickDozenHoverData = () => {
+    setDozenHoverEffect(!dozenHoverEffect);
+  };
+  const handleClickColHoverData = () => {
+    setColHoverEffect(!colHoverEffect);
+  };
 
   const [analyzeData, setAnalyzeData] = useState(() => {
     const savedCountData = localStorage.getItem("analyzeData4");
@@ -710,7 +723,7 @@ const Project4 = ({ theme }) => {
   };
 
   useEffect(() => {
-    if (rowData.length > 0) {
+    if (rowData.length > 0 && rowHoverEffect) {
       const lastRowIndex = rowData.length - 1;
       const lastRow = rowData[lastRowIndex];
 
@@ -770,7 +783,7 @@ const Project4 = ({ theme }) => {
   }, [rowData, repeatLetter, userMissedSuggestion, lastHitNumber, unitData]);
 
   useEffect(() => {
-    if (dozenRowData.length > 0) {
+    if (dozenRowData.length > 0 && dozenHoverEffect) {
       const lastRowIndex = dozenRowData.length - 1;
       const lastRow = dozenRowData[lastRowIndex];
 
@@ -841,7 +854,7 @@ const Project4 = ({ theme }) => {
   ]);
 
   useEffect(() => {
-    if (colRowData.length > 0) {
+    if (colRowData.length > 0 && colHoverEffect) {
       const lastRowIndex = colRowData.length - 1;
       const lastRow = colRowData[lastRowIndex];
 
@@ -906,7 +919,7 @@ const Project4 = ({ theme }) => {
     let newLossEntries = [];
 
     // Check letter loss
-    if (rowData.length > 1) {
+    if (rowData.length > 1 && rowHoverEffect) {
       const previousRow = rowData[rowData.length - 2];
       const lastRow = rowData[rowData.length - 1];
       if (
@@ -939,7 +952,7 @@ const Project4 = ({ theme }) => {
     }
 
     // Check dozen loss
-    if (dozenRowData.length > 1) {
+    if (dozenRowData.length > 1 && dozenHoverEffect) {
       const previousRow = dozenRowData[dozenRowData.length - 2];
       const lastRow = dozenRowData[dozenRowData.length - 1];
       if (
@@ -973,7 +986,7 @@ const Project4 = ({ theme }) => {
     }
 
     // Check column loss
-    if (colRowData.length > 1) {
+    if (colRowData.length > 1 && colHoverEffect) {
       const previousRow = colRowData[colRowData.length - 2];
       const lastRow = colRowData[colRowData.length - 1];
       if (
@@ -1051,7 +1064,7 @@ const Project4 = ({ theme }) => {
     });
 
     // Handle suggestion for letters (RowData)
-    if (suggestionActive) {
+    if (suggestionActive && rowHoverEffect) {
       if (letter === repeatLetter) {
         setSuggestionActive(false);
         setSuggestion("");
@@ -1114,7 +1127,7 @@ const Project4 = ({ theme }) => {
     });
 
     // Handle suggestions for Dozen
-    if (suggestionActiveDozen) {
+    if (suggestionActiveDozen && dozenHoverEffect) {
       if (doz === repeatDozen) {
         setSuggestionActiveDozen(false);
         setSuggestion("");
@@ -1153,7 +1166,7 @@ const Project4 = ({ theme }) => {
     }
 
     // Handle suggestions for Column
-    if (suggestionActiveCol) {
+    if (suggestionActiveCol && colHoverEffect) {
       if (col === repeatCol) {
         setSuggestionActiveCol(false);
         setSuggestion("");
@@ -1211,7 +1224,7 @@ const Project4 = ({ theme }) => {
 
   return (
     <>
-      <div className="sticky lg:top-24 max-sm:top-20 md:top-16 z-40">
+      <div className="sticky lg:top-0 max-sm:top-0 md:top-0 z-30">
         {/* <Nav theme={theme} setTheme={setTheme} /> */}
         <div
           className="py-1 px-2 justify-between flex sm--navbar"
@@ -1287,6 +1300,7 @@ const Project4 = ({ theme }) => {
             </button>
           </div>
         </div>
+
         <div
           className="flex justify-between items-center px-10 py-2 max-sm:px-3 pb-3 max-sm:hidden"
           // style={{ backgroundColor: "rgb(81,29,91)" }}
@@ -1374,6 +1388,48 @@ const Project4 = ({ theme }) => {
               </button>
             </div>
           </div>
+        </div>
+
+        <div className="flex justify-end items-center px-4 md:px-8 w-full flex-wrap space-x-2 md:space-x-3 my-2">
+          <button
+            onClick={handleClickRowHoverData}
+            className="bg-black text-white px-4 md:px-6 py-2 rounded-xl text-sm"
+          >
+            Number{" "}
+            <span
+              className={`${
+                rowHoverEffect ? "text-green-500" : "text-red-500"
+              }`}
+            >
+              {rowHoverEffect ? "On" : "Off"}
+            </span>
+          </button>
+          <button
+            onClick={handleClickDozenHoverData}
+            className="bg-black text-white px-4 md:px-6 py-2 rounded-xl text-sm"
+          >
+            Dozen{" "}
+            <span
+              className={`${
+                dozenHoverEffect ? "text-green-500" : "text-red-500"
+              }`}
+            >
+              {dozenHoverEffect ? "On" : "Off"}
+            </span>
+          </button>
+          <button
+            onClick={handleClickColHoverData}
+            className="bg-black text-white px-4 md:px-6 py-2 rounded-xl text-sm"
+          >
+            Column{" "}
+            <span
+              className={`${
+                colHoverEffect ? "text-green-500" : "text-red-500"
+              }`}
+            >
+              {colHoverEffect ? "On" : "Off"}
+            </span>
+          </button>
         </div>
       </div>
       <div className="px-4 main h-[75.5vh] flex">
