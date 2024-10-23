@@ -27,6 +27,9 @@ export default {
         lightBlue: "#BBDEFB",
         normalRed: "#EF5350",
         lightGreen: "#C8E6C9",
+        lightBlue1:"#B3E5FC",
+        mediumBlue1:"#2196F3",
+        darkBlue1:"#0D47A1"
       },
     },
   },

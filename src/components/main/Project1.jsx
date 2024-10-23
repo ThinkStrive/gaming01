@@ -1312,6 +1312,7 @@ const calculateRangePercentage = (numerator, one_eighteen, nineteen_thirtySix) =
         </td>
         <td
           className={
+<<<<<<< HEAD
             count <= 0 ? "bg-customGray text-black border  hover:bg-softBlue hover:text-white" :
             count <= 33 ? "bg-lightBlue1 text-black border  hover:bg-softBlue hover:text-white" :
             count <= 66 ? "bg-mediumBlue1 text-white border  hover:bg-softBlue hover:text-white" :
@@ -1321,6 +1322,13 @@ const calculateRangePercentage = (numerator, one_eighteen, nineteen_thirtySix) =
             padding: screen === "small" ? "7px 10px" : "",
             borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
           }}
+=======
+            count <= 0 ? "bg-customGray text-black border hover:bg-softBlue hover:text-white" :
+            count <= 33 ? "bg-lightBlue1 text-black border hover:bg-softBlue hover:text-white" :
+            count <= 66 ? "bg-mediumBlue1 text-white border hover:bg-softBlue hover:text-white" :
+            "bg-darkBlue1 text-white border hover:bg-softBlue hover:text-white"
+          }  
+>>>>>>> 96925523258043b3f24fbc50f89589d151e3051f
         >
           {count}
         </td>
@@ -1363,10 +1371,13 @@ const calculateRangePercentage = (numerator, one_eighteen, nineteen_thirtySix) =
             count <= 66 ? "bg-mediumBlue1 text-white border hover:bg-softBlue hover:text-white" :
             "bg-darkBlue1 text-white border hover:bg-softBlue hover:text-white"
           }  
+<<<<<<< HEAD
           style={{
             padding: screen === "small" ? "7px 10px" : "",
             borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
           }}
+=======
+>>>>>>> 96925523258043b3f24fbc50f89589d151e3051f
         >
           {countData}
         </td>
