@@ -5,6 +5,7 @@ import { data } from "../reuse/project1/logic/Project1ComponetRenderData.js";
 import "../../Style/Main.css";
 import Nav from "../nav/nav.jsx";
 import { GrPowerReset } from "react-icons/gr";
+import Lock from "../resources/Lock.jsx";
 
 const Project1 = ({ theme }) => {
   const [isa_Active, setIsa_Active] = useState(true);
@@ -139,7 +140,7 @@ const Project1 = ({ theme }) => {
         };
   });
 
-  const [singleStreetData, setSIngleStreetData] = useState(() => {
+  const [singleStreetData, setSingleStreetData] = useState(() => {
     const savedData = localStorage.getItem("singleStreetData");
     return savedData
       ? JSON.parse(savedData)
@@ -274,6 +275,35 @@ const Project1 = ({ theme }) => {
 
   // Handle reset button click
   const handleClickResetButton = () => {
+    let resetDoubleData = {
+      one_six: 0,
+      seven_twelve: 0,
+      thirteen_eighteen: 0,
+      nineteen_twentyFour: 0,
+      twentyFive_thirty: 0,
+      thirtyOne_thirtySix: 0,
+    };
+    
+    let resetSingleStreetData = {
+      one_three: 0,
+      four_six: 0,
+      seven_nine: 0,
+      ten_twelve: 0,
+      thirteen_fifteen: 0,
+      sixteen_eighteen: 0,
+      nineteen_twentyOne: 0,
+      twentyTwo_twentyFour: 0,
+      twentyFive_twentySeven: 0,
+      twentyEight_thirty: 0,
+      thirtyOne_thirtyThree: 0,
+      thirtyFour_thirtySix: 0,
+    };
+    let resetCircleData = {
+      zero: 0,
+      duZero: 0,
+      orphe: 0,
+      tires: 0,
+    };
     const resetState = {
       red: 0,
       black: 0,
@@ -289,6 +319,60 @@ const Project1 = ({ theme }) => {
       col_three: 0,
     };
     setCountData(resetState);
+  
+    let summaryResetData = {
+      lowEvenRed: 0,
+      lowOddRed: 0,
+      highEvenRed: 0,
+      highOddRed: 0,
+      lowEvenBlack: 0,
+      lowOddBlack: 0,
+      highEvenBlack: 0,
+      highOddBlack: 0,
+    };
+    setDoubleStreetData(resetDoubleData);
+    setNonDoubleStreetData(resetDoubleData);
+    setSingleStreetData(resetSingleStreetData);
+    setNonSingleStreetData(resetSingleStreetData);
+    setSummaryData(summaryResetData);
+    setNonSummaryData(summaryResetData);
+    setLastHitData(resetState);
+    setLastHitNumber(null);
+    setCircleData(resetCircleData);
+    setNonCircleData(resetCircleData);
+    setHistoryData([]);
+  
+    // Reset the necessary data in local storage
+    localStorage.setItem("countData", JSON.stringify(resetState));
+    localStorage.setItem("lastHitData", JSON.stringify(resetState));
+    localStorage.setItem("lastHitNumber", null);
+    localStorage.setItem("historyData", JSON.stringify([]));
+    localStorage.setItem("summaryData", JSON.stringify(summaryResetData));
+    localStorage.setItem("nonSummaryData", JSON.stringify(summaryResetData));
+    localStorage.setItem("doubleStreetData", JSON.stringify(resetDoubleData));
+    localStorage.setItem("nonDoubleStreetData", JSON.stringify(resetDoubleData));
+    localStorage.setItem("singleStreetData", JSON.stringify(resetSingleStreetData));
+    localStorage.setItem("nonSingleStreetData", JSON.stringify(resetSingleStreetData));
+    localStorage.setItem("circleData", JSON.stringify(resetCircleData));
+    localStorage.setItem("nonCircleData", JSON.stringify(resetCircleData));
+  };
+
+  //Reset For Wheel Section Breakdown
+  const handleClickWsbResetButton = ()=>{
+    let resetCircleData = {
+      zero: 0,
+      duZero: 0,
+      orphe: 0,
+      tires: 0,
+    };
+  
+    setCircleData(resetCircleData);
+    setNonCircleData(resetCircleData);
+    localStorage.setItem("circleData", JSON.stringify(resetCircleData));
+    localStorage.setItem("nonCircleData", JSON.stringify(resetCircleData));
+  }
+  //Quadro Reset Button
+  const handleClickQuadroResetButton = ()=>{
     let summaryResetData = {
       lowEvenRed: 0,
       lowOddRed: 0,
@@ -301,10 +385,13 @@ const Project1 = ({ theme }) => {
     };
     setSummaryData(summaryResetData);
     setNonSummaryData(summaryResetData);
-    setLastHitData(resetState);
-    setLastHitNumber(null);
-    setHistoryData([]);
+    localStorage.setItem("summaryData", JSON.stringify(summaryResetData));
+    localStorage.setItem("nonSummaryData", JSON.stringify(summaryResetData));
 
+  }
+  //Handle Street rest Button
+  const handleClickResetStreetButton = () => {
+    // Reset data for doubleStreetData and singleStreetData only
     let resetDoubleData = {
       one_six: 0,
       seven_twelve: 0,
@@ -313,6 +400,7 @@ const Project1 = ({ theme }) => {
       twentyFive_thirty: 0,
       thirtyOne_thirtySix: 0,
     };
+    
     let resetSingleStreetData = {
       one_three: 0,
       four_six: 0,
@@ -327,46 +415,20 @@ const Project1 = ({ theme }) => {
       thirtyOne_thirtyThree: 0,
       thirtyFour_thirtySix: 0,
     };
-
+  
+    // Reset state for double and single street data
     setDoubleStreetData(resetDoubleData);
     setNonDoubleStreetData(resetDoubleData);
-
-    setSIngleStreetData(resetSingleStreetData);
+    setSingleStreetData(resetSingleStreetData);
     setNonSingleStreetData(resetSingleStreetData);
-
-    let resetCircleData = {
-      zero: 0,
-      duZero: 0,
-      orphe: 0,
-      tires: 0,
-    };
-
-    setCircleData(resetCircleData);
-    setNonCircleData(resetCircleData);
-
-    // Also reset the data in local storage
-    localStorage.setItem("countData", JSON.stringify(resetState));
-    localStorage.setItem("summaryData", JSON.stringify(summaryResetData));
-    localStorage.setItem("nonSummaryData", JSON.stringify(summaryResetData));
-    localStorage.setItem("lastHitData", JSON.stringify(resetState));
+  
+    // Also reset the corresponding data in local storage
     localStorage.setItem("doubleStreetData", JSON.stringify(resetDoubleData));
-    localStorage.setItem(
-      "nonDoubleStreetData",
-      JSON.stringify(resetDoubleData),
-    );
-    localStorage.setItem(
-      "singleStreetData",
-      JSON.stringify(resetSingleStreetData),
-    );
-    localStorage.setItem(
-      "nonSingleStreetData",
-      JSON.stringify(resetSingleStreetData),
-    );
-    localStorage.setItem("circleData", JSON.stringify(resetCircleData));
-    localStorage.setItem("nonCircleData", JSON.stringify(resetCircleData));
-    localStorage.setItem("lastHitNumber", null);
-    localStorage.setItem("historyData", JSON.stringify([]));
+    localStorage.setItem("nonDoubleStreetData", JSON.stringify(resetDoubleData));
+    localStorage.setItem("singleStreetData", JSON.stringify(resetSingleStreetData));
+    localStorage.setItem("nonSingleStreetData", JSON.stringify(resetSingleStreetData));
   };
+  
 
   const updateMapping = {
     zero: {
@@ -895,7 +957,7 @@ const Project1 = ({ theme }) => {
       return { ...prevState, ...updatedCounts };
     });
 
-    setSIngleStreetData((prevState) => {
+    setSingleStreetData((prevState) => {
       const updatedCounts = {};
       Object.keys(singleStreetDataUpdates).forEach((field) => {
         updatedCounts[field] =
@@ -1093,7 +1155,7 @@ const Project1 = ({ theme }) => {
       setCountData(previousState.countData);
       setDoubleStreetData(previousState.doubleStreetData);
       setNonDoubleStreetData(previousState.nonDoubleStreetData);
-      setSIngleStreetData(previousState.singleStreetData);
+      setSingleStreetData(previousState.singleStreetData);
       setNonSingleStreetData(previousState.nonSingleStreetData);
       setHistoryData(previousState.historyData);
       setSummaryData(previousState.summaryData);
@@ -1110,6 +1172,132 @@ const Project1 = ({ theme }) => {
   console.log("summary data", summaryData);
   console.log("previous state", nonSummaryData);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Plan Data
+
+const [planLockScreen, setPlanLockScreen] = useState(false)
+
+// useEffect(() => {
+//    let userData = JSON.parse(localStorage.getItem('userData'))
+//    if(!userData.projectsPlan.project1){
+//     setPlanLockScreen(false)
+//    }else{
+//     setPlanLockScreen(false)
+//    }
+//    },[])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//-------function to calculate the percentage for the "Red" and "Black" categories
+const calculateColorPercentage = (numerator, red, black) => {
+  const total = red + black;
+
+  // Return "0%" if total is 0 to avoid NaN
+  if (total === 0) {
+      return 0;
+  }
+
+  // Calculate the percentage and round to the nearest integer
+  const percentage = Math.round((numerator / total) *100 );
+  return `${percentage}`;
+};
+
+
+//-------function for the "Even" and "Odd" categories
+const calculateEvenOddPercentage = (numerator, even, odd) => {
+  const total = even + odd;
+
+  // Return "0%" if total is 0 to avoid NaN
+  if (total === 0) {
+      return 0;
+  }
+
+  // Calculate the percentage and round to the nearest integer
+  const percentage = Math.round((numerator / total) * 100);
+  return `${percentage}`;
+};
+
+//---------function for the "Dozen" categories
+
+  const calculatePercentage = (numerator, denominator1, denominator2, denominator3) => {
+    const total = denominator1 + denominator2 + denominator3;
+  
+    // Return 0 if the total is 0 to avoid NaN
+    if (total === 0) {
+      return 0;
+    }
+    // Calculate the percentage and round to nearest integer
+    const percentage = Math.round((numerator / total) * 100);
+    return `${percentage}`;
+  };
+
+  // ------------1st,2nd and 3rd Column Calculation
+
+  const calculateColumnPercentage = (numerator, col_one, col_two, col_three) => {
+    const total = col_one + col_two + col_three;
+  
+    // Return 0 if the total is 0 to avoid NaN
+    if (total === 0) {
+      return 0;
+    }
+    // Calculate the percentage and round to nearest integer
+    const percentage = Math.round((numerator / total) * 100);
+    return `${percentage}`;
+};
+
+//--------Function to Calculate Percentage for "1-18" and "19-36"
+
+const calculateRangePercentage = (numerator, one_eighteen, nineteen_thirtySix) => {
+  const total = one_eighteen + nineteen_thirtySix;
+
+  // Avoid NaN by returning 0% if the total is 0
+  if (total === 0) {
+      return 0;
+  }
+
+  const percentage = Math.round((numerator / total) * 100);
+  return `${percentage}`;
+};
+
+
   const tableRow = (category, count, lastHit, screen) => {
     return (
       <tr className="text-center">
@@ -1124,16 +1312,13 @@ const Project1 = ({ theme }) => {
         </td>
         <td
           className={
-            count >= 6
-              ? "bg-darkBlue border hover:bg-softBlue hover:text-white"
-              : count > 0 && count <= 2
-                ? "bg-lightBlue text-black border hover:bg-softBlue hover:text-white"
-                : count > 2 && count <= 5
-                  ? "bg-mediumBlue text-white border hover:bg-softBlue hover:text-white"
-                  : "bg-customGray text-black border hover:bg-softBlue hover:text-white"
-          }
+            count <= 0 ? "bg-customGray text-black border  hover:bg-softBlue hover:text-white" :
+            count <= 33 ? "bg-lightBlue1 text-black border  hover:bg-softBlue hover:text-white" :
+            count <= 66 ? "bg-mediumBlue1 text-white border  hover:bg-softBlue hover:text-white" :
+            "bg-darkBlue1 text-white border hover:bg-softBlue hover:text-white"
+          }  
           style={{
-            padding: screen === "small" ? "3px 10px" : "",
+            padding: screen === "small" ? "7px 10px" : "",
             borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
           }}
         >
@@ -1148,7 +1333,53 @@ const Project1 = ({ theme }) => {
                 : lastHit > 3 && lastHit <= 10
                   ? "bg-customYellow text-black border hover:bg-softBlue hover:text-white"
                   : "bg-customGray text-black border hover:bg-softBlue hover:text-white"
-          }
+            }
+          style={{
+            padding: screen === "small" ? "3px 10px" : "",
+            borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+          }}
+        >
+          {lastHit}
+        </td>
+      </tr>
+    );
+  };
+  const tableRowCount = (category, count, lastHit, screen, countData) => {
+    return (
+      <tr className="text-center">
+        <td
+          className="bg-customGray border text-darkNavy max-sm:text-xs max-sm:py-2  text-base max-lg:text-sm font-semibold"
+          style={{
+            padding: screen === "small" ? "7px 10px" : "",
+            borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+          }}
+        >
+          {category}
+        </td>
+        <td
+          className={
+            count <= 0 ? "bg-customGray text-black border hover:bg-softBlue hover:text-white" :
+            count <= 33 ? "bg-lightBlue1 text-black border hover:bg-softBlue hover:text-white" :
+            count <= 66 ? "bg-mediumBlue1 text-white border hover:bg-softBlue hover:text-white" :
+            "bg-darkBlue1 text-white border hover:bg-softBlue hover:text-white"
+          }  
+          style={{
+            padding: screen === "small" ? "7px 10px" : "",
+            borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+          }}
+        >
+          {countData}
+        </td>
+        <td
+          className={
+            lastHit >= 11
+              ? "bg-normalRed border hover:bg-softBlue"
+              : lastHit > 0 && lastHit <= 3
+                ? "bg-lightGreen text-black border hover:bg-softBlue hover:text-white"
+                : lastHit > 3 && lastHit <= 10
+                  ? "bg-customYellow text-black border hover:bg-softBlue hover:text-white"
+                  : "bg-customGray text-black border hover:bg-softBlue hover:text-white"
+            }
           style={{
             padding: screen === "small" ? "3px 10px" : "",
             borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
@@ -1192,9 +1423,9 @@ const Project1 = ({ theme }) => {
           className={
             lastHit >= 11
               ? "w-[33.3%] flex items-center justify-center max-md:text-sm bg-normalRed border hover:bg-softBlue"
-              : lastHit > 0 && lastHit <= 3
+              : lastHit > 0 && lastHit <= 5
                 ? "bg-lightGreen text-black border hover:bg-softBlue hover:text-white w-[33.3%] flex items-center justify-center max-md:text-sm"
-                : lastHit > 3 && lastHit <= 10
+                : lastHit > 5 && lastHit <= 10
                   ? "bg-customYellow text-black border hover:bg-softBlue hover:text-white w-[33.3%] flex items-center justify-center max-md:text-sm"
                   : "bg-customGray text-black border hover:bg-softBlue hover:text-white w-[33.3%] flex items-center justify-center max-md:text-sm"
           }
@@ -1234,7 +1465,7 @@ const Project1 = ({ theme }) => {
 
   return (
     <>
-      <div className="sticky lg:top-24 max-sm:top-20 md:top-16 z-40">
+      <div className="sticky lg:top-0 max-sm:top-0 md:top-0 z-30">
         {/* <Nav theme={theme} setTheme={setTheme} /> */}
         <div
           className="py-3 px-2 justify-between flex sm--navbar"
@@ -1684,55 +1915,114 @@ const Project1 = ({ theme }) => {
               className="w-[30%] max-sm:w-[40%] table--1"
             >
               <thead>
-                <tr className="text-center max-sm:text-base md:text-sm">
-                  <th className="border p-3 max-sm:p-2 bg-customGreen">
+                <tr className="text-center max-sm:text-base md:text-sm" >
+                  <th className="border p-3 max-sm:p-2 bg-customGreen"
+                  style={{padding: screen === "small" ? "7px 10px" : "",
+                    borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",}}
+                  >
                     Category
                   </th>
-                  <th className="border p-3 max-sm:p-2 bg-customGreen">
+                  <th className="border p-3 max-sm:p-2 bg-customGreen"
+                  style={{padding: screen === "small" ? "7px 10px" : "",
+                    borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",}}
+                  >
                     Count
                   </th>
-                  <th className="border p-3 max-sm:p-2 bg-customGreen">
+                  <th className="border p-3 max-sm:p-2 bg-customGreen"
+                  style={{padding: screen === "small" ? "7px 10px" : "",
+                    borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",}}
+                  >
                     Last Hit
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {tableRow("Red", countData.red, lastHitData.red)}
-                {tableRow("Black", countData.black, lastHitData.black)}
-                {tableRow("Even", countData.even, lastHitData.even)}
-                {tableRow("Odd", countData.odd, lastHitData.odd)}
-                {tableRow(
+              {tableRowCount(
+                "Red",
+                calculateColorPercentage(countData.red, countData.red, countData.black),
+                lastHitData.red,
+                '',
+                countData.red,
+              )}
+              {tableRowCount(
+                "Black",
+                calculateColorPercentage(countData.black, countData.red, countData.black),
+                lastHitData.black,
+                '',
+                countData.black,
+              ) }
+
+                {tableRowCount(
+                  "Even",
+                  calculateEvenOddPercentage(countData.even, countData.even, countData.odd),
+                  lastHitData.even,
+                  '',
+                  countData.even,
+                )}
+                {tableRowCount(
+                  "Odd",
+                  calculateEvenOddPercentage(countData.odd, countData.even, countData.odd),
+                  lastHitData.odd,
+                  '',
+                  countData.odd
+                )}
+                {tableRowCount(
                   "1-18",
-                  countData.one_eighteen,
+                  calculateRangePercentage(countData.one_eighteen, countData.one_eighteen, countData.nineteen_thirtySix),
                   lastHitData.one_eighteen,
+                  '',
+                  countData.one_eighteen
                 )}
-                {tableRow(
+                {tableRowCount(
                   "19-36",
-                  countData.nineteen_thirtySix,
+                  calculateRangePercentage(countData.nineteen_thirtySix, countData.one_eighteen, countData.nineteen_thirtySix),
                   lastHitData.nineteen_thirtySix,
+                  '',
+                  countData.nineteen_thirtySix
                 )}
-                {tableRow(
+                {tableRowCount(
                   "1st Dozen",
-                  countData.dozen_one,
+                  calculatePercentage(countData.dozen_one, countData.dozen_one,countData.dozen_two,countData.dozen_three),
                   lastHitData.dozen_one,
+                  '',
+                  countData.dozen_one
                 )}
-                {tableRow(
+                {tableRowCount(
                   "2nd Dozen",
-                  countData.dozen_two,
+                  calculatePercentage(countData.dozen_two, countData.dozen_one,countData.dozen_two,countData.dozen_three),
                   lastHitData.dozen_two,
+                  '',
+                  countData.dozen_two
                 )}
-                {tableRow(
+                {tableRowCount(
                   "3rd Dozen",
-                  countData.dozen_three,
+                  calculatePercentage(countData.dozen_three, countData.dozen_one,countData.dozen_two,countData.dozen_three),
                   lastHitData.dozen_three,
+                  '',
+                  countData.dozen_three
                 )}
-                {tableRow("1st Column", countData.col_one, lastHitData.col_one)}
-                {tableRow("2nd Column", countData.col_two, lastHitData.col_two)}
-                {tableRow(
+                {tableRowCount(
+                  "1st Column", 
+                  calculateColumnPercentage(countData.col_one, countData.col_one, countData.col_two, countData.col_three),
+                  lastHitData.col_one,
+                  '',
+                  countData.col_one
+                )}
+                {tableRowCount(
+                  "2nd Column", 
+                  calculateColumnPercentage(countData.col_two, countData.col_one, countData.col_two, countData.col_three),
+                  lastHitData.col_two,
+                  '',
+                  countData.col_two
+                )}
+                {tableRowCount(
                   "3rd Column",
-                  countData.col_three,
+                  calculateColumnPercentage(countData.col_three, countData.col_one, countData.col_two, countData.col_three),
                   lastHitData.col_three,
+                  '',
+                  countData.col_three
                 )}
+
                 {/* <tr>
               <td>Red</td>
               <td>{countData.red}</td>
@@ -1952,7 +2242,7 @@ const Project1 = ({ theme }) => {
                   nonSingleStreetData.thirtyOne_thirtyThree,
                 )}
                 {tableRow(
-                  "31 - 33",
+                  "34 - 36",
                   singleStreetData.thirtyFour_thirtySix,
                   nonSingleStreetData.thirtyFour_thirtySix,
                 )}
@@ -2047,11 +2337,10 @@ const Project1 = ({ theme }) => {
             // height: "25rem",
           }}
         >
-          <div className="mx-auto w-[60%] h-[85%]">
-            <div
-              className="w-[100%] lg:w-[42%] md:w-[60%] -mt-1 mb-1 flex gap-1 mx-auto"
-              style={{ display: isa_Active ? "flex" : "none" }}
-            >
+          <div className="mx-auto w-[70%] h-[85%]">
+            <div className="flex">
+              <div className="w-[100%] lg:w-[42%] md:w-[100%] -mt-1 mb-1 flex gap-1 mx-auto"
+              style={{ display: isa_Active ? "flex" : "none" }}>
               <button
                 className="bg-softBlue text-white py-1 px-3 rounded-lg max-md:text-sm max-sm:text-xs max-sm:py-2"
                 onClick={() => displayDivHandler("single--streak")}
@@ -2078,6 +2367,16 @@ const Project1 = ({ theme }) => {
               >
                 Double Street
               </button>
+              {/* //---reset Button */}
+              <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400" style={{height:"39px"}}>
+                <button
+                  onClick={handleClickResetStreetButton}
+                  className="bg-black text-white px-2 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
+                >
+                  <GrPowerReset className="inline mr-0.5 -mt-0.5" />
+                </button>
+              </div>
+              </div>
             </div>
             <div
               className="lg:w-[60%] md:w-[80%] mx-auto overflow-y-scroll h-[90%] scroll-smooth streak-div"
@@ -2259,7 +2558,7 @@ const Project1 = ({ theme }) => {
                     "small",
                   )}
                   {tableRow(
-                    "31 - 33",
+                    "34 - 36",
                     singleStreetData.thirtyFour_thirtySix,
                     nonSingleStreetData.thirtyFour_thirtySix,
                     "small",
@@ -2267,7 +2566,6 @@ const Project1 = ({ theme }) => {
                 </tbody>
               </table>
             </div>
-
             {/* second table */}
 
             <table
@@ -2302,11 +2600,24 @@ const Project1 = ({ theme }) => {
                   >
                     Last Hit
                   </th>
+                  <th>
+                    <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400 ms-1">
+                      <button
+                        onClick={handleClickWsbResetButton}
+                        className="bg-black text-white px-2 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
+                      >
+                        <GrPowerReset className="inline mr-0.5 -mt-0.5" />
+                      </button>
+                    </div>
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td className="bg-customGray text-customBlack font-semibold p-2">
+                  <td className="bg-customGray text-customBlack border font-semibold p-2"
+                  style={{padding: screen === "small" ? "7px 10px" : "",
+            borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",}}
+                  >
                     Zero
                   </td>
                   <td
@@ -2343,7 +2654,10 @@ const Project1 = ({ theme }) => {
                   </td>
                 </tr>
                 <tr>
-                  <td className="bg-customGray text-customBlack font-semibold p-2">
+                  <td className="bg-customGray border text-customBlack font-semibold p-2"
+                  style={{padding: screen === "small" ? "7px 10px" : "",
+                    borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",}}
+                  >
                     Voisins
                   </td>
                   <td
@@ -2381,7 +2695,10 @@ const Project1 = ({ theme }) => {
                   </td>
                 </tr>
                 <tr>
-                  <td className="bg-customGray text-customBlack font-semibold p-2">
+                  <td className="bg-customGray border text-customBlack font-semibold p-2"
+                  style={{padding: screen === "small" ? "7px 10px" : "",
+                    borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",}}
+                  >
                     Orphelins
                   </td>
                   <td
@@ -2418,7 +2735,10 @@ const Project1 = ({ theme }) => {
                   </td>
                 </tr>
                 <tr>
-                  <td className="bg-customGray text-customBlack font-semibold p-2">
+                  <td className="bg-customGray border text-customBlack font-semibold p-2"
+                  style={{padding: screen === "small" ? "7px 10px" : "",
+                    borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",}}
+                  >
                     Tiers du Cylindre
                   </td>
                   <td
@@ -2573,7 +2893,17 @@ const Project1 = ({ theme }) => {
                   </p>
                 </div>
               </div>
+              <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400"  style={{top:"0",right:"-55px",position:"absolute"}}>
+              <button
+                onClick={handleClickQuadroResetButton}
+                className="bg-black text-white px-2 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
+              >
+                <GrPowerReset className="inline mr-0.5 -mt-0.5" />
+              </button>
             </div>
+            </div>
+
+            
           </div>
 
           <div className="mt-3 border-t border-gray-400 py-2 flex justify-around absolute bottom-0 w-[95%] left-2">
@@ -2613,7 +2943,7 @@ const Project1 = ({ theme }) => {
                 border: isc_Active ? "1px black solid" : "",
               }}
             >
-              Quadro Tracker
+              QuadroBet Tracker
             </button>
           </div>
         </div>
@@ -2784,10 +3114,17 @@ const Project1 = ({ theme }) => {
       </Routes> */}
         <section>
           <History historyData={historyData} isAlertAllowed={isAlertAllowed} />
+          
         </section>
 
         {/* <div className="w-full h-full bg-slate-400 absolute top-0 left-0 z-50"></div> */}
       </div>
+
+
+
+      {
+        planLockScreen && <Lock setPlanLockScreen={setPlanLockScreen} />
+      }
     </>
   );
 };

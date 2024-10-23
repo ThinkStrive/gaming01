@@ -78,6 +78,7 @@ function Home() {
         navHeaderName={navHeaderName}
       />
 
+      <div className="h-[90vh] md:h-[88vh] lg:h-[85vh] overflow-y-scroll" >
       <Routes>
         <Route
           path="project1/*"
@@ -102,6 +103,7 @@ function Home() {
           element={<Project4 theme={theme} setTheme={setTheme} />}
         />
       </Routes>
+      </div>
     </div>
   );
 }

@@ -9,10 +9,12 @@ import background from "../../assets/imgs/2002.i029.002_realistic-poker-club-ill
 import MoneyManagementTable from "../reuse/project4/MoneyManagementTable.jsx";
 
 const Project4 = ({ theme }) => {
-  const [isAlertAllowed, setIsAlertAllowed] = useState(false);
+  const [isAlertAllowed, setIsAlertAllowed] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
-
   const showToast = useToast();
+  const [rowHoverEffect, setRowHoverEffect] = useState(false);
+  const [dozenHoverEffect, setDozenHoverEffect] = useState(false);
+  const [colHoverEffect, setColHoverEffect] = useState(false);
 
   const [countData, setCountData] = useState(() => {
     const savedCountData = localStorage.getItem("countData4");
@@ -33,6 +35,16 @@ const Project4 = ({ theme }) => {
           col_three: 0,
         };
   });
+
+  const handleClickRowHoverData = () => {
+    setRowHoverEffect(!rowHoverEffect);
+  };
+  const handleClickDozenHoverData = () => {
+    setDozenHoverEffect(!dozenHoverEffect);
+  };
+  const handleClickColHoverData = () => {
+    setColHoverEffect(!colHoverEffect);
+  };
 
   const [analyzeData, setAnalyzeData] = useState(() => {
     const savedCountData = localStorage.getItem("analyzeData4");
@@ -100,7 +112,7 @@ const Project4 = ({ theme }) => {
       return (
         JSON.parse(localStorage.getItem("userMissedSuggestionDozen4")) || false
       );
-    },
+    }
   );
 
   const [userMissedSuggestionCol, setUserMissedSuggestionCol] = useState(() => {
@@ -129,6 +141,21 @@ const Project4 = ({ theme }) => {
     return savedHistoryData ? JSON.parse(savedHistoryData) : 1;
   });
 
+  const [suggestionProcessedRow, setSuggestionProcessedRow] = useState(() => {
+    const savedHistoryData = localStorage.getItem("suggestionProcessedRow4");
+    return savedHistoryData ? JSON.parse(savedHistoryData) : null;
+  });
+
+  const [suggestionProcessedDoz, setSuggestionProcessedDoz] = useState(() => {
+    const savedHistoryData = localStorage.getItem("suggestionProcessedDoz4");
+    return savedHistoryData ? JSON.parse(savedHistoryData) : null;
+  });
+
+  const [suggestionProcessedCol, setSuggestionProcessedCol] = useState(() => {
+    const savedHistoryData = localStorage.getItem("suggestionProcessedCol4");
+    return savedHistoryData ? JSON.parse(savedHistoryData) : null;
+  });
+
   // moneyManagementData = {
   //   spin : '',
   //   winLoss : '',
@@ -136,8 +163,6 @@ const Project4 = ({ theme }) => {
   //   total : '',
   //   covered : ''
   // }
-
-  console.log(moneyManagementData, "moneyManagementData");
 
   // Save `countData` to local storage whenever it changes
   useEffect(() => {
@@ -157,13 +182,33 @@ const Project4 = ({ theme }) => {
   useEffect(() => {
     localStorage.setItem(
       "moneyManagement4",
-      JSON.stringify(moneyManagementData),
+      JSON.stringify(moneyManagementData)
     );
   }, [moneyManagementData]);
 
   useEffect(() => {
     localStorage.setItem("unitData4", JSON.stringify(unitData));
   }, [unitData]);
+  useEffect(() => {
+    localStorage.setItem(
+      "suggestionProcessedRow4",
+      JSON.stringify(suggestionProcessedRow)
+    );
+  }, [suggestionProcessedRow]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "suggestionProcessedDoz4",
+      JSON.stringify(suggestionProcessedDoz)
+    );
+  }, [suggestionProcessedDoz]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "suggestionProcessedCol4",
+      JSON.stringify(suggestionProcessedCol)
+    );
+  }, [suggestionProcessedCol]);
 
   useEffect(() => {
     localStorage.setItem("rowData4", JSON.stringify(rowData));
@@ -204,35 +249,35 @@ const Project4 = ({ theme }) => {
   useEffect(() => {
     localStorage.setItem(
       "suggestionActiveDozen4",
-      JSON.stringify(suggestionActiveDozen),
+      JSON.stringify(suggestionActiveDozen)
     );
   }, [suggestionActiveDozen]);
 
   useEffect(() => {
     localStorage.setItem(
       "suggestionActiveCol4",
-      JSON.stringify(suggestionActiveCol),
+      JSON.stringify(suggestionActiveCol)
     );
   }, [suggestionActiveCol]);
 
   useEffect(() => {
     localStorage.setItem(
       "userMissedSuggestion4",
-      JSON.stringify(userMissedSuggestion),
+      JSON.stringify(userMissedSuggestion)
     );
   }, [userMissedSuggestion]);
 
   useEffect(() => {
     localStorage.setItem(
       "userMissedSuggestionDozen4",
-      JSON.stringify(userMissedSuggestionDozen),
+      JSON.stringify(userMissedSuggestionDozen)
     );
   }, [userMissedSuggestionDozen]);
 
   useEffect(() => {
     localStorage.setItem(
       "userMissedSuggestionCol4",
-      JSON.stringify(userMissedSuggestionCol),
+      JSON.stringify(userMissedSuggestionCol)
     );
   }, [userMissedSuggestionCol]);
 
@@ -272,6 +317,10 @@ const Project4 = ({ theme }) => {
     setUserMissedSuggestionCol(initialUserMissedSuggestion);
     setAnalyzeData(initialAnalyzeData);
     setMoneyManagementData([]);
+    setSuggestionProcessedRow(null);
+    setSuggestionProcessedDoz(null);
+    setSuggestionProcessedCol(null);
+    setUnitData(1);
 
     // Set the initial values in localStorage
     localStorage.setItem("analyzeData4", JSON.stringify(initialAnalyzeData));
@@ -279,33 +328,36 @@ const Project4 = ({ theme }) => {
     localStorage.setItem("dozenRowData4", JSON.stringify(initialDozenRowData));
     localStorage.setItem("colRowData4", JSON.stringify(initialColRowData));
     localStorage.setItem("moneyManagement4", JSON.stringify([]));
+    localStorage.setItem("suggestionProcessedRow4", JSON.stringify(null));
+    localStorage.setItem("suggestionProcessedDoz4", JSON.stringify(null));
+    localStorage.setItem("suggestionProcessedCol4", JSON.stringify(null));
     localStorage.setItem("suggestion4", initialSuggestion);
     localStorage.setItem("repeatLetter4", initialRepeatLetter);
     localStorage.setItem("repeatDozen4", initialRepeatDozen);
     localStorage.setItem("repeatCol4", initialRepeatCol);
     localStorage.setItem(
       "suggestionActive4",
-      JSON.stringify(initialSuggestionActive),
+      JSON.stringify(initialSuggestionActive)
     );
     localStorage.setItem(
       "userMissedSuggestion4",
-      JSON.stringify(initialUserMissedSuggestion),
+      JSON.stringify(initialUserMissedSuggestion)
     );
     localStorage.setItem(
       "suggestionActiveDozen4",
-      JSON.stringify(initialSuggestionActive),
+      JSON.stringify(initialSuggestionActive)
     );
     localStorage.setItem(
       "userMissedSuggestionDozen4",
-      JSON.stringify(initialUserMissedSuggestion),
+      JSON.stringify(initialUserMissedSuggestion)
     );
     localStorage.setItem(
       "suggestionActiveCol4",
-      JSON.stringify(initialSuggestionActive),
+      JSON.stringify(initialSuggestionActive)
     );
     localStorage.setItem(
       "userMissedSuggestionCol4",
-      JSON.stringify(initialUserMissedSuggestion),
+      JSON.stringify(initialUserMissedSuggestion)
     );
 
     const resetState = {
@@ -669,90 +721,205 @@ const Project4 = ({ theme }) => {
       },
     },
   };
+
   useEffect(() => {
-    if (rowData.length > 0) {
-      const lastRow = rowData[rowData.length - 1];
-      if (Object.keys(lastRow).length === 3) {
+    if (rowData.length > 0 && rowHoverEffect) {
+      const lastRowIndex = rowData.length - 1;
+      const lastRow = rowData[lastRowIndex];
+
+      // Only process if we haven't already processed this row's first column
+      if (
+        Object.keys(lastRow).length === 3 &&
+        suggestionProcessedRow !== lastRowIndex
+      ) {
         const values = Object.values(lastRow);
         const occurrences = values.reduce((acc, letter) => {
           acc[letter] = (acc[letter] || 0) + 1;
           return acc;
         }, {});
         const repeatedLetter = Object.keys(occurrences).find(
-          (letter) => occurrences[letter] > 1,
+          (letter) => occurrences[letter] > 1
         );
+
+        // Check if the repeated letter is in the first column
         if (repeatedLetter) {
+          // Only trigger the suggestion if it hasn't been processed for this row
           setRepeatLetter(repeatedLetter);
           setSuggestionActive(true);
           setUserMissedSuggestion(false);
           setSuggestion(`Suggestion: The repeated letter is ${repeatedLetter}`);
-        } else {
+
+          setUnitData(1);
+
+          // Add data to moneyManagementData only for the first column
+          const newEntry = {
+            spin: "",
+            winLoss: "",
+            unit: unitData,
+            total: 0,
+            covered: repeatedLetter === "A" ? 13 : 12,
+          };
+
+          setMoneyManagementData((prevData) => {
+            const updatedData = [...prevData, newEntry];
+            localStorage.setItem(
+              "moneyManagement4",
+              JSON.stringify(updatedData)
+            );
+            return updatedData;
+          });
+
+          // Mark this row as processed to prevent duplicate additions for this row
+          setSuggestionProcessedRow(lastRowIndex);
+        } else if (!repeatedLetter) {
+          // Reset if there's no repeated letter
           setSuggestion("");
           setRepeatLetter("");
           setSuggestionActive(false);
+          setSuggestionProcessedRow(null); // Reset flag if no suggestion
         }
       }
     }
-  }, [rowData, repeatLetter, userMissedSuggestion]);
+  }, [rowData, repeatLetter, userMissedSuggestion, lastHitNumber, unitData]);
 
   useEffect(() => {
-    if (dozenRowData.length > 0) {
-      const lastRow = dozenRowData[dozenRowData.length - 1];
-      if (Object.keys(lastRow).length === 3) {
+    if (dozenRowData.length > 0 && dozenHoverEffect) {
+      const lastRowIndex = dozenRowData.length - 1;
+      const lastRow = dozenRowData[lastRowIndex];
+
+      // Only process if we haven't already processed this row's first column
+      if (
+        Object.keys(lastRow).length === 3 &&
+        suggestionProcessedDoz !== lastRowIndex
+      ) {
         const values = Object.values(lastRow);
         const occurrences = values.reduce((acc, dozen) => {
           acc[dozen] = (acc[dozen] || 0) + 1;
           return acc;
         }, {});
         const repeatedDozen = Object.keys(occurrences).find(
-          (dozen) => occurrences[dozen] > 1,
+          (dozen) => occurrences[dozen] > 1
         );
+
+        // Check if the repeated dozen is in the first column
         if (repeatedDozen) {
+          // Only trigger the suggestion if it hasn't been processed for this row
           setRepeatDozen(repeatedDozen);
           setSuggestionActiveDozen(true);
           setUserMissedSuggestionDozen(false);
-          setSuggestion(`Suggestion: The repeated letter is ${repeatedDozen}`);
-        } else {
+          setSuggestion(`Suggestion: The repeated dozen is ${repeatedDozen}`);
+
+          setUnitData(1);
+
+          // Add data to moneyManagementData only for the first column
+          const newEntry = {
+            spin: "",
+            winLoss: "",
+            unit: unitData,
+            total: 0,
+            covered:
+              repeatedDozen === "1"
+                ? "D1"
+                : repeatedDozen === "2"
+                ? "D2"
+                : "D3",
+          };
+
+          setMoneyManagementData((prevData) => {
+            const updatedData = [...prevData, newEntry];
+            localStorage.setItem(
+              "moneyManagement4",
+              JSON.stringify(updatedData)
+            );
+            return updatedData;
+          });
+
+          // Mark this row as processed to prevent duplicate additions for this row
+          setSuggestionProcessedDoz(lastRowIndex);
+        } else if (!repeatedDozen) {
+          // Reset if there's no repeated dozen
           setSuggestion("");
           setRepeatDozen("");
           setSuggestionActiveDozen(false);
+          setSuggestionProcessedDoz(null); // Reset flag if no suggestion
         }
       }
     }
-  }, [dozenRowData, repeatDozen, userMissedSuggestionDozen]);
+  }, [
+    dozenRowData,
+    repeatDozen,
+    userMissedSuggestionDozen,
+    lastHitNumber,
+    unitData,
+  ]);
 
   useEffect(() => {
-    if (colRowData.length > 0) {
-      const lastRow = colRowData[colRowData.length - 1];
-      if (Object.keys(lastRow).length === 3) {
+    if (colRowData.length > 0 && colHoverEffect) {
+      const lastRowIndex = colRowData.length - 1;
+      const lastRow = colRowData[lastRowIndex];
+
+      // Only process if we haven't already processed this row's first column
+      if (
+        Object.keys(lastRow).length === 3 &&
+        suggestionProcessedCol !== lastRowIndex
+      ) {
         const values = Object.values(lastRow);
-        const occurrences = values.reduce((acc, dozen) => {
-          acc[dozen] = (acc[dozen] || 0) + 1;
+        const occurrences = values.reduce((acc, col) => {
+          acc[col] = (acc[col] || 0) + 1;
           return acc;
         }, {});
         const repeatedCol = Object.keys(occurrences).find(
-          (dozen) => occurrences[dozen] > 1,
+          (col) => occurrences[col] > 1
         );
+
+        // Check if the repeated col is in the first column
         if (repeatedCol) {
+          // Only trigger the suggestion if it hasn't been processed for this row
           setRepeatCol(repeatedCol);
           setSuggestionActiveCol(true);
           setUserMissedSuggestionCol(false);
-          setSuggestion(`Suggestion: The repeated letter is ${repeatedCol}`);
-        } else {
+          setSuggestion(`Suggestion: The repeated column is ${repeatedCol}`);
+
+          setUnitData(1);
+
+          // Add data to moneyManagementData only for the first column
+          const newEntry = {
+            spin: "",
+            winLoss: "",
+            unit: unitData,
+            total: 0,
+            covered:
+              repeatedCol === "1" ? "C1" : repeatedCol === "2" ? "C2" : "C3",
+          };
+
+          setMoneyManagementData((prevData) => {
+            const updatedData = [...prevData, newEntry];
+            localStorage.setItem(
+              "moneyManagement4",
+              JSON.stringify(updatedData)
+            );
+            return updatedData;
+          });
+
+          // Mark this row as processed to prevent duplicate additions for this row
+          setSuggestionProcessedCol(lastRowIndex);
+        } else if (!repeatedCol) {
+          // Reset if there's no repeated col
           setSuggestion("");
           setRepeatCol("");
           setSuggestionActiveCol(false);
+          setSuggestionProcessedCol(null); // Reset flag if no suggestion
         }
       }
     }
-  }, [colRowData, repeatCol, userMissedSuggestionCol]);
+  }, [colRowData, repeatCol, userMissedSuggestionCol, lastHitNumber, unitData]);
 
   // Effect to handle multiple losses (letter, dozen, and column)
   useEffect(() => {
     let newLossEntries = [];
 
     // Check letter loss
-    if (rowData.length > 1) {
+    if (rowData.length > 1 && rowHoverEffect) {
       const previousRow = rowData[rowData.length - 2];
       const lastRow = rowData[rowData.length - 1];
       if (
@@ -762,7 +929,10 @@ const Project4 = ({ theme }) => {
         !Object.values(lastRow).includes(repeatLetter) &&
         !userMissedSuggestion
       ) {
-        showToast(`Book Your Loss!`, "error");
+        if (isAlertAllowed) {
+          showToast(`Book Your Loss!`, "error");
+        }
+        setUnitData(1);
         setUserMissedSuggestion(true);
         setSuggestionActive(false);
         setAnalyzeData((prev) => ({
@@ -775,14 +945,14 @@ const Project4 = ({ theme }) => {
           spin: lastHitNumber,
           winLoss: "L",
           unit: unitData,
-          total: repeatLetter === "A" ? -11.5 : -12,
+          total: repeatLetter === "A" ? unitData * -11.5 : unitData * -12,
           covered: repeatLetter === "A" ? 13 : 12,
         });
       }
     }
 
     // Check dozen loss
-    if (dozenRowData.length > 1) {
+    if (dozenRowData.length > 1 && dozenHoverEffect) {
       const previousRow = dozenRowData[dozenRowData.length - 2];
       const lastRow = dozenRowData[dozenRowData.length - 1];
       if (
@@ -792,7 +962,10 @@ const Project4 = ({ theme }) => {
         !Object.values(lastRow).includes(repeatDozen) &&
         !userMissedSuggestionDozen
       ) {
-        showToast(`Book Your Loss!`, "error");
+        if (isAlertAllowed) {
+          showToast(`Book Your Loss!`, "error");
+        }
+        setUnitData(1);
         setUserMissedSuggestionDozen(true);
         setSuggestionActiveDozen(false);
         setAnalyzeData((prev) => ({
@@ -805,7 +978,7 @@ const Project4 = ({ theme }) => {
           spin: lastHitNumber,
           winLoss: "L",
           unit: unitData,
-          total: -12,
+          total: unitData * -1,
           covered:
             repeatDozen === "1" ? "D1" : repeatDozen === "2" ? "D2" : "D3",
         });
@@ -813,7 +986,7 @@ const Project4 = ({ theme }) => {
     }
 
     // Check column loss
-    if (colRowData.length > 1) {
+    if (colRowData.length > 1 && colHoverEffect) {
       const previousRow = colRowData[colRowData.length - 2];
       const lastRow = colRowData[colRowData.length - 1];
       if (
@@ -823,7 +996,10 @@ const Project4 = ({ theme }) => {
         !Object.values(lastRow).includes(repeatCol) &&
         !userMissedSuggestionCol
       ) {
-        showToast(`Book Your Loss!`, "error");
+        if (isAlertAllowed) {
+          showToast(`Book Your Loss!`, "error");
+        }
+        setUnitData(1);
         setUserMissedSuggestionCol(true);
         setSuggestionActiveCol(false);
         setAnalyzeData((prev) => ({
@@ -836,9 +1012,8 @@ const Project4 = ({ theme }) => {
           spin: lastHitNumber,
           winLoss: "L",
           unit: unitData,
-          total: -12,
-          covered:
-            repeatCol === "1" ? "Col1" : repeatCol === "2" ? "Col2" : "Col3",
+          total: unitData * -1,
+          covered: repeatCol === "1" ? "C1" : repeatCol === "2" ? "C2" : "C3",
         });
       }
     }
@@ -872,12 +1047,11 @@ const Project4 = ({ theme }) => {
         clickedDataUpdates.red === 1
           ? "red"
           : clickedDataUpdates.black === 1
-            ? "black"
-            : "zero",
+          ? "black"
+          : "zero",
     });
 
-    let newMoneyManagementData = [...moneyManagementData];
-
+    // Set Row Data for Letter
     setRowData((prevRowData) => {
       const lastRow = prevRowData[prevRowData.length - 1];
       if (!lastRow || Object.keys(lastRow).length >= 3) {
@@ -889,115 +1063,168 @@ const Project4 = ({ theme }) => {
       }
     });
 
-    if (suggestionActive) {
+    // Handle suggestion for letters (RowData)
+    if (suggestionActive && rowHoverEffect) {
       if (letter === repeatLetter) {
-        console.log("User clicked the repeated letter: stop suggestion");
         setSuggestionActive(false);
         setSuggestion("");
-        showToast(`Win Number!`, "success");
+        if (isAlertAllowed) {
+          showToast(`Win Number!`, "success");
+        }
+        setUnitData(unitData + 1);
         setRepeatLetter("");
-        // analyzeRowData(letter);
         setAnalyzeData((prev) => ({
           ...prev,
           winPerData: prev.winPerData + 1,
         }));
-        newMoneyManagementData.push({
-          spin: lastHitNumber,
-          winLoss: "W",
-          unit: unitData,
-          total: letter === "A" ? 23 : 24,
-          covered: letter === "A" ? 13 : 12,
-        });
+
+        // Add data to MoneyManagement only if the letter matches
+        setMoneyManagementData((prevData) => [
+          ...prevData,
+          {
+            spin: {
+              number: number,
+              color:
+                clickedDataUpdates.red === 1
+                  ? "red"
+                  : clickedDataUpdates.black === 1
+                  ? "black"
+                  : "zero",
+            },
+            winLoss: "W",
+            unit: unitData,
+            total: letter === "A" ? unitData * 23 : unitData * 24,
+            covered: letter === "A" ? 13 : 12,
+          },
+        ]);
       } else {
         setSuggestion(`Suggestion: The repeated letter is ${repeatLetter}`);
       }
     }
 
-    if (doz !== 0 || col !== 0) {
-      setDozenRowData((prevRowData) => {
-        const lastRow = prevRowData[prevRowData.length - 1];
-        if (!lastRow || Object.keys(lastRow).length >= 3) {
-          return [...prevRowData, { [`doz1`]: doz }];
-        } else {
-          const keyIndex = Object.keys(lastRow).length + 1;
-          const updatedRow = { ...lastRow, [`doz${keyIndex}`]: doz };
-          return [...prevRowData.slice(0, -1), updatedRow];
-        }
-      });
-      setColRowData((prevRowData) => {
-        const lastRow = prevRowData[prevRowData.length - 1];
-        if (!lastRow || Object.keys(lastRow).length >= 3) {
-          return [...prevRowData, { [`col1`]: col }];
-        } else {
-          const keyIndex = Object.keys(lastRow).length + 1;
-          const updatedRow = { ...lastRow, [`col${keyIndex}`]: col };
-          return [...prevRowData.slice(0, -1), updatedRow];
-        }
-      });
-      if (suggestionActiveDozen) {
-        if (doz === repeatDozen) {
-          console.log("User clicked the repeated letter: stop suggestion");
-          setSuggestionActiveDozen(false);
-          setSuggestion("");
-          showToast(`Win Dozen!`, "success");
-          setRepeatDozen("");
-          setAnalyzeData((prev) => ({
-            ...prev,
-            dozenWinPer: prev.dozenWinPer + 1,
-          }));
-          newMoneyManagementData.push({
-            spin: lastHitNumber,
-            winLoss: "W",
-            unit: unitData,
-            total: 24,
-            covered: doz === "1" ? "D1" : doz === "2" ? "D2" : "D3",
-          });
-        } else {
-          setSuggestion(`Suggestion: The repeated letter is ${repeatLetter}`);
-        }
+    // Handle Dozen and Column Data
+    // if (doz !== 0 || col !== 0) {
+    setDozenRowData((prevRowData) => {
+      const lastRow = prevRowData[prevRowData.length - 1];
+      if (!lastRow || Object.keys(lastRow).length >= 3) {
+        return [...prevRowData, { [`doz1`]: doz }];
+      } else {
+        const keyIndex = Object.keys(lastRow).length + 1;
+        const updatedRow = { ...lastRow, [`doz${keyIndex}`]: doz };
+        return [...prevRowData.slice(0, -1), updatedRow];
       }
+    });
 
-      if (suggestionActiveCol) {
-        if (col === repeatCol) {
-          console.log("User clicked the repeated col: stop suggestion");
-          setSuggestionActiveCol(false);
-          setSuggestion("");
-          showToast(`Win Column!`, "success");
-          setRepeatCol("");
-          setAnalyzeData((prev) => ({
-            ...prev,
-            colWinPer: prev.colWinPer + 1,
-          }));
-          newMoneyManagementData.push({
-            spin: lastHitNumber,
+    setColRowData((prevRowData) => {
+      const lastRow = prevRowData[prevRowData.length - 1];
+      if (!lastRow || Object.keys(lastRow).length >= 3) {
+        return [...prevRowData, { [`col1`]: col }];
+      } else {
+        const keyIndex = Object.keys(lastRow).length + 1;
+        const updatedRow = { ...lastRow, [`col${keyIndex}`]: col };
+        return [...prevRowData.slice(0, -1), updatedRow];
+      }
+    });
+
+    // Handle suggestions for Dozen
+    if (suggestionActiveDozen && dozenHoverEffect) {
+      if (doz === repeatDozen) {
+        setSuggestionActiveDozen(false);
+        setSuggestion("");
+        if (isAlertAllowed) {
+          showToast(`Win Dozen!`, "success");
+        }
+        setUnitData(unitData + 1);
+        setRepeatDozen("");
+        setAnalyzeData((prev) => ({
+          ...prev,
+          dozenWinPer: prev.dozenWinPer + 1,
+        }));
+
+        // Add to money management for dozens
+        setMoneyManagementData((prevData) => [
+          ...prevData,
+          {
+            spin: {
+              number: number,
+              color:
+                clickedDataUpdates.red === 1
+                  ? "red"
+                  : clickedDataUpdates.black === 1
+                  ? "black"
+                  : "zero",
+            },
             winLoss: "W",
             unit: unitData,
-            total: 24,
-            covered: col === "1" ? "Col1" : col === "2" ? "Col2" : "Col3",
-          });
-        } else {
-          setSuggestion(`Suggestion: The repeated letter is ${repeatLetter}`);
-        }
+            total: unitData * 2,
+            covered: doz === "1" ? "D1" : doz === "2" ? "D2" : "D3",
+          },
+        ]);
+      } else {
+        setSuggestion(`Suggestion: The repeated dozen is ${repeatDozen}`);
       }
-    } else {
-      setDozenRowData([]);
-      setRepeatDozen("");
-      setSuggestionActiveDozen(false);
-      setUserMissedSuggestionDozen(false);
-      setColRowData([]);
-      setRepeatCol("");
-      setSuggestionActiveCol(false);
-      setUserMissedSuggestionCol(false);
-      localStorage.setItem("dozenRowData4", JSON.stringify([]));
-      localStorage.setItem("colRowData4", JSON.stringify([]));
     }
 
-    setMoneyManagementData(newMoneyManagementData);
+    // Handle suggestions for Column
+    if (suggestionActiveCol && colHoverEffect) {
+      if (col === repeatCol) {
+        setSuggestionActiveCol(false);
+        setSuggestion("");
+        if (isAlertAllowed) {
+          showToast(`Win Column!`, "success");
+        }
+        setUnitData(unitData + 1);
+        setRepeatCol("");
+        setAnalyzeData((prev) => ({
+          ...prev,
+          colWinPer: prev.colWinPer + 1,
+        }));
+
+        // Add to money management for columns
+        setMoneyManagementData((prevData) => [
+          ...prevData,
+          {
+            spin: {
+              number: number,
+              color:
+                clickedDataUpdates.red === 1
+                  ? "red"
+                  : clickedDataUpdates.black === 1
+                  ? "black"
+                  : "zero",
+            },
+            winLoss: "W",
+            unit: unitData,
+            total: unitData * 2,
+            covered: col === "1" ? "C1" : col === "2" ? "C2" : "C3",
+          },
+        ]);
+      } else {
+        setSuggestion(`Suggestion: The repeated column is ${repeatCol}`);
+      }
+    }
+    // }
+    // else {
+    //   setDozenRowData([]);
+    //   setRepeatDozen("");
+    //   setSuggestionActiveDozen(false);
+    //   setUserMissedSuggestionDozen(false);
+    //   setColRowData([]);
+    //   setRepeatCol("");
+    //   setSuggestionActiveCol(false);
+    //   setUserMissedSuggestionCol(false);
+    //   localStorage.setItem("dozenRowData4", JSON.stringify([]));
+    //   localStorage.setItem("colRowData4", JSON.stringify([]));
+    // }
   };
+
+  console.log("dozen data", dozenRowData);
+  console.log("col data", colRowData);
+  console.log("row data", rowData);
 
   return (
     <>
-      <div className="sticky lg:top-24 max-sm:top-20 md:top-16 z-40">
+      <div className="sticky lg:top-0 max-sm:top-0 md:top-0 z-30">
         {/* <Nav theme={theme} setTheme={setTheme} /> */}
         <div
           className="py-1 px-2 justify-between flex sm--navbar"
@@ -1018,8 +1245,8 @@ const Project4 = ({ theme }) => {
                 lastHitNumber?.color === "red"
                   ? "border-customRed text-customRed border-2"
                   : lastHitNumber?.color === "black"
-                    ? "border-customBlack text-customBlack border-2"
-                    : ""
+                  ? "border-customBlack text-customBlack border-2"
+                  : ""
               } flex justify-center items-center w-7 h-7 rounded-md mt-1 px-1`}
             >
               {lastHitNumber?.number}
@@ -1027,7 +1254,7 @@ const Project4 = ({ theme }) => {
           </div>
 
           <div className="flex">
-            {/* <div
+            <div
               className="flex justify-center items-center p-0.5 py-0 rounded-md font-semibold text-sm text-gray-500"
               onClick={() => setIsAlertAllowed(!isAlertAllowed)}
             >
@@ -1045,10 +1272,10 @@ const Project4 = ({ theme }) => {
 
             <button
               className="text-gray-500 py-1 px-1 rounded-full text-sm font-semibold"
-              onClick={handleClickResetButton}
+              // onClick={handleClickResetButton}
             >
               Undo
-            </button> */}
+            </button>
             {/* {suggestionActiveDozen && (
               <div className="p-1 rounded">
                 <div className="dozen--col flex justify-center items-center bg-[#58d68d] p-0.5 text-sm font-semibold cursor-pointer rounded hover:bg-gray-500 px-2">
@@ -1073,6 +1300,7 @@ const Project4 = ({ theme }) => {
             </button>
           </div>
         </div>
+
         <div
           className="flex justify-between items-center px-10 py-2 max-sm:px-3 pb-3 max-sm:hidden"
           // style={{ backgroundColor: "rgb(81,29,91)" }}
@@ -1087,8 +1315,8 @@ const Project4 = ({ theme }) => {
                   lastHitNumber?.color === "red"
                     ? "bg-customRed"
                     : lastHitNumber.color === "black"
-                      ? "bg-black"
-                      : "bg-customGreen"
+                    ? "bg-black"
+                    : "bg-customGreen"
                 } py-1 flex justify-center items-center w-20 max-sm:w-14 rounded-full -ml-8 max-sm:-ml-7`}
               >
                 <p className="text-white ml-6 max-sm:text-xs">
@@ -1117,6 +1345,30 @@ const Project4 = ({ theme }) => {
                 </div>
               </div>
             )} */}
+            <div
+              className="flex justify-center items-center py-0 font-semibold text-sm text-gray-500 bg-neutral-300 p-1 rounded-full hover:bg-gray-400"
+              onClick={() => setIsAlertAllowed(!isAlertAllowed)}
+            >
+              <div className="bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen cursor-pointer">
+                Alerts{" "}
+                <span
+                  className={
+                    !isAlertAllowed ? "text-red-500" : "text-neonGreen"
+                  }
+                >
+                  {!isAlertAllowed ? "Off!" : "On!"}
+                </span>
+              </div>
+            </div>
+
+            <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400 flex justify-center items-center">
+              <button
+                className="bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
+                // onClick={handleClickResetButton}
+              >
+                Undo
+              </button>
+            </div>
 
             <div
               className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400"
@@ -1137,8 +1389,50 @@ const Project4 = ({ theme }) => {
             </div>
           </div>
         </div>
+
+        <div className="flex justify-end items-center px-4 md:px-8 w-full flex-wrap space-x-2 md:space-x-3 my-2">
+          <button
+            onClick={handleClickRowHoverData}
+            className="bg-black text-white px-4 md:px-6 py-2 rounded-xl text-sm"
+          >
+            Number{" "}
+            <span
+              className={`${
+                rowHoverEffect ? "text-green-500" : "text-red-500"
+              }`}
+            >
+              {rowHoverEffect ? "On" : "Off"}
+            </span>
+          </button>
+          <button
+            onClick={handleClickDozenHoverData}
+            className="bg-black text-white px-4 md:px-6 py-2 rounded-xl text-sm"
+          >
+            Dozen{" "}
+            <span
+              className={`${
+                dozenHoverEffect ? "text-green-500" : "text-red-500"
+              }`}
+            >
+              {dozenHoverEffect ? "On" : "Off"}
+            </span>
+          </button>
+          <button
+            onClick={handleClickColHoverData}
+            className="bg-black text-white px-4 md:px-6 py-2 rounded-xl text-sm"
+          >
+            Column{" "}
+            <span
+              className={`${
+                colHoverEffect ? "text-green-500" : "text-red-500"
+              }`}
+            >
+              {colHoverEffect ? "On" : "Off"}
+            </span>
+          </button>
+        </div>
       </div>
-      <div className="px-4 main md:border h-[75.5vh] flex">
+      <div className="px-4 main h-[75.5vh] flex">
         <div
           className="mt-1 w-[90%] flex justify-center items-center md:h-[76vh] max-[800px]:h-[75vh] max-[600px]:h-full md:py-4"
           // style={{ height: "100vh" }}
@@ -1228,7 +1522,7 @@ const Project4 = ({ theme }) => {
                             item.num,
                             item.letter,
                             item.dozen,
-                            item.col,
+                            item.col
                           )
                         }
                         style={{
@@ -1356,44 +1650,109 @@ const Project4 = ({ theme }) => {
         <div className="max-sm:mr-4">
           <table className="border w-[20rem] max-sm:w-[13rem]">
             <tr>
-              <th className="w-[33.3%] bg-yellow-500 text-black">Catgory</th>
-              <th className="w-[33.3%] bg-green-600 p-1">Win</th>
-              <th className="w-[33.3%] bg-red-600 p-1">Loss</th>
+              <th className="w-[50%] bg-yellow-500 text-black">Category</th>
+              <th className="w-[50%] bg-yellow-500 text-black p-1">Hot/Cold</th>
             </tr>
 
+            {/* Numbers */}
             <tr>
               <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 Numbers
               </td>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                {analyzeData.winPerData}
-              </td>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                {analyzeData.lossPerData}
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = analyzeData.winPerData;
+                  const lossPer = analyzeData.lossPerData;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = analyzeData.winPerData;
+                  const lossPer = analyzeData.lossPerData;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
               </td>
             </tr>
 
+            {/* Dozen */}
             <tr>
               <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 Dozen
               </td>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                {analyzeData.dozenWinPer}
-              </td>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                {analyzeData.dozenLossPer}
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = analyzeData.dozenWinPer;
+                  const lossPer = analyzeData.dozenLossPer;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = analyzeData.dozenWinPer;
+                  const lossPer = analyzeData.dozenLossPer;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
               </td>
             </tr>
 
+            {/* Column */}
             <tr>
               <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 Column
               </td>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                {analyzeData.colWinPer}
-              </td>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                {analyzeData.colLossPer}
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = analyzeData.colWinPer;
+                  const lossPer = analyzeData.colLossPer;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = analyzeData.colWinPer;
+                  const lossPer = analyzeData.colLossPer;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
               </td>
             </tr>
           </table>
@@ -1408,7 +1767,7 @@ const Project4 = ({ theme }) => {
       </div>
 
       <div
-        className="h-[50vh] mt-5 w-full overflow-y-scroll rounded-xl p-2 scrollOff"
+        className="h-[65vh] mt-5 w-full overflow-y-scroll rounded-xl p-2 scrollOff"
         style={{
           background:
             theme === "dark"
@@ -1421,6 +1780,12 @@ const Project4 = ({ theme }) => {
           border: theme === "dark" ? "white 2px solid" : "black 2px solid",
         }}
       >
+        <button
+          onClick={() => setMoneyManagementData([])}
+          className="border py-1 px-4 rounded-lg mb-2 mx-2"
+        >
+          Reset
+        </button>
         <MoneyManagementTable
           moneyManagementData={moneyManagementData}
           theme={theme}

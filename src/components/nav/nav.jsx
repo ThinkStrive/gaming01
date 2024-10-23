@@ -14,7 +14,7 @@ const Nav = ({ theme, setTheme, navigate, navHeaderName }) => {
 
   return (
     <div
-      className="flex items-center justify-between px-10 py-2 max-sm:px-3 sticky top-0 z-40"
+      className="flex items-center justify-between px-10 py-2 max-sm:px-3 sticky top-0 z-40 h-[10vh] md:h-[12vh] lg:h-[15vh]"
       style={{ backgroundColor: "rgb(81,29,91)" }}
     >
       <div className="mr-4 cursor-pointer" onClick={() => navigate(true)}>

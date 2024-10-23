@@ -36,6 +36,7 @@ import WheelCoverage from "../reuse/project2/WheelCoverage";
 import RouletteGrid from "../reuse/project2/RouletteGrid";
 import _1dlr from "../../assets/imgs/coin_imgs/bet-1.svg";
 import "../../Style/Project2.css";
+import Notes from "../reuse/project2/Notes";
 
 function Project2({ captureScreenshot, theme }) {
   // const [showCoin, setShowCoin] = useState(false);
@@ -320,7 +321,7 @@ function Project2({ captureScreenshot, theme }) {
             _34_35: 0,
             _35_36: 0,
           };
-    },
+    }
   );
 
   const [divSelect3Data, setDivSelect3Data] = useState(() => {
@@ -413,6 +414,16 @@ function Project2({ captureScreenshot, theme }) {
   });
 
   console.log("showPopup : ", showPopup.show);
+
+  const [isNotesOpen, setIsNotesOpen] = useState(false);
+  const [isNotesContentOpen, setIsNotesContentOpen] = useState(true);
+
+  const [notesData, setNotesData] = useState(() => {
+    const storedNotes = localStorage.getItem("notes4");
+    return storedNotes ? JSON.parse(storedNotes) : null;
+  });
+
+  console.log("notesData", notesData);
 
   const win_lossObject = Object.values(data);
   const equityPerSpot = Object.values(equityData);
@@ -1123,8 +1134,8 @@ function Project2({ captureScreenshot, theme }) {
     <div
       className={
         theme === "dark"
-          ? "bg-slate-500 bg-slate-900 mx-auto px-3 h-auto"
-          : "bg-off_white mx-auto px-3 h-auto"
+          ? "bg-slate-500 bg-slate-900 mx-auto px-3 h-[85vh] overflow-y-scroll modal-content2"
+          : "bg-off_white mx-auto px-3 h-[85vh] overflow-y-scroll modal-content2"
       }
       style={{ maxWidth: "80rem" }}
     >
@@ -1140,12 +1151,12 @@ function Project2({ captureScreenshot, theme }) {
           <button
             className={
               isbtnClicked
-                ? "w-[2rem] absolute top-[2rem] left-[1rem] animation--class"
+                ? "w-[2rem] absolute top-[2rem] left-[1rem] animation--class "
                 : "w-[2rem] absolute top-[43%] left-[35%] animation--class"
             }
             onClick={() => setCoinValue(1, coinImg.coin_1)}
           >
-            <img src={coinImg.coin_1} alt="" />
+            <img src={coinImg.coin_1} alt="" className="rotate-180" />
           </button>
 
           <button
@@ -1156,7 +1167,7 @@ function Project2({ captureScreenshot, theme }) {
             }
             onClick={() => setCoinValue(2, coinImg.coin_2)}
           >
-            <img src={coinImg.coin_2} alt="" />
+            <img src={coinImg.coin_2} alt="" className="rotate-180" />
           </button>
 
           <button
@@ -1167,7 +1178,7 @@ function Project2({ captureScreenshot, theme }) {
             }
             onClick={() => setCoinValue(5, coinImg.coin_5)}
           >
-            <img src={coinImg.coin_5} alt="" />
+            <img src={coinImg.coin_5} alt="" className="rotate-180" />
           </button>
 
           <button
@@ -1178,7 +1189,7 @@ function Project2({ captureScreenshot, theme }) {
             }
             onClick={() => setCoinValue(10, coinImg.coin_10)}
           >
-            <img src={coinImg.coin_10} alt="" />
+            <img src={coinImg.coin_10} alt="" className="rotate-180" />
           </button>
 
           <button
@@ -1189,7 +1200,7 @@ function Project2({ captureScreenshot, theme }) {
             }
             onClick={() => setCoinValue(25, coinImg.coin_25)}
           >
-            <img src={coinImg.coin_25} alt="" />
+            <img src={coinImg.coin_25} alt="" className="rotate-180" />
           </button>
 
           <button
@@ -1200,7 +1211,7 @@ function Project2({ captureScreenshot, theme }) {
             }
             onClick={() => setCoinValue(50, coinImg.coin_50)}
           >
-            <img src={coinImg.coin_50} alt="" />
+            <img src={coinImg.coin_50} alt="" className="rotate-180" />
           </button>
 
           <button
@@ -1211,7 +1222,7 @@ function Project2({ captureScreenshot, theme }) {
             }
             onClick={() => setCoinValue(100, coinImg.coin_100)}
           >
-            <img src={coinImg.coin_100} alt="" />
+            <img src={coinImg.coin_100} alt="" className="rotate-180" />
           </button>
 
           <button
@@ -1222,7 +1233,7 @@ function Project2({ captureScreenshot, theme }) {
             }
             onClick={() => setCoinValue(500, coinImg.coin_500)}
           >
-            <img src={coinImg.coin_500} alt="" />
+            <img src={coinImg.coin_500} alt="" className="rotate-180" />
           </button>
 
           <button
@@ -1233,14 +1244,14 @@ function Project2({ captureScreenshot, theme }) {
             }
             onClick={() => setCoinValue(500, coinImg.coin_500)}
           >
-            <img src={coinImg.coin_500} alt="" />
+            <img src={coinImg.coin_500} alt="" className="rotate-180" />
           </button>
 
           <button
             className="w-[2.7rem] absolute top-[40%] left-[38%] p-1 border border-neonGreen rounded-full z-30"
             onClick={() => setIsbtnClicked(!isbtnClicked)}
           >
-            <img src={coin.img} alt="" />
+            <img src={coin.img} alt="" className="rotate-180" />
           </button>
         </div>
         <div className="w-full py-3 px-3 bg-black flex justify-between items-center md:w-[68%] md:ml-10 max-md:text-[.8rem] max-lg:text-[.8rem]">
@@ -1262,7 +1273,7 @@ function Project2({ captureScreenshot, theme }) {
               className="bg-stone-600 p-2 max-sm:p-1 rounded-lg"
               onClick={undoHandler}
             >
-              undo
+              Undo
             </button>
           </div>
         </div>
@@ -1448,6 +1459,86 @@ function Project2({ captureScreenshot, theme }) {
           </div>
         </div>
         {/* Roulette Grid Ends Here */}
+      </div>
+
+      
+
+      <div>
+        {notesData !== null && isNotesContentOpen === true  ? (
+          <div className="flex flex-wrap">
+            <div className="w-[100vw] flex flex-wrap justify-between items-center">
+              <div className="w-[30%]">
+                <p className="text-sm">Strategy Name</p>
+                <p className="bg-slate-800 px-3 py-2 rounded-lg my-2 text-sm">
+                  {notesData.strategy_name}
+                </p>
+              </div>
+              <div className="w-[30%]">
+                <p className="text-sm">Strategy Type</p>
+                <p className="bg-slate-800 px-3 py-2 rounded-lg my-2 text-sm">
+                  {notesData.strategy_type}
+                </p>
+              </div>
+              <div className="w-[30%]">
+                <p className="text-sm">Buy In</p>
+                <p className="bg-slate-800 px-3 py-2 rounded-lg my-2 text-sm">
+                  {notesData.Buy_in}
+                </p>
+              </div>
+            </div>
+            <div className="w-[100vw] flex flex-wrap justify-between items-center">
+              <div className="w-[30%]">
+                <p className="text-sm">Average Bet</p>
+                <p className="bg-slate-800 px-3 py-2 rounded-lg my-2 text-sm">
+                  {notesData.Average_bet}
+                </p>
+              </div>
+              <div className="w-[30%]">
+                <p className="text-sm">No of Bullets</p>
+                <p className="bg-slate-800 px-3 py-2 rounded-lg my-2 text-sm">
+                  {notesData.no_bullets}
+                </p>
+              </div>
+              <div className="w-[30%]">
+                <p className="text-sm">Walk Away</p>
+                <p className="bg-slate-800 px-3 py-2 rounded-lg my-2 text-sm">
+                  {notesData.walkaway}
+                </p>
+              </div>
+            </div>
+            <div className="w-[100vw] flex flex-wrap justify-between items-center">
+              <div className="w-[30%]">
+                <p className="text-sm">Betting Tries</p>
+                <p className="bg-slate-800 px-3 py-2 rounded-lg my-2 text-sm">
+                  {notesData.betting_tries}
+                </p>
+              </div>
+            </div>
+            <div className="w-[100vw]">
+              <p className="text-sm">Bet Settup</p>
+              <p className="bg-slate-800 px-3 py-1 rounded-lg my-2 w-[full] h-36 text-sm">
+                {notesData.bet_settup}
+              </p>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+      </div>
+
+      <div className="w-[100%] flex justify-between my-4" >
+        <button
+          className="px-4 py-2 bg-slate-700 rounded-lg cursor-pointer text-sm"
+          onClick={() => setIsNotesContentOpen(!isNotesContentOpen)}
+        >
+          {isNotesContentOpen === true ? 'Close' : 'Open'}
+        </button>
+        <button
+          className="px-4 py-2 bg-slate-700 rounded-lg cursor-pointer text-sm"
+          onClick={() => setIsNotesOpen(true)}
+        >
+          Notes
+        </button>
       </div>
 
       <div className="max-sm:hidden w-full h-[20rem] max-sm:h-[80vh] flex justify-between  pt-12 relative">
@@ -1725,6 +1816,13 @@ function Project2({ captureScreenshot, theme }) {
           </li>
         </ul>
       </footer>
+      {isNotesOpen && (
+        <Notes
+          isNotesOpen={isNotesOpen}
+          setIsNotesOpen={setIsNotesOpen}
+          setNotesData={setNotesData}
+        />
+      )}
     </div>
   );
 }
