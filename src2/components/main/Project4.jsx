@@ -7,11 +7,7 @@ import Analyze from "../reuse/project4/Analyze.jsx";
 import { CgInsights } from "react-icons/cg";
 import background from "../../assets/imgs/2002.i029.002_realistic-poker-club-illustration.jpg";
 import MoneyManagementTable from "../reuse/project4/MoneyManagementTable.jsx";
-import { TiThMenuOutline } from "react-icons/ti";
-import { AiOutlineClose } from "react-icons/ai";
-import { PiListNumbers } from "react-icons/pi";
-import { DiVim } from "react-icons/di";
-import Lock from "../resources/Lock.jsx";
+
 const Project4 = ({ theme }) => {
   const [isAlertAllowed, setIsAlertAllowed] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
@@ -19,9 +15,6 @@ const Project4 = ({ theme }) => {
   const [rowHoverEffect, setRowHoverEffect] = useState(false);
   const [dozenHoverEffect, setDozenHoverEffect] = useState(false);
   const [colHoverEffect, setColHoverEffect] = useState(false);
-  const [sidebar, setSidebar] = useState(false);
-
-  const showSidebar = () => setSidebar(!sidebar);
 
   const [countData, setCountData] = useState(() => {
     const savedCountData = localStorage.getItem("countData4");
@@ -1229,23 +1222,6 @@ const Project4 = ({ theme }) => {
   console.log("col data", colRowData);
   console.log("row data", rowData);
 
-
-
-  // Plan Data
-
-const [planLockScreen, setPlanLockScreen] = useState(false)
-
-// useEffect(() => {
-//    let userData = JSON.parse(localStorage.getItem('userData'))
-//    if(!userData.projectsPlan.project4){
-//     setPlanLockScreen(true)
-//    }else{
-//     setPlanLockScreen(false)
-//    }
-//    },[])
-
-
-
   return (
     <>
       <div className="sticky lg:top-0 max-sm:top-0 md:top-0 z-30">
@@ -1322,79 +1298,7 @@ const [planLockScreen, setPlanLockScreen] = useState(false)
               <GrPowerReset className="inline mr-0.5 -mt-0.5 reset-icon" />
               Reset
             </button>
-            <div className=" bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                <div className="menu-bars bg-black text-white px-3 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen" onClick={showSidebar}>
-                <TiThMenuOutline size={15} />
-                </div>
-            </div>
-
-
-            <div className={sidebar ? "nav-menu active" : "nav-menu"}onClick={showSidebar}>
-                  <ul className="nav-menu-items ">
-                    <li id="navbar-toggle">
-                     <AiOutlineClose  size={24}/>
-                    </li>
-                    <li className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                    <button
-                        onClick={handleClickRowHoverData}
-                        className="bg-black flex text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      >
-                        Number &nbsp;{" "}
-                        <span
-                          className={`${
-                            rowHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {rowHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
-                    </li>
-                    <li className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                    <button
-                        onClick={handleClickDozenHoverData}
-                        className="bg-black flex text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      >
-                        Dozen &nbsp; &nbsp; {" "}
-                        <span
-                          className={`${
-                            dozenHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {dozenHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
-                    </li>
-                    <li className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                    <button
-                        onClick={handleClickColHoverData}
-                        className="bg-black flex text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      >
-                        Column &nbsp;&nbsp; {" "}
-                        <span
-                          className={`${
-                            colHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {colHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
-                    </li>
-                    <li>
-                    <div
-                      className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400"
-                      onClick={() => setShowPopup(!showPopup)}
-                    >
-                      <button className="bg-black flex text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen">
-                        <CgInsights size={24} /> Statistics
-                      </button>
-                    </div>
-                    </li>
-                  </ul>
-            </div>
-
-
           </div>
-          
         </div>
 
         <div
@@ -1445,7 +1349,7 @@ const [planLockScreen, setPlanLockScreen] = useState(false)
               className="flex justify-center items-center py-0 font-semibold text-sm text-gray-500 bg-neutral-300 p-1 rounded-full hover:bg-gray-400"
               onClick={() => setIsAlertAllowed(!isAlertAllowed)}
             >
-              <div className="bg-black text-white px-5 py-2 rounded-full btns max-sm:text-sm hover:bg-neonGreen cursor-pointer">
+              <div className="bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen cursor-pointer">
                 Alerts{" "}
                 <span
                   className={
@@ -1465,6 +1369,16 @@ const [planLockScreen, setPlanLockScreen] = useState(false)
                 Undo
               </button>
             </div>
+
+            <div
+              className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400"
+              onClick={() => setShowPopup(!showPopup)}
+            >
+              <button className="bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen">
+                <CgInsights size={24} />
+              </button>
+            </div>
+
             <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
               <button
                 onClick={handleClickResetButton}
@@ -1473,90 +1387,50 @@ const [planLockScreen, setPlanLockScreen] = useState(false)
                 Reset
               </button>
             </div>
-
-
-            <div className=" bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                <div className="menu-bars bg-black text-white px-5 py-2 rounded-full btns max-sm:text-sm hover:bg-neonGreen" onClick={showSidebar}>
-                <TiThMenuOutline size={17} />
-                </div>
-            </div>
-            <div className={sidebar ? "nav-menu active" : "nav-menu"}onClick={showSidebar}>
-                  <ul className="nav-menu-items ">
-                    <li id="navbar-toggle">
-                     <AiOutlineClose  size={24}/>
-                    </li>
-                    <li className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                    <button
-                        onClick={handleClickRowHoverData}
-                        className="menu-bars bg-black flex text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      > 
-                        Number &nbsp; {" "}
-                        <span
-                          className={`${
-                            rowHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {rowHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
-                    </li>
-                    <li className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                    <button
-                        onClick={handleClickDozenHoverData}
-                        className="menu-bars bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      >
-                        Dozen &nbsp; &nbsp;{" "}
-                        <span
-                          className={`${
-                            dozenHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {dozenHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
-                    </li>
-                    <li className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                    <button
-                        onClick={handleClickColHoverData}
-                        className="menu-bars bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      >
-                        Column &nbsp; {" "}
-                        <span
-                          className={`${
-                            colHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {colHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
-                    </li>
-                    <li>
-                    <div
-                      className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400"
-                      onClick={() => setShowPopup(!showPopup)}
-                    >
-                      <button className="bg-black flex text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen">
-                        <CgInsights size={20} /> &nbsp;Statistics
-                      </button>
-                    </div>
-                    </li>
-                  </ul>
-            </div>
-
-
-
-
-
-
-
-
-
-
-            
           </div>
         </div>
 
-        
+        <div className="flex justify-end items-center px-4 md:px-8 w-full flex-wrap space-x-2 md:space-x-3 my-2">
+          <button
+            onClick={handleClickRowHoverData}
+            className="bg-black text-white px-4 md:px-6 py-2 rounded-xl text-sm"
+          >
+            Number{" "}
+            <span
+              className={`${
+                rowHoverEffect ? "text-green-500" : "text-red-500"
+              }`}
+            >
+              {rowHoverEffect ? "On" : "Off"}
+            </span>
+          </button>
+          <button
+            onClick={handleClickDozenHoverData}
+            className="bg-black text-white px-4 md:px-6 py-2 rounded-xl text-sm"
+          >
+            Dozen{" "}
+            <span
+              className={`${
+                dozenHoverEffect ? "text-green-500" : "text-red-500"
+              }`}
+            >
+              {dozenHoverEffect ? "On" : "Off"}
+            </span>
+          </button>
+          <button
+            onClick={handleClickColHoverData}
+            className="bg-black text-white px-4 md:px-6 py-2 rounded-xl text-sm"
+          >
+            Column{" "}
+            <span
+              className={`${
+                colHoverEffect ? "text-green-500" : "text-red-500"
+              }`}
+            >
+              {colHoverEffect ? "On" : "Off"}
+            </span>
+          </button>
+        </div>
       </div>
       <div className="px-4 main h-[75.5vh] flex">
         <div
@@ -1703,6 +1577,14 @@ const [planLockScreen, setPlanLockScreen] = useState(false)
           </div>
         </div>
 
+        <div className="w-[10%] h-full hidden max-sm:flex flex-col justify-center">
+          <div
+            className="border rounded-full flex justify-center items-center relative z-30"
+            onClick={() => setShowPopup(!showPopup)}
+          >
+            <CgInsights size={24} />
+          </div>
+        </div>
       </div>
       {/* <div className="h-[40vh] border max-sm:hidden">
         <table className="border w-[20rem]">
@@ -1909,11 +1791,6 @@ const [planLockScreen, setPlanLockScreen] = useState(false)
           theme={theme}
         />
       </div>
-
-
-      {
-        planLockScreen && <Lock setPlanLockScreen={setPlanLockScreen} />
-      }
     </>
   );
 };

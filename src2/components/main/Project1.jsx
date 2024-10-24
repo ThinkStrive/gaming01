@@ -1198,7 +1198,7 @@ const [planLockScreen, setPlanLockScreen] = useState(false)
 // useEffect(() => {
 //    let userData = JSON.parse(localStorage.getItem('userData'))
 //    if(!userData.projectsPlan.project1){
-//     setPlanLockScreen(true)
+//     setPlanLockScreen(false)
 //    }else{
 //     setPlanLockScreen(false)
 //    }
@@ -1312,15 +1312,11 @@ const calculateRangePercentage = (numerator, one_eighteen, nineteen_thirtySix) =
         </td>
         <td
           className={
-            count <= 0 ? "bg-customGray text-black border  hover:bg-softBlue hover:text-white" :
-            count <= 33 ? "bg-lightBlue1 text-black border  hover:bg-softBlue hover:text-white" :
-            count <= 66 ? "bg-mediumBlue1 text-white border  hover:bg-softBlue hover:text-white" :
+            count <= 0 ? "bg-customGray text-black border hover:bg-softBlue hover:text-white" :
+            count <= 33 ? "bg-lightBlue1 text-black border hover:bg-softBlue hover:text-white" :
+            count <= 66 ? "bg-mediumBlue1 text-white border hover:bg-softBlue hover:text-white" :
             "bg-darkBlue1 text-white border hover:bg-softBlue hover:text-white"
           }  
-          style={{
-            padding: screen === "small" ? "7px 10px" : "",
-            borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
-          }}
         >
           {count}
         </td>
@@ -1363,10 +1359,6 @@ const calculateRangePercentage = (numerator, one_eighteen, nineteen_thirtySix) =
             count <= 66 ? "bg-mediumBlue1 text-white border hover:bg-softBlue hover:text-white" :
             "bg-darkBlue1 text-white border hover:bg-softBlue hover:text-white"
           }  
-          style={{
-            padding: screen === "small" ? "7px 10px" : "",
-            borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
-          }}
         >
           {countData}
         </td>
@@ -1915,23 +1907,14 @@ const calculateRangePercentage = (numerator, one_eighteen, nineteen_thirtySix) =
               className="w-[30%] max-sm:w-[40%] table--1"
             >
               <thead>
-                <tr className="text-center max-sm:text-base md:text-sm" >
-                  <th className="border p-3 max-sm:p-2 bg-customGreen"
-                  style={{padding: screen === "small" ? "7px 10px" : "",
-                    borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",}}
-                  >
+                <tr className="text-center max-sm:text-base md:text-sm">
+                  <th className="border p-3 max-sm:p-2 bg-customGreen">
                     Category
                   </th>
-                  <th className="border p-3 max-sm:p-2 bg-customGreen"
-                  style={{padding: screen === "small" ? "7px 10px" : "",
-                    borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",}}
-                  >
+                  <th className="border p-3 max-sm:p-2 bg-customGreen">
                     Count
                   </th>
-                  <th className="border p-3 max-sm:p-2 bg-customGreen"
-                  style={{padding: screen === "small" ? "7px 10px" : "",
-                    borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",}}
-                  >
+                  <th className="border p-3 max-sm:p-2 bg-customGreen">
                     Last Hit
                   </th>
                 </tr>
@@ -2614,10 +2597,7 @@ const calculateRangePercentage = (numerator, one_eighteen, nineteen_thirtySix) =
               </thead>
               <tbody>
                 <tr>
-                  <td className="bg-customGray text-customBlack border font-semibold p-2"
-                  style={{padding: screen === "small" ? "7px 10px" : "",
-            borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",}}
-                  >
+                  <td className="bg-customGray text-customBlack font-semibold p-2">
                     Zero
                   </td>
                   <td
@@ -2654,10 +2634,7 @@ const calculateRangePercentage = (numerator, one_eighteen, nineteen_thirtySix) =
                   </td>
                 </tr>
                 <tr>
-                  <td className="bg-customGray border text-customBlack font-semibold p-2"
-                  style={{padding: screen === "small" ? "7px 10px" : "",
-                    borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",}}
-                  >
+                  <td className="bg-customGray text-customBlack font-semibold p-2">
                     Voisins
                   </td>
                   <td
@@ -2695,10 +2672,7 @@ const calculateRangePercentage = (numerator, one_eighteen, nineteen_thirtySix) =
                   </td>
                 </tr>
                 <tr>
-                  <td className="bg-customGray border text-customBlack font-semibold p-2"
-                  style={{padding: screen === "small" ? "7px 10px" : "",
-                    borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",}}
-                  >
+                  <td className="bg-customGray text-customBlack font-semibold p-2">
                     Orphelins
                   </td>
                   <td
@@ -2735,10 +2709,7 @@ const calculateRangePercentage = (numerator, one_eighteen, nineteen_thirtySix) =
                   </td>
                 </tr>
                 <tr>
-                  <td className="bg-customGray border text-customBlack font-semibold p-2"
-                  style={{padding: screen === "small" ? "7px 10px" : "",
-                    borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",}}
-                  >
+                  <td className="bg-customGray text-customBlack font-semibold p-2">
                     Tiers du Cylindre
                   </td>
                   <td

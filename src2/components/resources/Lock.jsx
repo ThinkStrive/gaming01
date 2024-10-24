@@ -1,7 +1,6 @@
 import React from "react";
 import "../../Style/Lock.css";
 import { useToast } from "./Toast";
-import PayPalBtn from "./PaypalBtn";
 
 const Lock = ({ setPlanLockScreen }) => {
   const showToast = useToast();
@@ -20,9 +19,9 @@ const Lock = ({ setPlanLockScreen }) => {
         <div className="text-center mb-4 w-full flex justify-around">
           <button
             className="bg-[#242424] text-white font-bold py-2 px-8 rounded-lg transition"
-            // onClick={handleClickPayButton}
+            onClick={handleClickPayButton}
           >
-            <PayPalBtn />
+            Pay 99 to Unlock
           </button>
         </div>
       </div>

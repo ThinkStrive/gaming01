@@ -7,24 +7,15 @@ import Analyze from "../reuse/project4/Analyze.jsx";
 import { CgInsights } from "react-icons/cg";
 import background from "../../assets/imgs/2002.i029.002_realistic-poker-club-illustration.jpg";
 import MoneyManagementTable from "../reuse/project4/MoneyManagementTable.jsx";
-import { TiThMenuOutline } from "react-icons/ti";
-import { AiOutlineClose } from "react-icons/ai";
-import { PiListNumbers } from "react-icons/pi";
-import { DiVim } from "react-icons/di";
-import Lock from "../resources/Lock.jsx";
-const Project4 = ({ theme }) => {
-  const [isAlertAllowed, setIsAlertAllowed] = useState(true);
-  const [showPopup, setShowPopup] = useState(false);
-  const showToast = useToast();
-  const [rowHoverEffect, setRowHoverEffect] = useState(false);
-  const [dozenHoverEffect, setDozenHoverEffect] = useState(false);
-  const [colHoverEffect, setColHoverEffect] = useState(false);
-  const [sidebar, setSidebar] = useState(false);
 
-  const showSidebar = () => setSidebar(!sidebar);
+const Project4 = ({ theme }) => {
+  const [isAlertAllowed, setIsAlertAllowed] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+
+  const showToast = useToast();
 
   const [countData, setCountData] = useState(() => {
-    const savedCountData = localStorage.getItem("countData4");
+    const savedCountData = localStorage.getItem("countData");
     return savedCountData
       ? JSON.parse(savedCountData)
       : {
@@ -42,16 +33,6 @@ const Project4 = ({ theme }) => {
           col_three: 0,
         };
   });
-
-  const handleClickRowHoverData = () => {
-    setRowHoverEffect(!rowHoverEffect);
-  };
-  const handleClickDozenHoverData = () => {
-    setDozenHoverEffect(!dozenHoverEffect);
-  };
-  const handleClickColHoverData = () => {
-    setColHoverEffect(!colHoverEffect);
-  };
 
   const [analyzeData, setAnalyzeData] = useState(() => {
     const savedCountData = localStorage.getItem("analyzeData4");
@@ -173,7 +154,7 @@ const Project4 = ({ theme }) => {
 
   // Save `countData` to local storage whenever it changes
   useEffect(() => {
-    localStorage.setItem("countData4", JSON.stringify(countData));
+    localStorage.setItem("countData", JSON.stringify(countData));
   }, [countData]);
 
   // Save `lastHitNumber` to local storage whenever it changes
@@ -183,7 +164,7 @@ const Project4 = ({ theme }) => {
 
   // Save `historyData` to local storage whenever it changes
   useEffect(() => {
-    localStorage.setItem("historyData4", JSON.stringify(historyData));
+    localStorage.setItem("historyData", JSON.stringify(historyData));
   }, [historyData]);
 
   useEffect(() => {
@@ -388,7 +369,7 @@ const Project4 = ({ theme }) => {
     let emptyArray = [];
 
     // Also reset the data in local storage
-    localStorage.setItem("countData4", JSON.stringify(resetState));
+    localStorage.setItem("countData", JSON.stringify(resetState));
     localStorage.setItem("rowData4", JSON.stringify(emptyArray));
     localStorage.setItem("dozenRowData4", JSON.stringify(emptyArray));
     localStorage.setItem("colRowData4", JSON.stringify(emptyArray));
@@ -730,7 +711,7 @@ const Project4 = ({ theme }) => {
   };
 
   useEffect(() => {
-    if (rowData.length > 0 && rowHoverEffect) {
+    if (rowData.length > 0) {
       const lastRowIndex = rowData.length - 1;
       const lastRow = rowData[lastRowIndex];
 
@@ -790,7 +771,7 @@ const Project4 = ({ theme }) => {
   }, [rowData, repeatLetter, userMissedSuggestion, lastHitNumber, unitData]);
 
   useEffect(() => {
-    if (dozenRowData.length > 0 && dozenHoverEffect) {
+    if (dozenRowData.length > 0) {
       const lastRowIndex = dozenRowData.length - 1;
       const lastRow = dozenRowData[lastRowIndex];
 
@@ -807,6 +788,9 @@ const Project4 = ({ theme }) => {
         const repeatedDozen = Object.keys(occurrences).find(
           (dozen) => occurrences[dozen] > 1
         );
+
+        console.log('repeatedDozen', repeatedDozen);
+        console.log('values', values);
 
         // Check if the repeated dozen is in the first column
         if (repeatedDozen) {
@@ -861,7 +845,7 @@ const Project4 = ({ theme }) => {
   ]);
 
   useEffect(() => {
-    if (colRowData.length > 0 && colHoverEffect) {
+    if (colRowData.length > 0) {
       const lastRowIndex = colRowData.length - 1;
       const lastRow = colRowData[lastRowIndex];
 
@@ -896,7 +880,11 @@ const Project4 = ({ theme }) => {
             unit: unitData,
             total: 0,
             covered:
-              repeatedCol === "1" ? "C1" : repeatedCol === "2" ? "C2" : "C3",
+              repeatedCol === "1"
+                ? "C1"
+                : repeatedCol === "2"
+                ? "C2"
+                : "C3",
           };
 
           setMoneyManagementData((prevData) => {
@@ -926,7 +914,7 @@ const Project4 = ({ theme }) => {
     let newLossEntries = [];
 
     // Check letter loss
-    if (rowData.length > 1 && rowHoverEffect) {
+    if (rowData.length > 1) {
       const previousRow = rowData[rowData.length - 2];
       const lastRow = rowData[rowData.length - 1];
       if (
@@ -936,9 +924,7 @@ const Project4 = ({ theme }) => {
         !Object.values(lastRow).includes(repeatLetter) &&
         !userMissedSuggestion
       ) {
-        if (isAlertAllowed) {
-          showToast(`Book Your Loss!`, "error");
-        }
+        showToast(`Book Your Loss!`, "error");
         setUnitData(1);
         setUserMissedSuggestion(true);
         setSuggestionActive(false);
@@ -959,7 +945,7 @@ const Project4 = ({ theme }) => {
     }
 
     // Check dozen loss
-    if (dozenRowData.length > 1 && dozenHoverEffect) {
+    if (dozenRowData.length > 1) {
       const previousRow = dozenRowData[dozenRowData.length - 2];
       const lastRow = dozenRowData[dozenRowData.length - 1];
       if (
@@ -969,9 +955,7 @@ const Project4 = ({ theme }) => {
         !Object.values(lastRow).includes(repeatDozen) &&
         !userMissedSuggestionDozen
       ) {
-        if (isAlertAllowed) {
-          showToast(`Book Your Loss!`, "error");
-        }
+        showToast(`Book Your Loss!`, "error");
         setUnitData(1);
         setUserMissedSuggestionDozen(true);
         setSuggestionActiveDozen(false);
@@ -993,7 +977,7 @@ const Project4 = ({ theme }) => {
     }
 
     // Check column loss
-    if (colRowData.length > 1 && colHoverEffect) {
+    if (colRowData.length > 1) {
       const previousRow = colRowData[colRowData.length - 2];
       const lastRow = colRowData[colRowData.length - 1];
       if (
@@ -1003,9 +987,7 @@ const Project4 = ({ theme }) => {
         !Object.values(lastRow).includes(repeatCol) &&
         !userMissedSuggestionCol
       ) {
-        if (isAlertAllowed) {
-          showToast(`Book Your Loss!`, "error");
-        }
+        showToast(`Book Your Loss!`, "error");
         setUnitData(1);
         setUserMissedSuggestionCol(true);
         setSuggestionActiveCol(false);
@@ -1020,7 +1002,8 @@ const Project4 = ({ theme }) => {
           winLoss: "L",
           unit: unitData,
           total: unitData * -1,
-          covered: repeatCol === "1" ? "C1" : repeatCol === "2" ? "C2" : "C3",
+          covered:
+            repeatCol === "1" ? "C1" : repeatCol === "2" ? "C2" : "C3",
         });
       }
     }
@@ -1071,19 +1054,19 @@ const Project4 = ({ theme }) => {
     });
 
     // Handle suggestion for letters (RowData)
-    if (suggestionActive && rowHoverEffect) {
+    if (suggestionActive) {
       if (letter === repeatLetter) {
         setSuggestionActive(false);
         setSuggestion("");
-        if (isAlertAllowed) {
-          showToast(`Win Number!`, "success");
-        }
+        showToast(`Win Number!`, "success");
         setUnitData(unitData + 1);
         setRepeatLetter("");
         setAnalyzeData((prev) => ({
           ...prev,
           winPerData: prev.winPerData + 1,
         }));
+
+        console.log("moneyMangementData", moneyManagementData);
 
         // Add data to MoneyManagement only if the letter matches
         setMoneyManagementData((prevData) => [
@@ -1109,108 +1092,110 @@ const Project4 = ({ theme }) => {
       }
     }
 
+    console.log("moneyMangementData", moneyManagementData);
+
     // Handle Dozen and Column Data
     // if (doz !== 0 || col !== 0) {
-    setDozenRowData((prevRowData) => {
-      const lastRow = prevRowData[prevRowData.length - 1];
-      if (!lastRow || Object.keys(lastRow).length >= 3) {
-        return [...prevRowData, { [`doz1`]: doz }];
-      } else {
-        const keyIndex = Object.keys(lastRow).length + 1;
-        const updatedRow = { ...lastRow, [`doz${keyIndex}`]: doz };
-        return [...prevRowData.slice(0, -1), updatedRow];
-      }
-    });
+      setDozenRowData((prevRowData) => {
+        const lastRow = prevRowData[prevRowData.length - 1];
+        if (!lastRow || Object.keys(lastRow).length >= 3) {
+          return [...prevRowData, { [`doz1`]: doz }];
+        } else {
+          const keyIndex = Object.keys(lastRow).length + 1;
+          const updatedRow = { ...lastRow, [`doz${keyIndex}`]: doz };
+          return [...prevRowData.slice(0, -1), updatedRow];
+        }
+      });
 
-    setColRowData((prevRowData) => {
-      const lastRow = prevRowData[prevRowData.length - 1];
-      if (!lastRow || Object.keys(lastRow).length >= 3) {
-        return [...prevRowData, { [`col1`]: col }];
-      } else {
-        const keyIndex = Object.keys(lastRow).length + 1;
-        const updatedRow = { ...lastRow, [`col${keyIndex}`]: col };
-        return [...prevRowData.slice(0, -1), updatedRow];
-      }
-    });
+      setColRowData((prevRowData) => {
+        const lastRow = prevRowData[prevRowData.length - 1];
+        if (!lastRow || Object.keys(lastRow).length >= 3) {
+          return [...prevRowData, { [`col1`]: col }];
+        } else {
+          const keyIndex = Object.keys(lastRow).length + 1;
+          const updatedRow = { ...lastRow, [`col${keyIndex}`]: col };
+          return [...prevRowData.slice(0, -1), updatedRow];
+        }
+      });
 
-    // Handle suggestions for Dozen
-    if (suggestionActiveDozen && dozenHoverEffect) {
-      if (doz === repeatDozen) {
-        setSuggestionActiveDozen(false);
-        setSuggestion("");
-        if (isAlertAllowed) {
+      // Handle suggestions for Dozen
+      if (suggestionActiveDozen) {
+        if (doz === repeatDozen) {
+          setSuggestionActiveDozen(false);
+          setSuggestion("");
           showToast(`Win Dozen!`, "success");
-        }
-        setUnitData(unitData + 1);
-        setRepeatDozen("");
-        setAnalyzeData((prev) => ({
-          ...prev,
-          dozenWinPer: prev.dozenWinPer + 1,
-        }));
+          setUnitData(unitData + 1);
+          setRepeatDozen("");
+          setAnalyzeData((prev) => ({
+            ...prev,
+            dozenWinPer: prev.dozenWinPer + 1,
+          }));
 
-        // Add to money management for dozens
-        setMoneyManagementData((prevData) => [
-          ...prevData,
-          {
-            spin: {
-              number: number,
-              color:
-                clickedDataUpdates.red === 1
-                  ? "red"
-                  : clickedDataUpdates.black === 1
-                  ? "black"
-                  : "zero",
+          console.log("moneyMangementData", moneyManagementData);
+
+          // Add to money management for dozens
+          setMoneyManagementData((prevData) => [
+            ...prevData,
+            {
+              spin: {
+                number: number,
+                color:
+                  clickedDataUpdates.red === 1
+                    ? "red"
+                    : clickedDataUpdates.black === 1
+                    ? "black"
+                    : "zero",
+              },
+              winLoss: "W",
+              unit: unitData,
+              total: unitData * 2,
+              covered: doz === "1" ? "D1" : doz === "2" ? "D2" : "D3",
             },
-            winLoss: "W",
-            unit: unitData,
-            total: unitData * 2,
-            covered: doz === "1" ? "D1" : doz === "2" ? "D2" : "D3",
-          },
-        ]);
-      } else {
-        setSuggestion(`Suggestion: The repeated dozen is ${repeatDozen}`);
+          ]);
+        } else {
+          setSuggestion(`Suggestion: The repeated dozen is ${repeatDozen}`);
+        }
       }
-    }
 
-    // Handle suggestions for Column
-    if (suggestionActiveCol && colHoverEffect) {
-      if (col === repeatCol) {
-        setSuggestionActiveCol(false);
-        setSuggestion("");
-        if (isAlertAllowed) {
+      // Handle suggestions for Column
+      if (suggestionActiveCol) {
+        if (col === repeatCol) {
+          setSuggestionActiveCol(false);
+          setSuggestion("");
           showToast(`Win Column!`, "success");
-        }
-        setUnitData(unitData + 1);
-        setRepeatCol("");
-        setAnalyzeData((prev) => ({
-          ...prev,
-          colWinPer: prev.colWinPer + 1,
-        }));
+          setUnitData(unitData + 1);
+          setRepeatCol("");
+          setAnalyzeData((prev) => ({
+            ...prev,
+            colWinPer: prev.colWinPer + 1,
+          }));
 
-        // Add to money management for columns
-        setMoneyManagementData((prevData) => [
-          ...prevData,
-          {
-            spin: {
-              number: number,
-              color:
-                clickedDataUpdates.red === 1
-                  ? "red"
-                  : clickedDataUpdates.black === 1
-                  ? "black"
-                  : "zero",
+          console.log("moneyMangementData", moneyManagementData);
+
+          // Add to money management for columns
+          setMoneyManagementData((prevData) => [
+            ...prevData,
+            {
+              spin: {
+                number: number,
+                color:
+                  clickedDataUpdates.red === 1
+                    ? "red"
+                    : clickedDataUpdates.black === 1
+                    ? "black"
+                    : "zero",
+              },
+              winLoss: "W",
+              unit: unitData,
+              total: unitData * 2,
+              covered: col === "1" ? "C1" : col === "2" ? "C2" : "C3",
             },
-            winLoss: "W",
-            unit: unitData,
-            total: unitData * 2,
-            covered: col === "1" ? "C1" : col === "2" ? "C2" : "C3",
-          },
-        ]);
-      } else {
-        setSuggestion(`Suggestion: The repeated column is ${repeatCol}`);
+          ]);
+        } else {
+          setSuggestion(`Suggestion: The repeated column is ${repeatCol}`);
+        }
       }
-    }
-    // }
+    // } 
     // else {
     //   setDozenRowData([]);
     //   setRepeatDozen("");
@@ -1225,30 +1210,11 @@ const Project4 = ({ theme }) => {
     // }
   };
 
-  console.log("dozen data", dozenRowData);
-  console.log("col data", colRowData);
-  console.log("row data", rowData);
-
-
-
-  // Plan Data
-
-const [planLockScreen, setPlanLockScreen] = useState(false)
-
-// useEffect(() => {
-//    let userData = JSON.parse(localStorage.getItem('userData'))
-//    if(!userData.projectsPlan.project4){
-//     setPlanLockScreen(true)
-//    }else{
-//     setPlanLockScreen(false)
-//    }
-//    },[])
-
-
+  console.log('dozen data', dozenRowData)
 
   return (
     <>
-      <div className="sticky lg:top-0 max-sm:top-0 md:top-0 z-30">
+      <div className="sticky lg:top-24 max-sm:top-20 md:top-16 z-40">
         {/* <Nav theme={theme} setTheme={setTheme} /> */}
         <div
           className="py-1 px-2 justify-between flex sm--navbar"
@@ -1278,7 +1244,7 @@ const [planLockScreen, setPlanLockScreen] = useState(false)
           </div>
 
           <div className="flex">
-            <div
+            {/* <div
               className="flex justify-center items-center p-0.5 py-0 rounded-md font-semibold text-sm text-gray-500"
               onClick={() => setIsAlertAllowed(!isAlertAllowed)}
             >
@@ -1296,10 +1262,10 @@ const [planLockScreen, setPlanLockScreen] = useState(false)
 
             <button
               className="text-gray-500 py-1 px-1 rounded-full text-sm font-semibold"
-              // onClick={handleClickResetButton}
+              onClick={handleClickResetButton}
             >
               Undo
-            </button>
+            </button> */}
             {/* {suggestionActiveDozen && (
               <div className="p-1 rounded">
                 <div className="dozen--col flex justify-center items-center bg-[#58d68d] p-0.5 text-sm font-semibold cursor-pointer rounded hover:bg-gray-500 px-2">
@@ -1322,81 +1288,8 @@ const [planLockScreen, setPlanLockScreen] = useState(false)
               <GrPowerReset className="inline mr-0.5 -mt-0.5 reset-icon" />
               Reset
             </button>
-            <div className=" bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                <div className="menu-bars bg-black text-white px-3 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen" onClick={showSidebar}>
-                <TiThMenuOutline size={15} />
-                </div>
-            </div>
-
-
-            <div className={sidebar ? "nav-menu active" : "nav-menu"}onClick={showSidebar}>
-                  <ul className="nav-menu-items ">
-                    <li id="navbar-toggle">
-                     <AiOutlineClose  size={24}/>
-                    </li>
-                    <li className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                    <button
-                        onClick={handleClickRowHoverData}
-                        className="bg-black flex text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      >
-                        Number &nbsp;{" "}
-                        <span
-                          className={`${
-                            rowHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {rowHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
-                    </li>
-                    <li className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                    <button
-                        onClick={handleClickDozenHoverData}
-                        className="bg-black flex text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      >
-                        Dozen &nbsp; &nbsp; {" "}
-                        <span
-                          className={`${
-                            dozenHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {dozenHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
-                    </li>
-                    <li className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                    <button
-                        onClick={handleClickColHoverData}
-                        className="bg-black flex text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      >
-                        Column &nbsp;&nbsp; {" "}
-                        <span
-                          className={`${
-                            colHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {colHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
-                    </li>
-                    <li>
-                    <div
-                      className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400"
-                      onClick={() => setShowPopup(!showPopup)}
-                    >
-                      <button className="bg-black flex text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen">
-                        <CgInsights size={24} /> Statistics
-                      </button>
-                    </div>
-                    </li>
-                  </ul>
-            </div>
-
-
           </div>
-          
         </div>
-
         <div
           className="flex justify-between items-center px-10 py-2 max-sm:px-3 pb-3 max-sm:hidden"
           // style={{ backgroundColor: "rgb(81,29,91)" }}
@@ -1441,30 +1334,16 @@ const [planLockScreen, setPlanLockScreen] = useState(false)
                 </div>
               </div>
             )} */}
-            <div
-              className="flex justify-center items-center py-0 font-semibold text-sm text-gray-500 bg-neutral-300 p-1 rounded-full hover:bg-gray-400"
-              onClick={() => setIsAlertAllowed(!isAlertAllowed)}
-            >
-              <div className="bg-black text-white px-5 py-2 rounded-full btns max-sm:text-sm hover:bg-neonGreen cursor-pointer">
-                Alerts{" "}
-                <span
-                  className={
-                    !isAlertAllowed ? "text-red-500" : "text-neonGreen"
-                  }
-                >
-                  {!isAlertAllowed ? "Off!" : "On!"}
-                </span>
-              </div>
-            </div>
 
-            <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400 flex justify-center items-center">
-              <button
-                className="bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                // onClick={handleClickResetButton}
-              >
-                Undo
+            <div
+              className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400"
+              onClick={() => setShowPopup(!showPopup)}
+            >
+              <button className="bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen">
+                <CgInsights size={24} />
               </button>
             </div>
+
             <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
               <button
                 onClick={handleClickResetButton}
@@ -1473,90 +1352,8 @@ const [planLockScreen, setPlanLockScreen] = useState(false)
                 Reset
               </button>
             </div>
-
-
-            <div className=" bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                <div className="menu-bars bg-black text-white px-5 py-2 rounded-full btns max-sm:text-sm hover:bg-neonGreen" onClick={showSidebar}>
-                <TiThMenuOutline size={17} />
-                </div>
-            </div>
-            <div className={sidebar ? "nav-menu active" : "nav-menu"}onClick={showSidebar}>
-                  <ul className="nav-menu-items ">
-                    <li id="navbar-toggle">
-                     <AiOutlineClose  size={24}/>
-                    </li>
-                    <li className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                    <button
-                        onClick={handleClickRowHoverData}
-                        className="menu-bars bg-black flex text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      > 
-                        Number &nbsp; {" "}
-                        <span
-                          className={`${
-                            rowHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {rowHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
-                    </li>
-                    <li className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                    <button
-                        onClick={handleClickDozenHoverData}
-                        className="menu-bars bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      >
-                        Dozen &nbsp; &nbsp;{" "}
-                        <span
-                          className={`${
-                            dozenHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {dozenHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
-                    </li>
-                    <li className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                    <button
-                        onClick={handleClickColHoverData}
-                        className="menu-bars bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      >
-                        Column &nbsp; {" "}
-                        <span
-                          className={`${
-                            colHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {colHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
-                    </li>
-                    <li>
-                    <div
-                      className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400"
-                      onClick={() => setShowPopup(!showPopup)}
-                    >
-                      <button className="bg-black flex text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen">
-                        <CgInsights size={20} /> &nbsp;Statistics
-                      </button>
-                    </div>
-                    </li>
-                  </ul>
-            </div>
-
-
-
-
-
-
-
-
-
-
-            
           </div>
         </div>
-
-        
       </div>
       <div className="px-4 main h-[75.5vh] flex">
         <div
@@ -1703,6 +1500,14 @@ const [planLockScreen, setPlanLockScreen] = useState(false)
           </div>
         </div>
 
+        <div className="w-[10%] h-full hidden max-sm:flex flex-col justify-center">
+          <div
+            className="border rounded-full flex justify-center items-center relative z-30"
+            onClick={() => setShowPopup(!showPopup)}
+          >
+            <CgInsights size={24} />
+          </div>
+        </div>
       </div>
       {/* <div className="h-[40vh] border max-sm:hidden">
         <table className="border w-[20rem]">
@@ -1898,22 +1703,12 @@ const [planLockScreen, setPlanLockScreen] = useState(false)
           border: theme === "dark" ? "white 2px solid" : "black 2px solid",
         }}
       >
-        <button
-          onClick={() => setMoneyManagementData([])}
-          className="border py-1 px-4 rounded-lg mb-2 mx-2"
-        >
-          Reset
-        </button>
+        <button onClick={() => setMoneyManagementData([])} className="border py-1 px-4 rounded-lg mb-2 mx-2" >Reset</button>
         <MoneyManagementTable
           moneyManagementData={moneyManagementData}
           theme={theme}
         />
       </div>
-
-
-      {
-        planLockScreen && <Lock setPlanLockScreen={setPlanLockScreen} />
-      }
     </>
   );
 };
