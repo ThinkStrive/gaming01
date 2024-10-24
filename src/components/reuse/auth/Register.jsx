@@ -57,7 +57,7 @@ const Register = ({ inputData, setInputData }) => {
   }
   return (
     <div className=" flex flex-col gap-5 justify-center items-center">
-      <div className="bg-[#040404] border-2 shadow-2xl 2xl:h-[50rem] lg:h-[83vh] lg:w-[33vw] md:h-[78vh] md:w-[55vw] h-[76vh] xs:h-[60vh] w-[85vw] rounded-3xl lg:px-10 px-7 py-6 flex flex-col justify-center gap-5">
+      <div className="bg-[#040404] border-2 shadow-2xl 2xl:h-[50rem] lg:h-[83vh] lg:w-[33vw] md:h-[78vh] md:w-[55vw] h-[70vh] xs:h-[60vh] w-[85vw] rounded-3xl lg:px-10 px-7 py-6 flex flex-col justify-center gap-5">
         <h2 className="text-white lg:text-4xl md:text-wl text-2xl font-medium text-center my-3">
           Register
         </h2>
@@ -65,7 +65,7 @@ const Register = ({ inputData, setInputData }) => {
         <form
           action=""
           onSubmit={handleAuthLoginButton}
-          className="flex flex-col justify-between items-start lg:h-[70%] h-[75%] w-full lg:mt-3 mt-1"
+          className="flex flex-col justify-between items-start lg:h-[70%] h-[70%] w-full lg:mt-3 mt-1"
         >
           <input
             type="text"

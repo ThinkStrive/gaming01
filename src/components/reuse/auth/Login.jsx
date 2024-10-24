@@ -56,7 +56,7 @@ const Login = ({ inputData, setInputData }) => {
   return (
     <div className=" flex flex-col gap-5 justify-center items-center">
       <div
-        className="bg-[#040404] shadow-2xl 2xl:h-[50rem] border-2 lg:h-[70vh] lg:w-[33vw] md:h-[65vh] md:w-[55vw] h-[60vh] w-[85vw] rounded-3xl lg:px-10 px-7 py-6 flex flex-col justify-center gap-5"
+        className="bg-[#040404] shadow-2xl 2xl:h-[50rem] border-2 lg:h-[70vh] lg:w-[33vw] md:h-[65vh] md:w-[55vw] h-[55vh] w-[85vw] rounded-3xl lg:px-10 px-7 py-6 flex flex-col justify-center gap-5"
         // style={{ backgroundColor: "rgb(245,245,245)" }}
       >
         <h2 className="text-white lg:text-4xl md:text-3xll text-2xl font-medium text-center lg:my-3">
@@ -66,7 +66,7 @@ const Login = ({ inputData, setInputData }) => {
         <form
           action=""
           onSubmit={handleAuthLoginButton}
-          className="flex flex-col justify-between items-start lg:h-[53%] h-[60%] w-full lg:mt-3 mt-2"
+          className="flex flex-col justify-between items-start lg:h-[53%] h-[55%] w-full lg:mt-3 mt-2"
         >
           <input
             type="email"
