@@ -6,6 +6,8 @@ import "../../Style/Main.css";
 import Nav from "../nav/nav.jsx";
 import { GrPowerReset } from "react-icons/gr";
 import Lock from "../resources/Lock.jsx";
+import { USER_DETAILS } from "../api/ApiDetails.js";
+import axios from "axios";
 
 const Project1 = ({ theme }) => {
   const [isa_Active, setIsa_Active] = useState(true);
@@ -1178,32 +1180,29 @@ const Project1 = ({ theme }) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Plan Data
-
 const [planLockScreen, setPlanLockScreen] = useState(false)
 
-// useEffect(() => {
-//    let userData = JSON.parse(localStorage.getItem('userData'))
-//    if(!userData.projectsPlan.project1){
-//     setPlanLockScreen(true)
-//    }else{
-//     setPlanLockScreen(false)
-//    }
-//    },[])
+useEffect(() => {
+  const fetchUserDetails = async () => {
+    try {
+      let userData = JSON.parse(localStorage.getItem('userData'));
+      const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
 
+      console.log('response', response.data);
+      
+      if (!response.data.data.projectsPlan.project1) {
+        setPlanLockScreen(true);
+      } else {
+        setPlanLockScreen(false);
+      }
+    } catch (err) {
+      console.log('err', err);
+    }
+  };
+
+  // Call the async function
+  fetchUserDetails();
+}, []);
 
 
 

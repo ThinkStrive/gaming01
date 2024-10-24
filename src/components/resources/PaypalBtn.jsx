@@ -1,7 +1,7 @@
 import React from 'react';
 import { useToast } from './Toast';
 
-const PayPalBtn = () => {
+const PayPalBtn = ({amount}) => {
     const showToast = useToast();
   const handlePayment = async () => {
     try {
@@ -16,7 +16,7 @@ const PayPalBtn = () => {
           items: [
             {
               name: 'Item',
-              price: '0.99',
+              price: `${amount}`,
               currency: 'USD',
               quantity: 1,
             },
@@ -39,7 +39,7 @@ const PayPalBtn = () => {
 
   return (
     <button onClick={handlePayment}>
-      Pay 299 to Unlock
+      Pay $ {amount}
     </button>
   );
 };

@@ -12,6 +12,8 @@ import { AiOutlineClose } from "react-icons/ai";
 import { PiListNumbers } from "react-icons/pi";
 import { DiVim } from "react-icons/di";
 import Lock from "../resources/Lock.jsx";
+import axios from "axios";
+import { USER_DETAILS } from "../../../src/components/api/ApiDetails.js";
 const Project4 = ({ theme }) => {
   const [isAlertAllowed, setIsAlertAllowed] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
@@ -1265,13 +1267,27 @@ const Project4 = ({ theme }) => {
 const [planLockScreen, setPlanLockScreen] = useState(false)
 
 useEffect(() => {
-   let userData = JSON.parse(localStorage.getItem('userData'))
-   if(!userData.projectsPlan.project4){
-    setPlanLockScreen(true)
-   }else{
-    setPlanLockScreen(false)
-   }
-   },[])
+  const fetchUserDetails = async () => {
+    try {
+      let userData = JSON.parse(localStorage.getItem('userData'));
+      const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
+
+      console.log('response', response.data);
+      
+      if (!response.data.data.projectsPlan.project4) {
+        setPlanLockScreen(true);
+      } else {
+        setPlanLockScreen(false);
+      }
+    } catch (err) {
+      console.log('err', err);
+    }
+  };
+
+  // Call the async function
+  fetchUserDetails();
+}, []);
+
 
 
 

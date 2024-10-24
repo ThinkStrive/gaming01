@@ -12,6 +12,8 @@ import MoneyManagementTable from "../reuse/project4/MoneyManagementTable.jsx";
 // import { PiListNumbers } from "react-icons/pi";
 // import { DiVim } from "react-icons/di";
 import Lock from "../resources/Lock.jsx";
+import axios from "axios";
+import { USER_DETAILS } from "../api/ApiDetails.js";
 const Project4 = ({ theme }) => {
   const [isAlertAllowed, setIsAlertAllowed] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
@@ -1260,19 +1262,31 @@ const Project4 = ({ theme }) => {
 
 
 
-
-  // Plan Data
+// Plan Data
 
 const [planLockScreen, setPlanLockScreen] = useState(false)
 
-// useEffect(() => {
-//    let userData = JSON.parse(localStorage.getItem('userData'))
-//    if(!userData?.projectsPlan.project4){
-//     setPlanLockScreen(false)
-//    }else{
-//     setPlanLockScreen(false)
-//    }
-//    },[])
+useEffect(() => {
+  const fetchUserDetails = async () => {
+    try {
+      let userData = JSON.parse(localStorage.getItem('userData'));
+      const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
+
+      console.log('response', response.data);
+      
+      if (!response.data.data.projectsPlan.project4) {
+        setPlanLockScreen(true);
+      } else {
+        setPlanLockScreen(false);
+      }
+    } catch (err) {
+      console.log('err', err);
+    }
+  };
+
+  // Call the async function
+  fetchUserDetails();
+}, []);
 
 
 
