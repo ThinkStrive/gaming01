@@ -56,7 +56,7 @@ const Login = ({ inputData, setInputData }) => {
   return (
     <div className=" flex flex-col gap-5 justify-center items-center">
       <div
-        className="bg-[#040404] shadow-2xl 2xl:h-[50rem] lg:h-[70vh] lg:w-[33vw] md:h-[65vh] md:w-[55vw] h-[75vh] w-[85vw] rounded-3xl px-10 py-6 flex flex-col justify-center gap-5"
+        className="bg-[#040404] shadow-2xl 2xl:h-[50rem] border-2 lg:h-[70vh] lg:w-[33vw] md:h-[65vh] md:w-[55vw] h-[75vh] w-[85vw] rounded-3xl px-10 py-6 flex flex-col justify-center gap-5"
         // style={{ backgroundColor: "rgb(245,245,245)" }}
       >
         <h2 className="text-white lg:text-4xl md:text-wl text-lg font-medium text-center my-3">
