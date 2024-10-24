@@ -1195,14 +1195,14 @@ const Project1 = ({ theme }) => {
 
 const [planLockScreen, setPlanLockScreen] = useState(false)
 
-useEffect(() => {
-   let userData = JSON.parse(localStorage.getItem('userData'))
-   if(!userData.projectsPlan.project1){
-    setPlanLockScreen(true)
-   }else{
-    setPlanLockScreen(false)
-   }
-   },[])
+// useEffect(() => {
+//    let userData = JSON.parse(localStorage.getItem('userData'))
+//    if(!userData.projectsPlan.project1){
+//     setPlanLockScreen(true)
+//    }else{
+//     setPlanLockScreen(false)
+//    }
+//    },[])
 
 
 
