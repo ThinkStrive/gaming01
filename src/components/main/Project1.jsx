@@ -2655,7 +2655,8 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
                      border hover:bg-softBlue
                     ${theme === "light" ? 'border-[#F5F5F5]' : 'border-[#0A1F44]'}`}
                   >
-                    {calculateWheelSectionPercentage(circleData.zero, circleData.zero, circleData.duZero, circleData.orphe, circleData.tires)}
+                    {circleData.zero}
+                    {/* {calculateWheelSectionPercentage(circleData.zero, circleData.zero, circleData.duZero, circleData.orphe, circleData.tires)} */}
                   </td>
                   <td
                     className={
@@ -2703,7 +2704,8 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
                      border hover:bg-softBlue
                     ${theme === "light" ? 'border-[#F5F5F5]' : 'border-[#0A1F44]'}`}
                   >
-                    {calculateWheelSectionPercentage(circleData.duZero, circleData.zero, circleData.duZero, circleData.orphe, circleData.tires)}
+                    {circleData.duZero}
+                    {/* {calculateWheelSectionPercentage(circleData.duZero, circleData.zero, circleData.duZero, circleData.orphe, circleData.tires)} */}
                   </td>
                   <td
                     className={
@@ -2752,7 +2754,8 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
                      border hover:bg-softBlue
                     ${theme === "light" ? 'border-[#F5F5F5]' : 'border-[#0A1F44]'}`}
                   >
-                    {calculateWheelSectionPercentage(circleData.orphe, circleData.zero, circleData.duZero, circleData.orphe, circleData.tires)}
+                    {circleData.orphe}
+                    {/* {calculateWheelSectionPercentage(circleData.orphe, circleData.zero, circleData.duZero, circleData.orphe, circleData.tires)} */}
                   </td>
                   <td
                     className={
@@ -2800,7 +2803,8 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
                      border hover:bg-softBlue
                     ${theme === "light" ? 'border-[#F5F5F5]' : 'border-[#0A1F44]'}`}
                   >
-                    {calculateWheelSectionPercentage(circleData.tires, circleData.zero, circleData.duZero, circleData.orphe, circleData.tires)}
+                    {circleData.tires}
+                    {/* {calculateWheelSectionPercentage(circleData.tires, circleData.zero, circleData.duZero, circleData.orphe, circleData.tires)} */}
                   </td>
                   <td
                     className={
