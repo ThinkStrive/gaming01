@@ -1,0 +1,13 @@
+/* .add--coin {
+  width: 4rem !important;
+  padding: 2rem;
+} */
+
+.wheel--coverage::-webkit-scrollbar {
+  display: none;
+}
+
+.animation--class {
+  transition: all ease-in-out 0.25s;
+  /* transform: ; */
+}

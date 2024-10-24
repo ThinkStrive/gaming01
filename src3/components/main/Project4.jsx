@@ -7,10 +7,10 @@ import Analyze from "../reuse/project4/Analyze.jsx";
 import { CgInsights } from "react-icons/cg";
 import background from "../../assets/imgs/2002.i029.002_realistic-poker-club-illustration.jpg";
 import MoneyManagementTable from "../reuse/project4/MoneyManagementTable.jsx";
-// import { TiThMenuOutline } from "react-icons/ti";
-// import { AiOutlineClose } from "react-icons/ai";
-// import { PiListNumbers } from "react-icons/pi";
-// import { DiVim } from "react-icons/di";
+import { TiThMenuOutline } from "react-icons/ti";
+import { AiOutlineClose } from "react-icons/ai";
+import { PiListNumbers } from "react-icons/pi";
+import { DiVim } from "react-icons/di";
 import Lock from "../resources/Lock.jsx";
 const Project4 = ({ theme }) => {
   const [isAlertAllowed, setIsAlertAllowed] = useState(true);
@@ -19,10 +19,9 @@ const Project4 = ({ theme }) => {
   const [rowHoverEffect, setRowHoverEffect] = useState(true);
   const [dozenHoverEffect, setDozenHoverEffect] = useState(true);
   const [colHoverEffect, setColHoverEffect] = useState(true);
-  const [i_btn, setI_btn] = useState(false);
-  // const [sidebar, setSidebar] = useState(false);
+  const [sidebar, setSidebar] = useState(false);
 
-  // const showSidebar = () => setSidebar(!sidebar);
+  const showSidebar = () => setSidebar(!sidebar);
 
   const [countData, setCountData] = useState(() => {
     const savedCountData = localStorage.getItem("countData4");
@@ -1267,8 +1266,8 @@ const [planLockScreen, setPlanLockScreen] = useState(false)
 
 useEffect(() => {
    let userData = JSON.parse(localStorage.getItem('userData'))
-   if(!userData?.projectsPlan.project4){
-    setPlanLockScreen(false)
+   if(!userData.projectsPlan.project4){
+    setPlanLockScreen(true)
    }else{
     setPlanLockScreen(false)
    }
@@ -1352,14 +1351,14 @@ useEffect(() => {
               <GrPowerReset className="inline mr-0.5 -mt-0.5 reset-icon" />
               Reset
             </button>
-            {/* <div className=" bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
+            <div className=" bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
                 <div className="menu-bars bg-black text-white px-3 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen" onClick={showSidebar}>
                 <TiThMenuOutline size={15} />
                 </div>
-            </div> */}
+            </div>
 
 
-            {/* <div className={sidebar ? "nav-menu active" : "nav-menu"}onClick={showSidebar}>
+            <div className={sidebar ? "nav-menu active" : "nav-menu"}onClick={showSidebar}>
                   <ul className="nav-menu-items ">
                     <li id="navbar-toggle">
                      <AiOutlineClose  size={24}/>
@@ -1420,7 +1419,7 @@ useEffect(() => {
                     </div>
                     </li>
                   </ul>
-            </div> */}
+            </div>
 
 
           </div>
@@ -1487,14 +1486,14 @@ useEffect(() => {
               </div>
             </div>
 
-            {/* <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400 flex justify-center items-center">
+            <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400 flex justify-center items-center">
               <button
                 className="bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
                 // onClick={handleClickResetButton}
               >
                 Undo
               </button>
-            </div> */}
+            </div>
             <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
               <button
                 onClick={handleClickResetButton}
@@ -1504,10 +1503,8 @@ useEffect(() => {
               </button>
             </div>
 
-{/* //---Hamburger Menu button  */}
 
-
-            {/* <div className=" bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
+            <div className=" bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
                 <div className="menu-bars bg-black text-white px-5 py-2 rounded-full btns max-sm:text-sm hover:bg-neonGreen" onClick={showSidebar}>
                 <TiThMenuOutline size={17} />
                 </div>
@@ -1573,7 +1570,7 @@ useEffect(() => {
                     </div>
                     </li>
                   </ul>
-            </div> */}
+            </div>
 
 
 
@@ -1734,15 +1731,7 @@ useEffect(() => {
             </div>
           </div>
         </div>
-        <div className="w-[10%] h-full  max-sm:flex justify-center items-center statistics "   >
-          <div
-            className="border rounded-full flex justify-center bg-black items-center relative cursor-pointer z-30 hover:bg-neonGreen"
-            onClick={() => setShowPopup(!showPopup)}
-            style={{padding:"5px",width:"50px"}}
-          >
-            <CgInsights size={24} />
-          </div>
-        </div>
+
       </div>
       {/* <div className="h-[40vh] border max-sm:hidden">
         <table className="border w-[20rem]">
@@ -1797,7 +1786,7 @@ useEffect(() => {
         <p>col Loss - {analyzeData.colLossPer}</p>
       </div> */}
 
-<div
+      <div
         className="w-full h-screen absolute top-0 flex justify-center items-center"
         style={{
           display: showPopup ? "flex" : "none",
@@ -1806,42 +1795,10 @@ useEffect(() => {
         onClick={() => setShowPopup(false)}
       >
         <div className="max-sm:mr-4">
-          <table className="border w-[35rem] max-md:w-[22rem] max-sm:w-[18rem]">
-            <tr className="max-sm:h-20 max-md:h-20" >
-              <th className="w-[30%] max-sm:w-[30] border py-2 bg-yellow-500 text-black">Category</th>
-              <th className="w-[40%] max-sm:w-[50] border bg-yellow-500 text-black break-words relative">Hot/Stable/Cold 
-
-              <div
-                className="text-gray-400 absolute  cursor-pointer bg-neutral-700 w-5 h-5 flex justify-center items-center rounded-full"
-                onMouseEnter={() => setI_btn(true)}
-                onMouseLeave={()=> setI_btn(false)}
-              style={{right:"10px",bottom:"6px"}}
-              >
-                i
-              </div>
-
-              <div
-                className="bg-customPurple p-2 flex justify-between mb-4 text-start  items-start text-white w-60 h-24 max-sm:w-45 max-sm:h-35 absolute bottom-6 max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%]"
-                style={{ display: i_btn ? "flex" : "none" }}
-                id="statsInfo"
-              >
-
-                <div className="text-start" style={{fontSize:"11px",paddingLeft:"5px"}}>
-                  <p>
-                    <span className="font-bold me-2">Hot : </span>&nbsp; &nbsp; &nbsp;  Good table For betting ✅
-                  </p>
-
-                  <p className="border-y my-1 py-1">
-                    <span className="font-bold me-2">Stable : </span>Decent choice,be cautious ⚖️
-                  </p>
-
-                  <p>
-                    <span className="font-bold me-2">Cold : </span> &nbsp; &nbsp;Avoid, too unpredictable ❌
-                  </p>
-                </div>
-              </div>
-              </th>
-              <th className="w-[30%] bg-yellow-500 max-sm:w-[20] text-black">ON/OFF</th>
+          <table className="border w-[20rem] max-sm:w-[13rem]">
+            <tr>
+              <th className="w-[50%] bg-yellow-500 text-black">Category</th>
+              <th className="w-[50%] bg-yellow-500 text-black p-1">Hot/Cold</th>
             </tr>
 
             {/* Numbers */}
@@ -1875,21 +1832,6 @@ useEffect(() => {
                     ? `Stable`
                     : `Cold`;
                 })()}
-              </td>
-              <td className="font-semibold text-center border max-sm:text-sm  " >
-                      <button
-                        onClick={handleClickRowHoverData}
-                        className="menu-bars bg-black text-white px-2  rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      > 
-                        {" "}
-                        <span
-                          className={`${
-                            rowHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {rowHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
               </td>
             </tr>
 
@@ -1925,21 +1867,6 @@ useEffect(() => {
                     : `Cold`;
                 })()}
               </td>
-              <td className="font-semibold text-center border max-sm:text-sm  " >
-              <button
-                        onClick={handleClickDozenHoverData}
-                        className="menu-bars bg-black text-white px-2  rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      >
-                        {" "}
-                        <span
-                          className={`${
-                            dozenHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {dozenHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
-              </td>
             </tr>
 
             {/* Column */}
@@ -1974,21 +1901,6 @@ useEffect(() => {
                     : `Cold`;
                 })()}
               </td>
-              <td className="font-semibold text-center border max-sm:text-sm  " >
-                     <button
-                        onClick={handleClickColHoverData}
-                        className="menu-bars bg-black text-white px-2 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      >
-                         {" "}
-                        <span
-                          className={`${
-                            colHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {colHoverEffect ? "On" : "Off"}
-                        </span>
-                    </button>
-              </td>
             </tr>
           </table>
 
@@ -2000,9 +1912,6 @@ useEffect(() => {
         <p>col Loss - {analyzeData.colLossPer}</p> */}
         </div>
       </div>
-
-
-
 
       <div
         // className="h-[65vh] mt-5 w-full overflow-y-scroll rounded-xl p-2 scrollOff"
@@ -2019,8 +1928,8 @@ useEffect(() => {
           border: theme === "dark" ? "white 2px solid" : "black 2px solid",
         }}
       >
-        <h2 className={`text-lg font-bold my-4 ${theme === 'dark' ? 'text-white' : 'text-black'}`} >Money Management Tool</h2>
-        <span className={`${theme === 'dark' ? 'text-white' : 'text-black'}`} ><i className="fa-regular fa-clock mx-3"></i>Coming Soon !</span>
+        <h2 className="text-lg font-bold my-4" >Money Management Tool</h2>
+        <span className="text-lg" ><i className="fa-regular fa-clock mx-3"></i>Coming Soon !</span>
         {/* <button
           onClick={() => setMoneyManagementData([])}
           className="border py-1 px-4 rounded-lg mb-2 mx-2"

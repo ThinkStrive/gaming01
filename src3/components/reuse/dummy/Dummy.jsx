@@ -7,25 +7,15 @@ import Analyze from "../reuse/project4/Analyze.jsx";
 import { CgInsights } from "react-icons/cg";
 import background from "../../assets/imgs/2002.i029.002_realistic-poker-club-illustration.jpg";
 import MoneyManagementTable from "../reuse/project4/MoneyManagementTable.jsx";
-// import { TiThMenuOutline } from "react-icons/ti";
-// import { AiOutlineClose } from "react-icons/ai";
-// import { PiListNumbers } from "react-icons/pi";
-// import { DiVim } from "react-icons/di";
-import Lock from "../resources/Lock.jsx";
-const Project4 = ({ theme }) => {
-  const [isAlertAllowed, setIsAlertAllowed] = useState(true);
-  const [showPopup, setShowPopup] = useState(false);
-  const showToast = useToast();
-  const [rowHoverEffect, setRowHoverEffect] = useState(true);
-  const [dozenHoverEffect, setDozenHoverEffect] = useState(true);
-  const [colHoverEffect, setColHoverEffect] = useState(true);
-  const [i_btn, setI_btn] = useState(false);
-  // const [sidebar, setSidebar] = useState(false);
 
-  // const showSidebar = () => setSidebar(!sidebar);
+const Project4 = ({ theme }) => {
+  const [isAlertAllowed, setIsAlertAllowed] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+
+  const showToast = useToast();
 
   const [countData, setCountData] = useState(() => {
-    const savedCountData = localStorage.getItem("countData4");
+    const savedCountData = localStorage.getItem("countData");
     return savedCountData
       ? JSON.parse(savedCountData)
       : {
@@ -43,16 +33,6 @@ const Project4 = ({ theme }) => {
           col_three: 0,
         };
   });
-
-  const handleClickRowHoverData = () => {
-    setRowHoverEffect(!rowHoverEffect);
-  };
-  const handleClickDozenHoverData = () => {
-    setDozenHoverEffect(!dozenHoverEffect);
-  };
-  const handleClickColHoverData = () => {
-    setColHoverEffect(!colHoverEffect);
-  };
 
   const [analyzeData, setAnalyzeData] = useState(() => {
     const savedCountData = localStorage.getItem("analyzeData4");
@@ -174,7 +154,7 @@ const Project4 = ({ theme }) => {
 
   // Save `countData` to local storage whenever it changes
   useEffect(() => {
-    localStorage.setItem("countData4", JSON.stringify(countData));
+    localStorage.setItem("countData", JSON.stringify(countData));
   }, [countData]);
 
   // Save `lastHitNumber` to local storage whenever it changes
@@ -184,7 +164,7 @@ const Project4 = ({ theme }) => {
 
   // Save `historyData` to local storage whenever it changes
   useEffect(() => {
-    localStorage.setItem("historyData4", JSON.stringify(historyData));
+    localStorage.setItem("historyData", JSON.stringify(historyData));
   }, [historyData]);
 
   useEffect(() => {
@@ -389,7 +369,7 @@ const Project4 = ({ theme }) => {
     let emptyArray = [];
 
     // Also reset the data in local storage
-    localStorage.setItem("countData4", JSON.stringify(resetState));
+    localStorage.setItem("countData", JSON.stringify(resetState));
     localStorage.setItem("rowData4", JSON.stringify(emptyArray));
     localStorage.setItem("dozenRowData4", JSON.stringify(emptyArray));
     localStorage.setItem("colRowData4", JSON.stringify(emptyArray));
@@ -730,141 +710,6 @@ const Project4 = ({ theme }) => {
     },
   };
 
-
-
-
-
-
-
-  useEffect(() => {
-    let newLossEntries = [];
-
-    // Check letter loss
-    if (rowData.length > 1 && rowHoverEffect) {
-      const previousRow = rowData[rowData.length - 2];
-      const lastRow = rowData[rowData.length - 1];
-      if (
-        Object.keys(previousRow).length === 3 &&
-        Object.keys(lastRow).length === 3 &&
-        repeatLetter &&
-        !Object.values(lastRow).includes(repeatLetter) &&
-        !userMissedSuggestion
-      ) {
-        if (isAlertAllowed && rowHoverEffect) {
-          showToast(`Book Your Loss!`, "error");
-        }
-        setUnitData(1);
-        setRepeatLetter('')
-        setUserMissedSuggestion(true);
-        setSuggestionActive(false);
-        setAnalyzeData((prev) => ({
-          ...prev,
-          lossPerData: prev.lossPerData + 1,
-        }));
-
-        // Prepare the letter loss entry
-        newLossEntries.push({
-          spin: lastHitNumber,
-          winLoss: "L",
-          unit: unitData,
-          total: repeatLetter === "A" ? unitData * -11.5 : unitData * -12,
-          covered: repeatLetter === "A" ? 13 : 12,
-        });
-      }
-    }
-
-    // Check dozen loss
-    if (dozenRowData.length > 1 && dozenHoverEffect) {
-      const previousRow = dozenRowData[dozenRowData.length - 2];
-      const lastRow = dozenRowData[dozenRowData.length - 1];
-      if (
-        Object.keys(previousRow).length === 3 &&
-        Object.keys(lastRow).length === 3 &&
-        repeatDozen &&
-        !Object.values(lastRow).includes(repeatDozen) &&
-        !userMissedSuggestionDozen
-      ) {
-        if (isAlertAllowed && dozenHoverEffect) {
-          showToast(`Book Your Loss!`, "error");
-        }
-        setUnitData(1);
-        setRepeatDozen('')
-        setUserMissedSuggestionDozen(true);
-        setSuggestionActiveDozen(false);
-        setAnalyzeData((prev) => ({
-          ...prev,
-          dozenLossPer: prev.dozenLossPer + 1,
-        }));
-
-        // Prepare the dozen loss entry
-        newLossEntries.push({
-          spin: lastHitNumber,
-          winLoss: "L",
-          unit: unitData,
-          total: unitData * -1,
-          covered:
-            repeatDozen === "1" ? "D1" : repeatDozen === "2" ? "D2" : "D3",
-        });
-      }
-    }
-
-    // Check column loss
-    if (colRowData.length > 1 && colHoverEffect) {
-      const previousRow = colRowData[colRowData.length - 2];
-      const lastRow = colRowData[colRowData.length - 1];
-      if (
-        Object.keys(previousRow).length === 3 &&
-        Object.keys(lastRow).length === 3 &&
-        repeatCol &&
-        !Object.values(lastRow).includes(repeatCol) &&
-        !userMissedSuggestionCol
-      ) {
-        console.log('repeatCol', repeatCol);
-        if (isAlertAllowed && colHoverEffect) {
-          showToast(`Book Your Loss! col`, "error");
-        }
-        setUnitData(1);
-        setRepeatCol('')
-        setUserMissedSuggestionCol(true);
-        setSuggestionActiveCol(false);
-        setAnalyzeData((prev) => ({
-          ...prev,
-          colLossPer: prev.colLossPer + 1,
-        }));
-
-        // Prepare the column loss entry
-        newLossEntries.push({
-          spin: lastHitNumber,
-          winLoss: "L",
-          unit: unitData,
-          total: unitData * -1,
-          covered: repeatCol === "1" ? "C1" : repeatCol === "2" ? "C2" : "C3",
-        });
-      }
-    }
-
-    // If there are any losses, update the money management data once
-    if (newLossEntries.length > 0) {
-      setMoneyManagementData((prevData) => [...prevData, ...newLossEntries]);
-    }
-  }, [
-    rowData,
-    dozenRowData,
-    colRowData,
-    repeatLetter,
-    repeatDozen,
-    repeatCol,
-    userMissedSuggestion,
-    userMissedSuggestionDozen,
-    userMissedSuggestionCol,
-  ]);
-
-
-
-
-
-
-
   useEffect(() => {
     if (rowData.length > 0) {
       const lastRowIndex = rowData.length - 1;
@@ -895,30 +740,30 @@ const Project4 = ({ theme }) => {
           setUnitData(1);
 
           // Add data to moneyManagementData only for the first column
-          // const newEntry = {
-          //   spin: "",
-          //   winLoss: "",
-          //   unit: unitData,
-          //   total: 0,
-          //   covered: repeatedLetter === "A" ? 13 : 12,
-          // };
+          const newEntry = {
+            spin: "",
+            winLoss: "",
+            unit: unitData,
+            total: 0,
+            covered: repeatedLetter === "A" ? 13 : 12,
+          };
 
-          // setMoneyManagementData((prevData) => {
-          //   const updatedData = [...prevData, newEntry];
-          //   localStorage.setItem(
-          //     "moneyManagement4",
-          //     JSON.stringify(updatedData)
-          //   );
-          //   return updatedData;
-          // });
+          setMoneyManagementData((prevData) => {
+            const updatedData = [...prevData, newEntry];
+            localStorage.setItem(
+              "moneyManagement4",
+              JSON.stringify(updatedData)
+            );
+            return updatedData;
+          });
 
           // Mark this row as processed to prevent duplicate additions for this row
           setSuggestionProcessedRow(lastRowIndex);
         } else if (!repeatedLetter) {
           // Reset if there's no repeated letter
           setSuggestion("");
-          // setRepeatLetter("");
-          // setSuggestionActive(false);
+          setRepeatLetter("");
+          setSuggestionActive(false);
           setSuggestionProcessedRow(null); // Reset flag if no suggestion
         }
       }
@@ -940,15 +785,15 @@ const Project4 = ({ theme }) => {
           acc[dozen] = (acc[dozen] || 0) + 1;
           return acc;
         }, {});
-        console.log('occurrences', occurrences)
-        console.log('values', values)
         const repeatedDozen = Object.keys(occurrences).find(
           (dozen) => occurrences[dozen] > 1
         );
 
+        console.log('repeatedDozen', repeatedDozen);
+        console.log('values', values);
+
         // Check if the repeated dozen is in the first column
-        if (repeatedDozen && repeatedDozen != 0 ) {
-          console.log('repeated dozen is coming', repeatedDozen)
+        if (repeatedDozen) {
           // Only trigger the suggestion if it hasn't been processed for this row
           setRepeatDozen(repeatedDozen);
           setSuggestionActiveDozen(true);
@@ -958,35 +803,35 @@ const Project4 = ({ theme }) => {
           setUnitData(1);
 
           // Add data to moneyManagementData only for the first column
-          // const newEntry = {
-          //   spin: "",
-          //   winLoss: "",
-          //   unit: unitData,
-          //   total: 0,
-          //   covered:
-          //     repeatedDozen === "1"
-          //       ? "D1"
-          //       : repeatedDozen === "2"
-          //       ? "D2"
-          //       : "D3",
-          // };
+          const newEntry = {
+            spin: "",
+            winLoss: "",
+            unit: unitData,
+            total: 0,
+            covered:
+              repeatedDozen === "1"
+                ? "D1"
+                : repeatedDozen === "2"
+                ? "D2"
+                : "D3",
+          };
 
-          // setMoneyManagementData((prevData) => {
-          //   const updatedData = [...prevData, newEntry];
-          //   localStorage.setItem(
-          //     "moneyManagement4",
-          //     JSON.stringify(updatedData)
-          //   );
-          //   return updatedData;
-          // });
+          setMoneyManagementData((prevData) => {
+            const updatedData = [...prevData, newEntry];
+            localStorage.setItem(
+              "moneyManagement4",
+              JSON.stringify(updatedData)
+            );
+            return updatedData;
+          });
 
           // Mark this row as processed to prevent duplicate additions for this row
           setSuggestionProcessedDoz(lastRowIndex);
         } else if (!repeatedDozen) {
           // Reset if there's no repeated dozen
           setSuggestion("");
-          // setRepeatDozen("");
-          // setSuggestionActiveDozen(false);
+          setRepeatDozen("");
+          setSuggestionActiveDozen(false);
           setSuggestionProcessedDoz(null); // Reset flag if no suggestion
         }
       }
@@ -998,14 +843,6 @@ const Project4 = ({ theme }) => {
     lastHitNumber,
     unitData,
   ]);
-
-  // console.log("dozen data", dozenRowData);
-  // console.log("repeatDozen", repeatDozen);
-  // console.log('userMissedSuggestionDozen', userMissedSuggestionDozen)
-  // console.log('suggestionActiveDozen', suggestionActiveDozen)
-  // console.log('suggestionProcessedDozen', suggestionProcessedDoz)
-  // // console.log('dozenHoverEffect', dozenHoverEffect)
-  // console.log('----------')
 
   useEffect(() => {
     if (colRowData.length > 0) {
@@ -1027,7 +864,7 @@ const Project4 = ({ theme }) => {
         );
 
         // Check if the repeated col is in the first column
-        if (repeatedCol && repeatedCol != 0) {
+        if (repeatedCol) {
           // Only trigger the suggestion if it hasn't been processed for this row
           setRepeatCol(repeatedCol);
           setSuggestionActiveCol(true);
@@ -1037,31 +874,35 @@ const Project4 = ({ theme }) => {
           setUnitData(1);
 
           // Add data to moneyManagementData only for the first column
-          // const newEntry = {
-          //   spin: "",
-          //   winLoss: "",
-          //   unit: unitData,
-          //   total: 0,
-          //   covered:
-          //     repeatedCol === "1" ? "C1" : repeatedCol === "2" ? "C2" : "C3",
-          // };
+          const newEntry = {
+            spin: "",
+            winLoss: "",
+            unit: unitData,
+            total: 0,
+            covered:
+              repeatedCol === "1"
+                ? "C1"
+                : repeatedCol === "2"
+                ? "C2"
+                : "C3",
+          };
 
-          // setMoneyManagementData((prevData) => {
-          //   const updatedData = [...prevData, newEntry];
-          //   localStorage.setItem(
-          //     "moneyManagement4",
-          //     JSON.stringify(updatedData)
-          //   );
-          //   return updatedData;
-          // });
+          setMoneyManagementData((prevData) => {
+            const updatedData = [...prevData, newEntry];
+            localStorage.setItem(
+              "moneyManagement4",
+              JSON.stringify(updatedData)
+            );
+            return updatedData;
+          });
 
           // Mark this row as processed to prevent duplicate additions for this row
           setSuggestionProcessedCol(lastRowIndex);
         } else if (!repeatedCol) {
           // Reset if there's no repeated col
           setSuggestion("");
-          // setRepeatCol("");
-          // setSuggestionActiveCol(false);
+          setRepeatCol("");
+          setSuggestionActiveCol(false);
           setSuggestionProcessedCol(null); // Reset flag if no suggestion
         }
       }
@@ -1069,7 +910,119 @@ const Project4 = ({ theme }) => {
   }, [colRowData, repeatCol, userMissedSuggestionCol, lastHitNumber, unitData]);
 
   // Effect to handle multiple losses (letter, dozen, and column)
-  
+  useEffect(() => {
+    let newLossEntries = [];
+
+    // Check letter loss
+    if (rowData.length > 1) {
+      const previousRow = rowData[rowData.length - 2];
+      const lastRow = rowData[rowData.length - 1];
+      if (
+        Object.keys(previousRow).length === 3 &&
+        Object.keys(lastRow).length === 3 &&
+        repeatLetter &&
+        !Object.values(lastRow).includes(repeatLetter) &&
+        !userMissedSuggestion
+      ) {
+        showToast(`Book Your Loss!`, "error");
+        setUnitData(1);
+        setUserMissedSuggestion(true);
+        setSuggestionActive(false);
+        setAnalyzeData((prev) => ({
+          ...prev,
+          lossPerData: prev.lossPerData + 1,
+        }));
+
+        // Prepare the letter loss entry
+        newLossEntries.push({
+          spin: lastHitNumber,
+          winLoss: "L",
+          unit: unitData,
+          total: repeatLetter === "A" ? unitData * -11.5 : unitData * -12,
+          covered: repeatLetter === "A" ? 13 : 12,
+        });
+      }
+    }
+
+    // Check dozen loss
+    if (dozenRowData.length > 1) {
+      const previousRow = dozenRowData[dozenRowData.length - 2];
+      const lastRow = dozenRowData[dozenRowData.length - 1];
+      if (
+        Object.keys(previousRow).length === 3 &&
+        Object.keys(lastRow).length === 3 &&
+        repeatDozen &&
+        !Object.values(lastRow).includes(repeatDozen) &&
+        !userMissedSuggestionDozen
+      ) {
+        showToast(`Book Your Loss!`, "error");
+        setUnitData(1);
+        setUserMissedSuggestionDozen(true);
+        setSuggestionActiveDozen(false);
+        setAnalyzeData((prev) => ({
+          ...prev,
+          dozenLossPer: prev.dozenLossPer + 1,
+        }));
+
+        // Prepare the dozen loss entry
+        newLossEntries.push({
+          spin: lastHitNumber,
+          winLoss: "L",
+          unit: unitData,
+          total: unitData * -1,
+          covered:
+            repeatDozen === "1" ? "D1" : repeatDozen === "2" ? "D2" : "D3",
+        });
+      }
+    }
+
+    // Check column loss
+    if (colRowData.length > 1) {
+      const previousRow = colRowData[colRowData.length - 2];
+      const lastRow = colRowData[colRowData.length - 1];
+      if (
+        Object.keys(previousRow).length === 3 &&
+        Object.keys(lastRow).length === 3 &&
+        repeatCol &&
+        !Object.values(lastRow).includes(repeatCol) &&
+        !userMissedSuggestionCol
+      ) {
+        showToast(`Book Your Loss!`, "error");
+        setUnitData(1);
+        setUserMissedSuggestionCol(true);
+        setSuggestionActiveCol(false);
+        setAnalyzeData((prev) => ({
+          ...prev,
+          colLossPer: prev.colLossPer + 1,
+        }));
+
+        // Prepare the column loss entry
+        newLossEntries.push({
+          spin: lastHitNumber,
+          winLoss: "L",
+          unit: unitData,
+          total: unitData * -1,
+          covered:
+            repeatCol === "1" ? "C1" : repeatCol === "2" ? "C2" : "C3",
+        });
+      }
+    }
+
+    // If there are any losses, update the money management data once
+    if (newLossEntries.length > 0) {
+      setMoneyManagementData((prevData) => [...prevData, ...newLossEntries]);
+    }
+  }, [
+    rowData,
+    dozenRowData,
+    colRowData,
+    repeatLetter,
+    repeatDozen,
+    repeatCol,
+    userMissedSuggestion,
+    userMissedSuggestionDozen,
+    userMissedSuggestionCol,
+  ]);
 
   // Handle when user clicks a letter/number
   const handleClickNumber = (key, number, letter, doz, col) => {
@@ -1105,15 +1058,15 @@ const Project4 = ({ theme }) => {
       if (letter === repeatLetter) {
         setSuggestionActive(false);
         setSuggestion("");
-        if (isAlertAllowed && rowHoverEffect) {
-          showToast(`Win Number!`, "success");
-        }
+        showToast(`Win Number!`, "success");
         setUnitData(unitData + 1);
         setRepeatLetter("");
         setAnalyzeData((prev) => ({
           ...prev,
           winPerData: prev.winPerData + 1,
         }));
+
+        console.log("moneyMangementData", moneyManagementData);
 
         // Add data to MoneyManagement only if the letter matches
         setMoneyManagementData((prevData) => [
@@ -1139,108 +1092,110 @@ const Project4 = ({ theme }) => {
       }
     }
 
+    console.log("moneyMangementData", moneyManagementData);
+
     // Handle Dozen and Column Data
     // if (doz !== 0 || col !== 0) {
-    setDozenRowData((prevRowData) => {
-      const lastRow = prevRowData[prevRowData.length - 1];
-      if (!lastRow || Object.keys(lastRow).length >= 3) {
-        return [...prevRowData, { [`doz1`]: doz }];
-      } else {
-        const keyIndex = Object.keys(lastRow).length + 1;
-        const updatedRow = { ...lastRow, [`doz${keyIndex}`]: doz };
-        return [...prevRowData.slice(0, -1), updatedRow];
-      }
-    });
+      setDozenRowData((prevRowData) => {
+        const lastRow = prevRowData[prevRowData.length - 1];
+        if (!lastRow || Object.keys(lastRow).length >= 3) {
+          return [...prevRowData, { [`doz1`]: doz }];
+        } else {
+          const keyIndex = Object.keys(lastRow).length + 1;
+          const updatedRow = { ...lastRow, [`doz${keyIndex}`]: doz };
+          return [...prevRowData.slice(0, -1), updatedRow];
+        }
+      });
 
-    setColRowData((prevRowData) => {
-      const lastRow = prevRowData[prevRowData.length - 1];
-      if (!lastRow || Object.keys(lastRow).length >= 3) {
-        return [...prevRowData, { [`col1`]: col }];
-      } else {
-        const keyIndex = Object.keys(lastRow).length + 1;
-        const updatedRow = { ...lastRow, [`col${keyIndex}`]: col };
-        return [...prevRowData.slice(0, -1), updatedRow];
-      }
-    });
+      setColRowData((prevRowData) => {
+        const lastRow = prevRowData[prevRowData.length - 1];
+        if (!lastRow || Object.keys(lastRow).length >= 3) {
+          return [...prevRowData, { [`col1`]: col }];
+        } else {
+          const keyIndex = Object.keys(lastRow).length + 1;
+          const updatedRow = { ...lastRow, [`col${keyIndex}`]: col };
+          return [...prevRowData.slice(0, -1), updatedRow];
+        }
+      });
 
-    // Handle suggestions for Dozen
-    if (suggestionActiveDozen) {
-      if (doz === repeatDozen) {
-        setSuggestionActiveDozen(false);
-        setSuggestion("");
-        if (isAlertAllowed && dozenHoverEffect) {
+      // Handle suggestions for Dozen
+      if (suggestionActiveDozen) {
+        if (doz === repeatDozen) {
+          setSuggestionActiveDozen(false);
+          setSuggestion("");
           showToast(`Win Dozen!`, "success");
-        }
-        setUnitData(unitData + 1);
-        setRepeatDozen("");
-        setAnalyzeData((prev) => ({
-          ...prev,
-          dozenWinPer: prev.dozenWinPer + 1,
-        }));
+          setUnitData(unitData + 1);
+          setRepeatDozen("");
+          setAnalyzeData((prev) => ({
+            ...prev,
+            dozenWinPer: prev.dozenWinPer + 1,
+          }));
 
-        // Add to money management for dozens
-        // setMoneyManagementData((prevData) => [
-        //   ...prevData,
-        //   {
-        //     spin: {
-        //       number: number,
-        //       color:
-        //         clickedDataUpdates.red === 1
-        //           ? "red"
-        //           : clickedDataUpdates.black === 1
-        //           ? "black"
-        //           : "zero",
-        //     },
-        //     winLoss: "W",
-        //     unit: unitData,
-        //     total: unitData * 2,
-        //     covered: doz === "1" ? "D1" : doz === "2" ? "D2" : "D3",
-        //   },
-        // ]);
-      } else {
-        setSuggestion(`Suggestion: The repeated dozen is ${repeatDozen}`);
-      }
-    }
+          console.log("moneyMangementData", moneyManagementData);
 
-    // Handle suggestions for Column
-    if (suggestionActiveCol) {
-      if (col === repeatCol) {
-        setSuggestionActiveCol(false);
-        setSuggestion("");
-        if (isAlertAllowed && colHoverEffect) {
-          showToast(`Win Column!`, "success");
-        }
-        setUnitData(unitData + 1);
-        setRepeatCol("");
-        setAnalyzeData((prev) => ({
-          ...prev,
-          colWinPer: prev.colWinPer + 1,
-        }));
-
-        // Add to money management for columns
-        setMoneyManagementData((prevData) => [
-          ...prevData,
-          {
-            spin: {
-              number: number,
-              color:
-                clickedDataUpdates.red === 1
-                  ? "red"
-                  : clickedDataUpdates.black === 1
-                  ? "black"
-                  : "zero",
+          // Add to money management for dozens
+          setMoneyManagementData((prevData) => [
+            ...prevData,
+            {
+              spin: {
+                number: number,
+                color:
+                  clickedDataUpdates.red === 1
+                    ? "red"
+                    : clickedDataUpdates.black === 1
+                    ? "black"
+                    : "zero",
+              },
+              winLoss: "W",
+              unit: unitData,
+              total: unitData * 2,
+              covered: doz === "1" ? "D1" : doz === "2" ? "D2" : "D3",
             },
-            winLoss: "W",
-            unit: unitData,
-            total: unitData * 2,
-            covered: col === "1" ? "C1" : col === "2" ? "C2" : "C3",
-          },
-        ]);
-      } else {
-        setSuggestion(`Suggestion: The repeated column is ${repeatCol}`);
+          ]);
+        } else {
+          setSuggestion(`Suggestion: The repeated dozen is ${repeatDozen}`);
+        }
       }
-    }
-    // }
+
+      // Handle suggestions for Column
+      if (suggestionActiveCol) {
+        if (col === repeatCol) {
+          setSuggestionActiveCol(false);
+          setSuggestion("");
+          showToast(`Win Column!`, "success");
+          setUnitData(unitData + 1);
+          setRepeatCol("");
+          setAnalyzeData((prev) => ({
+            ...prev,
+            colWinPer: prev.colWinPer + 1,
+          }));
+
+          console.log("moneyMangementData", moneyManagementData);
+
+          // Add to money management for columns
+          setMoneyManagementData((prevData) => [
+            ...prevData,
+            {
+              spin: {
+                number: number,
+                color:
+                  clickedDataUpdates.red === 1
+                    ? "red"
+                    : clickedDataUpdates.black === 1
+                    ? "black"
+                    : "zero",
+              },
+              winLoss: "W",
+              unit: unitData,
+              total: unitData * 2,
+              covered: col === "1" ? "C1" : col === "2" ? "C2" : "C3",
+            },
+          ]);
+        } else {
+          setSuggestion(`Suggestion: The repeated column is ${repeatCol}`);
+        }
+      }
+    // } 
     // else {
     //   setDozenRowData([]);
     //   setRepeatDozen("");
@@ -1255,30 +1210,11 @@ const Project4 = ({ theme }) => {
     // }
   };
 
-
-  console.log('analyze data', analyzeData)
-
-
-
-
-  // Plan Data
-
-const [planLockScreen, setPlanLockScreen] = useState(false)
-
-useEffect(() => {
-   let userData = JSON.parse(localStorage.getItem('userData'))
-   if(!userData?.projectsPlan.project4){
-    setPlanLockScreen(false)
-   }else{
-    setPlanLockScreen(false)
-   }
-   },[])
-
-
+  console.log('dozen data', dozenRowData)
 
   return (
     <>
-      <div className="sticky lg:top-0 max-sm:top-0 md:top-0 z-30">
+      <div className="sticky lg:top-24 max-sm:top-20 md:top-16 z-40">
         {/* <Nav theme={theme} setTheme={setTheme} /> */}
         <div
           className="py-1 px-2 justify-between flex sm--navbar"
@@ -1308,7 +1244,7 @@ useEffect(() => {
           </div>
 
           <div className="flex">
-            <div
+            {/* <div
               className="flex justify-center items-center p-0.5 py-0 rounded-md font-semibold text-sm text-gray-500"
               onClick={() => setIsAlertAllowed(!isAlertAllowed)}
             >
@@ -1326,10 +1262,10 @@ useEffect(() => {
 
             <button
               className="text-gray-500 py-1 px-1 rounded-full text-sm font-semibold"
-              // onClick={handleClickResetButton}
+              onClick={handleClickResetButton}
             >
               Undo
-            </button>
+            </button> */}
             {/* {suggestionActiveDozen && (
               <div className="p-1 rounded">
                 <div className="dozen--col flex justify-center items-center bg-[#58d68d] p-0.5 text-sm font-semibold cursor-pointer rounded hover:bg-gray-500 px-2">
@@ -1352,81 +1288,8 @@ useEffect(() => {
               <GrPowerReset className="inline mr-0.5 -mt-0.5 reset-icon" />
               Reset
             </button>
-            {/* <div className=" bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                <div className="menu-bars bg-black text-white px-3 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen" onClick={showSidebar}>
-                <TiThMenuOutline size={15} />
-                </div>
-            </div> */}
-
-
-            {/* <div className={sidebar ? "nav-menu active" : "nav-menu"}onClick={showSidebar}>
-                  <ul className="nav-menu-items ">
-                    <li id="navbar-toggle">
-                     <AiOutlineClose  size={24}/>
-                    </li>
-                    <li className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                    <button
-                        onClick={handleClickRowHoverData}
-                        className="bg-black flex text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      >
-                        Number &nbsp;{" "}
-                        <span
-                          className={`${
-                            rowHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {rowHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
-                    </li>
-                    <li className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                    <button
-                        onClick={handleClickDozenHoverData}
-                        className="bg-black flex text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      >
-                        Dozen &nbsp; &nbsp; {" "}
-                        <span
-                          className={`${
-                            dozenHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {dozenHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
-                    </li>
-                    <li className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                    <button
-                        onClick={handleClickColHoverData}
-                        className="bg-black flex text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      >
-                        Column &nbsp;&nbsp; {" "}
-                        <span
-                          className={`${
-                            colHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {colHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
-                    </li>
-                    <li>
-                    <div
-                      className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400"
-                      onClick={() => setShowPopup(!showPopup)}
-                    >
-                      <button className="bg-black flex text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen">
-                        <CgInsights size={24} /> Statistics
-                      </button>
-                    </div>
-                    </li>
-                  </ul>
-            </div> */}
-
-
           </div>
-          
         </div>
-
         <div
           className="flex justify-between items-center px-10 py-2 max-sm:px-3 pb-3 max-sm:hidden"
           // style={{ backgroundColor: "rgb(81,29,91)" }}
@@ -1471,30 +1334,16 @@ useEffect(() => {
                 </div>
               </div>
             )} */}
+
             <div
-              className="flex justify-center items-center py-0 font-semibold text-sm text-gray-500 bg-neutral-300 p-1 rounded-full hover:bg-gray-400"
-              onClick={() => setIsAlertAllowed(!isAlertAllowed)}
+              className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400"
+              onClick={() => setShowPopup(!showPopup)}
             >
-              <div className="bg-black text-white px-5 py-2 rounded-full btns max-sm:text-sm hover:bg-neonGreen cursor-pointer">
-                Alerts{" "}
-                <span
-                  className={
-                    !isAlertAllowed ? "text-red-500" : "text-neonGreen"
-                  }
-                >
-                  {!isAlertAllowed ? "Off!" : "On!"}
-                </span>
-              </div>
+              <button className="bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen">
+                <CgInsights size={24} />
+              </button>
             </div>
 
-            {/* <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400 flex justify-center items-center">
-              <button
-                className="bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                // onClick={handleClickResetButton}
-              >
-                Undo
-              </button>
-            </div> */}
             <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
               <button
                 onClick={handleClickResetButton}
@@ -1503,92 +1352,8 @@ useEffect(() => {
                 Reset
               </button>
             </div>
-
-{/* //---Hamburger Menu button  */}
-
-
-            {/* <div className=" bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                <div className="menu-bars bg-black text-white px-5 py-2 rounded-full btns max-sm:text-sm hover:bg-neonGreen" onClick={showSidebar}>
-                <TiThMenuOutline size={17} />
-                </div>
-            </div>
-            <div className={sidebar ? "nav-menu active" : "nav-menu"}onClick={showSidebar}>
-                  <ul className="nav-menu-items ">
-                    <li id="navbar-toggle">
-                     <AiOutlineClose  size={24}/>
-                    </li>
-                    <li className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                    <button
-                        onClick={handleClickRowHoverData}
-                        className="menu-bars bg-black flex text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      > 
-                        Number &nbsp; {" "}
-                        <span
-                          className={`${
-                            rowHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {rowHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
-                    </li>
-                    <li className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                    <button
-                        onClick={handleClickDozenHoverData}
-                        className="menu-bars bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      >
-                        Dozen &nbsp; &nbsp;{" "}
-                        <span
-                          className={`${
-                            dozenHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {dozenHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
-                    </li>
-                    <li className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                    <button
-                        onClick={handleClickColHoverData}
-                        className="menu-bars bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      >
-                        Column &nbsp; {" "}
-                        <span
-                          className={`${
-                            colHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {colHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
-                    </li>
-                    <li>
-                    <div
-                      className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400"
-                      onClick={() => setShowPopup(!showPopup)}
-                    >
-                      <button className="bg-black flex text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen">
-                        <CgInsights size={20} /> &nbsp;Statistics
-                      </button>
-                    </div>
-                    </li>
-                  </ul>
-            </div> */}
-
-
-
-
-
-
-
-
-
-
-            
           </div>
         </div>
-
-        
       </div>
       <div className="px-4 main h-[75.5vh] flex">
         <div
@@ -1603,7 +1368,7 @@ useEffect(() => {
               <div className="w-[82%] ml-[18%] h-[7%] flex">
                 <div
                   className={`${
-                    repeatLetter === "A"  && rowHoverEffect ? "bg-[#58d68d]" : "bg-customGreen"
+                    repeatLetter === "A" ? "bg-[#58d68d]" : "bg-customGreen"
                   } w-[100%] flex justify-center items-center cursor-pointer border`}
                   onClick={() => handleClickNumber("zero", 0, "A", 0, 0)}
                   style={{
@@ -1633,7 +1398,7 @@ useEffect(() => {
                   <div
                     className="h-[33.33%] border flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold"
                     style={{
-                      backgroundColor: repeatDozen === "1" && dozenHoverEffect ? "#58d68d" : "",
+                      backgroundColor: repeatDozen === "1" ? "#58d68d" : "",
                       border: theme === "dark" ? "" : "1px black solid",
                       color: theme === "dark" ? "" : "black",
                     }}
@@ -1646,7 +1411,7 @@ useEffect(() => {
                   <div
                     className="h-[33.33%] border flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold"
                     style={{
-                      backgroundColor: repeatDozen === "2" && dozenHoverEffect ? "#58d68d" : "",
+                      backgroundColor: repeatDozen === "2" ? "#58d68d" : "",
                       border: theme === "dark" ? "" : "1px black solid",
                       color: theme === "dark" ? "" : "black",
                     }}
@@ -1659,7 +1424,7 @@ useEffect(() => {
                   <div
                     className="h-[33.33%] border flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold"
                     style={{
-                      backgroundColor: repeatDozen === "3" && dozenHoverEffect ? "#58d68d" : "",
+                      backgroundColor: repeatDozen === "3" ? "#58d68d" : "",
                       border: theme === "dark" ? "" : "1px black solid",
                       color: theme === "dark" ? "" : "black",
                     }}
@@ -1685,7 +1450,7 @@ useEffect(() => {
                         }
                         style={{
                           backgroundColor:
-                            item.letter === repeatLetter && rowHoverEffect ? "#58d68d" : item.bg,
+                            item.letter === repeatLetter ? "#58d68d" : item.bg,
                           borderColor:
                             theme === "light" ? "#F5F5F5" : "#0A1F44",
                         }}
@@ -1701,7 +1466,7 @@ useEffect(() => {
                     <div
                       className="w-[33.3%] h-full border flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold"
                       style={{
-                        backgroundColor: repeatCol === "1" && colHoverEffect ? "#58d68d" : "",
+                        backgroundColor: repeatCol === "1" ? "#58d68d" : "",
                         border: theme === "dark" ? "" : "1px black solid",
                         color: theme === "dark" ? "" : "black",
                       }}
@@ -1711,7 +1476,7 @@ useEffect(() => {
                     <div
                       className="w-[33.3%] h-full border flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold"
                       style={{
-                        backgroundColor: repeatCol === "2" && colHoverEffect ? "#58d68d" : "",
+                        backgroundColor: repeatCol === "2" ? "#58d68d" : "",
                         border: theme === "dark" ? "" : "1px black solid",
                         color: theme === "dark" ? "" : "black",
                       }}
@@ -1721,7 +1486,7 @@ useEffect(() => {
                     <div
                       className="w-[33.3%] h-full border flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold"
                       style={{
-                        backgroundColor: repeatCol === "3" && colHoverEffect ? "#58d68d" : "",
+                        backgroundColor: repeatCol === "3" ? "#58d68d" : "",
                         border: theme === "dark" ? "" : "1px black solid",
                         color: theme === "dark" ? "" : "black",
                       }}
@@ -1734,11 +1499,11 @@ useEffect(() => {
             </div>
           </div>
         </div>
-        <div className="w-[10%] h-full  max-sm:flex justify-center items-center statistics "   >
+
+        <div className="w-[10%] h-full hidden max-sm:flex flex-col justify-center">
           <div
-            className="border rounded-full flex justify-center bg-black items-center relative cursor-pointer z-30 hover:bg-neonGreen"
+            className="border rounded-full flex justify-center items-center relative z-30"
             onClick={() => setShowPopup(!showPopup)}
-            style={{padding:"5px",width:"50px"}}
           >
             <CgInsights size={24} />
           </div>
@@ -1797,7 +1562,7 @@ useEffect(() => {
         <p>col Loss - {analyzeData.colLossPer}</p>
       </div> */}
 
-<div
+      <div
         className="w-full h-screen absolute top-0 flex justify-center items-center"
         style={{
           display: showPopup ? "flex" : "none",
@@ -1806,42 +1571,10 @@ useEffect(() => {
         onClick={() => setShowPopup(false)}
       >
         <div className="max-sm:mr-4">
-          <table className="border w-[35rem] max-md:w-[22rem] max-sm:w-[18rem]">
-            <tr className="max-sm:h-20 max-md:h-20" >
-              <th className="w-[30%] max-sm:w-[30] border py-2 bg-yellow-500 text-black">Category</th>
-              <th className="w-[40%] max-sm:w-[50] border bg-yellow-500 text-black break-words relative">Hot/Stable/Cold 
-
-              <div
-                className="text-gray-400 absolute  cursor-pointer bg-neutral-700 w-5 h-5 flex justify-center items-center rounded-full"
-                onMouseEnter={() => setI_btn(true)}
-                onMouseLeave={()=> setI_btn(false)}
-              style={{right:"10px",bottom:"6px"}}
-              >
-                i
-              </div>
-
-              <div
-                className="bg-customPurple p-2 flex justify-between mb-4 text-start  items-start text-white w-60 h-24 max-sm:w-45 max-sm:h-35 absolute bottom-6 max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%]"
-                style={{ display: i_btn ? "flex" : "none" }}
-                id="statsInfo"
-              >
-
-                <div className="text-start" style={{fontSize:"11px",paddingLeft:"5px"}}>
-                  <p>
-                    <span className="font-bold me-2">Hot : </span>&nbsp; &nbsp; &nbsp;  Good table For betting ✅
-                  </p>
-
-                  <p className="border-y my-1 py-1">
-                    <span className="font-bold me-2">Stable : </span>Decent choice,be cautious ⚖️
-                  </p>
-
-                  <p>
-                    <span className="font-bold me-2">Cold : </span> &nbsp; &nbsp;Avoid, too unpredictable ❌
-                  </p>
-                </div>
-              </div>
-              </th>
-              <th className="w-[30%] bg-yellow-500 max-sm:w-[20] text-black">ON/OFF</th>
+          <table className="border w-[20rem] max-sm:w-[13rem]">
+            <tr>
+              <th className="w-[50%] bg-yellow-500 text-black">Category</th>
+              <th className="w-[50%] bg-yellow-500 text-black p-1">Hot/Cold</th>
             </tr>
 
             {/* Numbers */}
@@ -1875,21 +1608,6 @@ useEffect(() => {
                     ? `Stable`
                     : `Cold`;
                 })()}
-              </td>
-              <td className="font-semibold text-center border max-sm:text-sm  " >
-                      <button
-                        onClick={handleClickRowHoverData}
-                        className="menu-bars bg-black text-white px-2  rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      > 
-                        {" "}
-                        <span
-                          className={`${
-                            rowHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {rowHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
               </td>
             </tr>
 
@@ -1925,21 +1643,6 @@ useEffect(() => {
                     : `Cold`;
                 })()}
               </td>
-              <td className="font-semibold text-center border max-sm:text-sm  " >
-              <button
-                        onClick={handleClickDozenHoverData}
-                        className="menu-bars bg-black text-white px-2  rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      >
-                        {" "}
-                        <span
-                          className={`${
-                            dozenHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {dozenHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
-              </td>
             </tr>
 
             {/* Column */}
@@ -1974,21 +1677,6 @@ useEffect(() => {
                     : `Cold`;
                 })()}
               </td>
-              <td className="font-semibold text-center border max-sm:text-sm  " >
-                     <button
-                        onClick={handleClickColHoverData}
-                        className="menu-bars bg-black text-white px-2 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      >
-                         {" "}
-                        <span
-                          className={`${
-                            colHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {colHoverEffect ? "On" : "Off"}
-                        </span>
-                    </button>
-              </td>
             </tr>
           </table>
 
@@ -2001,12 +1689,8 @@ useEffect(() => {
         </div>
       </div>
 
-
-
-
       <div
-        // className="h-[65vh] mt-5 w-full overflow-y-scroll rounded-xl p-2 scrollOff"
-        className="h-[35vh] mt-5 w-full rounded-xl p-2 flex justify-center items-center flex-col"
+        className="h-[65vh] mt-5 w-full overflow-y-scroll rounded-xl p-2 scrollOff"
         style={{
           background:
             theme === "dark"
@@ -2019,24 +1703,12 @@ useEffect(() => {
           border: theme === "dark" ? "white 2px solid" : "black 2px solid",
         }}
       >
-        <h2 className={`text-lg font-bold my-4 ${theme === 'dark' ? 'text-white' : 'text-black'}`} >Money Management Tool</h2>
-        <span className={`${theme === 'dark' ? 'text-white' : 'text-black'}`} ><i className="fa-regular fa-clock mx-3"></i>Coming Soon !</span>
-        {/* <button
-          onClick={() => setMoneyManagementData([])}
-          className="border py-1 px-4 rounded-lg mb-2 mx-2"
-        >
-          Reset
-        </button> */}
-        {/* <MoneyManagementTable
+        <button onClick={() => setMoneyManagementData([])} className="border py-1 px-4 rounded-lg mb-2 mx-2" >Reset</button>
+        <MoneyManagementTable
           moneyManagementData={moneyManagementData}
           theme={theme}
-        /> */}
+        />
       </div>
-
-
-      {
-        planLockScreen && <Lock setPlanLockScreen={setPlanLockScreen} />
-      }
     </>
   );
 };
