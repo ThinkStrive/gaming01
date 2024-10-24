@@ -15,7 +15,7 @@ import Lock from "../resources/Lock.jsx";
 import axios from "axios";
 import { USER_DETAILS } from "../api/ApiDetails.js";
 const Project4 = ({ theme }) => {
-  const [isAlertAllowed, setIsAlertAllowed] = useState(false);
+  const [isAlertAllowed, setIsAlertAllowed] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
   const showToast = useToast();
   const [rowHoverEffect, setRowHoverEffect] = useState(true);

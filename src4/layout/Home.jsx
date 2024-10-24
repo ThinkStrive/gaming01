@@ -22,7 +22,7 @@ function Home() {
   const location = useLocation();
   const [theme, setTheme] = useState(() => {
     const savedTheme = JSON.parse(localStorage.getItem("Theme"));
-    return savedTheme ? savedTheme.theme : "dark";
+    return savedTheme ? savedTheme.theme : "light";
   });
 
   const [navHeaderName, setNavHeaderName] = useState("project1");

@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
 import History from "../reuse/project1/history/History.jsx";
 import background from "../../assets/imgs/2002.i029.002_realistic-poker-club-illustration.jpg";
-import { data } from "../reuse/project1/logic/Project1ComponetRenderData.js";
+import { data } from "../reuse/project1/logic/mainComponetRenderData.js";
 import "../../Style/Main.css";
 import Nav from "../nav/nav.jsx";
 import { GrPowerReset } from "react-icons/gr";
-import Lock from "../resources/Lock.jsx";
-import { USER_DETAILS } from "../api/ApiDetails.js";
-import axios from "axios";
 
-const Project1 = ({ theme }) => {
+const Main = ({ theme, setTheme }) => {
   const [isa_Active, setIsa_Active] = useState(true);
   const [isb_Active, setIsb_Active] = useState(false);
   const [isc_Active, setIsc_Active] = useState(false);
@@ -40,22 +37,6 @@ const Project1 = ({ theme }) => {
 
   const [summaryData, setSummaryData] = useState(() => {
     const savedSummaryData = localStorage.getItem("summaryData");
-    return savedSummaryData
-      ? JSON.parse(savedSummaryData)
-      : {
-          lowEvenRed: 0,
-          lowOddRed: 0,
-          highEvenRed: 0,
-          highOddRed: 0,
-          lowEvenBlack: 0,
-          lowOddBlack: 0,
-          highEvenBlack: 0,
-          highOddBlack: 0,
-        };
-  });
-
-  const [nonSummaryData, setNonSummaryData] = useState(() => {
-    const savedSummaryData = localStorage.getItem("nonSummaryData");
     return savedSummaryData
       ? JSON.parse(savedSummaryData)
       : {
@@ -142,7 +123,7 @@ const Project1 = ({ theme }) => {
         };
   });
 
-  const [singleStreetData, setSingleStreetData] = useState(() => {
+  const [singleStreetData, setSIngleStreetData] = useState(() => {
     const savedData = localStorage.getItem("singleStreetData");
     return savedData
       ? JSON.parse(savedData)
@@ -187,18 +168,17 @@ const Project1 = ({ theme }) => {
     return savedData
       ? JSON.parse(savedData)
       : {
-          countData: {},
-          doubleStreetData: {},
-          singleStreetData: {},
-          summaryData: {},
-          nonSummaryData: {},
-          circleData: {},
-          lastHitNumber: {},
-          lastHitData: {},
-          nonCircleData: {},
-          historyData: [],
-          nonDoubleStreetData: {},
-          nonSingleStreetData: {},
+        countData: {},
+        doubleStreetData: {},
+        singleStreetData: {},
+        summaryData: {},
+        circleData: {},
+        lastHitNumber: {},
+        lastHitData: {},
+        nonCircleData: {},
+        historyData : [],
+        nonDoubleStreetData : {},
+        nonSingleStreetData : {},
         };
   });
 
@@ -222,10 +202,6 @@ const Project1 = ({ theme }) => {
     localStorage.setItem("summaryData", JSON.stringify(summaryData));
   }, [summaryData]);
 
-  useEffect(() => {
-    localStorage.setItem("nonSummaryData", JSON.stringify(nonSummaryData));
-  }, [nonSummaryData]);
-
   // Save `lastHitData` to local storage whenever it changes
   useEffect(() => {
     localStorage.setItem("lastHitData", JSON.stringify(lastHitData));
@@ -248,7 +224,7 @@ const Project1 = ({ theme }) => {
   useEffect(() => {
     localStorage.setItem(
       "nonDoubleStreetData",
-      JSON.stringify(nonDoubleStreetData),
+      JSON.stringify(nonDoubleStreetData)
     );
   }, [nonDoubleStreetData]);
 
@@ -259,7 +235,7 @@ const Project1 = ({ theme }) => {
   useEffect(() => {
     localStorage.setItem(
       "nonSingleStreetData",
-      JSON.stringify(nonSingleStreetData),
+      JSON.stringify(nonSingleStreetData)
     );
   }, [nonSingleStreetData]);
 
@@ -277,35 +253,6 @@ const Project1 = ({ theme }) => {
 
   // Handle reset button click
   const handleClickResetButton = () => {
-    let resetDoubleData = {
-      one_six: 0,
-      seven_twelve: 0,
-      thirteen_eighteen: 0,
-      nineteen_twentyFour: 0,
-      twentyFive_thirty: 0,
-      thirtyOne_thirtySix: 0,
-    };
-    
-    let resetSingleStreetData = {
-      one_three: 0,
-      four_six: 0,
-      seven_nine: 0,
-      ten_twelve: 0,
-      thirteen_fifteen: 0,
-      sixteen_eighteen: 0,
-      nineteen_twentyOne: 0,
-      twentyTwo_twentyFour: 0,
-      twentyFive_twentySeven: 0,
-      twentyEight_thirty: 0,
-      thirtyOne_thirtyThree: 0,
-      thirtyFour_thirtySix: 0,
-    };
-    let resetCircleData = {
-      zero: 0,
-      duZero: 0,
-      orphe: 0,
-      tires: 0,
-    };
     const resetState = {
       red: 0,
       black: 0,
@@ -321,8 +268,7 @@ const Project1 = ({ theme }) => {
       col_three: 0,
     };
     setCountData(resetState);
-  
-    let summaryResetData = {
+    setSummaryData({
       lowEvenRed: 0,
       lowOddRed: 0,
       highEvenRed: 0,
@@ -331,69 +277,11 @@ const Project1 = ({ theme }) => {
       lowOddBlack: 0,
       highEvenBlack: 0,
       highOddBlack: 0,
-    };
-    setDoubleStreetData(resetDoubleData);
-    setNonDoubleStreetData(resetDoubleData);
-    setSingleStreetData(resetSingleStreetData);
-    setNonSingleStreetData(resetSingleStreetData);
-    setSummaryData(summaryResetData);
-    setNonSummaryData(summaryResetData);
+    });
     setLastHitData(resetState);
     setLastHitNumber(null);
-    setCircleData(resetCircleData);
-    setNonCircleData(resetCircleData);
     setHistoryData([]);
-  
-    // Reset the necessary data in local storage
-    localStorage.setItem("countData", JSON.stringify(resetState));
-    localStorage.setItem("lastHitData", JSON.stringify(resetState));
-    localStorage.setItem("lastHitNumber", null);
-    localStorage.setItem("historyData", JSON.stringify([]));
-    localStorage.setItem("summaryData", JSON.stringify(summaryResetData));
-    localStorage.setItem("nonSummaryData", JSON.stringify(summaryResetData));
-    localStorage.setItem("doubleStreetData", JSON.stringify(resetDoubleData));
-    localStorage.setItem("nonDoubleStreetData", JSON.stringify(resetDoubleData));
-    localStorage.setItem("singleStreetData", JSON.stringify(resetSingleStreetData));
-    localStorage.setItem("nonSingleStreetData", JSON.stringify(resetSingleStreetData));
-    localStorage.setItem("circleData", JSON.stringify(resetCircleData));
-    localStorage.setItem("nonCircleData", JSON.stringify(resetCircleData));
-  };
 
-  //Reset For Wheel Section Breakdown
-  const handleClickWsbResetButton = ()=>{
-    let resetCircleData = {
-      zero: 0,
-      duZero: 0,
-      orphe: 0,
-      tires: 0,
-    };
-  
-    setCircleData(resetCircleData);
-    setNonCircleData(resetCircleData);
-    localStorage.setItem("circleData", JSON.stringify(resetCircleData));
-    localStorage.setItem("nonCircleData", JSON.stringify(resetCircleData));
-  }
-  //Quadro Reset Button
-  const handleClickQuadroResetButton = ()=>{
-    let summaryResetData = {
-      lowEvenRed: 0,
-      lowOddRed: 0,
-      highEvenRed: 0,
-      highOddRed: 0,
-      lowEvenBlack: 0,
-      lowOddBlack: 0,
-      highEvenBlack: 0,
-      highOddBlack: 0,
-    };
-    setSummaryData(summaryResetData);
-    setNonSummaryData(summaryResetData);
-    localStorage.setItem("summaryData", JSON.stringify(summaryResetData));
-    localStorage.setItem("nonSummaryData", JSON.stringify(summaryResetData));
-
-  }
-  //Handle Street rest Button
-  const handleClickResetStreetButton = () => {
-    // Reset data for doubleStreetData and singleStreetData only
     let resetDoubleData = {
       one_six: 0,
       seven_twelve: 0,
@@ -402,7 +290,6 @@ const Project1 = ({ theme }) => {
       twentyFive_thirty: 0,
       thirtyOne_thirtySix: 0,
     };
-    
     let resetSingleStreetData = {
       one_three: 0,
       four_six: 0,
@@ -417,20 +304,46 @@ const Project1 = ({ theme }) => {
       thirtyOne_thirtyThree: 0,
       thirtyFour_thirtySix: 0,
     };
-  
-    // Reset state for double and single street data
+
     setDoubleStreetData(resetDoubleData);
     setNonDoubleStreetData(resetDoubleData);
-    setSingleStreetData(resetSingleStreetData);
+
+    setSIngleStreetData(resetSingleStreetData);
     setNonSingleStreetData(resetSingleStreetData);
-  
-    // Also reset the corresponding data in local storage
+
+    let resetCircleData = {
+      zero: 0,
+      duZero: 0,
+      orphe: 0,
+      tires: 0,
+    };
+
+    setCircleData(resetCircleData);
+    setNonCircleData(resetCircleData);
+    
+
+    // Also reset the data in local storage
+    localStorage.setItem("countData", JSON.stringify(resetState));
+    localStorage.setItem("summaryData", JSON.stringify(resetState));
+    localStorage.setItem("lastHitData", JSON.stringify(resetState));
     localStorage.setItem("doubleStreetData", JSON.stringify(resetDoubleData));
-    localStorage.setItem("nonDoubleStreetData", JSON.stringify(resetDoubleData));
-    localStorage.setItem("singleStreetData", JSON.stringify(resetSingleStreetData));
-    localStorage.setItem("nonSingleStreetData", JSON.stringify(resetSingleStreetData));
+    localStorage.setItem(
+      "nonDoubleStreetData",
+      JSON.stringify(resetDoubleData)
+    );
+    localStorage.setItem(
+      "singleStreetData",
+      JSON.stringify(resetSingleStreetData)
+    );
+    localStorage.setItem(
+      "nonSingleStreetData",
+      JSON.stringify(resetSingleStreetData)
+    );
+    localStorage.setItem("circleData", JSON.stringify(resetCircleData));
+    localStorage.setItem("nonCircleData", JSON.stringify(resetCircleData));
+    localStorage.setItem("lastHitNumber", null);
+    localStorage.setItem("historyData", JSON.stringify([]));
   };
-  
 
   const updateMapping = {
     zero: {
@@ -937,8 +850,7 @@ const Project1 = ({ theme }) => {
       nonCircleData,
       circleData,
       historyData,
-      nonSingleStreetData,
-      nonSummaryData,
+      nonSingleStreetData
     });
 
     // Update countData
@@ -953,17 +865,15 @@ const Project1 = ({ theme }) => {
     setDoubleStreetData((prevState) => {
       const updatedCounts = {};
       Object.keys(doubleStreetDataUpdates).forEach((field) => {
-        updatedCounts[field] =
-          prevState[field] + doubleStreetDataUpdates[field];
+        updatedCounts[field] = prevState[field] + doubleStreetDataUpdates[field];
       });
       return { ...prevState, ...updatedCounts };
     });
 
-    setSingleStreetData((prevState) => {
+    setSIngleStreetData((prevState) => {
       const updatedCounts = {};
       Object.keys(singleStreetDataUpdates).forEach((field) => {
-        updatedCounts[field] =
-          prevState[field] + singleStreetDataUpdates[field];
+        updatedCounts[field] = prevState[field] + singleStreetDataUpdates[field];
       });
       return { ...prevState, ...updatedCounts };
     });
@@ -1008,17 +918,6 @@ const Project1 = ({ theme }) => {
       thirtyOne_thirtySix: doubleStreetDataUpdates.thirtyOne_thirtySix || 0,
     };
 
-    const clickedSummaryData = {
-      lowEvenRed: summaryUpdates.lowEvenRed || 0,
-      lowOddRed: summaryUpdates.lowOddRed || 0,
-      highEvenRed: summaryUpdates.highEvenRed || 0,
-      highOddRed: summaryUpdates.highOddRed || 0,
-      lowEvenBlack: summaryUpdates.lowEvenBlack || 0,
-      lowOddBlack: summaryUpdates.lowOddBlack || 0,
-      highEvenBlack: summaryUpdates.highEvenBlack || 0,
-      highOddBlack: summaryUpdates.highOddBlack || 0,
-    };
-
     const clickedDataSingleStreetData = {
       one_three: singleStreetDataUpdates.one_three || 0,
       four_six: singleStreetDataUpdates.four_six || 0,
@@ -1028,8 +927,7 @@ const Project1 = ({ theme }) => {
       sixteen_eighteen: singleStreetDataUpdates.sixteen_eighteen || 0,
       nineteen_twentyOne: singleStreetDataUpdates.nineteen_twentyOne || 0,
       twentyTwo_twentyFour: singleStreetDataUpdates.twentyTwo_twentyFour || 0,
-      twentyFive_twentySeven:
-        singleStreetDataUpdates.twentyFive_twentySeven || 0,
+      twentyFive_twentySeven: singleStreetDataUpdates.twentyFive_twentySeven || 0,
       twentyEight_thirty: singleStreetDataUpdates.twentyEight_thirty || 0,
       thirtyOne_thirtyThree: singleStreetDataUpdates.thirtyOne_thirtyThree || 0,
       thirtyFour_thirtySix: singleStreetDataUpdates.thirtyFour_thirtySix || 0,
@@ -1048,8 +946,8 @@ const Project1 = ({ theme }) => {
         clickedDataUpdates.red === 1
           ? "red"
           : clickedDataUpdates.black === 1
-            ? "black"
-            : "zero",
+          ? "black"
+          : "zero",
     });
 
     setLastHitData((prevLastHitData) => {
@@ -1063,16 +961,7 @@ const Project1 = ({ theme }) => {
       return updatedLastHitData;
     });
 
-    setNonSummaryData((prevLastHitData) => {
-      const updatedLastHitData = {};
 
-      Object.keys(prevLastHitData).forEach((field) => {
-        updatedLastHitData[field] =
-          clickedSummaryData[field] > 0 ? 0 : prevLastHitData[field] + 1;
-      });
-
-      return updatedLastHitData;
-    });
 
     setNonDoubleStreetData((prevLastHitData) => {
       const updatedLastHitData = {};
@@ -1116,37 +1005,36 @@ const Project1 = ({ theme }) => {
         clickedDataUpdates.red === 1
           ? "red"
           : clickedDataUpdates.black === 1
-            ? "black"
-            : "zero",
+          ? "black"
+          : "zero",
       size:
         clickedDataUpdates.one_eighteen === 1
           ? "small"
           : clickedDataUpdates.nineteen_thirtySix === 1
-            ? "large"
-            : "zero",
+          ? "large"
+          : "zero",
       odd_even:
         clickedDataUpdates.odd === 1
           ? "odd"
           : clickedDataUpdates.even === 1
-            ? "even"
-            : "zero",
+          ? "even"
+          : "zero",
       dozen:
         clickedDataUpdates.dozen_one === 1
           ? "1st"
           : clickedDataUpdates.dozen_two === 1
-            ? "2nd"
-            : clickedDataUpdates.dozen_three === 1
-              ? "3rd"
-              : "zero",
+          ? "2nd"
+          : clickedDataUpdates.dozen_three === 1
+          ? "3rd"
+          : "zero",
       column:
         clickedDataUpdates.col_one === 1
           ? "1st"
           : clickedDataUpdates.col_two === 1
-            ? "2nd"
-            : clickedDataUpdates.col_three === 1
-              ? "3rd"
-              : "zero",
-      His_num: number,
+          ? "2nd"
+          : clickedDataUpdates.col_three === 1
+          ? "3rd"
+          : "zero",
     };
 
     setHistoryData([...historyData, changedHistoryData]);
@@ -1157,11 +1045,10 @@ const Project1 = ({ theme }) => {
       setCountData(previousState.countData);
       setDoubleStreetData(previousState.doubleStreetData);
       setNonDoubleStreetData(previousState.nonDoubleStreetData);
-      setSingleStreetData(previousState.singleStreetData);
+      setSIngleStreetData(previousState.singleStreetData);
       setNonSingleStreetData(previousState.nonSingleStreetData);
       setHistoryData(previousState.historyData);
       setSummaryData(previousState.summaryData);
-      setNonSummaryData(previousState.nonSummaryData);
       setCircleData(previousState.circleData);
       setNonCircleData(previousState.nonCircleData);
       setLastHitNumber(previousState.lastHitNumber);
@@ -1170,145 +1057,6 @@ const Project1 = ({ theme }) => {
       console.log("err", err);
     }
   };
-
-  console.log("summary data", summaryData);
-  console.log("previous state", nonSummaryData);
-
-
-
-
-
-
-
-const [planLockScreen, setPlanLockScreen] = useState(false)
-
-useEffect(() => {
-  const fetchUserDetails = async () => {
-    try {
-      let userData = JSON.parse(localStorage.getItem('userData'));
-      const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
-
-      console.log('response', response.data);
-      
-      if (!response.data.data.projectsPlan.project1) {
-        setPlanLockScreen(true);
-      } else {
-        setPlanLockScreen(false);
-      }
-    } catch (err) {
-      console.log('err', err);
-    }
-  };
-
-  // Call the async function
-  fetchUserDetails();
-}, []);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//-------function to calculate the percentage for the "Red" and "Black" categories
-const calculateColorPercentage = (numerator, red, black) => {
-  const total = red + black;
-
-  // Return "0%" if total is 0 to avoid NaN
-  if (total === 0) {
-      return 0;
-  }
-
-  // Calculate the percentage and round to the nearest integer
-  const percentage = Math.round((numerator / total) *100 );
-  return `${percentage}`;
-};
-
-
-//-------function for the "Even" and "Odd" categories
-const calculateEvenOddPercentage = (numerator, even, odd) => {
-  const total = even + odd;
-
-  // Return "0%" if total is 0 to avoid NaN
-  if (total === 0) {
-      return 0;
-  }
-
-  // Calculate the percentage and round to the nearest integer
-  const percentage = Math.round((numerator / total) * 100);
-  return `${percentage}`;
-};
-
-//---------function for the "Dozen" categories
-
-  const calculatePercentage = (numerator, denominator1, denominator2, denominator3) => {
-    const total = denominator1 + denominator2 + denominator3;
-  
-    // Return 0 if the total is 0 to avoid NaN
-    if (total === 0) {
-      return 0;
-    }
-    // Calculate the percentage and round to nearest integer
-    const percentage = Math.round((numerator / total) * 100);
-    return `${percentage}`;
-  };
-
-  // ------------1st,2nd and 3rd Column Calculation
-
-  const calculateColumnPercentage = (numerator, col_one, col_two, col_three) => {
-    const total = col_one + col_two + col_three;
-  
-    // Return 0 if the total is 0 to avoid NaN
-    if (total === 0) {
-      return 0;
-    }
-    // Calculate the percentage and round to nearest integer
-    const percentage = Math.round((numerator / total) * 100);
-    return `${percentage}`;
-};
-
-//--------Function to Calculate Percentage for "1-18" and "19-36"
-
-const calculateRangePercentage = (numerator, one_eighteen, nineteen_thirtySix) => {
-  const total = one_eighteen + nineteen_thirtySix;
-
-  // Avoid NaN by returning 0% if the total is 0
-  if (total === 0) {
-      return 0;
-  }
-
-  const percentage = Math.round((numerator / total) * 100);
-  return `${percentage}`;
-};
-
-
-const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers) => {
-  const total = zero + voisins + orphelins + tiers
-
-  // Avoid NaN by returning 0% if the total is 0
-  if (total === 0) {
-      return 0;
-  }
-
-  const percentage = Math.round((number / total) * 100);
-  return `${percentage}`;
-};
-
 
   const tableRow = (category, count, lastHit, screen) => {
     return (
@@ -1324,13 +1072,16 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
         </td>
         <td
           className={
-            count <= 0 ? "bg-customGray text-black border  hover:bg-softBlue hover:text-white" :
-            count <= 33 ? "bg-lightBlue1 text-black border  hover:bg-softBlue hover:text-white" :
-            count <= 66 ? "bg-mediumBlue1 text-white border  hover:bg-softBlue hover:text-white" :
-            "bg-darkBlue1 text-white border hover:bg-softBlue hover:text-white"
-          }  
+            count >= 6
+              ? "bg-darkBlue border hover:bg-softBlue"
+              : count > 0 && count <= 2
+                ? "bg-lightBlue text-black border hover:bg-softBlue"
+                : count > 2 && count <= 5
+                  ? "bg-mediumBlue text-black border hover:bg-softBlue"
+                  : "bg-customGray text-black border hover:bg-softBlue"
+          }
           style={{
-            padding: screen === "small" ? "7px 10px" : "",
+            padding: screen === "small" ? "3px 10px" : "",
             borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
           }}
         >
@@ -1341,57 +1092,11 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
             lastHit >= 11
               ? "bg-normalRed border hover:bg-softBlue"
               : lastHit > 0 && lastHit <= 3
-                ? "bg-lightGreen text-black border hover:bg-softBlue hover:text-white"
+                ? "bg-lightGreen text-black border hover:bg-softBlue"
                 : lastHit > 3 && lastHit <= 10
-                  ? "bg-customYellow text-black border hover:bg-softBlue hover:text-white"
-                  : "bg-customGray text-black border hover:bg-softBlue hover:text-white"
-            }
-          style={{
-            padding: screen === "small" ? "3px 10px" : "",
-            borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
-          }}
-        >
-          {lastHit}
-        </td>
-      </tr>
-    );
-  };
-  const tableRowCount = (category, count, lastHit, screen, countData) => {
-    return (
-      <tr className="text-center">
-        <td
-          className="bg-customGray border text-darkNavy max-sm:text-xs max-sm:py-2  text-base max-lg:text-sm font-semibold"
-          style={{
-            padding: screen === "small" ? "7px 10px" : "",
-            borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
-          }}
-        >
-          {category}
-        </td>
-        <td
-          className={
-            count <= 0 ? "bg-customGray text-black border hover:bg-softBlue hover:text-white" :
-            count <= 33 ? "bg-lightBlue1 text-black border hover:bg-softBlue hover:text-white" :
-            count <= 66 ? "bg-mediumBlue1 text-white border hover:bg-softBlue hover:text-white" :
-            "bg-darkBlue1 text-white border hover:bg-softBlue hover:text-white"
-          }  
-          style={{
-            padding: screen === "small" ? "7px 10px" : "",
-            borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
-          }}
-        >
-          {countData}
-        </td>
-        <td
-          className={
-            lastHit >= 11
-              ? "bg-normalRed border hover:bg-softBlue"
-              : lastHit > 0 && lastHit <= 3
-                ? "bg-lightGreen text-black border hover:bg-softBlue hover:text-white"
-                : lastHit > 3 && lastHit <= 10
-                  ? "bg-customYellow text-black border hover:bg-softBlue hover:text-white"
-                  : "bg-customGray text-black border hover:bg-softBlue hover:text-white"
-            }
+                  ? "bg-customYellow text-black border hover:bg-softBlue"
+                  : "bg-customGray text-black border hover:bg-softBlue"
+          }
           style={{
             padding: screen === "small" ? "3px 10px" : "",
             borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
@@ -1416,13 +1121,9 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
         </div>
         <div
           className={
-            count >= 6
-              ? "bg-darkBlue border hover:bg-softBlue hover:text-white w-[33.3%] flex items-center justify-center max-md:text-sm"
-              : count > 0 && count <= 2
-                ? "bg-lightBlue text-black border hover:bg-softBlue hover:text-white w-[33.3%] flex items-center justify-center max-md:text-sm"
-                : count > 2 && count <= 5
-                  ? "bg-mediumBlue text-white border hover:bg-softBlue hover:text-white w-[33.3%] flex items-center justify-center max-md:text-sm"
-                  : "bg-customGray text-black border hover:bg-softBlue hover:text-white w-[33.3%] flex items-center justify-center max-md:text-sm"
+            count !== 0
+              ? "w-[33.3%] bg-goldenYellow flex items-center justify-center border max-md:text-sm"
+              : "w-[33.3%] bg-customGray text-black font-semibold flex items-center justify-center border max-md:text-sm"
           }
           style={{
             borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
@@ -1433,19 +1134,15 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
 
         <div
           className={
-            lastHit >= 11
-              ? "w-[33.3%] flex items-center justify-center max-md:text-sm bg-normalRed border hover:bg-softBlue"
-              : lastHit > 0 && lastHit <= 5
-                ? "bg-lightGreen text-black border hover:bg-softBlue hover:text-white w-[33.3%] flex items-center justify-center max-md:text-sm"
-                : lastHit > 5 && lastHit <= 10
-                  ? "bg-customYellow text-black border hover:bg-softBlue hover:text-white w-[33.3%] flex items-center justify-center max-md:text-sm"
-                  : "bg-customGray text-black border hover:bg-softBlue hover:text-white w-[33.3%] flex items-center justify-center max-md:text-sm"
+            count !== 0
+              ? "w-[33.3%] bg-goldenYellow flex items-center justify-center border max-md:text-sm"
+              : "w-[33.3%] bg-customGray text-black font-semibold flex items-center justify-center border max-md:text-sm"
           }
           style={{
             borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
           }}
         >
-          {lastHit}
+          {count}
         </div>
       </>
     );
@@ -1477,8 +1174,8 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
 
   return (
     <>
-      <div className="sticky lg:top-0 max-sm:top-0 md:top-0 z-30">
-        {/* <Nav theme={theme} setTheme={setTheme} /> */}
+      <div className="sticky top-0 z-40">
+        <Nav theme={theme} setTheme={setTheme} />
         <div
           className="py-3 px-2 justify-between flex sm--navbar"
           style={{ backgroundColor: "#FFFBE3" }}
@@ -1524,9 +1221,8 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
               </div>
             </div>
 
-            <button
-              className="text-gray-500 py-1 px-1 rounded-full text-sm font-semibold"
-              onClick={handleClickUndoButton}
+            <button className="text-gray-500 py-1 px-1 rounded-full text-sm font-semibold"
+            onClick={handleClickResetButton}
             >
               Undo
             </button>
@@ -1574,8 +1270,8 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
           </div> */}
           <div className="flex gap-2">
             <div className="bg-neutral-300 p-1 rounded-full">
-            <div
-                className="flex justify-center items-center bg-customBlack p-1.5 px-3 cursor-pointer rounded-full hover:bg-gray-500"
+              <div
+                className="flex justify-center items-center bg-customBlack p-1.5 font-semibold cursor-pointer rounded-full hover:bg-gray-500"
                 onClick={() => setIsAlertAllowed(!isAlertAllowed)}
               >
                 Alerts{" "}
@@ -1592,9 +1288,8 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
             </div>
 
             <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-              <button
-                className="bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                onClick={handleClickUndoButton}
+              <button className="bg-black text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
+              onClick={handleClickUndoButton}
               >
                 Undo
               </button>
@@ -1927,114 +1622,55 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
               className="w-[30%] max-sm:w-[40%] table--1"
             >
               <thead>
-                <tr className="text-center max-sm:text-base md:text-sm" >
-                  <th className="border p-3 max-sm:p-2 bg-customGreen"
-                  style={{padding: screen === "small" ? "7px 10px" : "",
-                    borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",}}
-                  >
+                <tr className="text-center max-sm:text-base md:text-sm">
+                  <th className="border p-3 max-sm:p-2 bg-customGreen">
                     Category
                   </th>
-                  <th className="border p-3 max-sm:p-2 bg-customGreen"
-                  style={{padding: screen === "small" ? "7px 10px" : "",
-                    borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",}}
-                  >
+                  <th className="border p-3 max-sm:p-2 bg-customGreen">
                     Count
                   </th>
-                  <th className="border p-3 max-sm:p-2 bg-customGreen"
-                  style={{padding: screen === "small" ? "7px 10px" : "",
-                    borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",}}
-                  >
+                  <th className="border p-3 max-sm:p-2 bg-customGreen">
                     Last Hit
                   </th>
                 </tr>
               </thead>
               <tbody>
-              {tableRowCount(
-                "Red",
-                calculateColorPercentage(countData.red, countData.red, countData.black),
-                lastHitData.red,
-                '',
-                countData.red,
-              )}
-              {tableRowCount(
-                "Black",
-                calculateColorPercentage(countData.black, countData.red, countData.black),
-                lastHitData.black,
-                '',
-                countData.black,
-              ) }
-
-                {tableRowCount(
-                  "Even",
-                  calculateEvenOddPercentage(countData.even, countData.even, countData.odd),
-                  lastHitData.even,
-                  '',
-                  countData.even,
-                )}
-                {tableRowCount(
-                  "Odd",
-                  calculateEvenOddPercentage(countData.odd, countData.even, countData.odd),
-                  lastHitData.odd,
-                  '',
-                  countData.odd
-                )}
-                {tableRowCount(
+                {tableRow("Red", countData.red, lastHitData.red)}
+                {tableRow("Black", countData.black, lastHitData.black)}
+                {tableRow("Even", countData.even, lastHitData.even)}
+                {tableRow("Odd", countData.odd, lastHitData.odd)}
+                {tableRow(
                   "1-18",
-                  calculateRangePercentage(countData.one_eighteen, countData.one_eighteen, countData.nineteen_thirtySix),
+                  countData.one_eighteen,
                   lastHitData.one_eighteen,
-                  '',
-                  countData.one_eighteen
                 )}
-                {tableRowCount(
+                {tableRow(
                   "19-36",
-                  calculateRangePercentage(countData.nineteen_thirtySix, countData.one_eighteen, countData.nineteen_thirtySix),
+                  countData.nineteen_thirtySix,
                   lastHitData.nineteen_thirtySix,
-                  '',
-                  countData.nineteen_thirtySix
                 )}
-                {tableRowCount(
+                {tableRow(
                   "1st Dozen",
-                  calculatePercentage(countData.dozen_one, countData.dozen_one,countData.dozen_two,countData.dozen_three),
+                  countData.dozen_one,
                   lastHitData.dozen_one,
-                  '',
-                  countData.dozen_one
                 )}
-                {tableRowCount(
+                {tableRow(
                   "2nd Dozen",
-                  calculatePercentage(countData.dozen_two, countData.dozen_one,countData.dozen_two,countData.dozen_three),
+                  countData.dozen_two,
                   lastHitData.dozen_two,
-                  '',
-                  countData.dozen_two
                 )}
-                {tableRowCount(
+                {tableRow(
                   "3rd Dozen",
-                  calculatePercentage(countData.dozen_three, countData.dozen_one,countData.dozen_two,countData.dozen_three),
+                  countData.dozen_three,
                   lastHitData.dozen_three,
-                  '',
-                  countData.dozen_three
                 )}
-                {tableRowCount(
-                  "1st Column", 
-                  calculateColumnPercentage(countData.col_one, countData.col_one, countData.col_two, countData.col_three),
-                  lastHitData.col_one,
-                  '',
-                  countData.col_one
-                )}
-                {tableRowCount(
-                  "2nd Column", 
-                  calculateColumnPercentage(countData.col_two, countData.col_one, countData.col_two, countData.col_three),
-                  lastHitData.col_two,
-                  '',
-                  countData.col_two
-                )}
-                {tableRowCount(
+                {tableRow("1st Column", countData.col_one, lastHitData.col_one)}
+                {tableRow("3nd Column", countData.col_two, lastHitData.col_two)}
+                {tableRow(
                   "3rd Column",
-                  calculateColumnPercentage(countData.col_three, countData.col_one, countData.col_two, countData.col_three),
+                  countData.col_three,
                   lastHitData.col_three,
-                  '',
-                  countData.col_three
                 )}
-
                 {/* <tr>
               <td>Red</td>
               <td>{countData.red}</td>
@@ -2254,7 +1890,7 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
                   nonSingleStreetData.thirtyOne_thirtyThree,
                 )}
                 {tableRow(
-                  "34 - 36",
+                  "31 - 33",
                   singleStreetData.thirtyFour_thirtySix,
                   nonSingleStreetData.thirtyFour_thirtySix,
                 )}
@@ -2349,10 +1985,11 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
             // height: "25rem",
           }}
         >
-          <div className="mx-auto w-[70%] h-[85%]">
-            <div className="flex">
-              <div className="w-[100%] lg:w-[42%] md:w-[100%] -mt-1 mb-1 flex gap-1 mx-auto"
-              style={{ display: isa_Active ? "flex" : "none" }}>
+          <div className="mx-auto w-[60%] h-[85%]">
+            <div
+              className="w-[100%] lg:w-[42%] md:w-[60%] -mt-1 mb-1 flex gap-1 mx-auto"
+              style={{ display: isa_Active ? "flex" : "none" }}
+            >
               <button
                 className="bg-softBlue text-white py-1 px-3 rounded-lg max-md:text-sm max-sm:text-xs max-sm:py-2"
                 onClick={() => displayDivHandler("single--streak")}
@@ -2379,16 +2016,6 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
               >
                 Double Street
               </button>
-              {/* //---reset Button */}
-              <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400" style={{height:"39px"}}>
-                <button
-                  onClick={handleClickResetStreetButton}
-                  className="bg-black text-white px-2 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                >
-                  <GrPowerReset className="inline mr-0.5 -mt-0.5" />
-                </button>
-              </div>
-              </div>
             </div>
             <div
               className="lg:w-[60%] md:w-[80%] mx-auto overflow-y-scroll h-[90%] scroll-smooth streak-div"
@@ -2570,7 +2197,7 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
                     "small",
                   )}
                   {tableRow(
-                    "34 - 36",
+                    "31 - 33",
                     singleStreetData.thirtyFour_thirtySix,
                     nonSingleStreetData.thirtyFour_thirtySix,
                     "small",
@@ -2578,6 +2205,7 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
                 </tbody>
               </table>
             </div>
+
             {/* second table */}
 
             <table
@@ -2612,50 +2240,28 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
                   >
                     Last Hit
                   </th>
-                  <th>
-                    <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400 ms-1">
-                      <button
-                        onClick={handleClickWsbResetButton}
-                        className="bg-black text-white px-2 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      >
-                        <GrPowerReset className="inline mr-0.5 -mt-0.5" />
-                      </button>
-                    </div>
-                  </th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td className="bg-customGray text-customBlack border font-semibold p-2"
-                  style={{padding: screen === "small" ? "7px 10px" : "",
-            borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",}}
-                  >
+                  <td className="bg-customGray text-customBlack font-semibold p-2">
                     Zero
                   </td>
                   <td
-                    className={`
-                    ${(() => {
-                      const percentage = calculateWheelSectionPercentage(
-                        circleData.zero,
-                        circleData.zero,
-                        circleData.duZero,
-                        circleData.orphe,
-                        circleData.tires
-                      );
-                
-                      if (percentage <= 5) {
-                        return 'bg-[#B3E5FC] text-black';  // Light Blue for 0-5%
-                      } else if (percentage > 5 && percentage <= 10) {
-                        return 'bg-[#2196F3] text-black';  // Medium Blue for 5-10%
-                      } else {
-                        return 'bg-[#0D47A1] text-white';  // Dark Blue for 10%+
-                      }
-                    })()} 
-                     border hover:bg-softBlue
-                    ${theme === "light" ? 'border-[#F5F5F5]' : 'border-[#0A1F44]'}`}
+                    className={
+                      circleData.zero >= 6
+                        ? "bg-darkBlue border hover:bg-softBlue max-md:text-sm"
+                        : circleData.zero > 0 && circleData.zero <= 2
+                          ? "bg-lightBlue text-black border hover:bg-softBlue"
+                          : circleData.zero > 2 && circleData.zero <= 5
+                            ? "bg-mediumBlue text-black border hover:bg-softBlue"
+                            : "bg-customGray text-black border hover:bg-softBlue"
+                    }
+                    style={{
+                      borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                    }}
                   >
                     {circleData.zero}
-                    {/* {calculateWheelSectionPercentage(circleData.zero, circleData.zero, circleData.duZero, circleData.orphe, circleData.tires)} */}
                   </td>
                   <td
                     className={
@@ -2675,36 +2281,24 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
                   </td>
                 </tr>
                 <tr>
-                  <td className="bg-customGray border text-customBlack font-semibold p-2"
-                  style={{padding: screen === "small" ? "7px 10px" : "",
-                    borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",}}
-                  >
+                  <td className="bg-customGray text-customBlack font-semibold p-2">
                     Voisins
                   </td>
                   <td
-                    className={`
-                    ${(() => {
-                      const percentage = calculateWheelSectionPercentage(
-                        circleData.duZero,
-                        circleData.zero,
-                        circleData.duZero,
-                        circleData.orphe,
-                        circleData.tires
-                      );
-                
-                      if (percentage <= 5) {
-                        return 'bg-[#B3E5FC] text-black';  // Light Blue for 0-5%
-                      } else if (percentage > 5 && percentage <= 10) {
-                        return 'bg-[#2196F3] text-black';  // Medium Blue for 5-10%
-                      } else {
-                        return 'bg-[#0D47A1] text-white';  // Dark Blue for 10%+
-                      }
-                    })()} 
-                     border hover:bg-softBlue
-                    ${theme === "light" ? 'border-[#F5F5F5]' : 'border-[#0A1F44]'}`}
+                    className={
+                      circleData.duZero >= 6
+                        ? "bg-darkBlue border hover:bg-softBlue"
+                        : circleData.duZero > 0 && circleData.duZero <= 2
+                          ? "bg-lightBlue text-black border hover:bg-softBlue"
+                          : circleData.duZero > 2 && circleData.duZero <= 5
+                            ? "bg-mediumBlue text-black border hover:bg-softBlue"
+                            : "bg-customGray text-black border hover:bg-softBlue"
+                    }
+                    style={{
+                      borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                    }}
                   >
                     {circleData.duZero}
-                    {/* {calculateWheelSectionPercentage(circleData.duZero, circleData.zero, circleData.duZero, circleData.orphe, circleData.tires)} */}
                   </td>
                   <td
                     className={
@@ -2725,36 +2319,24 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
                   </td>
                 </tr>
                 <tr>
-                  <td className="bg-customGray border text-customBlack font-semibold p-2"
-                  style={{padding: screen === "small" ? "7px 10px" : "",
-                    borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",}}
-                  >
+                  <td className="bg-customGray text-customBlack font-semibold p-2">
                     Orphelins
                   </td>
                   <td
-                    className={`
-                    ${(() => {
-                      const percentage = calculateWheelSectionPercentage(
-                        circleData.orphe,
-                        circleData.zero,
-                        circleData.duZero,
-                        circleData.orphe,
-                        circleData.tires
-                      );
-                
-                      if (percentage <= 5) {
-                        return 'bg-[#B3E5FC] text-black';  // Light Blue for 0-5%
-                      } else if (percentage > 5 && percentage <= 10) {
-                        return 'bg-[#2196F3] text-black';  // Medium Blue for 5-10%
-                      } else {
-                        return 'bg-[#0D47A1] text-white';  // Dark Blue for 10%+
-                      }
-                    })()} 
-                     border hover:bg-softBlue
-                    ${theme === "light" ? 'border-[#F5F5F5]' : 'border-[#0A1F44]'}`}
+                    className={
+                      circleData.orphe >= 6
+                        ? "bg-darkBlue border hover:bg-softBlue"
+                        : circleData.orphe > 0 && circleData.orphe <= 2
+                          ? "bg-lightBlue text-black border hover:bg-softBlue"
+                          : circleData.orphe > 2 && circleData.orphe <= 5
+                            ? "bg-mediumBlue text-black border hover:bg-softBlue"
+                            : "bg-customGray text-black border hover:bg-softBlue"
+                    }
+                    style={{
+                      borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                    }}
                   >
                     {circleData.orphe}
-                    {/* {calculateWheelSectionPercentage(circleData.orphe, circleData.zero, circleData.duZero, circleData.orphe, circleData.tires)} */}
                   </td>
                   <td
                     className={
@@ -2774,36 +2356,24 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
                   </td>
                 </tr>
                 <tr>
-                  <td className="bg-customGray border text-customBlack font-semibold p-2"
-                  style={{padding: screen === "small" ? "7px 10px" : "",
-                    borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",}}
-                  >
+                  <td className="bg-customGray text-customBlack font-semibold p-2">
                     Tiers du Cylindre
                   </td>
                   <td
-                    className={`
-                    ${(() => {
-                      const percentage = calculateWheelSectionPercentage(
-                        circleData.tires,
-                        circleData.zero,
-                        circleData.duZero,
-                        circleData.orphe,
-                        circleData.tires
-                      );
-                
-                      if (percentage <= 5) {
-                        return 'bg-[#B3E5FC] text-black';  // Light Blue for 0-5%
-                      } else if (percentage > 5 && percentage <= 10) {
-                        return 'bg-[#2196F3] text-black';  // Medium Blue for 5-10%
-                      } else {
-                        return 'bg-[#0D47A1] text-white';  // Dark Blue for 10%+
-                      }
-                    })()} 
-                     border hover:bg-softBlue
-                    ${theme === "light" ? 'border-[#F5F5F5]' : 'border-[#0A1F44]'}`}
+                    className={
+                      circleData.tires >= 6
+                        ? "bg-darkBlue border hover:bg-softBlue"
+                        : circleData.tires > 0 && circleData.tires <= 2
+                          ? "bg-lightBlue text-black border hover:bg-softBlue"
+                          : circleData.tires > 2 && circleData.tires <= 5
+                            ? "bg-mediumBlue text-black border hover:bg-softBlue"
+                            : "bg-customGray text-black border hover:bg-softBlue"
+                    }
+                    style={{
+                      borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
+                    }}
                   >
                     {circleData.tires}
-                    {/* {calculateWheelSectionPercentage(circleData.tires, circleData.zero, circleData.duZero, circleData.orphe, circleData.tires)} */}
                   </td>
                   <td
                     className={
@@ -2861,46 +2431,14 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
                 </div>
               </div>
 
-              {renderSummaryData(
-                "L.E.R",
-                summaryData.lowEvenRed,
-                nonSummaryData.lowEvenRed,
-              )}
-              {renderSummaryData(
-                "L.E.B",
-                summaryData.lowEvenBlack,
-                nonSummaryData.lowEvenBlack,
-              )}
-              {renderSummaryData(
-                "L.O.R",
-                summaryData.lowOddRed,
-                nonSummaryData.lowOddRed,
-              )}
-              {renderSummaryData(
-                "L.O.B",
-                summaryData.lowOddBlack,
-                nonSummaryData.lowOddBlack,
-              )}
-              {renderSummaryData(
-                "H.E.R",
-                summaryData.highEvenRed,
-                nonSummaryData.highEvenRed,
-              )}
-              {renderSummaryData(
-                "H.O.R",
-                summaryData.highOddRed,
-                nonSummaryData.highOddRed,
-              )}
-              {renderSummaryData(
-                "H.E.B",
-                summaryData.highEvenBlack,
-                nonSummaryData.highEvenBlack,
-              )}
-              {renderSummaryData(
-                "H.O.B",
-                summaryData.highOddBlack,
-                nonSummaryData.highOddBlack,
-              )}
+              {renderSummaryData("L.E.R", summaryData.lowEvenRed)}
+              {renderSummaryData("L.E.B", summaryData.lowEvenBlack)}
+              {renderSummaryData("L.O.R", summaryData.lowOddRed)}
+              {renderSummaryData("L.O.B", summaryData.lowOddBlack)}
+              {renderSummaryData("H.E.R", summaryData.highEvenRed)}
+              {renderSummaryData("H.O.R", summaryData.highOddRed)}
+              {renderSummaryData("H.E.B", summaryData.highEvenBlack)}
+              {renderSummaryData("H.O.B", summaryData.highOddBlack)}
 
               <div
                 className="text-gray-400 absolute bottom-0 -right-6 cursor-pointer bg-neutral-700 w-5 h-5 flex justify-center items-center rounded-full"
@@ -2941,17 +2479,7 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
                   </p>
                 </div>
               </div>
-              <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400"  style={{top:"0",right:"-55px",position:"absolute"}}>
-              <button
-                onClick={handleClickQuadroResetButton}
-                className="bg-black text-white px-2 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-              >
-                <GrPowerReset className="inline mr-0.5 -mt-0.5" />
-              </button>
             </div>
-            </div>
-
-            
           </div>
 
           <div className="mt-3 border-t border-gray-400 py-2 flex justify-around absolute bottom-0 w-[95%] left-2">
@@ -2991,7 +2519,7 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
                 border: isc_Active ? "1px black solid" : "",
               }}
             >
-              QuadroBet Tracker
+              Quadro Tracker
             </button>
           </div>
         </div>
@@ -3107,46 +2635,14 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
 
           <div className="border flex max-w-60 flex-wrap max-sm:hidden hidden">
             {/* ////////// */}
-            {renderSummaryData(
-              "L.E.R",
-              summaryData.lowEvenRed,
-              nonSummaryData.lowEvenRed,
-            )}
-            {renderSummaryData(
-              "L.E.B",
-              summaryData.lowEvenBlack,
-              nonSummaryData.lowEvenBlack,
-            )}
-            {renderSummaryData(
-              "L.O.R",
-              summaryData.lowOddRed,
-              nonSummaryData.lowOddRed,
-            )}
-            {renderSummaryData(
-              "L.O.B",
-              summaryData.lowOddBlack,
-              nonSummaryData.lowOddBlack,
-            )}
-            {renderSummaryData(
-              "H.E.R",
-              summaryData.highEvenRed,
-              nonSummaryData.highEvenRed,
-            )}
-            {renderSummaryData(
-              "H.O.R",
-              summaryData.highOddRed,
-              nonSummaryData.highOddRed,
-            )}
-            {renderSummaryData(
-              "H.E.B",
-              summaryData.highEvenBlack,
-              nonSummaryData.highEvenBlack,
-            )}
-            {renderSummaryData(
-              "H.O.B",
-              summaryData.highOddBlack,
-              nonSummaryData.highOddBlack,
-            )}
+            {renderSummaryData("L.E.R", summaryData.lowEvenRed)}
+            {renderSummaryData("L.E.B", summaryData.lowEvenBlack)}
+            {renderSummaryData("L.O.R", summaryData.lowOddRed)}
+            {renderSummaryData("L.O.B", summaryData.lowOddBlack)}
+            {renderSummaryData("H.E.R", summaryData.highEvenRed)}
+            {renderSummaryData("H.O.R", summaryData.highOddRed)}
+            {renderSummaryData("H.E.B", summaryData.highEvenBlack)}
+            {renderSummaryData("H.O.B", summaryData.highOddBlack)}
 
             {/* <p>LEB : {summaryData.lowEvenBlack}</p> */}
             {/* <p>LOR : {summaryData.lowOddRed}</p> */}
@@ -3162,19 +2658,12 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
       </Routes> */}
         <section>
           <History historyData={historyData} isAlertAllowed={isAlertAllowed} />
-          
         </section>
 
         {/* <div className="w-full h-full bg-slate-400 absolute top-0 left-0 z-50"></div> */}
       </div>
-
-
-
-      {
-        planLockScreen && <Lock setPlanLockScreen={setPlanLockScreen} />
-      }
     </>
   );
 };
 
-export default Project1;
+export default Main;
