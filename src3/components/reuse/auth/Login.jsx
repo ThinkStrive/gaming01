@@ -97,14 +97,14 @@ const Login = ({ inputData, setInputData }) => {
           {loading ? (
             <button
               type="submit"
-              className={`w-[100%] bg-darkNavy py-3 shadow-2xl rounded-lg text-lg font-semibold text-white h-[55px] flex justify-center items-center`}
+              className={`w-[100%] bg-darkNavy py-3 shadow-2xl rounded-lg text-lg font-semibold text-white lg:h-[55px] h-[50px] flex justify-center items-center`}
             >
               <div className="login-loader"></div>
             </button>
           ) : (
             <button
               type="submit"
-              className={`w-[100%] bg-darkNavy py-3 shadow-2xl rounded-lg text-lg font-semibold text-white h-[55px]`}
+              className={`w-[100%] bg-darkNavy py-3 shadow-2xl rounded-lg text-lg font-semibold text-white lg:h-[55px] h-[50px]`}
               // style={{ backgroundColor: "rgb(239,68,68)" }}
             >
               Login

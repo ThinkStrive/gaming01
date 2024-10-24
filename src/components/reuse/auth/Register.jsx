@@ -57,7 +57,7 @@ const Register = ({ inputData, setInputData }) => {
   }
   return (
     <div className=" flex flex-col gap-5 justify-center items-center">
-      <div className="bg-[#040404] border-2 shadow-2xl 2xl:h-[50rem] lg:h-[83vh] lg:w-[33vw] md:h-[78vh] md:w-[55vw] h-[80vh] xs:h-[60vh] w-[85vw] rounded-3xl px-10 py-6 flex flex-col justify-center gap-5">
+      <div className="bg-[#040404] border-2 shadow-2xl 2xl:h-[50rem] lg:h-[83vh] lg:w-[33vw] md:h-[78vh] md:w-[55vw] h-[76vh] xs:h-[60vh] w-[85vw] rounded-3xl lg:px-10 px-7 py-6 flex flex-col justify-center gap-5">
         <h2 className="text-white lg:text-4xl md:text-wl text-2xl font-medium text-center my-3">
           Register
         </h2>
@@ -65,12 +65,12 @@ const Register = ({ inputData, setInputData }) => {
         <form
           action=""
           onSubmit={handleAuthLoginButton}
-          className="flex flex-col justify-between items-start h-[70%] w-full lg:mt-3 mt-1"
+          className="flex flex-col justify-between items-start lg:h-[70%] h-[75%] w-full lg:mt-3 mt-1"
         >
           <input
             type="text"
             placeholder="Enter your Name"
-            className="bg-slate-300 outline-none lg:w-[100%] w-[100%] shadow-lg px-4 py-4 rounded-lg text-sm lg:text-[16px] login-input text-black placeholder:text-slate-700 font-bold"
+            className="bg-slate-300 outline-none lg:w-[100%] w-[100%] shadow-lg px-4 lg:py-4 py-3 rounded-lg text-sm lg:text-[16px] login-input text-black placeholder:text-slate-700 font-bold"
             name="name"
             id="name"
             value={inputData.name}
@@ -79,7 +79,7 @@ const Register = ({ inputData, setInputData }) => {
           <input
             type="email"
             placeholder="Enter your Email"
-            className="bg-slate-300 outline-none lg:w-[100%] w-[100%] shadow-lg px-4 py-4 rounded-lg text-sm lg:text-[16px] login-input text-black placeholder:text-slate-700 font-bold"
+            className="bg-slate-300 outline-none lg:w-[100%] w-[100%] shadow-lg px-4 lg:py-4 py-3 rounded-lg text-sm lg:text-[16px] login-input text-black placeholder:text-slate-700 font-bold"
             name="email"
             id="email"
             value={inputData.email}
@@ -89,7 +89,7 @@ const Register = ({ inputData, setInputData }) => {
             <input
               type={`${isPasswordView ? "text" : "password"}`}
               placeholder="Enter your password"
-              className="bg-slate-300 outline-none lg:w-[100%] w-[100%] shadow-lg px-4 py-4 rounded-lg text-sm lg:text-[16px] login-input text-black placeholder:text-slate-700 font-bold"
+              className="bg-slate-300 outline-none lg:w-[100%] w-[100%] shadow-lg px-4 lg:py-4 py-3 rounded-lg text-sm lg:text-[16px] login-input text-black placeholder:text-slate-700 font-bold"
               name="password"
               id="password"
               value={inputData.password}
@@ -105,7 +105,7 @@ const Register = ({ inputData, setInputData }) => {
           <input
             type="number"
             placeholder="Enter your Number"
-            className="bg-slate-300 outline-none lg:w-[100%] w-[100%] shadow-lg px-4 py-4 rounded-lg text-sm lg:text-[16px] login-input text-black placeholder:text-slate-700 font-bold"
+            className="bg-slate-300 outline-none lg:w-[100%] w-[100%] shadow-lg px-4 lg:py-4 py-3 rounded-lg text-sm lg:text-[16px] login-input text-black placeholder:text-slate-700 font-bold"
             name="mobile_number"
             id="mobile_number"
             value={inputData.mobile_number}
@@ -114,14 +114,14 @@ const Register = ({ inputData, setInputData }) => {
           {loading ? (
             <button
               type="submit"
-              className={`w-[100%] bg-darkNavy py-3 shadow-2xl rounded-lg text-lg font-semibold text-white h-[55px] flex justify-center items-center`}
+              className={`w-[100%] bg-darkNavy py-3 shadow-2xl rounded-lg text-lg font-semibold text-white lg:h-[55px] h-[50px] flex justify-center items-center`}
             >
               <div className="login-loader"></div>
             </button>
           ) : (
             <button
               type="submit"
-              className={`w-[100%] bg-darkNavy py-3 shadow-2xl rounded-lg lg:text-lg text-md font-semibold text-white h-[55px]`}
+              className={`w-[100%] bg-darkNavy py-3 shadow-2xl rounded-lg lg:text-lg text-md font-semibold text-white lg:h-[55px] h-[50px`}
               // style={{ backgroundColor: "rgb(239,68,68)" }}
             >
               Register
@@ -129,7 +129,7 @@ const Register = ({ inputData, setInputData }) => {
           )}
         </form>
 
-        <p className="text-sm m-0 text-white">
+        <p className="lg:text-sm text-xs m-0 text-white">
           Already Have An Account ?{" "}
           <Link to="/auth/login" className="cursor-pointer text-blue-500">
             Sign in
