@@ -22,7 +22,7 @@ const Lock = ({ setPlanLockScreen }) => {
           <div className="bg-slate-200 h-[auto] sm:h-[100%] w-full sm:w-[30%] rounded-xl shadow flex justify-evenly items-center flex-col py-4">
             <h2 className="text-black font-semibold text-xl my-2">Daily Plan</h2>
             <button
-              className="bg-[#242424] text-white font-bold py-2 px-6 sm:px-8 rounded-lg transition w-[80%]"
+              className="bg-[#242424] text-white font-bold py-2 px-6 sm:px-8 rounded-lg transition w-[80%] hover:bg-[#141414]"
               // onClick={handleClickPayButton}
             >
               <PayPalBtn amount={3.99} />
@@ -31,7 +31,7 @@ const Lock = ({ setPlanLockScreen }) => {
           <div className="bg-slate-200 h-[auto] sm:h-[100%] w-full sm:w-[30%] rounded-xl shadow flex justify-evenly items-center flex-col py-4">
             <h2 className="text-black font-semibold text-xl my-2">Weekly Plan</h2>
             <button my-2
-              className="bg-[#242424] text-white font-bold py-2 px-6 sm:px-8 rounded-lg transition w-[80%]"
+              className="bg-[#242424] text-white font-bold py-2 px-6 sm:px-8 rounded-lg transition w-[80%] hover:bg-[#141414]"
               // onClick={handleClickPayButton}
             >
               <PayPalBtn amount={21.99} />
@@ -40,7 +40,7 @@ const Lock = ({ setPlanLockScreen }) => {
           <div className="bg-slate-200 h-[auto] sm:h-[100%] w-full sm:w-[30%] rounded-xl shadow flex justify-evenly items-center flex-col py-4">
             <h2 className="text-black font-semibold text-xl">Monthly Plan</h2>
             <button
-              className="bg-[#242424] text-white font-bold py-2 px-6 sm:px-8 rounded-lg transition w-[80%]"
+              className="bg-[#242424] text-white font-bold py-2 px-6 sm:px-8 rounded-lg transition w-[80%] hover:bg-[#141414]"
               // onClick={handleClickPayButton}
             >
               <PayPalBtn amount={54.99} />
