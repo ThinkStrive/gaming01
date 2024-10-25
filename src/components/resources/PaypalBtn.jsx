@@ -6,7 +6,7 @@ const PayPalBtn = ({amount}) => {
   const handlePayment = async () => {
     try {
       // Make an API call to the backend to initiate the payment
-      const response = await fetch('http://localhost:7050/payment/pay', {
+      const response = await fetch('https://rouletteadminbackend.vercel.app/payment/pay', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
