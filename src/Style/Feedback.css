@@ -1,0 +1,38 @@
+@media(min-width:768px){
+    .form-parent{
+        gap: 50px;
+        margin: 10px 30px;
+    }
+    .feedback-title{
+        margin: 10px 30px;
+    }
+    .form-sub{
+        width: 50%;
+    }
+    .feed-btn{
+        margin: 0px 30px;
+    }
+}
+.rating{
+    gap: 22px;
+    margin: 15px 0px;
+
+}
+.drop-feedback label{
+    background-color: #ffffff ;
+    color: #52085D;
+    font-weight: 500;
+    font-size: 16px;
+    cursor: pointer;
+}
+.dropdown option{
+    background-color: #ffffff;
+    color: black;
+    font-size: 16px;
+}
+.features::-webkit-scrollbar{
+    display: none;
+}
+.features{
+    scrollbar-width: none;
+}

@@ -30,7 +30,7 @@ const Login = ({ inputData, setInputData }) => {
       .then((res) => {
         if (res.data.status) {
           setLoading(false);
-          localStorage.setItem("userData", JSON.stringify(res.data.data));
+          sessionStorage.setItem("userData", JSON.stringify(res.data.data));
           showToast("Login Successful", "success");
           setInputData({
             email: "",
@@ -48,8 +48,8 @@ const Login = ({ inputData, setInputData }) => {
       });
   };
   if (
-    localStorage.getItem("userData") &&
-    JSON.parse(localStorage.getItem("userData"))
+    sessionStorage.getItem("userData") &&
+    JSON.parse(sessionStorage.getItem("userData"))
   ) {
     return <Navigate to="/project1/blackRed" replace />;
   }
@@ -77,7 +77,7 @@ const Login = ({ inputData, setInputData }) => {
             value={inputData.email}
             onChange={handleAuthLoginInputChange}
           />
-          <div className="relative lg:w-[100%] w-[100%]">
+          <div className="relative lg:w-[100%] w-[100%] my-3">
             <input
               type={`${isPasswordView ? "text" : "password"}`}
               placeholder="Enter your password"
@@ -97,22 +97,27 @@ const Login = ({ inputData, setInputData }) => {
           {loading ? (
             <button
               type="submit"
-              className={`w-[100%] bg-darkNavy py-3 shadow-2xl rounded-lg text-lg font-semibold text-white lg:h-[55px] h-[50px] flex justify-center items-center`}
+              className={`w-[100%] bg-darkNavy py-3  shadow-2xl rounded-lg text-lg font-semibold text-white lg:h-[55px] h-[50px] flex justify-center items-center`}
             >
               <div className="login-loader"></div>
             </button>
           ) : (
             <button
               type="submit"
-              className={`w-[100%] bg-darkNavy py-3 shadow-2xl rounded-lg text-lg font-semibold text-white lg:h-[55px] h-[50px]`}
+              className={`w-[100%] bg-darkNavy py-3 shadow-2xl  rounded-lg  text-lg font-semibold text-white lg:h-[55px] h-[50px]`}
               // style={{ backgroundColor: "rgb(239,68,68)" }}
             >
               Login
             </button>
           )}
         </form>
-
-        <p className="lg:text-sm text-xs m-0 text-white">
+        {/* <p className="lg:text-sm text-xs m-0 text-white" style={{cursor:"pointer"}}>
+        Forgot your password?
+          <Link to="/auth/forgotPassword" className="cursor-pointer text-blue-500 ms-2" >
+          Click here
+          </Link>
+        </p> */}
+        <p className="lg:text-sm text-xs m-0 text-white mb-5">
           Don't Have An Account ?{" "}
           <Link to="/auth/register" className="cursor-pointer text-blue-500">
             Sign up

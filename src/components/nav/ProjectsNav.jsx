@@ -6,7 +6,7 @@ import '../../Style/Lock.css'
 
 function ProjectsNav({ popUp, setPopUp, setNavHeaderName }) {
   const location = useLocation();
-  const [isOpen, setIsOpen] = useState(false); // Help dropdown
+  const [isOpen, setIsOpen] = useState(false); // Help dropdown 1
   const [isOpen1, setIsOpen1] = useState(false); 
   const [isOpen2, setIsOpen2] = useState(false);
   const [isOpen3, setIsOpen3] = useState(false);
@@ -15,9 +15,9 @@ function ProjectsNav({ popUp, setPopUp, setNavHeaderName }) {
   const [isOpen6, setIsOpen6] = useState(false);
   const [isOpen7, setIsOpen7] = useState(false);
   const [isOpen8, setIsOpen8] = useState(false);
-  // MODEL 2 STATE
 
-  const [isOpenA, setIsOpenA] = useState(false); // Help dropdown
+
+  const [isOpenA, setIsOpenA] = useState(false); // Help dropdown 2
   const [isOpenB1, setIsOpenB1] = useState(false); 
   const [isOpenC2, setIsOpenC2] = useState(false);
   const [isOpenD3, setIsOpenD3] = useState(false);
@@ -27,9 +27,9 @@ function ProjectsNav({ popUp, setPopUp, setNavHeaderName }) {
   const [isOpenH7, setIsOpenH7] = useState(false);
   const [isOpenI8, setIsOpenI8] = useState(false);
 
-// spin wheel
 
-const [isOpen1A, setIsOpen1A] = useState(false); // Help dropdown
+
+const [isOpen1A, setIsOpen1A] = useState(false); // Help dropdown 3
 const [isOpen2B, setIsOpen2B] = useState(false); 
 const [isOpen3C, setIsOpen3C] = useState(false);
 const [isOpen4D, setIsOpen4D] = useState(false);
@@ -108,7 +108,16 @@ const [isOpen7G, setIsOpen7G] = useState(false);
             >
               SpinCycle Strategy
             </Link>
-
+            {/* <Link
+              to="/feedback"  
+              className={
+                location.pathname === "/feedback"
+                  ? "w-full bg-darkNavy p-2 font-semibold rounded-lg pl-6 hover:bg-softBlue my-0.5"
+                  : "w-full p-2 font-semibold rounded-lg pl-6 hover:bg-softBlue my-0.5"
+              }
+            >
+              Feedback 
+            </Link> */}
             {/* <a
               href="#"
               className={

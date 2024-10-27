@@ -32,7 +32,7 @@ const Register = ({ inputData, setInputData }) => {
       .then((res) => {
         if (res.data.status) {
           setLoading(false);
-          localStorage.setItem("userData", JSON.stringify(res.data.data));
+          sessionStorage.setItem("userData", JSON.stringify(res.data.data));
           showToast("Register Successful", "success");
           setInputData({
             email: "",
@@ -50,8 +50,8 @@ const Register = ({ inputData, setInputData }) => {
       });
   };
   if (
-    localStorage.getItem("userData") &&
-    JSON.parse(localStorage.getItem("userData"))
+    sessionStorage.getItem("userData") &&
+    JSON.parse(sessionStorage.getItem("userData"))
   ) {
     return <Navigate to="/project1/blackRed" replace />;
   }

@@ -1185,7 +1185,7 @@ const [planLockScreen, setPlanLockScreen] = useState(false)
 useEffect(() => {
   const fetchUserDetails = async () => {
     try {
-      let userData = JSON.parse(localStorage.getItem('userData'));
+      let userData = JSON.parse(sessionStorage.getItem('userData'));
       const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
 
       console.log('response', response.data);
@@ -1935,10 +1935,10 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
                     Category
                   </th>
                   <th className="border p-3 max-sm:p-2 bg-customGreen"
-                  style={{padding: screen === "small" ? "7px 10px" : "",
+                  style={{padding: screen === "small" ? "7px 1px" : "",
                     borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",}}
                   >
-                    Count
+                   Count
                   </th>
                   <th className="border p-3 max-sm:p-2 bg-customGreen"
                   style={{padding: screen === "small" ? "7px 10px" : "",
@@ -2416,7 +2416,7 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
                         borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
                       }}
                     >
-                      Count
+                     &nbsp; Count &nbsp;
                     </th>
                     <th
                       className="border p-3 max-sm:p-2 bg-customGreen"
@@ -2490,7 +2490,7 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
                         borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
                       }}
                     >
-                      Count
+                     &nbsp; Count &nbsp;
                     </th>
                     <th
                       className="border p-3 max-sm:p-2 bg-customGreen"
@@ -2602,7 +2602,7 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
                       borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
                     }}
                   >
-                    Count
+                   &nbsp; Count &nbsp;
                   </th>
                   <th
                     className="border bg-customGreen p-2"
@@ -2941,7 +2941,7 @@ const calculateWheelSectionPercentage = (number, zero, voisins, orphelins, tiers
                   </p>
                 </div>
               </div>
-              <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400"  style={{top:"0",right:"-55px",position:"absolute"}}>
+              <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400"  style={{top:"0",right:"-45px",position:"absolute"}}>
               <button
                 onClick={handleClickQuadroResetButton}
                 className="bg-black text-white px-2 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"

@@ -1269,7 +1269,7 @@ const [planLockScreen, setPlanLockScreen] = useState(false)
 useEffect(() => {
   const fetchUserDetails = async () => {
     try {
-      let userData = JSON.parse(localStorage.getItem('userData'));
+      let userData = JSON.parse(sessionStorage.getItem('userData'));
       const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
 
       console.log('response', response.data);

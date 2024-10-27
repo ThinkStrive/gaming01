@@ -15,6 +15,7 @@ import Project4 from "../components/main/Project4";
 import Nav from "../components/nav/nav";
 import "../Style/ProjectsNav.css";
 import ProjectsNav from "../components/nav/ProjectsNav";
+import { Feedback } from "../components/main/Feedback";
 
 function Home() {
   const [popUp, setPopUp] = useState(false);
@@ -94,6 +95,7 @@ function Home() {
             />
           }
         />
+        <Route path="/feedback" element={<Feedback theme={theme} setTheme={setTheme} />} />
         <Route
           path="project3/*"
           element={<Project3 theme={theme} setTheme={setTheme} />}
