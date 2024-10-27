@@ -192,7 +192,7 @@ const [isOpen7G, setIsOpen7G] = useState(false);
           <div>
           <Link
               to="/auth/login"
-              onClick={() => localStorage.removeItem("userData")}
+              onClick={() => sessionStorage.removeItem("userData")}
               className="flex cursor-pointer font-semibold justify-start items-center"
             >
               <i className="fa-solid fa-right-from-bracket mx-6"></i>
