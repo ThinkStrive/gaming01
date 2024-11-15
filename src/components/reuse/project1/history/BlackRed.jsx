@@ -50,7 +50,7 @@ const BlackRed = ({ historyData }) => {
               <div
                 key={colIndex}
                 style={{ textAlign: "center" }}
-                className="border-r border-b"
+                className=""
               >
                 <div
                   className={`

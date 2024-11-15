@@ -3,6 +3,9 @@ import "../../Style/Lock.css";
 import { useToast } from "./Toast";
 import PayPalBtn from "./PaypalBtn";
 import { Link } from "react-router-dom";
+import { MdEmail } from "react-icons/md";
+
+
 
 const Lock = ({ setPlanLockScreen }) => {
   const showToast = useToast();
@@ -85,16 +88,25 @@ const Lock = ({ setPlanLockScreen }) => {
             account required) If you prefer other payment methods or need
             assistance with the payment process, feel free to reach out to us.
           </p>
-          <div className="border w-full h-auto text-black px-4 py-4 bg-slate-200 rounded-lg my-3">
+          <div className="border w-full h-auto text-black px-4 py-2 bg-slate-200 rounded-lg my-3">
             <p>
               <i className="fa-brands fa-telegram text-blue-600"></i> Contact us
-              on Telegram:{" "}
+              on Telegram:{" "} 
               <Link
                 to="https://t.me/rouletterisee"
                 className="text-blue-600 font-semibold"
                 target="_blank"
               >
-                https://t.me/rouletterisee
+                 https://t.me/rouletterisee
+              </Link>
+            </p>
+            <p className="flex my-2 ">
+              <MdEmail size={23} className=" text-customRed border pt-1" /> Contact us via Email:{" "}
+              <Link
+                to="mailto:rouletterise@gmail.com" 
+                className="text-blue-600 font-semibold"
+              >
+               &nbsp;  rouletterise@gmail.com
               </Link>
             </p>
             <p className="text-sm my-1">

@@ -14,7 +14,7 @@ import "../../../../Style/History.css";
 const History = ({ historyData, isAlertAllowed }) => {
   const [activeTab, setActiveTab] = useState("blackRed");
 
-  console.log(isAlertAllowed);
+
 
   const [historyCountData, setHistoryCountData] = useState({
     red: 0,
@@ -87,65 +87,61 @@ const History = ({ historyData, isAlertAllowed }) => {
   return (
     <div>
       <div
-        className="border p-3 w-full border-black rounded-lg"
+        className=" p-3 w-full  rounded-lg"
         style={{
-          background: `linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),url(${background}) center center no-repeat`,
-          backgroundSize: "cover",
-          backgroundPositionX: "center",
-          backgroundPositionY: "center",
-          backgroundRepeat: "no-repeat",
+          background: "transparant",
         }}
       >
         <div className="flex w-full justify-evenly items-center mb-10 overflow-x-auto">
           <div className="flex justify-center items-center">
             <div className="bg-red-500 rounded-[50%] w-5 h-5"></div>
-            <p className="mx-2 text-black font-semibold">
+            <p className="mx-2 text-white font-semibold">
               {historyCountData.red}
             </p>
           </div>
           <div className="flex justify-center items-center">
             <div className="bg-black rounded-[50%] w-5 h-5"></div>
-            <p className="mx-2 text-black font-semibold">
+            <p className="mx-2 text-white font-semibold">
               {historyCountData.black}
             </p>
           </div>
           <div className="flex justify-center items-center">
-            <div className="bg-blue-500 rounded-[25%] w-5 h-5 flex justify-center items-center">
+            <div className="bg-blue-500 text-white rounded-[25%] w-5 h-5 flex justify-center items-center">
               S
             </div>
-            <p className="mx-2 text-black font-semibold">
+            <p className="mx-2 text-white font-semibold">
               {historyCountData.small}
             </p>
           </div>
           <div className="flex justify-center items-center">
-            <div className="bg-red-500 rounded-[25%] w-5 h-5 flex justify-center items-center">
+            <div className="bg-red-500 text-white rounded-[25%] w-5 h-5 flex justify-center items-center">
               B
             </div>
-            <p className="mx-2 text-black font-semibold">
+            <p className="mx-2 text-white font-semibold">
               {historyCountData.big}
             </p>
           </div>
           <div className="flex justify-center items-center">
-            <div className="bg-blue-500 rounded-[25%] w-5 h-5 flex justify-center items-center">
+            <div className="bg-blue-500 text-white rounded-[25%] w-5 h-5 flex justify-center items-center">
               O
             </div>
-            <p className="mx-2 text-black font-semibold">
+            <p className="mx-2 text-white font-semibold">
               {historyCountData.odd}
             </p>
           </div>
           <div className="flex justify-center items-center">
-            <div className="bg-red-500 rounded-[25%] w-5 h-5 flex justify-center items-center">
+            <div className="bg-red-500 text-white rounded-[25%] w-5 h-5 flex justify-center items-center">
               E
             </div>
-            <p className="mx-2 text-black font-semibold">
+            <p className="mx-2 text-white font-semibold">
               {historyCountData.even}
             </p>
           </div>
           <div className="flex justify-center items-center">
-            <div className="bg-green-500 rounded-[25%] w-5 h-5 flex justify-center items-center">
+            <div className="bg-green-500 text-white rounded-[25%] w-5 h-5 flex justify-center items-center">
               Z
             </div>
-            <p className="mx-2 text-black font-semibold">
+            <p className="mx-2 text-white font-semibold">
               {historyCountData.zero}
             </p>
           </div>
@@ -179,8 +175,8 @@ const History = ({ historyData, isAlertAllowed }) => {
             to="blackRed"
             className={`${
               activeTab === "blackRed"
-                ? "bg-red-500 text-black font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1 rounded-lg"
-                : "transparent text-black font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1"
+                ? "bg-red-500 text-white font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1 rounded-lg"
+                : "transparent text-white font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1"
             }`}
             onClick={() => setActiveTab("blackRed")}
           >
@@ -190,8 +186,8 @@ const History = ({ historyData, isAlertAllowed }) => {
             to="bigSmall"
             className={`${
               activeTab === "bigSmall"
-                ? "bg-red-500 text-black font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1 rounded-lg"
-                : "transparent text-black font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1"
+                ? "bg-red-500 text-white font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1 rounded-lg"
+                : "transparent text-white font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1"
             }`}
             onClick={() => setActiveTab("bigSmall")}
           >
@@ -201,8 +197,8 @@ const History = ({ historyData, isAlertAllowed }) => {
             to="oddEven"
             className={`${
               activeTab === "oddEven"
-                ? "bg-red-500 text-black font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1 rounded-lg"
-                : "transparent text-black font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1"
+                ? "bg-red-500 text-white font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1 rounded-lg"
+                : "transparent text-white font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1"
             }`}
             onClick={() => setActiveTab("oddEven")}
           >
@@ -212,8 +208,8 @@ const History = ({ historyData, isAlertAllowed }) => {
             to="dozenCol"
             className={`${
               activeTab === "dozenCol"
-                ? "bg-red-500 text-black font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1 rounded-lg"
-                : "transparent text-black font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1"
+                ? "bg-red-500 text-white font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1 rounded-lg"
+                : "transparent text-white font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1"
             }`}
             onClick={() => setActiveTab("dozenCol")}
           >
@@ -224,8 +220,8 @@ const History = ({ historyData, isAlertAllowed }) => {
             to="his"
             className={`${
               activeTab === "his"
-                ? "bg-red-500 text-black font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1 rounded-lg"
-                : "transparent text-black font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1"
+                ? "bg-red-500 text-white font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1 rounded-lg"
+                : "transparent text-white font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1"
             }`}
             onClick={() => setActiveTab("his")}
           >

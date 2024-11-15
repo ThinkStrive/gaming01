@@ -5,7 +5,13 @@ import { FaRegWindowClose } from "react-icons/fa";
 import '../../Style/Feedback.css';
 import { FaStar } from "react-icons/fa6";
 import { FaSmileBeam, FaSmile, FaMeh, FaFrown, FaSadTear } from "react-icons/fa";
+import { useToast } from "../resources/Toast";
+import { USER_FEEDBACK } from "../api/ApiDetails";
+
 export function Feedback({theme, setTheme}) {
+
+  const showToast = useToast();
+  const authUser =JSON.parse(sessionStorage.getItem("userData"))
   const [issues, setIssues] = useState('');
   const [improve, setImprove] = useState('');
   const [Afeedback, setAfeedback] = useState('');
@@ -17,7 +23,6 @@ export function Feedback({theme, setTheme}) {
   const [followUp, setFollowUp] = useState('');
   const [email, setEmail] = useState('');
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [otherOption, setOtherOption] = useState('');
   
   const options = [
     { value: 'QuadroBet', label: 'QuadroBet Strategy' },
@@ -29,41 +34,23 @@ export function Feedback({theme, setTheme}) {
     { value: 'Wheel Section', label: 'Wheel Section Tracker' },
     { value: 'Roadmaps', label: 'Roadmaps with Auto Detector' },
     { value: 'Personalized Alerts', label: 'Personalized Alerts' },
-    { value: 'Other', label: 'Other' },
   ];
 
 
   const handleSelectChange = (event) => {
     const { value } = event.target;
-    if (value === 'other') {
-      // If 'Other' is selected, keep the other input visible
-      setOtherOption('');
-    } else {
-      // Add the selected value to the array
-      setSelectedOptions((prevOptions) => {
-        if (!prevOptions.includes(value)) {
-          return [...prevOptions, value];
-        }
-        return prevOptions; // Prevent duplicates
-      });
-    }
-  };
-
-  const handleOtherInputChange = (event) => {
-    setOtherOption(event.target.value);
-  };
-
-  const handleAddOtherOption = () => {
-    if (otherOption && !selectedOptions.includes(otherOption)) {
-      setSelectedOptions([...selectedOptions, otherOption]);
-      setOtherOption(''); // Clear the input field after adding
-    }
+    setSelectedOptions((prevOptions) => {
+      if (!prevOptions.includes(value)) {
+        return [...prevOptions, value];
+      }
+      return prevOptions; 
+    });
   };
 
 
   const handleFollowUpChange = (value) => {
     setFollowUp(value);
-    if (value === "no") {
+    if (value !== "Yes") {
       setEmail(''); 
     }
   };
@@ -73,7 +60,7 @@ export function Feedback({theme, setTheme}) {
     setNavRating(rateNav);
   };
   const handleChangeImprove = (event) => {
-    setImprove(improve);
+    setImprove(event.target.value);
   };
 
   const handleRating = (rate) => {
@@ -94,34 +81,55 @@ export function Feedback({theme, setTheme}) {
     setError('');
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    
+ const handleSubmit = async (event) => {
+  event.preventDefault();
+  
+  const data1 = {
+    rating,
+    selectedOptions,
+    ratingNav,
+    issues,
+    improve,
+    Afeedback,
+    features,
+    followUp,
+    email,
+    userName: authUser.userName,
+    userEmail: authUser.userEmail
+  };
 
  
-    // try {
-    //   const response = await axios.post('https://your-api-endpoint.com/submitFeedback', {
-    //     feedback,
-    //     suggestions,
-    //   });
-    //   if (response.status === 200) {
-    //     setSuccessMessage("Feedback submitted successfully! Please return to the home screen.");
 
-    //     setFeedback('');
-    //     setSuggestions('');
-    //   }
-    // } catch (error) {
-    //   console.error("Error submitting feedback:", error);
-    //   setError("There was an error submitting your feedback. Please try again later.");
-    // }
-  };
+
+  try {
+    const response = await axios.post(USER_FEEDBACK, data1);
+    if (response.status === 201) {
+      setSuccessMessage("Feedback submitted successfully! Please return to the home screen.");
+      showToast("Feedback submitted successfully! Please return to the home screen.", "success");
+      // Clear the form fields
+      setRating(0);
+      setSelectedOptions([]);
+      setNavRating(0);
+      setIssues('');
+      setImprove('');
+      setAfeedback('');
+      setFeatures('');
+      setFollowUp('');
+      setEmail('');
+    }
+  } catch (error) {
+    console.error("Error submitting feedback:", error);
+    setError("There was an error submitting your feedback. Please try again later.");
+  }
+
+};
 
   return (
     <div className="flex justify-center items-start mt-5" style={{ minheight: "100vh", width: "100%", color: "#ffffff" }}>
       <div className="bg-transparant p-4 w-full">
         <div >
           <div className="flex justify-between feedback-title">
-          <h1 className={`text-3xl font-bold ${theme === 'dark' ? 'text-slate-200' : 'text-black'} `} >Feedback Form</h1>
+          <h1 className={`text-3xl font-bold text-white pb-2 ` } style={{textShadow:"2px 2px 5px #555",borderBottom:"2px solid white"}} >Feedback Form</h1>
           <Link to="/project1/blackRed" className={`text-black inline-block text-2xl hover:text-customPurple ${theme === 'light' ? 'text-black' : 'text-white'} `} style={{ width: "28px" }}>
             <FaRegWindowClose />
           </Link>
@@ -129,10 +137,13 @@ export function Feedback({theme, setTheme}) {
         
           </div>
         <form onSubmit={handleSubmit} className="flex  form-parent p-1 mt-2 max-sm:w-[350px] max-md:w-[450px] max-md:flex-col max-sm:flex-col ">
+        
+        
+        
           {/* //1 */}
           <div className="form-sub">
              <div>
-             <label htmlFor="" className="text-customPurple font-bold text-md mt-3">
+             <label htmlFor="" className="text-white font-bold text-md mt-3">
               1.How would you rate your overall experience with the app?
               </label>
               <div className="flex text-black text-3xl gap-4 my-2">
@@ -190,49 +201,36 @@ export function Feedback({theme, setTheme}) {
              </div>
                 {/* //2 */}
                 <div className="mt-3">
-                    <div className="flex flex-col">
-                      <label htmlFor="features" className="text-customPurple font-bold text-md mt-3">
-                        2. Which features do you find most useful?
-                      </label>
-                      <select
-                        id="options"
-                        style={{ width: "200px" }}
-                        className="dropdown mt-2 p-1 border rounded-lg bg-customPurple text-white"
-                        onChange={handleSelectChange}
-                      >
-                        <option value="" disabled >--Select an option--</option>
-                        {options.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
-                      {selectedOptions.includes('other') && (
-                        <div className="mt-2">
-                          <input
-                            type="text"
-                            placeholder="Specify other feature"
-                            value={otherOption}
-                            onChange={handleOtherInputChange}
-                            className="mt-2 p-1 border rounded"
-                          />
-                          <button onClick={handleAddOtherOption} className="ml-2 p-1 text-xxl cursor-pointer text-black rounded">
-                            Add
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                    <div className="features  flex flex-wrap mt-3 p-2 overflow-scroll w-[95%]" style={{ height: "100px", backgroundColor: "white",boxShadow:"2px 2px 5px black" ,borderRadius: '5px'}}>
-                      {selectedOptions.map((option, index) => (
-                        <p key={index} className="m-1 px-2 p-2 bg-mediumBlue text-center rounded-xl" style={{height:"35px"}}>
-                          {option === 'other' ? otherOption : option}
-                        </p>
+                  <div className="flex flex-col">
+                    <label htmlFor="features" className="text-text-white font-bold text-md mt-3">
+                      2. Which features do you find most useful?
+                    </label>
+                    <select
+                      id="options"
+                      style={{ width: "200px" }}
+                      className="dropdown mt-2 p-1 py-2 border rounded-lg bg-customPurple text-white cursor-pointer"
+                      onChange={handleSelectChange}
+                    >
+                      <option value="" >--Select an option--</option>
+                      {options.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
                       ))}
-                    </div>
+                    </select>
                   </div>
+                  <div className="features flex flex-wrap mt-3 p-2 overflow-scroll w-[95%]" 
+                      style={{ height: "100px", backgroundColor: "white", boxShadow: "2px 2px 5px black", borderRadius: '5px' }}>
+                    {selectedOptions.map((option, index) => (
+                      <p key={index} className="m-1 px-2 p-2 bg-mediumBlue text-center rounded-xl" style={{ height: "35px" }}>
+                        {option}
+                      </p>
+                    ))}
+                  </div>
+                </div>
              {/* //3 */}
               <div className="mt-3 flex flex-col">
-                <label htmlFor="" className="text-customPurple font-bold text-md">
+                <label htmlFor="" className="text-text-white font-bold text-md">
                   3.How easy is it to navigate the app?
                 </label>
                 <div style={{ display: "flex", gap: "16px" }} className="mt-2">
@@ -254,7 +252,7 @@ export function Feedback({theme, setTheme}) {
               </div>
               {/* //4 */}
               <div className="mt-3">
-                <label htmlFor="issues" className="text-customPurple font-bold text-md mt-3">
+                <label htmlFor="issues" className="text-text-white font-bold text-md mt-3">
                   4.Did you encounter any issues or bugs? Please describe them.
                 </label>
                 <textarea
@@ -282,7 +280,7 @@ export function Feedback({theme, setTheme}) {
           <div className="form-sub">
             {/* //5 */}
           <div>
-          <label htmlFor="improve" className="text-customPurple font-bold text-md mt-3">
+          <label htmlFor="improve" className="text-text-white font-bold text-md mt-3">
             5.What suggestions do you have to improve your experience?
           </label>
           <textarea
@@ -305,7 +303,7 @@ export function Feedback({theme, setTheme}) {
           </div>
           {/* //6 */}
           <div className="mt-1">
-          <label htmlFor="Afeedback" className="text-customPurple font-bold text-md mt-3">
+          <label htmlFor="Afeedback" className="text-text-white font-bold text-md mt-3">
             6.Any additional feedback or thoughts you'd like to share?
           </label>
           <textarea
@@ -328,7 +326,7 @@ export function Feedback({theme, setTheme}) {
           </div>
           {/* //7 */}
           <div className="mt-5">
-          <label htmlFor="features" className="text-customPurple font-bold text-md ">
+          <label htmlFor="features" className="text-text-white font-bold text-md ">
             7.Are there any features you'd like to see added?
           </label>
           <textarea
@@ -351,23 +349,25 @@ export function Feedback({theme, setTheme}) {
           </div>
           {/* //8 */}
           <div className="mt-5 flex flex-col">
-            <label htmlFor="followUp" className="text-customPurple font-bold text-md">
+            <label htmlFor="followUp" className="text-text-white font-bold text-md">
               8.Would you like us to follow up with you regarding your feedback?
             </label>
             <select
               id="followUp"
               name="followUp"
-              style={{width:"200px"}}
+              style={{width:"100px"}}
               className="mt-2 p-2  rounded-lg text-white bg-customPurple dropdown"
               onChange={(e) => handleFollowUpChange(e.target.value)}
             >
-              <option value="" disabled >Select an option</option>
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
+              <option value=""  >Select</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+
+              
             </select>
             
             {/* Conditionally render the email input field */}
-            {followUp === "yes" && (
+            {followUp === "Yes" && (
               <div className="mt-1 z-1 mb-3">
                 <input
                   type="email"
@@ -378,27 +378,28 @@ export function Feedback({theme, setTheme}) {
                   className="mt-2 p-2 border rounded text-black bg-white"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
               </div>
             )}
           </div>
-
+              <div className="py-5">
+                {error && <p className="text-customRed text-md mt-2">{error}</p>}
+                {successMessage && <p className="text-customGreen text-md mt-2">{successMessage}</p>}
+                <div className="flex justify-center items-center w-full my-8" >
+                <button
+                  type="submit"
+                  className="bg-purplegrad border-2 border-white font-semibold  py-3 px-8 feed-btn rounded-lg hover:bg-darkBlue font-bold "
+                  // style={{ width: "200px" }}
+                >
+                  Submit Feedback
+                </button>
+                </div>
+              </div>
           </div>
+          
         </form>
-        {/* Error and Success Messages */}
-        {error && <p className="text-customRed text-lg mt-2">{error}</p>}
-          {successMessage && <p className="text-customGreen text-lg mt-2">{successMessage}</p>}
-
-
-          <div className="flex justify-center items-center w-full my-8" >
-          <button
-            type="submit"
-            className="bg-customPurple text-white py-3 px-8 feed-btn rounded-lg hover:bg-darkBlue font-bold "
-            // style={{ width: "200px" }}
-          >
-            Submit Feedback
-          </button>
-          </div>
+        
       </div>
     </div>
   );

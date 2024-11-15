@@ -6,6 +6,7 @@ import img from '../assets/imgs/auth/background.avif'; // Import the image
 import Register from "../components/reuse/auth/Register";
 import { ForgotPass } from "../components/reuse/auth/ForgotPassword";
 import { ResetPass } from "../components/reuse/auth/ResetPassword";
+import VerifyMail from "../components/reuse/auth/VerifyMail";
 // Styles
 
 const Auth = () => {
@@ -35,6 +36,8 @@ const Auth = () => {
               <Register inputData={inputData} setInputData={setInputData} />
             }
           />
+          <Route path="/verifyEmail" element={<VerifyMail />} />
+          
           <Route path="/forgotPassword" element={<ForgotPass />} />
           <Route path="/resetPassword" element={<ResetPass />} />
         </Routes>

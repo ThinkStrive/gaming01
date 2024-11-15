@@ -1,16 +1,19 @@
 // src/Components/Authentication/Login.js
-import React, { useState } from "react";
-import { Link, Navigate } from "react-router-dom";
-
+import  { useState } from "react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import axios from "axios";
-import { useToast } from "../../resources/Toast";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { USER_LOGIN } from "../../api/ApiDetails";
 import "../../../Style/Auth.css";
 
 const Login = ({ inputData, setInputData }) => {
-  const showToast = useToast();
+
   const [loading, setLoading] = useState(false);
   const [isPasswordView, setIsPasswordView] = useState(false);
+  const navigate = useNavigate(); // Added navigate
+
   const handleAuthLoginInputChange = (e) => {
     const { name, value } = e.target;
     setInputData({ ...inputData, [name]: value });
@@ -31,20 +34,33 @@ const Login = ({ inputData, setInputData }) => {
         if (res.data.status) {
           setLoading(false);
           sessionStorage.setItem("userData", JSON.stringify(res.data.data));
-          showToast("Login Successful", "success");
+
+          toast.success("Login Successful", {
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
           setInputData({
             email: "",
             password: "",
           });
         } else {
           setLoading(false);
-          showToast(res.data.data, "error");
+          toast.warn(res.data.data);
         }
       })
       .catch((err) => {
         console.log(err);
         setLoading(false);
-        showToast(err.response.data.data, "error");
+        toast.warn(err.response.data.data);
+        if (err.response.data.data === "Please verify your email") {
+          return navigate("/auth/verifyEmail");
+        }
       });
   };
   if (
@@ -56,10 +72,14 @@ const Login = ({ inputData, setInputData }) => {
   return (
     <div className=" flex flex-col gap-5 justify-center items-center">
       <div
-        className="bg-[#040404] shadow-2xl 2xl:h-[50rem] border-2 lg:h-[70vh] lg:w-[33vw] md:h-[65vh] md:w-[55vw] h-[55vh] w-[85vw] rounded-3xl lg:px-10 px-7 py-6 flex flex-col justify-center gap-5"
-        // style={{ backgroundColor: "rgb(245,245,245)" }}
+        className="bg-[#040404] shadow-2xl border-2 rounded-3xl 
+      flex flex-col justify-center items-center gap-5 
+      w-full max-w-[600px] 
+      h-full max-h-[70vh]
+      px-7 py-5
+    "
       >
-        <h2 className="text-white lg:text-4xl md:text-3xll text-2xl font-medium text-center lg:my-3">
+        <h2 className="text-white lg:text-4xl md:text-3xl text-2xl font-medium text-center lg:my-3">
           Login
         </h2>
 
@@ -88,9 +108,8 @@ const Login = ({ inputData, setInputData }) => {
               onChange={handleAuthLoginInputChange}
             />
             <i
-              className={`fa-solid ${
-                isPasswordView ? "fa-eye" : "fa-eye-slash"
-              } absolute top-1/2 transform -translate-y-1/2 right-4 cursor-pointer text-black `}
+              className={`fa-solid ${isPasswordView ? "fa-eye" : "fa-eye-slash"
+                } absolute top-1/2 transform -translate-y-1/2 right-4 cursor-pointer text-black `}
               onClick={handleCLickViewPassword}
             ></i>
           </div>
@@ -105,18 +124,18 @@ const Login = ({ inputData, setInputData }) => {
             <button
               type="submit"
               className={`w-[100%] bg-darkNavy py-3 shadow-2xl  rounded-lg  text-lg font-semibold text-white lg:h-[55px] h-[50px]`}
-              // style={{ backgroundColor: "rgb(239,68,68)" }}
+            // style={{ backgroundColor: "rgb(239,68,68)" }}
             >
               Login
             </button>
           )}
         </form>
-        {/* <p className="lg:text-sm text-xs m-0 text-white" style={{cursor:"pointer"}}>
-        Forgot your password?
+        <p className="lg:text-sm text-xs m-0 text-white" style={{ cursor: "pointer" }}>
+          Forgot your password?
           <Link to="/auth/forgotPassword" className="cursor-pointer text-blue-500 ms-2" >
-          Click here
+            Click here
           </Link>
-        </p> */}
+        </p>
         <p className="lg:text-sm text-xs m-0 text-white mb-5">
           Don't Have An Account ?{" "}
           <Link to="/auth/register" className="cursor-pointer text-blue-500">
@@ -129,6 +148,18 @@ const Login = ({ inputData, setInputData }) => {
           <hr className={`border max-sm:w-[23%] w-[30%]`} />
         </div> */}
       </div>
+      <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
     </div>
   );
 };

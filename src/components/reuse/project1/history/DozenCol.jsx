@@ -74,7 +74,7 @@ const DozenCol = ({ historyData }) => {
         <div key={rowIndex} style={{ display: "flex", gap: "10px" }}>
           {/* First column for labels */}
           <div style={{ width: "160px", textAlign: "left", padding: "10px" }}>
-            <p className="text-black font-semibold w-full max-md:text-xs max-sm:w-16">
+            <p className="text-white font-semibold w-full max-md:text-xs max-sm:w-16">
               {label}
             </p>
           </div>

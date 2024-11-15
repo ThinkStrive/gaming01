@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { TiThMenuOutline } from "react-icons/ti";
 import logo from "../../assets/imgs/RouletteRise Transperent Logo.png";
 import "../../Style/NavToggle.css";
+import { LuBell, LuBellOff, LuBellRing } from "react-icons/lu";
 
 const Nav = ({ theme, setTheme, navigate, navHeaderName }) => {
   const handleTheme = (theme) => {
@@ -15,10 +16,11 @@ const Nav = ({ theme, setTheme, navigate, navHeaderName }) => {
   return (
     <div
       className="flex items-center justify-between px-10 py-2 max-sm:px-3 sticky top-0 z-40 h-[10vh] md:h-[12vh] lg:h-[15vh]"
-      style={{ backgroundColor: "rgb(81,29,91)" }}
+    // style={{ backgroundColor: "rgb(81,29,91)" }}
+    style={{boxShadow:"1px 1px 16px #2d2e32"}}
     >
       <div className="mr-4 cursor-pointer" onClick={() => navigate(true)}>
-        <TiThMenuOutline size={24} />
+        <TiThMenuOutline size={30} color="white" />
       </div>
 
       <img
@@ -28,14 +30,14 @@ const Nav = ({ theme, setTheme, navigate, navHeaderName }) => {
       />
       <div className="flex-1 flex flex-col items-center">
         <h1 className="text-white text-2xl lg:text-4xl font-bold text-center max-sm:text-2xl">
-        {navHeaderName === 'project1' ?  'Data-Driven' : navHeaderName === 'project2' ? 'Roulette' : 'SpinCycle Strategy'}
+          {navHeaderName === 'project1' ? 'Data-Driven' : navHeaderName === 'project2' ? 'Roulette' : 'SpinCycle Strategy'}
         </h1>
         <p className="text-white text-base font-semibold lg:text-xl tracking-wide uppercase text-center max-sm:text-sm">
           {navHeaderName === 'project1' ? 'Roulette Tracker' : navHeaderName === 'project2' ? 'Strategy Analyzer' : ''}
         </p>
       </div>
 
-      <div>
+      {/* <div>
         <label className="switch">
           <input
             type="checkbox"
@@ -44,7 +46,9 @@ const Nav = ({ theme, setTheme, navigate, navHeaderName }) => {
           />
           <span className="slider"></span>
         </label>
-      </div>
+      </div> */}
+
+
     </div>
   );
 };

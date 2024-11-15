@@ -16,6 +16,7 @@ import Nav from "../components/nav/nav";
 import "../Style/ProjectsNav.css";
 import ProjectsNav from "../components/nav/ProjectsNav";
 import { Feedback } from "../components/main/Feedback";
+import { Userinfo } from "../components/main/Userinfo";
 
 function Home() {
   const [popUp, setPopUp] = useState(false);
@@ -62,9 +63,10 @@ function Home() {
   return (
     <div
       ref={elementToCaptureRef}
-      className={
-        theme === "dark" ? "bg-slate-900 relative" : "bg-off_white relative"
-      }
+      // className={
+      //   theme === "dark" ? "bg-slate-900 relative" : "bg-purplegrad relative"
+      // }
+      className="bg-purplegrad relative"
     >
       <ProjectsNav
         setPopUp={setPopUp}
@@ -95,6 +97,7 @@ function Home() {
             />
           }
         />
+        <Route path="/userinfo" element={<Userinfo/>} theme={theme} setTheme={setTheme}/>
         <Route path="/feedback" element={<Feedback theme={theme} setTheme={setTheme} />} />
         <Route
           path="project3/*"

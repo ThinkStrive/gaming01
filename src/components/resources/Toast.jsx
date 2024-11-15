@@ -3,7 +3,7 @@ import { SnackbarProvider, useSnackbar } from 'notistack';
 
 const Toast = ({ children }) => {
   return (
-    <SnackbarProvider maxSnack={3} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
+    <SnackbarProvider maxSnack={3} anchorOrigin={{ vertical: 'top', horizontal: 'right' }} >
       {children}
     </SnackbarProvider>
   );

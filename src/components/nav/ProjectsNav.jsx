@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "../../Style/ProjectsNav.css";
 import { AiOutlineCaretDown, AiOutlineCaretUp } from "react-icons/ai";
 import '../../Style/Lock.css'
-
+import { IoPersonCircleOutline } from "react-icons/io5";
+import { RiArrowRightSLine } from "react-icons/ri";
 function ProjectsNav({ popUp, setPopUp, setNavHeaderName }) {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false); // Help dropdown 1
@@ -43,6 +44,23 @@ const [isOpen7G, setIsOpen7G] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen1, setIsModalOpen1] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
+
+  
+const [userData, setUserData] = useState({
+  userName: "",
+  userEmail: "",
+  subscriptionDate: "",
+  isPaid: { paid: false, paidType: "none" },
+});
+useEffect(() => {
+  // Retrieve and parse user data from session storage
+  const storedData = sessionStorage.getItem("userData");
+  if (storedData) {
+    setUserData(JSON.parse(storedData));
+  }
+}, []);
+
+
   const handleClickProjectSelect = (name) => {
     setPopUp(false);  // Close sidebar on project selection
     setNavHeaderName(name);
@@ -83,62 +101,43 @@ const [isOpen7G, setIsOpen7G] = useState(false);
         }}
         onClick={() => setPopUp(false)}  // Close sidebar when clicking outside
       >
-        <div className="bg-slate-900 flex flex-col w-[19rem] h-screen p-4 pt-20 sticky top-0 side--nav">
+        <div className="bg-purplegrad flex flex-col w-[19rem] text-white h-screen p-4 pt-20 sticky top-0 side--nav">
           <div className="flex flex-col h-[85%]">
             <Link
               to="/project1/blackRed"
               className={
                 location.pathname === "/project1/blackRed"
-                  ? "w-full bg-darkNavy p-2 font-semibold rounded-lg pl-6 hover:bg-softBlue my-0.5"
+                  ? "w-full bg-white text-black p-2 font-semibold rounded-lg pl-6 hover:bg-softBlue my-0.5"
                   : "w-full p-2 font-semibold rounded-lg pl-6 hover:bg-softBlue my-0.5"
               }
               onClick={() => handleClickProjectSelect("project1")}
             >
               Data-Driven Roulette Tracker
             </Link>
-
             <Link
               to="/project4"
               className={
                 location.pathname === "/project4"
-                  ? "w-full bg-darkNavy p-2 font-semibold rounded-lg pl-6 hover:bg-softBlue my-0.5"
+                  ? "w-full bg-white p-2 text-black font-semibold rounded-lg pl-6 hover:bg-softBlue my-0.5"
                   : "w-full p-2 font-semibold rounded-lg pl-6 hover:bg-softBlue my-0.5"
               }
               onClick={() => handleClickProjectSelect("project3")}
             >
               SpinCycle Strategy
             </Link>
-            {/* <Link
+            <Link
               to="/feedback"  
               className={
                 location.pathname === "/feedback"
-                  ? "w-full bg-darkNavy p-2 font-semibold rounded-lg pl-6 hover:bg-softBlue my-0.5"
+                  ? "w-full bg-white text-black p-2 font-semibold rounded-lg pl-6 hover:bg-softBlue my-0.5"
                   : "w-full p-2 font-semibold rounded-lg pl-6 hover:bg-softBlue my-0.5"
               }
             >
               Feedback 
-            </Link> */}
-            {/* <a
-              href="#"
-              className={
-                isClicked
-                  ? "w-full bg-transparent p-2 font-semibold rounded-lg pl-6 hover:bg-softBlue my-0.5"
-                  : "w-full p-2 font-semibold rounded-lg bg-transparent pl-6 hover:bg-softBlue my-0.5"
-              }
-              onClick={() => setIsClicked(true)}  // Feedback click
-            >
-              Feedback
-            </a>
-
-            <a
-              href="#"
-              className="w-full p-2 font-semibold rounded-lg pl-6 bg-transparent hover:bg-softBlue my-0.5"
-            >
-              Video Tutorial
-            </a> */}
+            </Link>
 
             {/* Help Dropdown */}
-            <div className="relative items-start flex flex-col w-full bg-transparent p-2 font-semibold rounded-lg pl-6 my-0.5">
+            <div className="relative items-start flex flex-col w-full bg-transparant p-2 font-semibold rounded-lg pl-6 my-0.5">
               <button
                 className="flex w-full items-center justify-between"
                 onClick={(e) => {
@@ -152,13 +151,13 @@ const [isOpen7G, setIsOpen7G] = useState(false);
 
               {isOpen && (
                 <div className="w-full p-2 font-semibold rounded-lg pl-6 my-0.5 mt-1">
-                  <li onClick={handleModalOpen} className="list-none flex flex-col w-full bg-mediumBlue p-2 font-semibold rounded-lg pl-6 hover:bg-softBlue my-0.5">
+                  <li onClick={handleModalOpen} className="list-none flex  flex-col w-full bg-white text-black p-2 font-semibold rounded-lg pl-6 hover:bg-softBlue my-0.5">
                     <button >Data-Driven</button>
                   </li>
-                  <li onClick={handleModalOpen1} className="list-none flex flex-col w-full bg-mediumBlue p-2 font-semibold rounded-lg pl-6 hover:bg-softBlue my-0.5">
+                  <li onClick={handleModalOpen1} className="list-none flex flex-col w-full bg-white text-black p-2 font-semibold rounded-lg pl-6 hover:bg-softBlue my-0.5">
                     <button >QuadroBet Tracker</button>
                   </li>
-                  <li onClick={handleModalOpen2} className="list-none flex flex-col w-full bg-mediumBlue p-2 font-semibold rounded-lg pl-6 hover:bg-softBlue my-0.5">
+                  <li onClick={handleModalOpen2} className="list-none flex flex-col w-full bg-white text-black p-2 font-semibold rounded-lg pl-6 hover:bg-softBlue my-0.5">
                     <button >SpinCycle Strategy</button>
                   </li>
                 </div>
@@ -166,7 +165,32 @@ const [isOpen7G, setIsOpen7G] = useState(false);
             </div>
           </div>
 
-          <div className="flex justify-evenly items-center h-[30px] mb-3" >
+
+
+
+          <Link to="/userinfo" className="bg-purplegrad2 py-2 px-4 mb-4 rounded-xl justify-between flex border-2 border-white cursor-pointer group" >
+            <div className="flex">
+              <IoPersonCircleOutline size={50} className="rounded-full text-white" />
+              <div className="ms-2">
+                <h3 className="pb-1 text-xl overflow-hidden text-white text-ellipsis whitespace-normal">
+                  {userData.userName}
+                </h3>
+                <h5 className="text-xs overflow-hidden text-white text-ellipsis whitespace-normal">
+                  {userData.userEmail}
+                </h5>
+              </div>
+            </div>
+            <RiArrowRightSLine
+              size={35}
+              className="text-white mt-2 transition-transform duration-300 transform group-hover:translate-x-1"
+            />
+          </Link>
+
+
+
+
+
+          <div className="flex justify-evenly items-center text-white h-[30px] mb-3" >
             <Link
               to="mailto:rouletterise@gmail.com"
               target="_blank"
@@ -193,7 +217,7 @@ const [isOpen7G, setIsOpen7G] = useState(false);
           <Link
               to="/auth/login"
               onClick={() => sessionStorage.removeItem("userData")}
-              className="flex cursor-pointer font-semibold justify-start items-center"
+              className="flex cursor-pointer text-white font-semibold justify-start items-center"
             >
               <i className="fa-solid fa-right-from-bracket mx-6"></i>
               Log Out

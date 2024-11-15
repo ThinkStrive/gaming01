@@ -56,7 +56,7 @@ const His = ({ historyData }) => {
                 <div
                   key={colIndex}
                   style={{ width: "100%", textAlign: "center" }}
-                  className="border-r border-b"
+                  className=""
                 >
                   <div
                     className={`

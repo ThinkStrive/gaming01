@@ -1170,7 +1170,7 @@ const Main = ({ theme, setTheme }) => {
     }
   };
 
-  console.log(theme);
+ 
 
   return (
     <>
