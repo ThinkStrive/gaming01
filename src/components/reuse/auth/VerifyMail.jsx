@@ -45,12 +45,12 @@ const VerifyMail = () => {
   };
 
   return (
-    <div className="flex flex-col gap-5 justify-center items-center h-screen">
+    <div className="flex flex-col gap-5 justify-center items-center">
       <div
         className="bg-[#040404] shadow-2xl border-2 rounded-3xl 
       flex flex-col justify-center items-center gap-5 
       w-full max-w-[600px] 
-      h-full max-h-[70vh]
+      lg:h-[45vh] xs:h-[45vh] sm:[40vh] md:[45vh]
       px-7 py-5
     "
       >
