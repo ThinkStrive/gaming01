@@ -14,17 +14,52 @@ import MoneyManagementTable from "../reuse/project4/MoneyManagementTable.jsx";
 import Lock from "../resources/Lock.jsx";
 import axios from "axios";
 import { USER_DETAILS } from "../api/ApiDetails.js";
+import { json } from "react-router-dom";
 const Project4 = ({ theme }) => {
   const [isAlertAllowed, setIsAlertAllowed] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const showToast = useToast();
-  const [rowHoverEffect, setRowHoverEffect] = useState(true);
-  const [dozenHoverEffect, setDozenHoverEffect] = useState(true);
-  const [colHoverEffect, setColHoverEffect] = useState(true);
+  const [rowHoverEffect, setRowHoverEffect] = useState(false);
+  const [dozenHoverEffect, setDozenHoverEffect] = useState(false);
+  const [colHoverEffect, setColHoverEffect] = useState(false);
   const [i_btn, setI_btn] = useState(false);
+  const [i1_btn, setI1_btn] = useState(false);
+  const [i2_btn, setI2_btn] = useState(false);
+  const [i3_btn, setI3_btn] = useState(false);
+  const [i6_btn, setI6_btn] = useState(false);
+  const [isLockFreeze, setIsLockFreeze] = useState(false);
+
   // const [sidebar, setSidebar] = useState(false);
 
   // const showSidebar = () => setSidebar(!sidebar);
+
+  const maxItems = 36; // Maximum items in the FIFO list
+  const initialScores = Array.from({ length: 36 }, (_, i) => 36 - i); // Initial score array from 30 to 1
+  const [landedNumbers, setLandedNumbers] = useState(() => {
+    const savedLandedNumbers = localStorage.getItem("landedNumbers");
+    return savedLandedNumbers ? JSON.parse(savedLandedNumbers) : [];
+  });
+
+  const [dozenScores, setDozenScores] = useState(() => {
+    const savedDozenScores = localStorage.getItem("dozenScores");
+    return savedDozenScores
+      ? JSON.parse(savedDozenScores)
+      : { 1: 0, 2: 0, 3: 0 };
+  });
+
+  const [columnScores, setColumnScores] = useState(() => {
+    const savedColumnScores = localStorage.getItem("columnScores");
+    return savedColumnScores
+      ? JSON.parse(savedColumnScores)
+      : { 1: 0, 2: 0, 3: 0 };
+  });
+
+  const [rowDataScores, setRowDataScores] = useState(() => {
+    const savedRowDataScores = localStorage.getItem("rowDataScores");
+    return savedRowDataScores
+      ? JSON.parse(savedRowDataScores)
+      : { A: 0, B: 0, C: 0 };
+  });
 
   const [countData, setCountData] = useState(() => {
     const savedCountData = localStorage.getItem("countData4");
@@ -47,13 +82,25 @@ const Project4 = ({ theme }) => {
   });
 
   const handleClickRowHoverData = () => {
-    setRowHoverEffect(!rowHoverEffect);
+    if (landedNumbers.length > 36) {
+      setRowHoverEffect(!rowHoverEffect);
+    } else {
+      showToast("Need 36 digits to switch on", "error");
+    }
   };
   const handleClickDozenHoverData = () => {
-    setDozenHoverEffect(!dozenHoverEffect);
+    if (landedNumbers.length > 36) {
+      setDozenHoverEffect(!dozenHoverEffect);
+    } else {
+      showToast("Need 36 digits to switch on", "error");
+    }
   };
   const handleClickColHoverData = () => {
-    setColHoverEffect(!colHoverEffect);
+    if (landedNumbers.length > 36) {
+      setColHoverEffect(!colHoverEffect);
+    } else {
+      showToast("Need 36 digits to switch on", "error");
+    }
   };
 
   const [analyzeData, setAnalyzeData] = useState(() => {
@@ -70,21 +117,59 @@ const Project4 = ({ theme }) => {
         };
   });
 
+  console.log("analyzeData", analyzeData);
+
+  const [statsData, setStatsData] = useState(() => {
+    const savedCountData = localStorage.getItem("StatisticsData");
+    return savedCountData
+      ? JSON.parse(savedCountData)
+      : {
+          Agroup: 0,
+          Agroup_loss: 0,
+          Bgroup: 0,
+          Bgroup_loss: 0,
+          Cgroup: 0,
+          Cgroup_loss: 0,
+          dozen1: 0,
+          dozen1_loss: 0,
+          dozen2: 0,
+          dozen2_loss: 0,
+          dozen3: 0,
+          dozen3_loss: 0,
+          col1: 0,
+          col1_loss: 0,
+          col2: 0,
+          col2_loss: 0,
+          col3: 0,
+          col3_loss: 0,
+          odd: 0,
+          odd_loss: 0,
+          even: 0,
+          even_loss: 0,
+        };
+  });
+
+  console.log("statsData", statsData);
+
   const [rowData, setRowData] = useState(() => {
     const savedCountData = localStorage.getItem("rowData4");
     return savedCountData ? JSON.parse(savedCountData) : [];
   });
+
+  console.log("rowData", rowData);
 
   const [dozenRowData, setDozenRowData] = useState(() => {
     const savedCountData = localStorage.getItem("dozenRowData4");
     return savedCountData ? JSON.parse(savedCountData) : [];
   });
 
+  console.log("dozenRowData", dozenRowData);
   const [colRowData, setColRowData] = useState(() => {
     const savedCountData = localStorage.getItem("colRowData4");
     return savedCountData ? JSON.parse(savedCountData) : [];
   });
 
+  console.log("colRowData", colRowData);
   const [suggestion, setSuggestion] = useState(() => {
     return localStorage.getItem("suggestion4") || "";
   });
@@ -150,6 +235,14 @@ const Project4 = ({ theme }) => {
     const savedHistoryData = localStorage.getItem("unitData4");
     return savedHistoryData ? JSON.parse(savedHistoryData) : 1;
   });
+  const [unitDataDozen, setUnitDataDozen] = useState(() => {
+    const savedHistoryData = localStorage.getItem("unitDataDozen4");
+    return savedHistoryData ? JSON.parse(savedHistoryData) : 1;
+  });
+  const [unitDataCol, setUnitDataCol] = useState(() => {
+    const savedHistoryData = localStorage.getItem("unitData4Col");
+    return savedHistoryData ? JSON.parse(savedHistoryData) : 1;
+  });
 
   const [suggestionProcessedRow, setSuggestionProcessedRow] = useState(() => {
     const savedHistoryData = localStorage.getItem("suggestionProcessedRow4");
@@ -166,6 +259,11 @@ const Project4 = ({ theme }) => {
     return savedHistoryData ? JSON.parse(savedHistoryData) : null;
   });
 
+  const [lockProfitValue, setLockProfitValue] = useState(() => {
+    const savedHistoryData = localStorage.getItem("lockProfitValue");
+    return savedHistoryData ? JSON.parse(savedHistoryData) : 0;
+  });
+
   // moneyManagementData = {
   //   spin : '',
   //   winLoss : '',
@@ -176,8 +274,28 @@ const Project4 = ({ theme }) => {
 
   // Save `countData` to local storage whenever it changes
   useEffect(() => {
+    localStorage.setItem("lockProfitValue", JSON.stringify(lockProfitValue));
+  }, [lockProfitValue]);
+
+  useEffect(() => {
     localStorage.setItem("countData4", JSON.stringify(countData));
   }, [countData]);
+
+  useEffect(() => {
+    localStorage.setItem("landedNumbers", JSON.stringify(landedNumbers));
+  }, [landedNumbers]);
+
+  useEffect(() => {
+    localStorage.setItem("dozenScores", JSON.stringify(dozenScores));
+  }, [dozenScores]);
+
+  useEffect(() => {
+    localStorage.setItem("columnScores", JSON.stringify(columnScores));
+  }, [columnScores]);
+
+  useEffect(() => {
+    localStorage.setItem("rowDataScores", JSON.stringify(rowDataScores));
+  }, [rowDataScores]);
 
   // Save `lastHitNumber` to local storage whenever it changes
   useEffect(() => {
@@ -257,6 +375,14 @@ const Project4 = ({ theme }) => {
   }, [analyzeData]);
 
   useEffect(() => {
+    localStorage.setItem("StatisticsData", JSON.stringify(statsData));
+  }, [statsData]);
+
+  useEffect(() => {
+    localStorage.setItem("StatisticsData", JSON.stringify(statsData));
+  }, [analyzeData]);
+
+  useEffect(() => {
     localStorage.setItem(
       "suggestionActiveDozen4",
       JSON.stringify(suggestionActiveDozen)
@@ -293,6 +419,9 @@ const Project4 = ({ theme }) => {
 
   // Handle reset button click
   const handleClickResetButton = () => {
+    setColHoverEffect(false);
+    setDozenHoverEffect(false);
+    setRowHoverEffect(false);
     const initialRowData = [];
     const initialDozenRowData = [];
     const initialColRowData = [];
@@ -310,6 +439,30 @@ const Project4 = ({ theme }) => {
       colWinPer: 0,
       colLossPer: 0,
     };
+    const initialStatsData = {
+      Agroup: 0,
+      Agroup_loss: 0,
+      Bgroup: 0,
+      Bgroup_loss: 0,
+      Cgroup: 0,
+      Cgroup_loss: 0,
+      dozen1: 0,
+      dozen1_loss: 0,
+      dozen2: 0,
+      dozen2_loss: 0,
+      dozen3: 0,
+      dozen3_loss: 0,
+      col1: 0,
+      col1_loss: 0,
+      col2: 0,
+      col2_loss: 0,
+      col3: 0,
+      col3_loss: 0,
+      odd: 0,
+      odd_loss: 0,
+      even: 0,
+      even_loss: 0,
+    };
 
     // Reset the component's state
     setRowData(initialRowData);
@@ -326,11 +479,19 @@ const Project4 = ({ theme }) => {
     setSuggestionActiveCol(initialSuggestionActive);
     setUserMissedSuggestionCol(initialUserMissedSuggestion);
     setAnalyzeData(initialAnalyzeData);
+    setStatsData(initialStatsData);
     setMoneyManagementData([]);
     setSuggestionProcessedRow(null);
     setSuggestionProcessedDoz(null);
     setSuggestionProcessedCol(null);
     setUnitData(1);
+    setUnitDataDozen(1);
+    setUnitDataCol(1);
+    setLandedNumbers([]);
+    setDozenScores({ 1: 0, 2: 0, 3: 0 });
+    setColumnScores({ 1: 0, 2: 0, 3: 0 });
+    setRowDataScores({ A: 0, B: 0, C: 0 });
+    setLockProfitValue(0);
 
     // Set the initial values in localStorage
     localStorage.setItem("analyzeData4", JSON.stringify(initialAnalyzeData));
@@ -338,6 +499,10 @@ const Project4 = ({ theme }) => {
     localStorage.setItem("dozenRowData4", JSON.stringify(initialDozenRowData));
     localStorage.setItem("colRowData4", JSON.stringify(initialColRowData));
     localStorage.setItem("moneyManagement4", JSON.stringify([]));
+    localStorage.setItem("landedNumbers", JSON.stringify([]));
+    localStorage.setItem("dozenScores", JSON.stringify({ 1: 0, 2: 0, 3: 0 }));
+    localStorage.setItem("columnScores", JSON.stringify({ 1: 0, 2: 0, 3: 0 }));
+    localStorage.setItem("rowDataScores", JSON.stringify({ A: 0, B: 0, C: 0 }));
     localStorage.setItem("suggestionProcessedRow4", JSON.stringify(null));
     localStorage.setItem("suggestionProcessedDoz4", JSON.stringify(null));
     localStorage.setItem("suggestionProcessedCol4", JSON.stringify(null));
@@ -345,6 +510,10 @@ const Project4 = ({ theme }) => {
     localStorage.setItem("repeatLetter4", initialRepeatLetter);
     localStorage.setItem("repeatDozen4", initialRepeatDozen);
     localStorage.setItem("repeatCol4", initialRepeatCol);
+    localStorage.setItem("unitData4", 1);
+    localStorage.setItem("unitDataDozen4", 1);
+    localStorage.setItem("unitDataCol4", 1);
+    localStorage.setItem("lockProfitValue", 0);
     localStorage.setItem(
       "suggestionActive4",
       JSON.stringify(initialSuggestionActive)
@@ -732,12 +901,6 @@ const Project4 = ({ theme }) => {
     },
   };
 
-
-
-
-
-
-
   useEffect(() => {
     let newLossEntries = [];
 
@@ -756,12 +919,22 @@ const Project4 = ({ theme }) => {
           showToast(`Book Your Loss!`, "error");
         }
         setUnitData(1);
-        setRepeatLetter('')
+        setRepeatLetter("");
         setUserMissedSuggestion(true);
         setSuggestionActive(false);
         setAnalyzeData((prev) => ({
           ...prev,
           lossPerData: prev.lossPerData + 1,
+        }));
+
+        setStatsData((prev) => ({
+          ...prev,
+          Agroup_loss:
+            repeatLetter === "A" ? prev.Agroup_loss + 1 : prev.Agroup_loss,
+          Bgroup_loss:
+            repeatLetter === "B" ? prev.Bgroup_loss + 1 : prev.Bgroup_loss,
+          Cgroup_loss:
+            repeatLetter === "C" ? prev.Cgroup_loss + 1 : prev.Cgroup_loss,
         }));
 
         // Prepare the letter loss entry
@@ -789,8 +962,8 @@ const Project4 = ({ theme }) => {
         if (isAlertAllowed && dozenHoverEffect) {
           showToast(`Book Your Loss!`, "error");
         }
-        setUnitData(1);
-        setRepeatDozen('')
+        setUnitDataDozen(1);
+        setRepeatDozen("");
         setUserMissedSuggestionDozen(true);
         setSuggestionActiveDozen(false);
         setAnalyzeData((prev) => ({
@@ -798,12 +971,22 @@ const Project4 = ({ theme }) => {
           dozenLossPer: prev.dozenLossPer + 1,
         }));
 
+        setStatsData((prev) => ({
+          ...prev,
+          dozen1_loss:
+            repeatDozen === "1" ? prev.dozen1_loss + 1 : prev.dozen1_loss,
+          dozen2_loss:
+            repeatDozen === "2" ? prev.dozen2_loss + 1 : prev.dozen2_loss,
+          dozen3_loss:
+            repeatDozen === "3" ? prev.dozen3_loss + 1 : prev.dozen3_loss,
+        }));
+
         // Prepare the dozen loss entry
         newLossEntries.push({
           spin: lastHitNumber,
           winLoss: "L",
-          unit: unitData,
-          total: unitData * -1,
+          unit: unitDataDozen,
+          total: unitDataDozen * -1,
           covered:
             repeatDozen === "1" ? "D1" : repeatDozen === "2" ? "D2" : "D3",
         });
@@ -821,12 +1004,12 @@ const Project4 = ({ theme }) => {
         !Object.values(lastRow).includes(repeatCol) &&
         !userMissedSuggestionCol
       ) {
-        console.log('repeatCol', repeatCol);
+        console.log("repeatCol", repeatCol);
         if (isAlertAllowed && colHoverEffect) {
           showToast(`Book Your Loss! col`, "error");
         }
-        setUnitData(1);
-        setRepeatCol('')
+        setUnitDataCol(1);
+        setRepeatCol("");
         setUserMissedSuggestionCol(true);
         setSuggestionActiveCol(false);
         setAnalyzeData((prev) => ({
@@ -834,21 +1017,28 @@ const Project4 = ({ theme }) => {
           colLossPer: prev.colLossPer + 1,
         }));
 
+        setStatsData((prev) => ({
+          ...prev,
+          col1_loss: repeatCol === "1" ? prev.col1_loss + 1 : prev.col1_loss,
+          col2_loss: repeatCol === "2" ? prev.col2_loss + 1 : prev.col2_loss,
+          col3_loss: repeatCol === "3" ? prev.col3_loss + 1 : prev.col3_loss,
+        }));
+
         // Prepare the column loss entry
         newLossEntries.push({
           spin: lastHitNumber,
           winLoss: "L",
-          unit: unitData,
-          total: unitData * -1,
+          unit: unitDataCol,
+          total: unitDataCol * -1,
           covered: repeatCol === "1" ? "C1" : repeatCol === "2" ? "C2" : "C3",
         });
       }
     }
 
     // If there are any losses, update the money management data once
-    if (newLossEntries.length > 0) {
-      setMoneyManagementData((prevData) => [...prevData, ...newLossEntries]);
-    }
+    // if (newLossEntries.length > 0) {
+    //   setMoneyManagementData((prevData) => [...prevData, ...newLossEntries]);
+    // }
   }, [
     rowData,
     dozenRowData,
@@ -860,12 +1050,6 @@ const Project4 = ({ theme }) => {
     userMissedSuggestionDozen,
     userMissedSuggestionCol,
   ]);
-
-
-
-
-
-
 
   useEffect(() => {
     if (rowData.length > 0) {
@@ -894,25 +1078,23 @@ const Project4 = ({ theme }) => {
           setUserMissedSuggestion(false);
           setSuggestion(`Suggestion: The repeated letter is ${repeatedLetter}`);
 
-          setUnitData(1);
-
           // Add data to moneyManagementData only for the first column
-          // const newEntry = {
-          //   spin: "",
-          //   winLoss: "",
-          //   unit: unitData,
-          //   total: 0,
-          //   covered: repeatedLetter === "A" ? 13 : 12,
-          // };
+          const newEntry = {
+            spin: "",
+            winLoss: "",
+            unit: unitData,
+            total: 0,
+            covered: repeatedLetter === "A" ? 13 : 12,
+          };
 
-          // setMoneyManagementData((prevData) => {
-          //   const updatedData = [...prevData, newEntry];
-          //   localStorage.setItem(
-          //     "moneyManagement4",
-          //     JSON.stringify(updatedData)
-          //   );
-          //   return updatedData;
-          // });
+          setMoneyManagementData((prevData) => {
+            const updatedData = [...prevData, newEntry];
+            localStorage.setItem(
+              "moneyManagement4",
+              JSON.stringify(updatedData)
+            );
+            return updatedData;
+          });
 
           // Mark this row as processed to prevent duplicate additions for this row
           setSuggestionProcessedRow(lastRowIndex);
@@ -942,28 +1124,24 @@ const Project4 = ({ theme }) => {
           acc[dozen] = (acc[dozen] || 0) + 1;
           return acc;
         }, {});
-        console.log('occurrences', occurrences)
-        console.log('values', values)
         const repeatedDozen = Object.keys(occurrences).find(
           (dozen) => occurrences[dozen] > 1
         );
 
         // Check if the repeated dozen is in the first column
-        if (repeatedDozen && repeatedDozen != 0 ) {
-          console.log('repeated dozen is coming', repeatedDozen)
+        if (repeatedDozen && repeatedDozen != 0) {
+          console.log("repeated dozen is coming", repeatedDozen);
           // Only trigger the suggestion if it hasn't been processed for this row
           setRepeatDozen(repeatedDozen);
           setSuggestionActiveDozen(true);
           setUserMissedSuggestionDozen(false);
           setSuggestion(`Suggestion: The repeated dozen is ${repeatedDozen}`);
 
-          setUnitData(1);
-
           // Add data to moneyManagementData only for the first column
           // const newEntry = {
           //   spin: "",
           //   winLoss: "",
-          //   unit: unitData,
+          //   unit: unitDataDozen,
           //   total: 0,
           //   covered:
           //     repeatedDozen === "1"
@@ -1001,14 +1179,6 @@ const Project4 = ({ theme }) => {
     unitData,
   ]);
 
-  // console.log("dozen data", dozenRowData);
-  // console.log("repeatDozen", repeatDozen);
-  // console.log('userMissedSuggestionDozen', userMissedSuggestionDozen)
-  // console.log('suggestionActiveDozen', suggestionActiveDozen)
-  // console.log('suggestionProcessedDozen', suggestionProcessedDoz)
-  // // console.log('dozenHoverEffect', dozenHoverEffect)
-  // console.log('----------')
-
   useEffect(() => {
     if (colRowData.length > 0) {
       const lastRowIndex = colRowData.length - 1;
@@ -1036,13 +1206,11 @@ const Project4 = ({ theme }) => {
           setUserMissedSuggestionCol(false);
           setSuggestion(`Suggestion: The repeated column is ${repeatedCol}`);
 
-          setUnitData(1);
-
           // Add data to moneyManagementData only for the first column
           // const newEntry = {
           //   spin: "",
           //   winLoss: "",
-          //   unit: unitData,
+          //   unit: unitDataCol,
           //   total: 0,
           //   covered:
           //     repeatedCol === "1" ? "C1" : repeatedCol === "2" ? "C2" : "C3",
@@ -1071,7 +1239,11 @@ const Project4 = ({ theme }) => {
   }, [colRowData, repeatCol, userMissedSuggestionCol, lastHitNumber, unitData]);
 
   // Effect to handle multiple losses (letter, dozen, and column)
-  
+
+  let [isReachedTimeToIncreaseLetter, setIsReachedTimeToIncreaseLetter] =
+    useState(false);
+
+  useEffect(() => {}, [moneyManagementData]);
 
   // Handle when user clicks a letter/number
   const handleClickNumber = (key, number, letter, doz, col) => {
@@ -1089,7 +1261,6 @@ const Project4 = ({ theme }) => {
           ? "black"
           : "zero",
     });
-
     // Set Row Data for Letter
     setRowData((prevRowData) => {
       const lastRow = prevRowData[prevRowData.length - 1];
@@ -1101,6 +1272,38 @@ const Project4 = ({ theme }) => {
         return [...prevRowData.slice(0, -1), updatedRow];
       }
     });
+
+    // Update statsData based on letter, dozen, and column
+
+    // const parsedDoz = Number(doz);
+    // const parsedCol = Number(col);
+    // setStatsData((prevStats) => {
+    //   const updatedStats = { ...prevStats };
+
+    //   // Increment corresponding counts based on letter
+    //   if (letter === "A") updatedStats.Agroup += 1;
+    //   else if (letter === "B") updatedStats.Bgroup += 1;
+    //   else if (letter === "C") updatedStats.Cgroup += 1;
+
+    //   // Increment dozen count
+    //   if (parsedDoz === 1) updatedStats.dozen1 += 1;
+    //   else if (parsedDoz === 2) updatedStats.dozen2 += 1;
+    //   else if (parsedDoz === 3) updatedStats.dozen3 += 1;
+
+    //   // Increment column count
+    //   if (parsedCol === 1) updatedStats.col1 += 1;
+    //   else if (parsedCol === 2) updatedStats.col2 += 1;
+    //   else if (parsedCol === 3) updatedStats.col3 += 1;
+
+    //   // Update odd/even counts
+    //   if (number % 2 === 0) updatedStats.even += 1;
+    //   else updatedStats.odd += 1;
+
+    //   // Save to local storage
+    //   localStorage.setItem("StatisticsData", JSON.stringify(updatedStats));
+
+    //   return updatedStats;
+    // });
 
     // Handle suggestion for letters (RowData)
     if (suggestionActive) {
@@ -1117,30 +1320,126 @@ const Project4 = ({ theme }) => {
           winPerData: prev.winPerData + 1,
         }));
 
-        // Add data to MoneyManagement only if the letter matches
-        setMoneyManagementData((prevData) => [
-          ...prevData,
-          {
-            spin: {
-              number: number,
-              color:
-                clickedDataUpdates.red === 1
-                  ? "red"
-                  : clickedDataUpdates.black === 1
-                  ? "black"
-                  : "zero",
-            },
-            winLoss: "W",
-            unit: unitData,
-            total: letter === "A" ? unitData * 23 : unitData * 24,
-            covered: letter === "A" ? 13 : 12,
-          },
-        ]);
+        setStatsData((prev) => ({
+          ...prev,
+          Agroup: repeatLetter === "A" ? prev.Agroup + 1 : prev.Agroup,
+          Bgroup: repeatLetter === "B" ? prev.Bgroup + 1 : prev.Bgroup,
+          Cgroup: repeatLetter === "C" ? prev.Cgroup + 1 : prev.Cgroup,
+        }));
+
+        setMoneyManagementData((prevData) => {
+          // Flag to indicate if an update has been made
+          let updateMade = false;
+          const updatedData = prevData.map((entry, index) => {
+            // Get the reverse indices of the last three objects: 3, 2, 1
+            if (
+              !updateMade && // Update only if no prior match was made
+              entry.spin === "" && // Match condition
+              entry.winLoss === "" &&
+              entry.total === 0 &&
+              (entry.covered === 13 || entry.covered === 12) // Fix logical condition
+            ) {
+              updateMade = true;
+              return {
+                ...entry,
+                spin: {
+                  number: number,
+                  color: "",
+                },
+                winLoss: "W",
+                total: letter === "A" ? unitData * 23 : unitData * 24,
+              };
+            }
+            return entry; // Keep other entries unchanged
+          });
+
+          return updatedData;
+        });
+
+        if (!isReachedTimeToIncreaseLetter) {
+          setUnitData(unitData / 2);
+        }
+
+        if (unitData >= 3) {
+          setUnitData(1);
+        } else {
+          setUnitData(unitData + 1);
+        }
       } else {
         setSuggestion(`Suggestion: The repeated letter is ${repeatLetter}`);
+
+        // Step 1: Update `moneyManagementData` with the winLoss: "L" entry
+        setMoneyManagementData((prevData) => {
+          const updatedData = prevData.map((entry, index) => {
+            if (
+              index >= prevData.length - 3 && // Only check the last three objects
+              entry.spin === "" && // Match condition
+              entry.winLoss === "" &&
+              entry.total === 0
+            ) {
+              return {
+                ...entry,
+                spin: {
+                  number: number,
+                  color: "",
+                },
+                winLoss: "L",
+                total: -1,
+              };
+            }
+            return entry;
+          });
+
+          // Save updated data to localStorage
+          localStorage.setItem("moneyManagement4", JSON.stringify(updatedData));
+          return updatedData;
+        });
+
+        // Step 2: Use the updated `moneyManagementData` to calculate `bothLose`
+        setMoneyManagementData((prevData) => {
+          const filteredData = prevData.filter(
+            (entry) => entry.covered === 13 || entry.covered === 12
+          );
+          console.log(filteredData, "filteredData");
+
+          // Skip the last entry and pick the two before it
+          const lastTwoEntries = filteredData.slice(-2); // Get the second-last and third-last entries
+          console.log("lastTwoEntries", lastTwoEntries);
+
+          // Ensure there are exactly two entries and check if both have `winLoss` as "L"
+          const bothLose =
+            lastTwoEntries.length === 2 &&
+            lastTwoEntries.every((entry) => entry.winLoss === "L");
+          console.log("bothLose", bothLose);
+
+          // Update states based on `bothLose`
+          if (bothLose) {
+            setUnitData((prevUnit) => prevUnit * 2);
+          }
+
+          console.log("unitData", bothLose);
+          console.log("unitData", unitData);
+          setIsReachedTimeToIncreaseLetter(bothLose);
+
+          // Add a new entry if needed
+          if ((landedNumbers.length + 1) % 3 !== 0) {
+            const newEntry = {
+              spin: "",
+              winLoss: "",
+              unit: bothLose ? unitData * 2 : unitData,
+              total: 0,
+              covered: repeatLetter === "A" ? 13 : 12,
+            };
+
+            const newData = [...prevData, newEntry];
+            localStorage.setItem("moneyManagement4", JSON.stringify(newData));
+            return newData;
+          }
+
+          return prevData;
+        });
       }
     }
-
     // Handle Dozen and Column Data
     // if (doz !== 0 || col !== 0) {
     setDozenRowData((prevRowData) => {
@@ -1153,7 +1452,6 @@ const Project4 = ({ theme }) => {
         return [...prevRowData.slice(0, -1), updatedRow];
       }
     });
-
     setColRowData((prevRowData) => {
       const lastRow = prevRowData[prevRowData.length - 1];
       if (!lastRow || Object.keys(lastRow).length >= 3) {
@@ -1164,7 +1462,6 @@ const Project4 = ({ theme }) => {
         return [...prevRowData.slice(0, -1), updatedRow];
       }
     });
-
     // Handle suggestions for Dozen
     if (suggestionActiveDozen) {
       if (doz === repeatDozen) {
@@ -1173,11 +1470,18 @@ const Project4 = ({ theme }) => {
         if (isAlertAllowed && dozenHoverEffect) {
           showToast(`Win Dozen!`, "success");
         }
-        setUnitData(unitData + 1);
+        // setUnitDataDozen(unitDataDozen + 1);
         setRepeatDozen("");
         setAnalyzeData((prev) => ({
           ...prev,
           dozenWinPer: prev.dozenWinPer + 1,
+        }));
+
+        setStatsData((prev) => ({
+          ...prev,
+          dozen1: repeatDozen === "1" ? prev.dozen1 + 1 : prev.dozen1,
+          dozen2: repeatDozen === "2" ? prev.dozen2 + 1 : prev.dozen2,
+          dozen3: repeatDozen === "3" ? prev.dozen3 + 1 : prev.dozen3,
         }));
 
         // Add to money management for dozens
@@ -1194,13 +1498,82 @@ const Project4 = ({ theme }) => {
         //           : "zero",
         //     },
         //     winLoss: "W",
-        //     unit: unitData,
-        //     total: unitData * 2,
+        //     unit: unitDataDozen,
+        //     total: unitDataDozen * 2,
         //     covered: doz === "1" ? "D1" : doz === "2" ? "D2" : "D3",
         //   },
         // ]);
+        // setMoneyManagementData((prevData) => {
+        //   const updatedData = prevData.map((entry, index) => {
+        //     if (
+        //       index >= prevData.length - 3 && // Only check the last three objects
+        //       entry.spin === "" && // Match condition
+        //       entry.winLoss === "" &&
+        //       entry.total === 0 &&
+        //       entry.covered === 'D1' || 'D2' | 'D3'
+        //     ) {
+        //       return {
+        //         ...entry,
+        //         spin: {
+        //           number: number,
+        //           color:
+        //             clickedDataUpdates.red === 1
+        //               ? "red"
+        //               : clickedDataUpdates.black === 1
+        //               ? "black"
+        //               : "zero",
+        //         },
+        //         winLoss: "W",
+        //         total: unitDataDozen * 2,
+        //       };
+        //     }
+        //     return entry;
+        //   });
+        //   return updatedData;
+        // });
       } else {
         setSuggestion(`Suggestion: The repeated dozen is ${repeatDozen}`);
+        // setMoneyManagementData((prevData) => {
+        //   const updatedData = prevData.map((entry, index) => {
+        //     if (
+        //       index >= prevData.length - 3 && // Only check the last three objects
+        //       entry.spin === "" && // Match condition
+        //       entry.winLoss === "" &&
+        //       entry.total === 0
+        //     ) {
+        //       return {
+        //         ...entry,
+        //         spin: {
+        //           number: number,
+        //           color:
+        //             clickedDataUpdates.red === 1
+        //               ? "red"
+        //               : clickedDataUpdates.black === 1
+        //               ? "black"
+        //               : "zero",
+        //         },
+        //         winLoss: "L",
+        //         total: -1,
+        //       };
+        //     }
+        //     return entry;
+        //   });
+        //   return updatedData;
+        // });
+        // const newEntry = {
+        //   spin: "",
+        //   winLoss: "",
+        //   unit: unitDataDozen,
+        //   total: 0,
+        //   covered:
+        //   repeatDozen === "1" ? "D1" : repeatDozen === "2" ? "D2" : "D3",
+        // };
+
+        // setMoneyManagementData((prevData) => {
+        //   const updatedData = [...prevData, newEntry];
+        //   localStorage.setItem("moneyManagement4", JSON.stringify(updatedData));
+        //   return updatedData;
+        // });
       }
     }
 
@@ -1212,36 +1585,116 @@ const Project4 = ({ theme }) => {
         if (isAlertAllowed && colHoverEffect) {
           showToast(`Win Column!`, "success");
         }
-        setUnitData(unitData + 1);
+        // setUnitDataCol(unitDataCol + 1);
         setRepeatCol("");
         setAnalyzeData((prev) => ({
           ...prev,
           colWinPer: prev.colWinPer + 1,
         }));
 
+        setStatsData((prev) => ({
+          ...prev,
+          col1: repeatCol === "1" ? prev.col1 + 1 : prev.col1,
+          col2: repeatCol === "2" ? prev.col2 + 1 : prev.col2,
+          col3: repeatCol === "3" ? prev.col3 + 1 : prev.col3,
+        }));
+
         // Add to money management for columns
-        setMoneyManagementData((prevData) => [
-          ...prevData,
-          {
-            spin: {
-              number: number,
-              color:
-                clickedDataUpdates.red === 1
-                  ? "red"
-                  : clickedDataUpdates.black === 1
-                  ? "black"
-                  : "zero",
-            },
-            winLoss: "W",
-            unit: unitData,
-            total: unitData * 2,
-            covered: col === "1" ? "C1" : col === "2" ? "C2" : "C3",
-          },
-        ]);
+        // setMoneyManagementData((prevData) => [
+        //   ...prevData,
+        //   {
+        //     spin: {
+        //       number: number,
+        //       color:
+        //         clickedDataUpdates.red === 1
+        //           ? "red"
+        //           : clickedDataUpdates.black === 1
+        //           ? "black"
+        //           : "zero",
+        //     },
+        //     winLoss: "W",
+        //     unit: unitDataCol,
+        //     total: unitDataCol * 2,
+        //     covered: col === "1" ? "C1" : col === "2" ? "C2" : "C3",
+        //   },
+        // ]);
+        // setMoneyManagementData((prevData) => {
+        //   const updatedData = prevData.map((entry, index) => {
+        //     if (
+        //       index >= prevData.length - 3 && // Only check the last three objects
+        //       entry.spin === "" && // Match condition
+        //       entry.winLoss === "" &&
+        //       entry.total === 0 &&
+        //       entry.covered === 'C1' || 'c2' || 'C3'
+        //     ) {
+        //       return {
+        //         ...entry,
+        //         spin: {
+        //           number: number,
+        //           color:
+        //             clickedDataUpdates.red === 1
+        //               ? "red"
+        //               : clickedDataUpdates.black === 1
+        //               ? "black"
+        //               : "zero",
+        //         },
+        //         winLoss: "W",
+        //         total: unitDataCol * 2,
+        //       };
+        //     }
+        //     return entry;
+        //   });
+        //   return updatedData;
+        // });
       } else {
         setSuggestion(`Suggestion: The repeated column is ${repeatCol}`);
+        // setMoneyManagementData((prevData) => {
+        //   const updatedData = prevData.map((entry, index) => {
+        //     if (
+        //       index >= prevData.length - 3 && // Only check the last three objects
+        //       entry.spin === "" && // Match condition
+        //       entry.winLoss === "" &&
+        //       entry.total === 0
+        //     ) {
+        //       return {
+        //         ...entry,
+        //         spin: {
+        //           number: number,
+        //           color:
+        //             clickedDataUpdates.red === 1
+        //               ? "red"
+        //               : clickedDataUpdates.black === 1
+        //               ? "black"
+        //               : "zero",
+        //         },
+        //         winLoss: "L",
+        //         total: -1,
+        //       };
+        //     }
+        //     return entry;
+        //   });
+        //   return updatedData;
+        // });
+        // const newEntry = {
+        //   spin: "",
+        //   winLoss: "",
+        //   unit: unitDataCol,
+        //   total: 0,
+        //   covered:
+        //   repeatCol === "1" ? "C1" : repeatCol === "2" ? "C2" : "C3",
+        // };
+
+        // setMoneyManagementData((prevData) => {
+        //   const updatedData = [...prevData, newEntry];
+        //   localStorage.setItem("moneyManagement4", JSON.stringify(updatedData));
+        //   return updatedData;
+        // });
       }
     }
+
+    // Add new number to the FIFO queue without any max length
+    setLandedNumbers((prev) => [{ key, number, letter, doz, col }, ...prev]);
+
     // }
     // else {
     //   setDozenRowData([]);
@@ -1257,38 +1710,123 @@ const Project4 = ({ theme }) => {
     // }
   };
 
+  console.log("unitDataDozen", unitDataDozen);
 
-  console.log('analyze data', analyzeData)
+  useEffect(() => {
+    // Calculate the new scores for each dozen, column, and row once the array length reaches 30
+    if (landedNumbers.length >= 36) {
+      const newDozenScores = { 1: 0, 2: 0, 3: 0 };
+      const newColumnScores = { 1: 0, 2: 0, 3: 0 };
+      const newRowDataScores = { A: 0, B: 0, C: 0 };
 
+      // Only calculate scores for the first 36 items
+      landedNumbers.slice(0, 36).forEach((entry, index) => {
+        const score = initialScores[index] || 0;
 
+        // Update dozen scores
+        if (entry.doz) {
+          newDozenScores[entry.doz] += score;
+        }
 
-// Plan Data
+        // Update column scores
+        if (entry.col) {
+          newColumnScores[entry.col] += score;
+        }
 
-const [planLockScreen, setPlanLockScreen] = useState(false)
+        // Update row data scores
+        if (entry.letter) {
+          newRowDataScores[entry.letter] += score;
+        }
+      });
 
-useEffect(() => {
-  const fetchUserDetails = async () => {
-    try {
-      let userData = JSON.parse(sessionStorage.getItem('userData'));
-      const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
+      setDozenScores(newDozenScores);
+      setColumnScores(newColumnScores);
+      setRowDataScores(newRowDataScores);
 
-      console.log('response', response.data);
-      
-      if (!response.data.data.projectsPlan.project4) {
-        setPlanLockScreen(true);
+      console.log("Updated Dozen Scores:", newDozenScores);
+      // console.log("Updated Column Scores:", newColumnScores);
+      // console.log("Updated Row Data Scores:", newRowDataScores);
+    }
+  }, [landedNumbers]);
+
+  console.log("Landed Numbers", landedNumbers);
+  // console.log("dozen data", dozenScores);
+  // console.log("col data", columnScores);
+  // console.log("row data", rowDataScores);
+
+  const getStatus = (scores) => {
+    const values = Object.values(scores);
+    const maxScore = Math.max(...values);
+    const minScore = Math.min(...values);
+    return Object.keys(scores).reduce((status, key) => {
+      if (scores[key] === 0) {
+        // If score is 0, return an empty string
+        status[key] = "";
       } else {
-        setPlanLockScreen(false);
+        status[key] =
+          scores[key] === maxScore
+            ? "hot"
+            : scores[key] === minScore
+            ? "cold"
+            : "stable";
       }
-    } catch (err) {
-      console.log('err', err);
+      return status;
+    }, {});
+  };
+
+  const handleClickResetUnitData = () => {
+    let totalAmt = 0;
+    moneyManagementData.map((item) => {
+      totalAmt += item.total;
+    });
+    setLockProfitValue(totalAmt);
+  };
+
+  const [planLockScreen, setPlanLockScreen] = useState(false);
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        let userData = JSON.parse(sessionStorage.getItem("userData"));
+        const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
+
+        console.log("response", response.data);
+
+        if (!response.data.data.projectsPlan.project4) {
+          setPlanLockScreen(true);
+        } else {
+          setPlanLockScreen(false);
+        }
+      } catch (err) {
+        console.log("err", err);
+      }
+    };
+
+    // Call the async function
+    fetchUserDetails();
+  }, []);
+
+  const calculatePercentage = (
+    numerator,
+    denominator1,
+    denominator2,
+    denominator3
+  ) => {
+    const total = denominator1 + denominator2 + denominator3;
+    const percentage = Math.round((numerator / total) * 100);
+    if (total === 0) return { className: "", label: " " };
+    // Return 0 if the total is 0 to avoid NaN
+
+    if (percentage >= 70) {
+      return { className: "bg-red-500 text-white", label: "Hot" };
+    } else if (percentage >= 50) {
+      return { className: "bg-transparent", label: "Stable" };
+    } else {
+      return { className: "bg-green-300 text-black", label: "Cold" };
     }
   };
 
-  // Call the async function
-  fetchUserDetails();
-}, []);
-
-
+  console.log("statsData", statsData);
 
   return (
     <>
@@ -1372,7 +1910,6 @@ useEffect(() => {
                 </div>
             </div> */}
 
-
             {/* <div className={sidebar ? "nav-menu active" : "nav-menu"}onClick={showSidebar}>
                   <ul className="nav-menu-items ">
                     <li id="navbar-toggle">
@@ -1435,10 +1972,7 @@ useEffect(() => {
                     </li>
                   </ul>
             </div> */}
-
-
           </div>
-          
         </div>
 
         <div
@@ -1518,8 +2052,7 @@ useEffect(() => {
               </button>
             </div>
 
-{/* //---Hamburger Menu button  */}
-
+            {/* //---Hamburger Menu button  */}
 
             {/* <div className=" bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
                 <div className="menu-bars bg-black text-white px-5 py-2 rounded-full btns max-sm:text-sm hover:bg-neonGreen" onClick={showSidebar}>
@@ -1588,21 +2121,8 @@ useEffect(() => {
                     </li>
                   </ul>
             </div> */}
-
-
-
-
-
-
-
-
-
-
-            
           </div>
         </div>
-
-        
       </div>
       <div className="px-4 main h-[75.5vh] flex">
         <div
@@ -1617,7 +2137,9 @@ useEffect(() => {
               <div className="w-[82%] ml-[18%] h-[7%] flex">
                 <div
                   className={`${
-                    repeatLetter === "A"  && rowHoverEffect ? "bg-[#58d68d]" : "bg-customGreen"
+                    repeatLetter === "A" && rowHoverEffect
+                      ? "bg-[#58d68d]"
+                      : "bg-customGreen"
                   } w-[100%] flex justify-center items-center cursor-pointer border`}
                   onClick={() => handleClickNumber("zero", 0, "A", 0, 0)}
                   style={{
@@ -1643,13 +2165,14 @@ useEffect(() => {
 
               <div className="w-full h-full flex">
                 {/* dozens */}
-                <div className="w-[17%] max-lg:w[30rem] h-[86%]">
+                <div className="w-[17%] max-lg:w[30rem] font-white border-white h-[86%]">
                   <div
                     className="h-[33.33%] border flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold"
                     style={{
-                      backgroundColor: repeatDozen === "1" && dozenHoverEffect ? "#58d68d" : "",
-                      border: theme === "dark" ? "" : "1px black solid",
-                      color: theme === "dark" ? "" : "black",
+                      backgroundColor:
+                        repeatDozen === "1" && dozenHoverEffect
+                          ? "#58d68d"
+                          : "",
                     }}
                   >
                     <p className="rotate-90 w-[10rem] max-xl:text-sm max-sm:text-xs">
@@ -1660,9 +2183,10 @@ useEffect(() => {
                   <div
                     className="h-[33.33%] border flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold"
                     style={{
-                      backgroundColor: repeatDozen === "2" && dozenHoverEffect ? "#58d68d" : "",
-                      border: theme === "dark" ? "" : "1px black solid",
-                      color: theme === "dark" ? "" : "black",
+                      backgroundColor:
+                        repeatDozen === "2" && dozenHoverEffect
+                          ? "#58d68d"
+                          : "",
                     }}
                   >
                     <p className="rotate-90 w-[10rem] max-xl:text-sm max-sm:text-xs">
@@ -1673,9 +2197,10 @@ useEffect(() => {
                   <div
                     className="h-[33.33%] border flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold"
                     style={{
-                      backgroundColor: repeatDozen === "3" && dozenHoverEffect ? "#58d68d" : "",
-                      border: theme === "dark" ? "" : "1px black solid",
-                      color: theme === "dark" ? "" : "black",
+                      backgroundColor:
+                        repeatDozen === "3" && dozenHoverEffect
+                          ? "#58d68d"
+                          : "",
                     }}
                   >
                     <p className="rotate-90 w-[10rem] max-xl:text-sm max-sm:text-xs">
@@ -1699,7 +2224,9 @@ useEffect(() => {
                         }
                         style={{
                           backgroundColor:
-                            item.letter === repeatLetter && rowHoverEffect ? "#58d68d" : item.bg,
+                            item.letter === repeatLetter && rowHoverEffect
+                              ? "#58d68d"
+                              : item.bg,
                           borderColor:
                             theme === "light" ? "#F5F5F5" : "#0A1F44",
                         }}
@@ -1711,13 +2238,12 @@ useEffect(() => {
                   })}
 
                   {/* cols */}
-                  <div className="w-full flex">
+                  <div className="w-full flex border-white font-white">
                     <div
-                      className="w-[33.3%] h-full border flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold"
+                      className="w-[33.3%]  h-full border flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold"
                       style={{
-                        backgroundColor: repeatCol === "1" && colHoverEffect ? "#58d68d" : "",
-                        border: theme === "dark" ? "" : "1px black solid",
-                        color: theme === "dark" ? "" : "black",
+                        backgroundColor:
+                          repeatCol === "1" && colHoverEffect ? "#58d68d" : "",
                       }}
                     >
                       2 - 1
@@ -1725,9 +2251,8 @@ useEffect(() => {
                     <div
                       className="w-[33.3%] h-full border flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold"
                       style={{
-                        backgroundColor: repeatCol === "2" && colHoverEffect ? "#58d68d" : "",
-                        border: theme === "dark" ? "" : "1px black solid",
-                        color: theme === "dark" ? "" : "black",
+                        backgroundColor:
+                          repeatCol === "2" && colHoverEffect ? "#58d68d" : "",
                       }}
                     >
                       2 - 1
@@ -1735,9 +2260,8 @@ useEffect(() => {
                     <div
                       className="w-[33.3%] h-full border flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold"
                       style={{
-                        backgroundColor: repeatCol === "3" && colHoverEffect ? "#58d68d" : "",
-                        border: theme === "dark" ? "" : "1px black solid",
-                        color: theme === "dark" ? "" : "black",
+                        backgroundColor:
+                          repeatCol === "3" && colHoverEffect ? "#58d68d" : "",
                       }}
                     >
                       2 - 1
@@ -1748,16 +2272,30 @@ useEffect(() => {
             </div>
           </div>
         </div>
-        <div className="w-[10%] h-full  max-sm:flex justify-center items-center statistics "   >
+
+        <div className="w-[10%] h-full  max-sm:flex justify-center items-center statistics ">
           <div
             className="border rounded-full flex justify-center bg-black items-center relative cursor-pointer z-30 hover:bg-neonGreen"
             onClick={() => setShowPopup(!showPopup)}
-            style={{padding:"5px",width:"50px"}}
+            style={{ padding: "5px", width: "50px" }}
           >
             <CgInsights size={24} />
           </div>
         </div>
       </div>
+      {/* <div>
+      <p>Dozen 1: {dozenScores[1]} ({dozenStatus[1]})</p>
+    <p>Dozen 2: {dozenScores[2]} ({dozenStatus[2]})</p>
+    <p>Dozen 3: {dozenScores[3]} ({dozenStatus[3]})</p>
+
+    <p>Column 1: {columnScores[1]} ({columnStatus[1]})</p>
+    <p>Column 2: {columnScores[2]} ({columnStatus[2]})</p>
+    <p>Column 3: {columnScores[3]} ({columnStatus[3]})</p>
+
+    <p>A: {rowDataScores.A} ({rowDataStatus['A']})</p>
+    <p>B: {rowDataScores.B} ({rowDataStatus['B']})</p>
+    <p>C: {rowDataScores.C} ({rowDataStatus['C']})</p>
+        </div> */}
       {/* <div className="h-[40vh] border max-sm:hidden">
         <table className="border w-[20rem]">
           <tr>
@@ -1811,51 +2349,67 @@ useEffect(() => {
         <p>col Loss - {analyzeData.colLossPer}</p>
       </div> */}
 
-<div
-        className="w-full h-screen absolute top-0 flex justify-center items-center"
+      <div
+        className="w-full h-screen absolute top-0 flex justify-center items-center "
         style={{
           display: showPopup ? "flex" : "none",
           background: `linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9))`,
+          minHeight: "100vh",
+          overflow: "scroll",
+          scrollbarWidth: "none",
         }}
         onClick={() => setShowPopup(false)}
       >
         <div className="max-sm:mr-4">
-          <table className="border w-[35rem] max-md:w-[22rem] max-sm:w-[18rem]">
-            <tr className="max-sm:h-20 max-md:h-20" >
-              <th className="w-[30%] max-sm:w-[30] border py-2 bg-yellow-500 text-black">Category</th>
-              <th className="w-[40%] max-sm:w-[50] border bg-yellow-500 text-black break-words relative">Hot/Stable/Cold 
+          {/* Table 1 of Statistics */}
 
-              <div
-                className="text-gray-400 absolute  cursor-pointer bg-neutral-700 w-5 h-5 flex justify-center items-center rounded-full"
-                onMouseEnter={() => setI_btn(true)}
-                onMouseLeave={()=> setI_btn(false)}
-              style={{right:"10px",bottom:"6px"}}
-              >
-                i
-              </div>
-
-              <div
-                className="bg-customPurple p-2 flex justify-between mb-4 text-start  items-start text-white w-60 h-24 max-sm:w-45 max-sm:h-35 absolute bottom-6 max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%]"
-                style={{ display: i_btn ? "flex" : "none" }}
-                id="statsInfo"
-              >
-
-                <div className="text-start" style={{fontSize:"11px",paddingLeft:"5px"}}>
-                  <p>
-                    <span className="font-bold me-2">Hot : </span>&nbsp; &nbsp; &nbsp;  Good table For betting ✅
-                  </p>
-
-                  <p className="border-y my-1 py-1">
-                    <span className="font-bold me-2">Stable : </span>Decent choice,be cautious ⚖️
-                  </p>
-
-                  <p>
-                    <span className="font-bold me-2">Cold : </span> &nbsp; &nbsp;Avoid, too unpredictable ❌
-                  </p>
-                </div>
-              </div>
+          <table
+            className="border w-[35rem] max-md:w-[22rem] max-sm:w-[18rem] "
+            style={{ marginTop: "62rem" }}
+          >
+            <tr className="max-sm:h-20 max-md:h-20">
+              <th className="w-[30%] max-sm:w-[30] border py-2 bg-yellow-500 text-black">
+                Category
               </th>
-              <th className="w-[30%] bg-yellow-500 max-sm:w-[20] text-black">ON/OFF</th>
+              <th className="w-[40%] max-sm:w-[50] border bg-yellow-500 text-black break-words relative">
+                Hot/Stable/Cold
+                <div
+                  className="text-gray-400 absolute  cursor-pointer bg-neutral-700 w-5 h-5 flex justify-center items-center rounded-full"
+                  onMouseEnter={() => setI_btn(true)}
+                  onMouseLeave={() => setI_btn(false)}
+                  style={{ right: "10px", bottom: "6px" }}
+                >
+                  i
+                </div>
+                <div
+                  className="bg-customPurple p-2 flex justify-between mb-4 text-start  items-start text-white w-60 h-24 max-sm:w-45 max-sm:h-35 absolute bottom-6 max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%]"
+                  style={{ display: i_btn ? "flex" : "none" }}
+                  id="statsInfo"
+                >
+                  <div
+                    className="text-start"
+                    style={{ fontSize: "11px", paddingLeft: "5px" }}
+                  >
+                    <p>
+                      <span className="font-bold me-2">Hot : </span>&nbsp;
+                      &nbsp; &nbsp; Good table For betting ✅
+                    </p>
+
+                    <p className="border-y my-1 py-1">
+                      <span className="font-bold me-2">Stable : </span>Decent
+                      choice,be cautious ⚖️
+                    </p>
+
+                    <p>
+                      <span className="font-bold me-2">Cold : </span> &nbsp;
+                      &nbsp;Avoid, too unpredictable ❌
+                    </p>
+                  </div>
+                </div>
+              </th>
+              <th className="w-[30%] bg-yellow-500 max-sm:w-[20] text-black">
+                ON/OFF
+              </th>
             </tr>
 
             {/* Numbers */}
@@ -1890,20 +2444,20 @@ useEffect(() => {
                     : `Cold`;
                 })()}
               </td>
-              <td className="font-semibold text-center border max-sm:text-sm  " >
-                      <button
-                        onClick={handleClickRowHoverData}
-                        className="menu-bars bg-black text-white px-2  rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      > 
-                        {" "}
-                        <span
-                          className={`${
-                            rowHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {rowHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
+              <td className="font-semibold text-center border max-sm:text-sm  ">
+                <button
+                  onClick={handleClickRowHoverData}
+                  className="menu-bars bg-black text-white px-2  rounded-full btns max-sm:text-sm hover:bg-neonGreen"
+                >
+                  {" "}
+                  <span
+                    className={`${
+                      rowHoverEffect ? "text-green-500" : "text-red-500"
+                    }`}
+                  >
+                    {rowHoverEffect ? "On" : "Off"}
+                  </span>
+                </button>
               </td>
             </tr>
 
@@ -1939,20 +2493,20 @@ useEffect(() => {
                     : `Cold`;
                 })()}
               </td>
-              <td className="font-semibold text-center border max-sm:text-sm  " >
-              <button
-                        onClick={handleClickDozenHoverData}
-                        className="menu-bars bg-black text-white px-2  rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      >
-                        {" "}
-                        <span
-                          className={`${
-                            dozenHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {dozenHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
+              <td className="font-semibold text-center border max-sm:text-sm  ">
+                <button
+                  onClick={handleClickDozenHoverData}
+                  className="menu-bars bg-black text-white px-2  rounded-full btns max-sm:text-sm hover:bg-neonGreen"
+                >
+                  {" "}
+                  <span
+                    className={`${
+                      dozenHoverEffect ? "text-green-500" : "text-red-500"
+                    }`}
+                  >
+                    {dozenHoverEffect ? "On" : "Off"}
+                  </span>
+                </button>
               </td>
             </tr>
 
@@ -1988,23 +2542,381 @@ useEffect(() => {
                     : `Cold`;
                 })()}
               </td>
-              <td className="font-semibold text-center border max-sm:text-sm  " >
-                     <button
-                        onClick={handleClickColHoverData}
-                        className="menu-bars bg-black text-white px-2 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      >
-                         {" "}
-                        <span
-                          className={`${
-                            colHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {colHoverEffect ? "On" : "Off"}
-                        </span>
-                    </button>
+              <td className="font-semibold text-center border max-sm:text-sm  ">
+                <button
+                  onClick={handleClickColHoverData}
+                  className="menu-bars bg-black text-white px-2 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
+                >
+                  {" "}
+                  <span
+                    className={`${
+                      colHoverEffect ? "text-green-500" : "text-red-500"
+                    }`}
+                  >
+                    {colHoverEffect ? "On" : "Off"}
+                  </span>
+                </button>
               </td>
             </tr>
           </table>
+
+          {/* <table className="border w-[35rem] max-md:w-[22rem] max-sm:w-[18rem] mt-6">
+            <tr className="max-sm:h-20 max-md:h-20">
+              <th className="w-[30%] max-sm:w-[30] border py-2 bg-yellow-500 text-black">
+                Numbers
+              </th>
+              <th className="w-[40%] max-sm:w-[50] border bg-yellow-500 text-black break-words relative">
+                Hot/Stable/Cold
+                <div
+                  className="text-gray-400 absolute  cursor-pointer bg-neutral-700 w-5 h-5 flex justify-center items-center rounded-full"
+                  onMouseEnter={() => setI6_btn(true)}
+                  onMouseLeave={() => setI6_btn(false)}
+                  style={{ right: "10px", bottom: "6px" }}
+                >
+                  i
+                </div>
+                <div
+                  className="bg-customPurple p-2 flex justify-between mb-4 text-start  items-start text-white w-60 h-24 max-sm:w-45 max-sm:h-35 absolute bottom-6 max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%]"
+                  style={{ display: i6_btn ? "flex" : "none" }}
+                  id="statsInfo"
+                >
+                  <div
+                    className="text-start"
+                    style={{ fontSize: "11px", paddingLeft: "5px" }}
+                  >
+                    <p>
+                      <span className="font-bold me-2">Hot : </span>&nbsp;
+                      &nbsp; &nbsp; Good table For betting ✅
+                    </p>
+
+                    <p className="border-y my-1 py-1">
+                      <span className="font-bold me-2">Stable : </span>Decent
+                      choice,be cautious ⚖️
+                    </p>
+
+                    <p>
+                      <span className="font-bold me-2">Cold : </span> &nbsp;
+                      &nbsp;Avoid, too unpredictable ❌
+                    </p>
+                  </div>
+                </div>
+              </th>
+            </tr>
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                A-Group
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.Agroup;
+                  const lossPer = statsData.Agroup_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.Agroup;
+                  const lossPer = statsData.Agroup_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+            </tr>
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                B-Group
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.Bgroup;
+                  const lossPer = statsData.Bgroup_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.Bgroup;
+                  const lossPer = statsData.Bgroup_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+            </tr>
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                C-Group
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.Cgroup;
+                  const lossPer = statsData.Cgroup_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.Cgroup;
+                  const lossPer = statsData.Cgroup_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+            </tr>
+          </table>
+
+
+          <table className="border w-[35rem] max-md:w-[22rem] max-sm:w-[18rem]">
+            <tr className="max-sm:h-20 max-md:h-20">
+              <th className="w-[30%] max-sm:w-[30] border py-2 bg-yellow-500 text-black">
+                Dozen
+              </th>
+              <th className="w-[40%] max-sm:w-[50] border bg-yellow-500 text-black break-words relative">
+                Hot/Stable/Cold
+              </th>
+            </tr>
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                1st Dozen
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.dozen1;
+                  const lossPer = statsData.dozen1_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.dozen1;
+                  const lossPer = statsData.dozen1_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+            </tr>
+
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                2nd Dozen
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.dozen2;
+                  const lossPer = statsData.dozen2_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.dozen2;
+                  const lossPer = statsData.dozen2_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+            </tr>
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                3rd Dozen
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.dozen3;
+                  const lossPer = statsData.dozen3_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.dozen3;
+                  const lossPer = statsData.dozen3_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+            </tr>
+          </table>
+
+
+          <table className="border w-[35rem] max-md:w-[22rem] max-sm:w-[18rem]">
+            <tr className="max-sm:h-20 max-md:h-20">
+              <th className="w-[30%] max-sm:w-[30] border py-2 bg-yellow-500 text-black">
+                Columns
+              </th>
+              <th className="w-[40%] max-sm:w-[50] border bg-yellow-500 text-black break-words relative">
+                Hot/Stable/Cold
+              </th>
+            </tr>
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                Column 1
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.col1;
+                  const lossPer = statsData.col1_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.col1;
+                  const lossPer = statsData.col1_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+            </tr>
+
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                column2
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.col2;
+                  const lossPer = statsData.col2_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.col2;
+                  const lossPer = statsData.col2_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+            </tr>
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                column3
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.col3;
+                  const lossPer = statsData.col3_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.col3;
+                  const lossPer = statsData.col3_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+            </tr>
+          </table> */}
 
           {/* <p>Win - {analyzeData.winPerData}</p>
         <p>Loss - {analyzeData.lossPerData}</p>
@@ -2012,15 +2924,497 @@ useEffect(() => {
         <p>dozen Loss - {analyzeData.dozenLossPer}</p>
         <p>col win - {analyzeData.colWinPer}</p>
         <p>col Loss - {analyzeData.colLossPer}</p> */}
+
+          {/* 2nd table Agroup Bgroup Cgroup */}
+
+          <table className="border w-[35rem] max-md:w-[22rem] max-sm:w-[18rem] mt-6">
+            <tr className="max-sm:h-20 max-md:h-20">
+              <th className="w-[30%] max-sm:w-[30] border py-2 bg-yellow-500 text-black">
+                Numbers
+              </th>
+              <th className="w-[40%] max-sm:w-[50] border bg-yellow-500 text-black break-words relative">
+                Hot/Stable/Cold
+                <div
+                  className="text-gray-400 absolute  cursor-pointer bg-neutral-700 w-5 h-5 flex justify-center items-center rounded-full"
+                  onMouseEnter={() => setI1_btn(true)}
+                  onMouseLeave={() => setI1_btn(false)}
+                  style={{ right: "10px", bottom: "6px" }}
+                >
+                  i
+                </div>
+                <div
+                  className="bg-customPurple p-2 flex justify-between mb-4 text-start  items-start text-white w-60 h-24 max-sm:w-45 max-sm:h-35 absolute bottom-6 max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%]"
+                  style={{ display: i1_btn ? "flex" : "none" }}
+                  id="statsInfo"
+                >
+                  <div
+                    className="text-start"
+                    style={{ fontSize: "11px", paddingLeft: "5px" }}
+                  >
+                    <p>
+                      <span className="font-bold me-2">Hot : </span>&nbsp;
+                      &nbsp; &nbsp; Good table For betting ✅
+                    </p>
+
+                    <p className="border-y my-1 py-1">
+                      <span className="font-bold me-2">Stable : </span>Decent
+                      choice,be cautious ⚖️
+                    </p>
+
+                    <p>
+                      <span className="font-bold me-2">Cold : </span> &nbsp;
+                      &nbsp;Avoid, too unpredictable ❌
+                    </p>
+                  </div>
+                </div>
+              </th>
+              <th className="w-[30%] bg-yellow-500 max-sm:w-[20] text-black">
+                Score
+              </th>
+            </tr>
+            {/* <p>A: {rowDataScores.A} ({rowDataStatus['A']})</p>
+            <p>B: {rowDataScores.B} ({rowDataStatus['B']})</p>
+            <p>C: {rowDataScores.C} ({rowDataStatus['C']})</p>  */}
+
+            {/* Numbers */}
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                A-Group
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.Agroup;
+                  const lossPer = statsData.Agroup_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.Agroup;
+                  const lossPer = statsData.Agroup_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+              <td className="font-semibold text-center border max-sm:text-sm  ">
+                {rowDataScores.A}
+              </td>
+            </tr>
+
+            {/* Dozen */}
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                B-Group
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.Bgroup;
+                  const lossPer = statsData.Bgroup_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.Bgroup;
+                  const lossPer = statsData.Bgroup_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+              <td className="font-semibold text-center border max-sm:text-sm  ">
+                {rowDataScores.B}
+              </td>
+            </tr>
+
+            {/* Column */}
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                C-Group
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.Cgroup;
+                  const lossPer = statsData.Cgroup_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.Cgroup;
+                  const lossPer = statsData.Cgroup_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+              <td className="font-semibold text-center border max-sm:text-sm  ">
+                {rowDataScores.C}
+              </td>
+            </tr>
+          </table>
+
+          {/* 3'rd Table 1'stDozen,2nd-Dozen,3rd-Dozen */}
+
+          {/* <p>Dozen 1: {dozenScores[1]} ({dozenStatus[1]})</p>
+                <p>Dozen 2: {dozenScores[2]} ({dozenStatus[2]})</p>
+                <p>Dozen 3: {dozenScores[3]} ({dozenStatus[3]})</p> */}
+
+          <table className="border w-[35rem] max-md:w-[22rem] max-sm:w-[18rem] mt-6">
+            <tr className="max-sm:h-20 max-md:h-20">
+              <th className="w-[30%] max-sm:w-[30] border py-2 bg-yellow-500 text-black">
+                Dozen
+              </th>
+              <th className="w-[40%] max-sm:w-[50] border bg-yellow-500 text-black break-words relative">
+                Hot/Stable/Cold
+                <div
+                  className="text-gray-400 absolute  cursor-pointer bg-neutral-700 w-5 h-5 flex justify-center items-center rounded-full"
+                  onMouseEnter={() => setI2_btn(true)}
+                  onMouseLeave={() => setI2_btn(false)}
+                  style={{ right: "10px", bottom: "6px" }}
+                >
+                  i
+                </div>
+                <div
+                  className="bg-customPurple p-2 flex justify-between mb-4 text-start  items-start text-white w-60 h-24 max-sm:w-45 max-sm:h-35 absolute bottom-6 max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%]"
+                  style={{ display: i2_btn ? "flex" : "none" }}
+                  id="statsInfo"
+                >
+                  <div
+                    className="text-start"
+                    style={{ fontSize: "11px", paddingLeft: "5px" }}
+                  >
+                    <p>
+                      <span className="font-bold me-2">Hot : </span>&nbsp;
+                      &nbsp; &nbsp; Good table For betting ✅
+                    </p>
+
+                    <p className="border-y my-1 py-1">
+                      <span className="font-bold me-2">Stable : </span>Decent
+                      choice,be cautious ⚖️
+                    </p>
+
+                    <p>
+                      <span className="font-bold me-2">Cold : </span> &nbsp;
+                      &nbsp;Avoid, too unpredictable ❌
+                    </p>
+                  </div>
+                </div>
+              </th>
+              <th className="w-[30%] bg-yellow-500 max-sm:w-[20] text-black">
+                Score
+              </th>
+            </tr>
+            {/* Numbers */}
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                1st Dozen
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.dozen1;
+                  const lossPer = statsData.dozen1_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.dozen1;
+                  const lossPer = statsData.dozen1_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+              <td className="font-semibold text-center border max-sm:text-sm  ">
+                {dozenScores[1]}
+              </td>
+            </tr>
+
+            {/* Dozen */}
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                2nd Dozen
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.dozen2;
+                  const lossPer = statsData.dozen2_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.dozen2;
+                  const lossPer = statsData.dozen2_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+              <td className="font-semibold text-center border max-sm:text-sm  ">
+                {dozenScores[2]}
+              </td>
+            </tr>
+
+            {/* Column */}
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                3rd Dozen
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.dozen3;
+                  const lossPer = statsData.dozen3_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.dozen3;
+                  const lossPer = statsData.dozen3_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+              <td className="font-semibold text-center border max-sm:text-sm  ">
+                {dozenScores[3]}
+              </td>
+            </tr>
+          </table>
+
+          {/* 4th table Column Table 1ST column, 2nd Column ,3rd Column */}
+
+          <table className="border w-[35rem] max-md:w-[22rem] max-sm:w-[18rem] mt-6">
+            <tr className="max-sm:h-20 max-md:h-20">
+              <th className="w-[30%] max-sm:w-[30] border py-2 bg-yellow-500 text-black">
+                Columns
+              </th>
+              <th className="w-[40%] max-sm:w-[50] border bg-yellow-500 text-black break-words relative">
+                Hot/Stable/Cold
+                <div
+                  className="text-gray-400 absolute  cursor-pointer bg-neutral-700 w-5 h-5 flex justify-center items-center rounded-full"
+                  onMouseEnter={() => setI3_btn(true)}
+                  onMouseLeave={() => setI3_btn(false)}
+                  style={{ right: "10px", bottom: "6px" }}
+                >
+                  i
+                </div>
+                <div
+                  className="bg-customPurple p-2 flex justify-between mb-4 text-start  items-start text-white w-60 h-24 max-sm:w-45 max-sm:h-35 absolute bottom-6 max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%]"
+                  style={{ display: i3_btn ? "flex" : "none" }}
+                  id="statsInfo"
+                >
+                  <div
+                    className="text-start"
+                    style={{ fontSize: "11px", paddingLeft: "5px" }}
+                  >
+                    <p>
+                      <span className="font-bold me-2">Hot : </span>&nbsp;
+                      &nbsp; &nbsp; Good table For betting ✅
+                    </p>
+
+                    <p className="border-y my-1 py-1">
+                      <span className="font-bold me-2">Stable : </span>Decent
+                      choice,be cautious ⚖️
+                    </p>
+
+                    <p>
+                      <span className="font-bold me-2">Cold : </span> &nbsp;
+                      &nbsp;Avoid, too unpredictable ❌
+                    </p>
+                  </div>
+                </div>
+              </th>
+              <th className="w-[30%] bg-yellow-500 max-sm:w-[20] text-black">
+                Score
+              </th>
+            </tr>
+            {/* Numbers */}
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                Column 1
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.col1;
+                  const lossPer = statsData.col1_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.col1;
+                  const lossPer = statsData.col1_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+              <td className="font-semibold text-center border max-sm:text-sm  ">
+                {columnScores[1]}
+              </td>
+            </tr>
+
+            {/* Dozen */}
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                Column 2
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.col2;
+                  const lossPer = statsData.col2_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.col2;
+                  const lossPer = statsData.col2_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+              <td className="font-semibold text-center border max-sm:text-sm  ">
+                {columnScores[2]}
+              </td>
+            </tr>
+
+            {/* Column */}
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                Column 3
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.col3;
+                  const lossPer = statsData.col3_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.col3;
+                  const lossPer = statsData.col3_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+              <td className="font-semibold text-center border max-sm:text-sm  ">
+                {columnScores[3]}
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
 
-
-
-
       <div
-        // className="h-[65vh] mt-5 w-full overflow-y-scroll rounded-xl p-2 scrollOff"
-        className="h-[35vh] mt-5 w-full rounded-xl p-2 flex justify-center items-center flex-col"
+        className="h-[30vh] mt-5 w-full overflow-y-scroll rounded-xl text-center p-2 scrollOff"
+        // className="h-[35vh] mt-5 w-full rounded-xl p-2 flex justify-center items-center flex-col"
         style={{
           background:
             theme === "dark"
@@ -2033,24 +3427,36 @@ useEffect(() => {
           border: theme === "dark" ? "white 2px solid" : "black 2px solid",
         }}
       >
-        <h2 className={`text-lg font-bold my-4 ${theme === 'dark' ? 'text-white' : 'text-black'}`} >Money Management Tool</h2>
-        <span className={`${theme === 'dark' ? 'text-white' : 'text-black'}`} ><i className="fa-regular fa-clock mx-3"></i>Coming Soon !</span>
+        <h2
+          className={`text-lg font-bold my-4 ${
+            theme === "dark" ? "text-white" : "text-black"
+          }`}
+        >
+          Money Management Tool
+        </h2>
+        <span className={`${theme === "dark" ? "text-white" : "text-black"}`}>
+          <i className="fa-regular fa-clock mx-3"></i>Coming Soon !
+        </span>
         {/* <button
           onClick={() => setMoneyManagementData([])}
           className="border py-1 px-4 rounded-lg mb-2 mx-2"
         >
           Reset
-        </button> */}
-        {/* <MoneyManagementTable
+        </button>
+        <button
+          onClick={handleClickResetUnitData}
+          className="border py-1 px-4 rounded-lg mb-2 mx-2"
+        >
+          Lock Profit {lockProfitValue}
+        </button>
+        <MoneyManagementTable
           moneyManagementData={moneyManagementData}
           theme={theme}
+          lockProfitValue={lockProfitValue}
         /> */}
       </div>
 
-
-      {
-        planLockScreen && <Lock setPlanLockScreen={setPlanLockScreen} />
-      }
+      {planLockScreen && <Lock setPlanLockScreen={setPlanLockScreen} />}
     </>
   );
 };
