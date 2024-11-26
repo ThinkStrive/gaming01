@@ -8,6 +8,8 @@ import { useToast } from "../../resources/Toast";
 import { USER_REGISTER } from "../../api/ApiDetails";
 import "../../../Style/Auth.css";
 
+
+
 const Register = ({ inputData, setInputData }) => {
 
   const showToast = useToast();
@@ -66,7 +68,119 @@ const Register = ({ inputData, setInputData }) => {
   };
 
   return (
-    <div className="flex flex-col gap-5 justify-center items-center">
+    <section className="min-h-screen flex items-center justify-center bg-transparant p-0 m-0">
+  {/* login container */}
+  <div className="bg-purplegrad flex gap-5 flex-col sm:flex-row rounded-2xl shadow-lg max-w-6xl p-5 items-center">
+    {/* image */}
+    <div className="sm:block sm:w-1/2 w-full">
+      <img
+        className="rounded-2xl h-auto w-full object-cover  sm:h-[450px]" 
+        src="https://res.cloudinary.com/dxsdme4qy/image/upload/v1732179342/casinobg1_iqhrl3.jpg"
+        alt="Login Illustration"
+        
+      />
+    </div>
+
+    {/* form */}
+    <div className="sm:w-1/2 w-[100%] flex-col">
+      
+    <h2 className="text-white lg:text-3xl md:text-wl text-2xl font-medium text-center my-3">
+          Register
+        </h2>
+
+        <form
+          action=""
+          onSubmit={handleAuthLoginButton}
+          className="flex flex-col justify-between gap-3 items-start lg:h-[70%] h-[70%] w-full lg:mt-3 mt-1"
+        >
+          <input
+            type="text"
+            placeholder="Enter your Name"
+            className="bg-purplegrad backdrop-blur-sm bg-opacity-30 p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[#ffffff] w-full"
+            name="name"
+            id="name"
+            value={inputData.name}
+            onChange={handleInputChange}
+          />
+          <input
+            type="email"
+            placeholder="Enter your Email"
+            className="bg-purplegrad backdrop-blur-sm bg-opacity-30 p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[#ffffff] w-full"
+            name="email"
+            id="email"
+            value={inputData.email}
+            onChange={handleInputChange}
+          />
+          <div className="relative lg:w-[100%] w-[100%]">
+            <input
+              type={isPasswordView ? "text" : "password"}
+              placeholder="Enter your password"
+              className="bg-purplegrad backdrop-blur-sm bg-opacity-30 p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[#ffffff] w-full"
+              name="password"
+              id="password"
+              value={inputData.password}
+              onChange={handleInputChange}
+            />
+            <i
+              className={`fa-solid ${isPasswordView ? "fa-eye" : "fa-eye-slash"
+                } absolute top-1/2 transform -translate-y-1/2 right-4 cursor-pointer text-white`}
+              onClick={handleCLickViewPassword}
+            ></i>
+          </div>
+          <PhoneInput
+            country={"us"}
+            value={inputData.mobile_number}
+            onChange={handleAuthLoginInputChange}
+            className="text-black rounded-lg placeholder:text-black bg-purplegrad backdrop-blur-sm bg-opacity-30 p-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[#ffffff] w-full"
+            inputStyle={{
+              outline: "none",
+              width: "100%",
+              height: "100%",
+              borderRadius: "0.5rem",
+              fontSize: "1rem",
+              fontWeight: "bold",
+              color: "#000000",
+              background:"transparant",
+              padding:" 5px 0px 5px 40px"
+            }}
+            containerStyle={{
+              marginBottom: "0.3rem",
+            }}
+            placeholder="Enter your Number"
+          />
+          {loading ? (
+            <button
+              type="submit"
+              className="w-[100%] bg-[#7F00FF] py-3 shadow-2xl rounded-lg text-lg font-semibold text-white lg:h-[55px] h-[50px] flex justify-center items-center"
+            >
+              <div className="login-loader"></div>
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className="w-[100%] bg-[#7F00FF] text-black  shadow-2xl rounded-lg text-lg font-semibold lg:h-[40px] h-[40px]  px-4 border-2 border-[#7F00FF] hover:bg-[#7F00FF] hover:text-white duration-300"
+            >
+              Register
+            </button>
+          )}
+        </form>
+
+        <p className="lg:text-sm text-xs mt-4 m-0 text-white text-center">
+          Already Have An Account?{" "}
+          <Link to="/auth/login" className="cursor-pointer text-blue-500">
+            Sign in
+          </Link>
+        </p> 
+   
+    </div>
+  </div>
+</section>
+
+  );
+};
+
+export default Register;
+{/* <div className="flex flex-col gap-5 justify-center items-center">
       <div
         className="bg-[#040404] shadow-2xl border-2 rounded-3xl 
       flex flex-col justify-center items-center gap-5 
@@ -163,8 +277,4 @@ const Register = ({ inputData, setInputData }) => {
           </Link>
         </p>
       </div>
-    </div>
-  );
-};
-
-export default Register;
+    </div> */}

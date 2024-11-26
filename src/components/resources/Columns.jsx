@@ -1,23 +1,29 @@
 import React from 'react'
 import GaugeChart from 'react-gauge-chart'
 
-const Columns = ({ columnScoresDD, colScoresDDLong, countData, lastHitData }) => {
+const Columns = ({ columnScoresDD, colScoresDDLong, countData, lastHitData ,columnCount }) => {
 
     const percent1ST = (Math.round(columnScoresDD[1] / 3) / 35);
     const percent2ST = (Math.round(columnScoresDD[2] / 3) / 35);
     const percent3ST = (Math.round(columnScoresDD[3] / 3) / 35);
 
+    
+
+
+
     const shortColScore1 = percent1ST == 0 ? "COLD" : percent1ST < 0.36 ? "STABLE" : "HOT";
     const shortColScore2 = percent2ST == 0 ? "COLD" : percent2ST < 0.36 ? "STABLE" : "HOT";
     const shortColScore3 = percent3ST == 0 ? "COLD" : percent3ST < 0.36 ? "STABLE" : "HOT";
+
 
     const percent1LT = (Math.round(colScoresDDLong[1] / 9) / 35);
     const percent2LT = (Math.round(colScoresDDLong[2] / 9) / 35);
     const percent3LT = (Math.round(colScoresDDLong[3] / 9) / 35);
 
-    const longColScore1 = percent1LT <=0.3 ? "COLD" : percent1LT <=0.5 ? "STABLE" : "HOT";
-    const longColScore2 = percent2LT <=0.3 ? "COLD" : percent2LT <=0.5 ? "STABLE" : "HOT";
-    const longColScore3 = percent3LT <=0.3 ? "COLD" : percent3LT <=0.5 ? "STABLE" : "HOT";
+
+    const longColScore1 = columnCount[1]<= 2 ? "COLD" :columnCount[1] <= 3 ? "STABLE" : "HOT";
+    const longColScore2 = columnCount[2] <=2 ? "COLD" : columnCount[2] <=3? "STABLE" : "HOT";
+    const longColScore3 = columnCount[3] <=2 ? "COLD" : columnCount[3]<=3 ? "STABLE" : "HOT";
 
 
     const calculateColumnPercentage = (numerator, col_one, col_two, col_three) => {

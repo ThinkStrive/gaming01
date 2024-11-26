@@ -68,7 +68,72 @@ export function ResetPass() {
   }
 
   return (
-    <div
+    <section className="min-h-screen flex items-center justify-center bg-transparant p-0 m-0">
+    {/* login container */}
+    <div className="bg-purplegrad flex gap-5 flex-col sm:flex-row rounded-2xl shadow-lg max-w-6xl p-5 items-center">
+      {/* image */}
+      <div className="sm:block sm:w-1/2 w-full">
+        <img
+          className="rounded-2xl h-auto w-full object-cover sm:h-[450px]" 
+          src="https://res.cloudinary.com/dxsdme4qy/image/upload/v1732182131/medium-shot-man-futuristic-casino_vsslkq.jpg"
+          alt="Login Illustration"
+           loading="lazy"
+        />
+      </div>
+  
+      {/* form */}
+      <div className="sm:w-1/2 w-[100%] flex-col gap-5">
+      <h2 className="text-white lg:text-2xl md:text-2xl text-2xl mb-5 font-medium text-center lg:my-3">
+          Reset Password
+        </h2>
+
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col justify-center items-center gap-3 lg:h-[53%] h-[55%] w-full lg:mt-3 mt-2"
+        >
+          <div className="relative lg:w-[100%] w-[100%]">
+            <input
+              type={isPasswordView ? "text" : "password"}
+              placeholder="Enter your password"
+              className="bg-purplegrad backdrop-blur-sm bg-opacity-30 p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-[#ffffff] w-full"
+              name="password"
+              id="password"
+              value={data.password}
+              onChange={handleChange}
+            />
+            <i
+              className={`fa-solid ${
+                isPasswordView ? "fa-eye" : "fa-eye-slash"
+              } absolute top-1/2 transform -translate-y-1/2 right-4 cursor-pointer text-white`}
+              onClick={handleClickViewPassword}
+            ></i>
+          </div>
+
+          <button
+            type="submit"
+            className="w-[100%] bg-[#7F00FF] text-white mt-4 py-2  shadow-2xl rounded-lg text-lg font-semibold lg:h-[50px] h-[55px]  px-4 border-2 border-[#7F00FF] hover:bg-[#7F00FF] hover:text-black duration-300"
+          >
+            {loading ? <div className="login-loader flex justify-center"></div> : "Submit"}
+          </button>
+        </form>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
+      </div>
+    </div>
+  </section>
+  );
+}
+{/* <div
       className="flex justify-center items-center"
       // style={{ height: "100vh", width: "100%" }}
     >
@@ -126,6 +191,4 @@ export function ResetPass() {
           theme="dark"
         />
       </div>
-    </div>
-  );
-}
+    </div> */}

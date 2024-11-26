@@ -1,7 +1,7 @@
 import React from 'react'
 import GaugeChart from 'react-gauge-chart'
 
-const EventMoney = ({ oddEvenST, oddEvenLT, colorST, colorLT, rangeST, rangeLT, countData, lastHitData }) => {
+const EventMoney = ({ oddEvenST, oddEvenLT, colorST, colorLT, rangeST, rangeLT, countData, lastHitData,colorCount,oddEvenCount,rangeCount }) => {
 
 
 
@@ -44,8 +44,10 @@ const EventMoney = ({ oddEvenST, oddEvenLT, colorST, colorLT, rangeST, rangeLT, 
     const LongRedScore =  (Math.round(colorLT.red / 9) / 35);
     const LongBlackScore =  (Math.round(colorLT.black / 9) / 35);
 
-    const longRed = LongRedScore <=0.3 ? "COLD" : LongRedScore <= 0.50 ? "STABLE" : "HOT";
-    const longBlack = LongBlackScore <=0.3 ? "COLD" : LongBlackScore <=0.50 ? "STABLE" : "HOT";
+    const longRed = colorCount.red <= 2 ? "COLD" : colorCount.red<= 3 ? "STABLE" : "HOT";
+    const longBlack = colorCount.black <= 2 ? "COLD" : colorCount.black<= 3 ? "STABLE" : "HOT";
+
+
 
     //-----------------------------------Odd And Even-
 
@@ -59,8 +61,8 @@ const EventMoney = ({ oddEvenST, oddEvenLT, colorST, colorLT, rangeST, rangeLT, 
     const LongOddScore =  (Math.round(oddEvenLT.odd / 9) / 35);
     const LongEvenScore =  (Math.round(oddEvenLT.even / 9) / 35);
 
-    const longOdd = LongOddScore <=0.3 ? "COLD" : LongOddScore <= 0.50 ? "STABLE" : "HOT";
-    const longEven = LongEvenScore <=0.3 ? "COLD" : LongEvenScore <=0.50 ? "STABLE" : "HOT";
+    const longOdd = oddEvenCount.odd <=2 ? "COLD" : oddEvenCount.odd <= 3 ? "STABLE" : "HOT";
+    const longEven = oddEvenCount.even <=2 ? "COLD" : oddEvenCount.even <=3 ? "STABLE" : "HOT";
 
     // range -------1 TO 18 & 19 TO 36----------------
 
@@ -73,8 +75,8 @@ const EventMoney = ({ oddEvenST, oddEvenLT, colorST, colorLT, rangeST, rangeLT, 
     const Longrange1_18 =  (Math.round(rangeLT['1-18'] / 9) / 35);
     const Longrange19_36 =  (Math.round(rangeLT['19-36'] / 9) / 35);
 
-    const long1_18 =Longrange1_18<=0.3 ? "COLD" : Longrange1_18 <= 0.50 ? "STABLE" : "HOT";
-    const long19_36 = Longrange19_36 <=0.3 ? "COLD" : Longrange19_36 <=0.50 ? "STABLE" : "HOT";
+    const long1_18 = rangeCount["1-18"] <=2 ? "COLD" :  rangeCount["1-18"] <= 3 ? "STABLE" : "HOT";
+    const long19_36 = rangeCount["19-36"]<=2 ? "COLD" : rangeCount["19-36"] <= 3 ? "STABLE" : "HOT";
 
 
 

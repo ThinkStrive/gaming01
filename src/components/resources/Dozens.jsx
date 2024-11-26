@@ -1,7 +1,7 @@
 import React from 'react'
 import GaugeChart from 'react-gauge-chart'
 
-const Dozens = ({ dozenScoresDD, dozenScoresDDLong, countData, lastHitData }) => {
+const Dozens = ({ dozenScoresDD, dozenScoresDDLong, countData, lastHitData, dozenCount }) => {
 
     
     const percent1ST = (Math.round(dozenScoresDD[1] / 3) / 35);
@@ -18,9 +18,9 @@ const Dozens = ({ dozenScoresDD, dozenScoresDDLong, countData, lastHitData }) =>
 
 
 
-    const longDozScore1 = percent1LT<=0.3 ? "COLD" : percent1LT<=0.5 ? "STABLE" : "HOT";
-    const longDozScore2 = percent2LT<=0.3 ? "COLD" : percent2LT<=0.5 ? "STABLE" : "HOT";
-    const longDozScore3 = percent3LT<=0.3 ? "COLD" : percent3LT<=0.5 ? "STABLE" : "HOT";
+    const longDozScore1 = dozenCount[1] <=2 ? "COLD" : dozenCount[1] <=3 ? "STABLE" : "HOT";
+    const longDozScore2 = dozenCount[2] <=2 ? "COLD" : dozenCount[2] <=3 ? "STABLE" : "HOT";
+    const longDozScore3 = dozenCount[3] <=3 ? "COLD" : dozenCount[3] <=2 ? "STABLE" : "HOT";
 
 
 

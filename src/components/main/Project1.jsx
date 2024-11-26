@@ -8,14 +8,19 @@ import { data } from "../reuse/project1/logic/Project1ComponetRenderData.js";
 import { USER_DETAILS } from "../api/ApiDetails.js";
 import Lock from "../resources/Lock.jsx";
 import History from "../reuse/project1/history/History.jsx";
-
+import Statistics from "../resources/Statistics.jsx";
 import "../../Style/Main.css";
 import axios from "axios";
-
+import background from "../../assets/imgs/2002.i029.002_realistic-poker-club-illustration.jpg";
 import Dozens from "../resources/Dozens.jsx";
 import Columns from "../resources/Columns.jsx";
 import EventMoney from "../resources/EventMoney.jsx";
 import { LuBellRing } from "react-icons/lu";
+import { PiPokerChipBold } from "react-icons/pi";
+import StreetTable1 from "../resources/SingleStreet.jsx";
+import StreetTable2 from "../resources/DoubleStreetP1.jsx";
+import WheelSection from '../resources/WheelSection.jsx';
+import QuadraBet from "../resources/QuadraBetP1.jsx";
 
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -69,6 +74,9 @@ const Project1 = ({ theme }) => {
   const [rangeST, setrangeST] = useState({ '1-18': 0, '19-36': 0 });
   const [singleTableST, setSingleTableST] = useState({ '1-3': 0, '4-6': 0, '7-9': 0, '10-12': 0, '13-15': 0, '16-18': 0, '19-21': 0, '22-24': 0, '25-27': 0, '28-30': 0, '31-33': 0, '34-36': 0 });
   const [doubleTableST, setDoubleTableST] = useState({ '1-6': 0, '7-12': 0, '13-18': 0, '19-24': 0, '25-30': 0, '31-36': 0 });
+  const [wheelTrackerST,setWheelTrackerST] = useState({ zero: 0,orphe:0,tires:0});
+  const [QuadraTrackerST,setQuadraTrackerST] = useState({LER: 0, LEB: 0,LOR: 0,LOB: 0,HER: 0,HOR: 0,HEB: 0,HOB: 0});
+
 
 
   const [oddEvenLT, setOddEvenLT] = useState({ odd: 0, even: 0 });
@@ -76,6 +84,9 @@ const Project1 = ({ theme }) => {
   const [rangeLT, setrangeLT] = useState({ '1-18': 0, '19-36': 0 });
   const [singleTableLT, setSingleTableLT] = useState({ '1-3': 0, '4-6': 0, '7-9': 0, '10-12': 0, '13-15': 0, '16-18': 0, '19-21': 0, '22-24': 0, '25-27': 0, '28-30': 0, '31-33': 0, '34-36': 0 });
   const [doubleTableLT, setDoubleTableLT] = useState({ '1-6': 0, '7-12': 0, '13-18': 0, '19-24': 0, '25-30': 0, '31-36': 0 });
+  const [wheelTrackerLT,setWheelTrackerLT] = useState({ zero: 0,orphe:0,tires:0});
+  const [QuadraTrackerLT,setQuadraTrackerLT] = useState({LER: 0, LEB: 0,LOR: 0,LOB: 0,HER: 0,HOR: 0,HEB: 0,HOB: 0});
+
   
 //-------count for Long Term Trend
 
@@ -84,9 +95,7 @@ const Project1 = ({ theme }) => {
   const [colorCount,setColorCount] = useState({ red: 0, black: 0 });
   const [oddEvenCount,setOddEvenCount] = useState({ odd: 0, even: 0 });
   const [rangeCount,setRangeCount] = useState({ '1-18': 0, '19-36': 0 });
-
-
-
+ 
   const [countData, setCountData] = useState(() => {
     const savedCountData = localStorage.getItem("countData");
     return savedCountData
@@ -137,7 +146,7 @@ const Project1 = ({ theme }) => {
         highEvenBlack: 0,
         highOddBlack: 0,
       };
-  });
+  });  
 
   const [circleData, setCircleData] = useState(() => {
     const isSaved = localStorage.getItem("circleData");
@@ -145,7 +154,6 @@ const Project1 = ({ theme }) => {
       ? JSON.parse(isSaved)
       : {
         zero: 0,
-        duZero: 0,
         orphe: 0,
         tires: 0,
       };
@@ -389,7 +397,7 @@ const Project1 = ({ theme }) => {
       const newOddEvenCount = { odd: 0, even: 0 };
       const new1t036Count = { '1-18': 0, '19-36': 0 };
       const newRedBlackCount = { red: 0, black: 0 };
-
+      
       const new1to36ST = { '1-18': 0, '19-36': 0 };
       const new1to36LT = { '1-18': 0, '19-36': 0 };
 
@@ -404,6 +412,12 @@ const Project1 = ({ theme }) => {
 
       const newDoubleStreetST = { '1-6': 0, '7-12': 0, '13-18': 0, '19-24': 0, '25-30': 0, '31-36': 0 };
       const newDoubleStreetLT = { '1-6': 0, '7-12': 0, '13-18': 0, '19-24': 0, '25-30': 0, '31-36': 0 };
+
+      const newWTrackerST = { zero: 0,orphe:0,tires:0};
+      const newWTrackerLT = { zero: 0,orphe:0,tires:0};
+
+      const newQuadraST = {LER: 0, LEB: 0,LOR: 0,LOB: 0,HER: 0,HOR: 0,HEB: 0,HOB: 0};
+      const newQuadraLT = {LER: 0, LEB: 0,LOR: 0,LOB: 0,HER: 0,HOR: 0,HEB: 0,HOB: 0};
 
 
       // Only calculate scores for the first 36 items
@@ -427,13 +441,9 @@ const Project1 = ({ theme }) => {
         if (entry.range) {
           new1to36ST[entry.range] += score;
         }
-        if (entry.ssRange) {
-          newSingleStreetST[entry.ssRange] += score;
+        if(entry.wTracker){
+          newWTrackerST[entry.wTracker] += score
         }
-        if (entry.dsRange) {
-          newDoubleStreetST[entry.dsRange] += score;
-        }
-        
 
       });
       landedNumbersDD.slice(0, 9).forEach((entry, index) => {
@@ -446,8 +456,7 @@ const Project1 = ({ theme }) => {
         // Update column scores
         if (entry.col) {
           newColumnScoresLong[entry.col] += score;
-        }
-        
+        }  
         if (entry.oddEven) {
           newOddEvenLT[entry.oddEven] += score;
         }
@@ -457,14 +466,7 @@ const Project1 = ({ theme }) => {
         if (entry.range) {
           new1to36LT[entry.range] += score;
         }
-        if (entry.ssRange) {
-          newSingleStreetLT[entry.ssRange] += score;
-        }
-        if (entry.dsRange) {
-          newDoubleStreetLT[entry.dsRange] += score;
-        }
-
-        ///9 count for Long Trend
+        ///9 count for Long Term Trend
         if (entry.col) {
           newColumnCount[entry.col] += 1;
         } 
@@ -480,15 +482,69 @@ const Project1 = ({ theme }) => {
         if (entry.dozen) {
           newDozenCount[entry.dozen] += 1;
         }
+        if(entry.wTracker){
+          newWTrackerLT[entry.wTracker] += score
+        }
       });
 
-      
+      //SingleStreet ShortTrend 12 Click
+      landedNumbersDD.slice(0, 12).forEach((entry, index) => {
+        const score = initialScoresST[index] || 0;
+        if (entry.ssRange) {
+          newSingleStreetST[entry.ssRange] += score;
+        }
+      });
+      //SingleStreet LongTrend 36 values
+      landedNumbersDD.slice(0, 36).forEach((entry, index) => {
+        const score = initialScoresST[index] || 0;
+        if (entry.ssRange) {
+          newSingleStreetLT[entry.ssRange] += score;
+        }
+      });
+
+      // Double Street ShortTrend 6 values
+      landedNumbersDD.slice(0, 6).forEach((entry, index) => {
+        const score = initialScoresST[index] || 0;
+        if (entry.dsRange) {
+          newDoubleStreetST[entry.dsRange] += score;
+        }
+      });
+      // Double Street LongTrend 18 values
+      landedNumbersDD.slice(0, 18).forEach((entry, index) => {
+        const score = initialScoresST[index] || 0;
+        if (entry.dsRange) {
+          newDoubleStreetLT[entry.dsRange] += score;
+        }
+      });
+
+      //QuadraBet Short Term Trend
+      landedNumbersDD.slice(0, 8).forEach((entry, index) => {
+        const score = initialScoresST[index] || 0;
+        if (entry.quadra) {
+          newQuadraST[entry.quadra] += score;
+        }
+      });
+      //QuadraBet Long Term Trend
+      landedNumbersDD.slice(0, 24).forEach((entry, index) => {
+        const score = initialScoresST[index] || 0;
+        if (entry.quadra) {
+          newQuadraLT[entry.quadra] += score;
+        }
+      });
+
+
+
       setDozenScoresDD(newDozenScores);
       setColumnScoresDD(newColumnScores);
       setcolorST(newRedBlackST);
       setrangeST(new1to36ST);
       setOddEvenST(newOddEvenST);
       setSingleTableST(newSingleStreetST);
+      setDoubleTableST(newDoubleStreetST);
+      setWheelTrackerST(newWTrackerST);
+      setQuadraTrackerST(newQuadraST);
+
+
 
       setDozenScoresDDLong(newDozenScoresLong);
       setColScoresDDLong(newColumnScoresLong);
@@ -496,16 +552,18 @@ const Project1 = ({ theme }) => {
       setrangeLT(new1to36LT);
       setOddEvenLT(newOddEvenLT);
       setSingleTableLT(newSingleStreetLT);
-
+      setDoubleTableLT(newDoubleStreetLT);
+      setWheelTrackerLT(newWTrackerLT);
+      setQuadraTrackerLT(newQuadraLT);
 
       //----Long Trend Count
+
 
       setColumnCount(newColumnCount);
       setDozenCount(newDozenCount);
       setColorCount(newRedBlackCount);
       setOddEvenCount(newOddEvenCount);
       setRangeCount(new1t036Count);
-
     }
   }, [landedNumbersDD]);
 
@@ -633,6 +691,10 @@ const Project1 = ({ theme }) => {
     setSingleTableLT({ '1-3': 0, '4-6': 0, '7-9': 0, '10-12': 0, '13-15': 0, '16-18': 0, '19-21': 0, '22-24': 0, '25-27': 0, '28-30': 0, '31-33': 0, '34-36': 0 });
     setDoubleTableST({ '1-6': 0, '7-12': 0, '13-18': 0, '19-24': 0, '25-30': 0, '31-36': 0 });
     setDoubleTableLT({ '1-6': 0, '7-12': 0, '13-18': 0, '19-24': 0, '25-30': 0, '31-36': 0 });
+    setWheelTrackerST({ zero: 0,orphe:0,tires:0});
+    setWheelTrackerLT({ zero: 0,orphe:0,tires:0});
+    setQuadraTrackerLT({LER: 0, LEB: 0,LOR: 0,LOB: 0,HER: 0,HOR: 0,HEB: 0,HOB: 0});
+    setQuadraTrackerST({LER: 0, LEB: 0,LOR: 0,LOB: 0,HER: 0,HOR: 0,HEB: 0,HOB: 0});
     setColumnCount({1 : 0,2 : 0,3 : 0});
     setDozenCount({1 : 0,2 : 0,3 : 0});
     setColorCount({ red: 0, black: 0 });
@@ -663,7 +725,6 @@ const Project1 = ({ theme }) => {
   const handleClickWsbResetButton = () => {
     let resetCircleData = {
       zero: 0,
-      duZero: 0,
       orphe: 0,
       tires: 0,
     };
@@ -1219,7 +1280,7 @@ const Project1 = ({ theme }) => {
   };
 
 
-  const handleClickNumber = (key, number, dozen, col, oddEven, color, range, ssRange, dsRange) => {
+  const handleClickNumber = (key, number, dozen, col, oddEven, color, range, ssRange, dsRange, wTracker,quadra,letter) => {
     const {
       countUpdates,
       summaryUpdates,
@@ -1452,7 +1513,7 @@ const Project1 = ({ theme }) => {
     };
 
     setHistoryData([...historyData, changedHistoryData]);
-    setLandedNumbersDD((prev) => [{ key, number, dozen, col, oddEven, color, range, ssRange, dsRange }, ...prev]);
+    setLandedNumbersDD((prev) => [{ key, number, dozen, col, oddEven, color, range, ssRange, dsRange ,wTracker,quadra,letter}, ...prev]);
   };
 
 
@@ -1470,6 +1531,10 @@ const Project1 = ({ theme }) => {
       setNonCircleData(previousState.nonCircleData);
       setLastHitNumber(previousState.lastHitNumber);
       setLastHitData(previousState.lastHitData);
+      const updatedNumbers = [...landedNumbersDD];
+      updatedNumbers.shift(); 
+      setLandedNumbersDD(updatedNumbers);
+
     } catch (err) {
       console.log("err", err);
     }
@@ -1546,22 +1611,7 @@ const Project1 = ({ theme }) => {
     return `${percentage}`;
   };
 
-  // ------------1st,2nd and 3rd Column Calculation
-
-  // const calculateColumnPercentage = (numerator, col_one, col_two, col_three) => {
-  //   const total = col_one + col_two + col_three;
-
-  //   // Return 0 if the total is 0 to avoid NaN
-  //   if (total === 0) {
-  //     return 0;
-  //   }
-  //   // Calculate the percentage and round to nearest integer
-  //   const percentage = Math.round((numerator / total) * 100);
-  //   return `${percentage}`;
-  // };
-
-  //--------Function to Calculate Percentage for "1-18" and "19-36"
-
+ 
   const calculateRangePercentage = (numerator, one_eighteen, nineteen_thirtySix) => {
     const total = one_eighteen + nineteen_thirtySix;
 
@@ -1587,39 +1637,7 @@ const Project1 = ({ theme }) => {
     return `${percentage}`;
   };
 
-
-
-
-
-
-  // const counts = [
-  //   singleStreetData.one_three,
-  //   singleStreetData.four_six,
-  //   singleStreetData.seven_nine,
-  //   singleStreetData.ten_twelve,
-  //   singleStreetData.thirteen_fifteen,
-  //   singleStreetData.sixteen_eighteen,
-  //   singleStreetData.nineteen_twentyOne,
-  //   singleStreetData.twentyTwo_twentyFour,
-  //   singleStreetData.twentyFive_twentySeven,
-  //   singleStreetData.twentyEight_thirty,
-  //   singleStreetData.thirtyOne_thirtyThree,
-  //   singleStreetData.thirtyFour_thirtySix,
-  // ];
-
-  // Sort counts in descending order
-  // const sortedCounts = [...counts].sort((a, b) => b - a);
-
-  // Categorize counts
-  // const hot = sortedCounts.slice(0, 3);
-  // const stable = sortedCounts.slice(3, 9);
-  // const cold = sortedCounts.slice(9, 12);
-
-  // console.log("this is hot",hot);
-  // console.log("this is stable",stable);
-  // console.log("this is cold",cold);
-
-
+ 
   const getStatus = (scores) => {
     const values = Object.values(scores);
     const maxScore = Math.max(...values);
@@ -1847,11 +1865,20 @@ const Project1 = ({ theme }) => {
   const handleCloseTable = () => setViewTable(false);
 
   const [activeTab, setActiveTab] = useState('Dozen');
-
+  const [activeTab2, setActiveTab2] = useState('Streets Tracker');
+  const [activeTab3, setActiveTab3] = useState('Single Street');
   // Function to handle tab switch
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
+  const handleTabClick2 = (tab) => {
+    setActiveTab2(tab);
+  };
+  const handleTabClick3 = (tab) => {
+    setActiveTab3(tab);
+  };
+
+  
 
   return (
     <>
@@ -2050,7 +2077,10 @@ const Project1 = ({ theme }) => {
                             item.color,
                             item.range,
                             item.ssRange,
-                            item.dsRange
+                            item.dsRange,
+                            item.wTracker,
+                            item.quadra,
+                            item.letter
                           )
                         }
                         style={{
@@ -2202,7 +2232,9 @@ const Project1 = ({ theme }) => {
                           item.color,
                           item.range,
                           item.ssRange,
-                          item.dsRange
+                          item.dsRange,
+                          item.wTracker,
+                          item.quadra
                         )
                       }
                       style={{
@@ -2444,7 +2476,7 @@ const Project1 = ({ theme }) => {
 
             </div>
 
-            <table
+            {/* <table
               border="1"
               cellPadding="10"
               className="w-[30%] max-sm:mt-14 table--1 max-sm:hidden hidden"
@@ -2523,11 +2555,11 @@ const Project1 = ({ theme }) => {
               <td>thirtyOne thirtySix</td>
               <td>{doubleStreetData.thirtyOne_thirtySix}</td>
               <td>{nonDoubleStreetData.thirtyOne_thirtySix}</td>
-            </tr> */}
+            </tr> 
               </tbody>
-            </table>
+            </table> */}
 
-            <table
+            {/* <table
               border="1"
               cellPadding="10"
               className="w-[30%] max-sm:mt-14 table--1 max-sm:hidden hidden"
@@ -2607,7 +2639,7 @@ const Project1 = ({ theme }) => {
                   nonSingleStreetData.thirtyFour_thirtySix,
                 )}
               </tbody>
-            </table>
+            </table> */}
           </div>
         </div>
 
@@ -2621,9 +2653,117 @@ const Project1 = ({ theme }) => {
           </button>
         </div> */}
 
+
+          {/* Four Tables Container for wide screen */}
+
+        <div className="md:flex hidden flex-col items-center w-full p-3 border-2 border-purple-950 rounded-xl gap-5 mt-10" >
+          <div className="text-white px-2 w-full h-[200px] flex flex-col gap-2" style={{ height: "400px"}}>
+            {/* Tabs */}
+            <div className="tabs tabs-boxed bg-purple-800 mb-1 p-1" >
+              {['Streets Tracker', 'Wheel Section Breakdown', 'QuadraBet Tracker'].map((tab2) => (
+                <a
+                  key={tab2}
+                  className={`tab  ${activeTab2 === tab2 ? 'bg-purplegrad text-white text-xl font-bold h-8' : 'text-xl font-semibold h-8'}`}
+                  onClick={() => handleTabClick2(tab2)}
+                >
+                  {tab2}
+                </a>
+              ))}
+            </div>
+
+            <div className=" h-[100%] overflow-y-scroll">
+              {activeTab2 === 'Streets Tracker'
+                &&
+                <div> 
+                  
+                    <div className="tabs tabs-boxed bg-purple-800 mb-1 p-1 " >
+                      {['Single Street', 'Double Street'].map((tab3) => (
+                        <a
+                          key={tab3}
+                          className={`tab  ${activeTab3 === tab3 ? 'bg-purple-950 text-white text-xl font-bold' : 'text-xl font-semibold'}`}
+                          onClick={() => handleTabClick3(tab3)}
+                        >
+                          {tab3}
+                        </a>
+                      ))}
+                    </div>
+                    {activeTab3 === 'Single Street'
+                      &&
+                      <div  ><StreetTable1  singleStreetData={singleStreetData} nonSingleStreetData={nonSingleStreetData} singleTableST={singleTableST} singleTableLT={singleTableLT} /></div>}
+
+                    {activeTab3 === 'Double Street'
+                      &&
+                      <div className="overflow-y-scroll"> <StreetTable2 doubleStreetData={doubleStreetData} nonDoubleStreetData={nonDoubleStreetData} doubleTableST={doubleTableST} doubleTableLT={doubleTableLT} /></div>}
+                </div>}
+
+              {activeTab2 === 'Wheel Section Breakdown'
+                &&
+                <div className="overflow-y-scroll"> <WheelSection circleData={circleData} nonCircleData={nonCircleData} wheelTrackerST={wheelTrackerST} wheelTrackerLT={wheelTrackerLT} />  </div>}
+
+              {activeTab2 === 'QuadraBet Tracker'
+                &&
+                <div className="overflow-y-scroll"><QuadraBet summaryData={summaryData} nonSummaryData={nonSummaryData} QuadraTrackerST={QuadraTrackerST} QuadraTrackerLT={QuadraTrackerLT}/></div>}
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Screen Tables */}
+        <div className="flex flex-col items-center w-full  p-1 border-2 border-purple-950 rounded-xl gap-5 md:hidden" >
+          <div className="text-white px-2 w-full h-[200px] flex flex-col gap-5" style={{ height: "700px" }}>
+
+            {/* Tabs */}
+            <div className="tabs tabs-boxed bg-purple-800 mb-1 py-3" >
+              {['Streets Tracker', 'Wheel Section Breakdown', 'QuadraBet Tracker'].map((tab2) => (
+                <a
+                  key={tab2}
+                  className={`tab  ${activeTab2 === tab2 ? 'bg-purplegrad text-white text-sm font-bold h-full' : 'h-full text-sm '}`}
+                  onClick={() => handleTabClick2(tab2)}
+                >
+                  {tab2}
+                </a>
+              ))}
+            </div>
+
+            <div >
+              {activeTab2 === 'Streets Tracker'
+                &&
+                <div>
+                  
+                <div className="tabs tabs-boxed bg-purple-800 mb-1 p-2" >
+                  {['Single Street', 'Double Street'].map((tab3) => (
+                    <a
+                      key={tab3}
+                      className={`tab  ${activeTab3 === tab3 ? 'bg-purple-950 text-white font-bold' : 'font-semibold'}`}
+                      onClick={() => handleTabClick3(tab3)}
+                    >
+                      {tab3}
+                    </a>
+                  ))}
+                </div>
+                {activeTab3 === 'Single Street'
+                  &&
+                  <div className="overflow-y-scroll"><StreetTable1  singleStreetData={singleStreetData} nonSingleStreetData={nonSingleStreetData} singleTableST={singleTableST} singleTableLT={singleTableLT}/></div>}
+
+                {activeTab3 === 'Double Street'
+                  &&
+                  <div className="overflow-y-scroll"> <StreetTable2 doubleStreetData={doubleStreetData} nonDoubleStreetData={nonDoubleStreetData} doubleTableST={doubleTableST} doubleTableLT={doubleTableLT}/></div>}
+            </div>}
+
+              {activeTab2 === 'Wheel Section Breakdown'
+                &&
+                <div className="overflow-y-scroll"> <WheelSection circleData={circleData} nonCircleData={nonCircleData} wheelTrackerST={wheelTrackerST} wheelTrackerLT={wheelTrackerLT}/>  </div>}
+
+              {activeTab2 === 'QuadraBet Tracker'
+                &&
+                <div className="overflow-y-scroll"><QuadraBet summaryData={summaryData} nonSummaryData={nonSummaryData} QuadraTrackerST={QuadraTrackerST} QuadraTrackerLT={QuadraTrackerLT}/></div>}
+            </div>
+          </div>
+        </div>
+
+
         {/* small screen Data slide bar */}
         <div
-          className=" w-full my-10 max-sm:block relative p-2 rounded-lg lg:h-[30rem] max-lg:h-[75vh]"
+          // className=" w-full my-10 max-sm:block relative p-2 rounded-lg lg:h-[30rem] max-lg:h-[75vh]"
         // style={{
         //   background: `linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),url(${background}) center center no-repeat`,
         //   backgroundSize: "cover",
@@ -2633,7 +2773,7 @@ const Project1 = ({ theme }) => {
         //   // height: "25rem",
         // }}
         >
-          <div className="mx-auto w-[70%] h-[85%] ">
+          {/* <div className="mx-auto w-[70%] h-[85%] ">
             <div className="flex">
               <div className="w-[100%] lg:w-[42%] md:w-[100%] -mt-1 mb-1 flex gap-1 mx-auto"
                 style={{ display: isa_Active ? "flex" : "none" }}>
@@ -2664,7 +2804,7 @@ const Project1 = ({ theme }) => {
                 >
                   Double Street
                 </button>
-                {/* //---reset Button */}
+                
                 <div className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400" style={{ height: "39px" }}>
                   <button
                     onClick={handleClickResetStreetButton}
@@ -2679,18 +2819,6 @@ const Project1 = ({ theme }) => {
               className="lg:w-[60%] md:w-[80%] mx-auto overflow-y-scroll h-[90%] scroll-smooth streak-div"
               style={{ display: isa_Active ? "block" : "none" }}
             >
-
-
-
-
-              
-              {/* <StreetTable1  singleStreetData={singleStreetData} nonSingleStreetData={nonSingleStreetData} singleTableST={singleTableST} singleTableLT={singleTableLT}/>
-              <StreetTable2 doubleStreetData={doubleStreetData} nonDoubleStreetData={nonDoubleStreetData} doubleTableST={doubleTableST} doubleTableLT={doubleTableLT}/>
-              <WheelSection />  */}
-
-
-
-
               <table
                 border="1"
                 cellPadding="10"
@@ -2883,7 +3011,7 @@ const Project1 = ({ theme }) => {
             </div>
             {/* second table */}
 
-            <table
+            {/* <table
               border="1"
               cellPadding="10"
               className="text-center md:w-[45%] mx-auto max-md:text-sm"
@@ -2964,7 +3092,7 @@ const Project1 = ({ theme }) => {
                     ${theme === "light" ? 'border-[#F5F5F5]' : 'border-[#0A1F44]'}`}
                   >
                     {circleData.zero}
-                    {/* {calculateWheelSectionPercentage(circleData.zero, circleData.zero, circleData.duZero, circleData.orphe, circleData.tires)} */}
+                    {/* {calculateWheelSectionPercentage(circleData.zero, circleData.zero, circleData.duZero, circleData.orphe, circleData.tires)} *
                   </td>
                   <td
                     className={
@@ -3017,7 +3145,7 @@ const Project1 = ({ theme }) => {
                     ${theme === "light" ? 'border-[#F5F5F5]' : 'border-[#0A1F44]'}`}
                   >
                     {circleData.duZero}
-                    {/* {calculateWheelSectionPercentage(circleData.duZero, circleData.zero, circleData.duZero, circleData.orphe, circleData.tires)} */}
+                    {/* {calculateWheelSectionPercentage(circleData.duZero, circleData.zero, circleData.duZero, circleData.orphe, circleData.tires)} 
                   </td>
                   <td
                     className={
@@ -3071,7 +3199,7 @@ const Project1 = ({ theme }) => {
                     ${theme === "light" ? 'border-[#F5F5F5]' : 'border-[#0A1F44]'}`}
                   >
                     {circleData.orphe}
-                    {/* {calculateWheelSectionPercentage(circleData.orphe, circleData.zero, circleData.duZero, circleData.orphe, circleData.tires)} */}
+                    {/* {calculateWheelSectionPercentage(circleData.orphe, circleData.zero, circleData.duZero, circleData.orphe, circleData.tires)} 
                   </td>
                   <td
                     className={
@@ -3124,7 +3252,7 @@ const Project1 = ({ theme }) => {
                     ${theme === "light" ? 'border-[#F5F5F5]' : 'border-[#0A1F44]'}`}
                   >
                     {circleData.tires}
-                    {/* {calculateWheelSectionPercentage(circleData.tires, circleData.zero, circleData.duZero, circleData.orphe, circleData.tires)} */}
+                    {/* {calculateWheelSectionPercentage(circleData.tires, circleData.zero, circleData.duZero, circleData.orphe, circleData.tires)} 
                   </td>
                   <td
                     className={
@@ -3145,9 +3273,9 @@ const Project1 = ({ theme }) => {
                   </td>
                 </tr>
               </tbody>
-            </table>
+            </table> 
 
-            {/* third table */}
+            {/* third table 
             <div
               className="flex w-full lg:w-[60%] mx-auto h-full flex-wrap relative"
               style={{
@@ -3277,9 +3405,9 @@ const Project1 = ({ theme }) => {
             </div>
 
 
-          </div>
+          </div> */}
 
-          <div className="mt-3 border-t border-gray-400 py-2 flex justify-around absolute bottom-0 w-[95%] left-2">
+          {/* <div className="mt-3 border-t border-gray-400 py-2 flex justify-around absolute bottom-0 w-[95%] left-2">
             <button
               className="border px-3 bg-slate-600 rounded-md max-sm:text-xs"
               onClick={() => displayDivHandler("a")}
@@ -3318,10 +3446,10 @@ const Project1 = ({ theme }) => {
             >
               QuadroBet Tracker
             </button>
-          </div>
+          </div> */}
         </div>
 
-        <div className="flex justify-between my-10 gap-4 max-sm:hidden hidden">
+        {/* <div className="flex justify-between my-10 gap-4 max-sm:hidden hidden">
           <table
             border="1"
             cellPadding="10"
@@ -3431,7 +3559,7 @@ const Project1 = ({ theme }) => {
           </table>
 
           <div className="border flex max-w-60 flex-wrap max-sm:hidden hidden">
-            {/* ////////// */}
+            
             {renderSummaryData(
               "L.E.R",
               summaryData.lowEvenRed,
@@ -3473,19 +3601,13 @@ const Project1 = ({ theme }) => {
               nonSummaryData.highOddBlack,
             )}
 
-            {/* <p>LEB : {summaryData.lowEvenBlack}</p> */}
-            {/* <p>LOR : {summaryData.lowOddRed}</p> */}
-            {/* <p>LOB : {summaryData.lowOddBlack}</p> */}
-            {/* <p>HER : {summaryData.highEvenRed}</p>
-            <p>HOR : {summaryData.highOddRed}</p>
-            <p>HEB : {summaryData.highEvenBlack}</p>
-            <p>HOB : {summaryData.highOddBlack}</p> */}
+           
           </div>
-        </div>
+        </div> */}
         {/* <Routes>
         <Route path="/*" element={<History  historyData={historyData} />} />
       </Routes> */}
-        <section>
+        <section className="mt-12">
           <History historyData={historyData} isAlertAllowed={isAlertAllowed} />
 
         </section>

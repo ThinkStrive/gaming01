@@ -19,30 +19,32 @@ const Auth = () => {
 
   return (
     <div
-      className={`h-screen w-screen bg-no-repeat bg-cover bg-center flex justify-center items-center relative`}
-      style={{ backgroundImage: `url(${img})` }} // Set the background image
-    >
-      <div className="bg-transparent bg-opacity-90 p-6 rounded-lg shadow-lg w-full max-w-md">
-        <Routes>
-          <Route
-            path="/login"
-            element={
-              <Login inputData={inputData} setInputData={setInputData} />
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              <Register inputData={inputData} setInputData={setInputData} />
-            }
-          />
-          <Route path="/verifyEmail" element={<VerifyMail />} />
-          
-          <Route path="/forgotPassword" element={<ForgotPass />} />
-          <Route path="/resetPassword" element={<ResetPass />} />
-        </Routes>
-      </div>
-    </div>
+  className={`bg-purplegrad bg-no-repeat bg-cover bg-center flex justify-center sm:pt-5 items-center relative`}
+  style={{ height: "100vh", width: "100%" }}
+>
+  <div
+    className="bg-transparent bg-purplegrad bg-opacity-90 rounded-lg shadow-lg w-full max-w-6xl px-6"
+  >
+    <Routes>
+      <Route
+        path="/login"
+        element={
+          <Login inputData={inputData} setInputData={setInputData} />
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <Register inputData={inputData} setInputData={setInputData} />
+        }
+      />
+      <Route path="/verifyEmail" element={<VerifyMail />} />
+      <Route path="/forgotPassword" element={<ForgotPass />} />
+      <Route path="/resetPassword" element={<ResetPass />} />
+    </Routes>
+  </div>
+</div>
+
   );
 };
 

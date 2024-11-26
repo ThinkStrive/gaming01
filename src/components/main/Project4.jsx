@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { data } from "../reuse/project4/logic/RouletteData.js";
 import "../../Style/Main.css";
 import { GrPowerReset } from "react-icons/gr";
+
+import GaugeChart from "react-gauge-chart";
+
 import { useToast } from "../resources/Toast.jsx";
 import Analyze from "../reuse/project4/Analyze.jsx";
 import { CgInsights } from "react-icons/cg";
@@ -117,7 +120,6 @@ const Project4 = ({ theme }) => {
         };
   });
 
-  console.log("analyzeData", analyzeData);
 
   const [statsData, setStatsData] = useState(() => {
     const savedCountData = localStorage.getItem("StatisticsData");
@@ -149,27 +151,23 @@ const Project4 = ({ theme }) => {
         };
   });
 
-  console.log("statsData", statsData);
 
   const [rowData, setRowData] = useState(() => {
     const savedCountData = localStorage.getItem("rowData4");
     return savedCountData ? JSON.parse(savedCountData) : [];
   });
 
-  console.log("rowData", rowData);
 
   const [dozenRowData, setDozenRowData] = useState(() => {
     const savedCountData = localStorage.getItem("dozenRowData4");
     return savedCountData ? JSON.parse(savedCountData) : [];
   });
 
-  console.log("dozenRowData", dozenRowData);
   const [colRowData, setColRowData] = useState(() => {
     const savedCountData = localStorage.getItem("colRowData4");
     return savedCountData ? JSON.parse(savedCountData) : [];
   });
 
-  console.log("colRowData", colRowData);
   const [suggestion, setSuggestion] = useState(() => {
     return localStorage.getItem("suggestion4") || "";
   });
@@ -1004,7 +1002,6 @@ const Project4 = ({ theme }) => {
         !Object.values(lastRow).includes(repeatCol) &&
         !userMissedSuggestionCol
       ) {
-        console.log("repeatCol", repeatCol);
         if (isAlertAllowed && colHoverEffect) {
           showToast(`Book Your Loss! col`, "error");
         }
@@ -1130,7 +1127,6 @@ const Project4 = ({ theme }) => {
 
         // Check if the repeated dozen is in the first column
         if (repeatedDozen && repeatedDozen != 0) {
-          console.log("repeated dozen is coming", repeatedDozen);
           // Only trigger the suggestion if it hasn't been processed for this row
           setRepeatDozen(repeatedDozen);
           setSuggestionActiveDozen(true);
@@ -1400,25 +1396,22 @@ const Project4 = ({ theme }) => {
           const filteredData = prevData.filter(
             (entry) => entry.covered === 13 || entry.covered === 12
           );
-          console.log(filteredData, "filteredData");
+
 
           // Skip the last entry and pick the two before it
           const lastTwoEntries = filteredData.slice(-2); // Get the second-last and third-last entries
-          console.log("lastTwoEntries", lastTwoEntries);
+
 
           // Ensure there are exactly two entries and check if both have `winLoss` as "L"
           const bothLose =
             lastTwoEntries.length === 2 &&
             lastTwoEntries.every((entry) => entry.winLoss === "L");
-          console.log("bothLose", bothLose);
+
 
           // Update states based on `bothLose`
           if (bothLose) {
             setUnitData((prevUnit) => prevUnit * 2);
           }
-
-          console.log("unitData", bothLose);
-          console.log("unitData", unitData);
           setIsReachedTimeToIncreaseLetter(bothLose);
 
           // Add a new entry if needed
@@ -1710,7 +1703,6 @@ const Project4 = ({ theme }) => {
     // }
   };
 
-  console.log("unitDataDozen", unitDataDozen);
 
   useEffect(() => {
     // Calculate the new scores for each dozen, column, and row once the array length reaches 30
@@ -1743,36 +1735,11 @@ const Project4 = ({ theme }) => {
       setColumnScores(newColumnScores);
       setRowDataScores(newRowDataScores);
 
-      console.log("Updated Dozen Scores:", newDozenScores);
-      // console.log("Updated Column Scores:", newColumnScores);
-      // console.log("Updated Row Data Scores:", newRowDataScores);
+
     }
   }, [landedNumbers]);
 
-  console.log("Landed Numbers", landedNumbers);
-  // console.log("dozen data", dozenScores);
-  // console.log("col data", columnScores);
-  // console.log("row data", rowDataScores);
 
-  const getStatus = (scores) => {
-    const values = Object.values(scores);
-    const maxScore = Math.max(...values);
-    const minScore = Math.min(...values);
-    return Object.keys(scores).reduce((status, key) => {
-      if (scores[key] === 0) {
-        // If score is 0, return an empty string
-        status[key] = "";
-      } else {
-        status[key] =
-          scores[key] === maxScore
-            ? "hot"
-            : scores[key] === minScore
-            ? "cold"
-            : "stable";
-      }
-      return status;
-    }, {});
-  };
 
   const handleClickResetUnitData = () => {
     let totalAmt = 0;
@@ -1789,8 +1756,6 @@ const Project4 = ({ theme }) => {
       try {
         let userData = JSON.parse(sessionStorage.getItem("userData"));
         const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
-
-        console.log("response", response.data);
 
         if (!response.data.data.projectsPlan.project4) {
           setPlanLockScreen(true);
@@ -1826,7 +1791,115 @@ const Project4 = ({ theme }) => {
     }
   };
 
-  console.log("statsData", statsData);
+// ===== i need to add this logic to project 1 & 4 integration
+
+
+
+  const determineImage = (() => {
+    const winPer = analyzeData.dozenWinPer;
+    const lossPer = analyzeData.dozenLossPer;
+    const total = winPer + lossPer;
+    const winPercentage = (winPer / total) * 100;
+
+    if (winPercentage >= 70) {
+      return {
+        label: "Hot",
+        src: "https://res.cloudinary.com/dxsdme4qy/image/upload/v1732428032/fire_pqjs4c.gif",
+      };
+    } else if (winPercentage >= 50) {
+      return {
+        label: "Stable",
+        src: "https://res.cloudinary.com/dxsdme4qy/image/upload/v1732427951/balance_upn6iz.gif",
+      };
+    } else {
+      return {
+        label: "Cold",
+        src: "https://res.cloudinary.com/dxsdme4qy/image/upload/v1732427962/snowflake_lksgpy.gif",
+      };
+    }
+  })();
+  const determineStatusAndImage = (() => {
+    const winPer = analyzeData.dozenWinPer;
+    const lossPer = analyzeData.dozenLossPer;
+    const total = winPer + lossPer;
+    const winPercentage = (winPer / total) * 100;
+
+    if (winPercentage >= 70) {
+      return {
+        label: "Hot",
+        src: "https://res.cloudinary.com/dxsdme4qy/image/upload/v1732428032/fire_pqjs4c.gif",
+      };
+    } else if (winPercentage >= 50) {
+      return {
+        label: "Stable",
+        src: "https://res.cloudinary.com/dxsdme4qy/image/upload/v1732427951/balance_upn6iz.gif",
+      };
+    } else {
+      return {
+        label: "Cold",
+        src: "https://res.cloudinary.com/dxsdme4qy/image/upload/v1732427962/snowflake_lksgpy.gif",
+      };
+    }
+  })();
+  const determineStatusAndImage1 = (() => {
+    const winPer = analyzeData.colWinPer;
+    const lossPer = analyzeData.colLossPer;
+    const total = winPer + lossPer;
+    const winPercentage = (winPer / total) * 100;
+
+    if (winPercentage >= 70) {
+      return {
+        label: "Hot",
+        src: "https://res.cloudinary.com/dxsdme4qy/image/upload/v1732428032/fire_pqjs4c.gif",
+      };
+    } else if (winPercentage >= 50) {
+      return {
+        label: "Stable",
+        src: "https://res.cloudinary.com/dxsdme4qy/image/upload/v1732427951/balance_upn6iz.gif",
+      };
+    } else {
+      return {
+        label: "Cold",
+        src: "https://res.cloudinary.com/dxsdme4qy/image/upload/v1732427962/snowflake_lksgpy.gif",
+      };
+    }
+  })();
+
+// this for speedometer hot stable cold function
+
+
+  const getHSC = (value) => {
+    const percentage = Math.round((value / 666) * 100);
+    return percentage <= 22 
+      ? "COLD" 
+      : percentage <= 33 
+      ? "STABLE" 
+      : "HOT";
+  };
+  const getStatus = (scores) => {
+    const values = Object.values(scores);
+    const maxScore = Math.max(...values);
+    const minScore = Math.min(...values);
+    return Object.keys(scores).reduce((status, key) => {
+      if (scores[key] === 0) {
+        // If score is 0, return an empty string
+        status[key] = "Cold";
+      } else {
+        status[key] =
+          scores[key] === maxScore
+            ? "hot"
+            : scores[key] === minScore
+            ? "cold"
+            : "stable";
+      }
+      return status;
+    }, {});
+  };
+  
+  const NumberHSC = getStatus(rowDataScores);
+  const dozenHSC = getStatus(dozenScores);
+  const columnHSC = getStatus(columnScores);
+
 
   return (
     <>
@@ -2134,7 +2207,7 @@ const Project4 = ({ theme }) => {
             // style={{ height: "70vw" }}
           >
             <div className="w-[100%] h-full max-sm:h-[100%] lg:h-[90%] md:h-[110%] xl:h-[50rem]">
-              <div className="w-[82%] ml-[18%] h-[7%] flex">
+              <div className="w-[82%] ml-[18%] h-[7%]  text-white flex">
                 <div
                   className={`${
                     repeatLetter === "A" && rowHoverEffect
@@ -2165,7 +2238,7 @@ const Project4 = ({ theme }) => {
 
               <div className="w-full h-full flex">
                 {/* dozens */}
-                <div className="w-[17%] max-lg:w[30rem] font-white border-white h-[86%]">
+                <div className="w-[17%] max-lg:w[30rem] text-white border-white h-[86%]">
                   <div
                     className="h-[33.33%] border flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold"
                     style={{
@@ -2212,7 +2285,7 @@ const Project4 = ({ theme }) => {
                   {data.map((item) => {
                     return (
                       <div
-                        className={`w-[33.33%] flex justify-center items-center border cursor-pointer number--divs`}
+                        className={`w-[33.33%] flex justify-center text-white items-center border cursor-pointer number--divs`}
                         onClick={() =>
                           handleClickNumber(
                             item.numString,
@@ -2238,7 +2311,7 @@ const Project4 = ({ theme }) => {
                   })}
 
                   {/* cols */}
-                  <div className="w-full flex border-white font-white">
+                  <div className="w-full flex border-white text-white">
                     <div
                       className="w-[33.3%]  h-full border flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold"
                       style={{
@@ -2363,9 +2436,952 @@ const Project4 = ({ theme }) => {
         <div className="max-sm:mr-4">
           {/* Table 1 of Statistics */}
 
-          <table
-            className="border w-[35rem] max-md:w-[22rem] max-sm:w-[18rem] "
-            style={{ marginTop: "10rem" }}
+
+
+
+
+
+
+
+
+
+          <div className="flex justify-around  flex-col w-[35rem] max-md:w-[22rem] max-sm:w-[21rem]  "
+            style={{ marginTop: "65rem" }}
+          >
+            <div className="bg-purple-600 text-white py-1 font-bold text-xl text-center relative rounded-3xl">
+              Category
+              <div
+                className="text-black p-1 absolute  cursor-pointer bg-white w-6 h-6 flex justify-center items-center rounded-full"
+                onMouseEnter={() => setI_btn(true)}
+                onMouseLeave={() => setI_btn(false)}
+                style={{ right: "15px", bottom: "6px" }}
+              >
+                i
+              </div>
+              <div
+                className="bg-purple-500 p-2 flex justify-between mb-4 text-start  items-start text-white w-60 h-30 max-sm:w-45 max-sm:h-35 absolute bottom-6 max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%]"
+                style={{ display: i_btn ? "flex" : "none" }}
+                id="statsInfo"
+              >
+                <div
+                  className="text-start"
+                  style={{ fontSize: "11px", paddingLeft: "5px" }}
+                >
+                  <p>
+                    <span className="font-bold me-2">Hot : </span>&nbsp; &nbsp;
+                    &nbsp; Good table For betting ✅
+                  </p>
+
+                  <p className="border-y my-1 py-1">
+                    <span className="font-bold me-2">Stable : </span>Decent
+                    choice,be cautious ⚖️
+                  </p>
+
+                  <p>
+                    <span className="font-bold me-2">Cold : </span> &nbsp;
+                    &nbsp;Avoid, too unpredictable ❌
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="flex mt-2 gap-1">
+              <div
+                className="border border-2 border-purple-500  p-3 rounded-xl"
+                style={{
+                  position: "relative",
+                  width: "33%",
+                  display: "inline-block",
+                }}
+              >
+                <h2 className="text-white  text-center py-1 bg-purple-500 rounded-xl font-semibold sm:text-xs">
+                  Numbers
+                </h2>
+                <div className="p-3">
+                <img
+                  src={determineImage.src}
+                  width="100%"
+                  alt={determineImage.label}
+                  className="rounded-full"
+                />
+                </div>
+                {/* Overlayed text */}
+                <div className="text-center">
+                  <button
+                    onClick={handleClickRowHoverData}
+                    className="menu-bars bg-white text-white px-4 font-bold mt-2 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
+                  >
+                    {" "}
+                    <span
+                      className={`${
+                        rowHoverEffect ? "text-green-500" : "text-red-500"
+                      }`}
+                    >
+                      {rowHoverEffect ? "On" : "Off"}
+                    </span>
+                  </button>
+                </div>
+              </div>
+              <div
+                className="border border-2 border-purple-500  p-3 rounded-xl"
+                style={{
+                  position: "relative",
+                  width: "33%",
+                  display: "inline-block",
+                }}
+              >
+                <h2 className="text-white  text-center bg-purple-500 py-1 rounded-xl font-semibold sm:text-xs">
+                  Dozen
+                </h2>
+               <div className="p-3">
+               <img
+                  src={determineStatusAndImage.src}
+                  width="100%"
+                  alt={determineStatusAndImage.label}
+                  className="rounded-full"
+                />
+               </div>
+                {/* Overlayed text */}
+                <div className="text-center mt-2">
+                  <button
+                    onClick={handleClickDozenHoverData}
+                    className="menu-bars bg-white text-white px-4 font-bold  rounded-full btns max-sm:text-sm hover:bg-neonGreen"
+                  >
+                    {" "}
+                    <span
+                      className={`${
+                        dozenHoverEffect ? "text-green-500" : "text-red-500"
+                      }`}
+                    >
+                      {dozenHoverEffect ? "On" : "Off"}
+                    </span>
+                  </button>
+                </div>
+              </div>
+              <div
+                className="border border-2 border-purple-500  p-3 rounded-xl"
+                style={{
+                  position: "relative",
+                  width: "33%",
+                  display: "inline-block",
+                }}
+              >
+                <h2 className="text-white  text-center bg-purple-500 py-1 rounded-xl font-semibold sm:text-xs">
+                  Column
+                </h2>
+                <div className="p-3 ">
+                <img
+                  src={determineStatusAndImage1.src}
+                  width="100%"
+                  alt={determineStatusAndImage1.label}
+                  className="rounded-full"
+                />
+                </div>
+                {/* Overlayed text */}
+                <div className="text-center mt-2">
+                  <button
+                    onClick={handleClickColHoverData}
+                    className="menu-bars bg-white text-white font-bold px-4 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
+                  >
+                    {" "}
+                    <span
+                      className={`${
+                        colHoverEffect ? "text-green-500" : "text-red-500"
+                      }`}
+                    >
+                      {colHoverEffect ? "On" : "Off"}
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div className="flex justify-around  flex-col w-[35rem] max-md:w-[22rem] mt-10 max-sm:w-[21rem]" >
+          <div className="flex justify-around bg-purple-600 text-white rounded-3xl py-1 text-md font-bold sm:text-md ">
+              <div className="   text-center  " style={{width:"33%"}}>
+                Numbers
+              </div>
+              <div style={{ width: "33%" }} className="text-center flex items-center relative">
+                <span>Performance</span>
+                <div
+                    className="text-black cursor-pointer bg-white w-6 p-2 h-6 flex justify-center items-center rounded-full "
+                    onMouseEnter={() => setI1_btn(true)}
+                    onMouseLeave={() => setI1_btn(false)}
+                  >
+                    i
+                  </div>
+                  {i1_btn && (
+                    <div
+                      className="bg-purple-500 p-2 flex justify-between mb-4 text-start items-start text-white w-60 h-30 max-sm:w-45 max-sm:h-35 absolute max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%] bottom-6"
+                      id="statsInfo"
+                    >
+                      <div
+                        className="text-start"
+                        style={{ fontSize: "11px", paddingLeft: "5px" }}
+                      >
+                        <p>
+                          <span className="font-bold me-2">Hot : </span>&nbsp; &nbsp; &nbsp;
+                          Good table For betting ✅
+                        </p>
+
+                        <p className="border-y my-1 py-1">
+                          <span className="font-bold me-2">Stable : </span>Decent choice, be cautious ⚖️
+                        </p>
+
+                        <p>
+                          <span className="font-bold me-2">Cold : </span> &nbsp; &nbsp;Avoid,
+                          too unpredictable ❌
+                        </p>
+                      </div>
+                    </div>
+                  )}
+              </div>
+              <div style={{width:"33%"}} className="text-center">
+                Long Term
+              </div>
+            </div>
+            <div className="flex flex-col mt-2 gap-1">
+
+
+
+              <div className="border flex border-2 border-purple-500  p-1 rounded-xl">
+                <div
+                  style={{ width: "33%" }}
+                  className="flex justify-center items-center"
+                >
+                  <h2 className="text-white text-center p-2 bg-purple-500 rounded-xl font-semibold sm:text-xs px-4  ">
+                    0
+                  </h2>
+                </div>
+                {/* Overlayed text */}
+                <div
+                  style={{ width: "33%" }}
+                  className="flex justify-center items-center"
+                >
+                  <p
+                    style={{
+                      fontSize: "1.2rem",
+                      fontWeight: "bold",
+                      color: "#FFFFFF",
+                      width: "33%",
+                    }}
+                    className="text-center pt-1"
+                  >
+                    {(() => {
+                      const winPer = statsData.Agroup;
+                      const lossPer = statsData.Agroup_loss;
+                      const total = winPer + lossPer;
+                      const winPercentage = (winPer / total) * 100;
+
+                      return winPercentage >= 70
+                        ? `Hot`
+                        : winPercentage >= 50
+                        ? `Stable`
+                        : `Cold`;
+                    })()}
+                  </p>
+                </div>
+                <div
+                  style={{ width: "33%" }}
+                  className="flex justify-center flex-col items-center"
+                >
+                  <GaugeChart
+                    id="gauge-chart-1"
+                    nrOfLevels={10}
+                    percent={rowDataScores.A / 666}
+                    colors={["#A78BFA", "#7C3AED", "#8B5CF6", "#5B21B6"]}
+                    arcWidth={0.3}
+                    hideText={true}
+                    style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
+                  />
+                  <p className="text-white font-bold text-center">
+                    {
+                      NumberHSC.A
+                    }
+                  </p>
+                </div>
+              </div>
+
+
+              <div className="border flex border-2 border-purple-500  p-1 rounded-xl">
+                <div
+                  style={{ width: "33%" }}
+                  className="flex justify-center items-center"
+                >
+                  <h2 className="text-white text-center p-2 bg-purple-500 rounded-xl font-semibold sm:text-xs px-4  ">
+                    1
+                  </h2>
+                </div>
+                {/* Overlayed text */}
+                <div
+                  style={{ width: "33%" }}
+                  className="flex justify-center items-center"
+                >
+                  <p
+                    style={{
+                      fontSize: "1.2rem",
+                      fontWeight: "bold",
+                      color: "#FFFFFF",
+                      width: "33%",
+                    }}
+                    className="text-center pt-1"
+                  >
+                    {(() => {
+                      const winPer = statsData.Bgroup;
+                      const lossPer = statsData.Bgroup_loss;
+                      const total = winPer + lossPer;
+                      const winPercentage = (winPer / total) * 100;
+
+                      return winPercentage >= 70
+                        ? `Hot`
+                        : winPercentage >= 50
+                        ? `Stable`
+                        : `Cold`;
+                    })()}
+                  </p>
+                </div>
+                <div
+                  style={{ width: "33%" }}
+                  className="flex justify-center flex-col items-center"
+                >
+                  <GaugeChart
+                    id="gauge-chart-1"
+                    nrOfLevels={10}
+                    percent={rowDataScores.B / 666}
+                    colors={["#A78BFA", "#7C3AED", "#8B5CF6", "#5B21B6"]}
+                    arcWidth={0.3}
+                    hideText={true}
+                    style={{ width: "100px", height: "50px" }}
+                  />
+                  <p className="text-white font-bold text-center">
+                    {NumberHSC.B}
+                  </p>
+                </div>
+              </div>
+
+
+              <div className="border flex border-2 border-purple-500  p-1 rounded-xl">
+                <div
+                  style={{ width: "33%" }}
+                  className="flex justify-center items-center"
+                >
+                  <h2 className="text-white text-center p-2 bg-purple-500 rounded-xl font-semibold sm:text-xs px-4  ">
+                    3
+                  </h2>
+                </div>
+                {/* Overlayed text */}
+                <div
+                  style={{ width: "33%" }}
+                  className="flex justify-center items-center"
+                >
+                  <p
+                    style={{
+                      fontSize: "1.2rem",
+                      fontWeight: "bold",
+                      color: "#FFFFFF",
+                      width: "33%",
+                    }}
+                    className="text-center pt-1"
+                  >
+                    {(() => {
+                      const winPer = statsData.Cgroup;
+                      const lossPer = statsData.Cgroup_loss;
+                      const total = winPer + lossPer;
+                      const winPercentage = (winPer / total) * 100;
+
+                      return winPercentage >= 70
+                        ? `Hot`
+                        : winPercentage >= 50
+                        ? `Stable`
+                        : `Cold`;
+                    })()}
+                  </p>
+                </div>
+                <div
+                  style={{ width: "33%" }}
+                  className="flex justify-center flex-col items-center"
+                >
+                  <GaugeChart
+                    id="gauge-chart-1"
+                    nrOfLevels={10}
+                    percent={rowDataScores.C / 666}
+                    colors={["#A78BFA", "#7C3AED", "#8B5CF6", "#5B21B6"]}
+                    arcWidth={0.3}
+                    hideText={true}
+                    style={{ width: "100px", height: "50px" }}
+                  />
+                  <p className="text-white font-bold text-center">
+                  {NumberHSC.C}
+                  </p>
+                </div>
+
+              </div>
+              {/* <div 
+                      className="border border-2 border-purple-500  p-3 rounded-xl"
+                      style={{
+                        position: "relative",
+                        width: "33%",
+                        display: "inline-block",
+                      }}
+                      >
+                        <h2 className="text-white mb-5 text-center bg-purple-500 rounded-xl font-semibold">B Group</h2>
+                          <GaugeChart
+                              id="gauge-chart-1"
+                              nrOfLevels={10}
+                              percent={(rowDataScores.B/666)}
+                              colors={["#A78BFA","#7C3AED" ,"#8B5CF6","#5B21B6" ]}
+                              arcWidth={0.3}
+                              hideText={true}
+                          />
+                         
+                          <p
+                              style={{
+                                  fontSize: '1.2rem',
+                                  fontWeight: 'bold',
+                                  color: '#FFFFFF',
+                              }}
+                              className="text-center pt-1"
+                          >
+
+                            {(() => {
+                              const winPer = statsData.Bgroup;
+                              const lossPer = statsData.Bgroup_loss;
+                              const total = winPer + lossPer;
+                              const winPercentage = (winPer / total) * 100;
+
+                              return winPercentage >= 70
+                                ? `Hot`
+                                : winPercentage >= 50
+                                ? `Stable`
+                                : `Cold`;
+                            })()}
+                          </p>
+                      </div> */}
+              {/* <div 
+                      className="border border-2 border-purple-500  p-3 rounded-xl"
+                      style={{
+                        position: "relative",
+                        width: "33%",
+                        display: "inline-block",
+                      }}
+                      >
+                        <h2 className="text-white mb-5 text-center bg-purple-500 rounded-xl font-semibold">C Group</h2>
+                          <GaugeChart
+                              id="gauge-chart-1"
+                              nrOfLevels={10}
+                              percent={(rowDataScores.C/666)}
+                              colors={["#A78BFA","#7C3AED" ,"#8B5CF6","#5B21B6" ]}
+                              arcWidth={0.3}
+                              hideText={true}
+                          />
+                          <p
+                              style={{
+                                  fontSize: '1.2rem',
+                                  fontWeight: 'bold',
+                                  color: '#FFFFFF',
+                              }}
+                              className="text-center pt-1"
+                          >
+
+                            {(() => {
+                              const winPer = statsData.Cgroup;
+                              const lossPer = statsData.Cgroup_loss;
+                              const total = winPer + lossPer;
+                              const winPercentage = (winPer / total) * 100;
+
+                              return winPercentage >= 70
+                                ? `Hot`
+                                : winPercentage >= 50
+                                ? `Stable`
+                                : `Cold`;
+                            })()}
+                          </p>
+                      </div> */}
+            </div>
+          </div>
+
+
+          <div className="flex justify-around  flex-col w-[35rem] max-md:w-[22rem] my-10 max-sm:w-[21rem]">
+            <div className="flex justify-around bg-purple-600 text-white rounded-3xl py-1 text-md font-bold sm:text-md ">
+              <div className="   text-center  " style={{width:"33%"}}>
+                Dozen
+                
+              </div>
+              <div style={{ width: "33%" }} className="text-center flex items-center relative">
+                <span>Performance</span>
+                <div
+                    className="text-black cursor-pointer bg-white w-6 p-2 h-6 flex justify-center items-center rounded-full "
+                    onMouseEnter={() => setI2_btn(true)}
+                    onMouseLeave={() => setI2_btn(false)}
+                  >
+                    i
+                  </div>
+                  {i2_btn && (
+                    <div
+                      className="bg-purple-500 p-2 flex justify-between mb-4 text-start items-start text-white w-60 h-30 max-sm:w-45 max-sm:h-35 absolute max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%] bottom-6"
+                      id="statsInfo"
+                    >
+                      <div
+                        className="text-start"
+                        style={{ fontSize: "11px", paddingLeft: "5px" }}
+                      >
+                        <p>
+                          <span className="font-bold me-2">Hot : </span>&nbsp; &nbsp; &nbsp;
+                          Good table For betting ✅
+                        </p>
+
+                        <p className="border-y my-1 py-1">
+                          <span className="font-bold me-2">Stable : </span>Decent choice, be cautious ⚖️
+                        </p>
+
+                        <p>
+                          <span className="font-bold me-2">Cold : </span> &nbsp; &nbsp;Avoid,
+                          too unpredictable ❌
+                        </p>
+                      </div>
+                    </div>
+                  )}
+              </div>
+              <div style={{width:"33%"}} className="text-center">
+                Long Term
+              </div>
+            </div>
+            <div className="flex flex-col mt-2 gap-1">
+
+              <div className="border flex border-2 border-purple-500  p-1 rounded-xl">
+                  <div
+                    style={{ width: "33%" }}
+                    className="flex justify-center items-center"
+                  >
+                    <h2 className="text-white text-center bg-purple-500 rounded-xl py-1 font-semibold sm:text-xs px-4  ">
+                    Dozen 1
+                    </h2>
+                  </div>
+                  {/* Overlayed text */}
+                  <div
+                    style={{ width: "33%" }}
+                    className="flex justify-center items-center"
+                  >
+                    <p
+                      style={{
+                        fontSize: "1.2rem",
+                        fontWeight: "bold",
+                        color: "#FFFFFF",
+                        width: "33%",
+                      }}
+                      className="text-center pt-1"
+                    >
+                      {(() => {
+                      const winPer = statsData.dozen1;
+                      const lossPer = statsData.dozen1_loss;
+                      const total = winPer + lossPer;
+                      const winPercentage = (winPer / total) * 100;
+
+                      return winPercentage >= 70
+                        ? `Hot`
+                        : winPercentage >= 50
+                        ? `Stable`
+                        : `Cold`;
+                    })()}
+                    </p>
+                  </div>
+                  <div
+                    style={{ width: "33%" }}
+                    className="flex justify-center flex-col items-center"
+                  >
+                    <GaugeChart
+                      id="gauge-chart-1"
+                      nrOfLevels={10}
+                      percent={dozenScores[1]/ 666}
+                      colors={["#A78BFA", "#7C3AED", "#8B5CF6", "#5B21B6"]}
+                      arcWidth={0.3}
+                      hideText={true}
+                      style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
+                    />
+                    <p className="text-white font-bold text-center">{dozenHSC[1]}</p>
+                  </div>
+              </div>
+
+
+              <div className="border flex border-2 border-purple-500  p-1 rounded-xl">
+                  <div
+                    style={{ width: "33%" }}
+                    className="flex justify-center items-center"
+                  >
+                    <h2 className="text-white text-center bg-purple-500 rounded-xl font-semibold sm:text-xs py-1 px-4  ">
+                    Dozen 2
+                    </h2>
+                  </div>
+                  {/* Overlayed text */}
+                  <div
+                    style={{ width: "33%" }}
+                    className="flex justify-center items-center"
+                  >
+                    <p
+                      style={{
+                        fontSize: "1.2rem",
+                        fontWeight: "bold",
+                        color: "#FFFFFF",
+                        width: "33%",
+                      }}
+                      className="text-center pt-1"
+                    >
+                      {(() => {
+                      const winPer = statsData.dozen2;
+                      const lossPer = statsData.dozen2_loss;
+                      const total = winPer + lossPer;
+                      const winPercentage = (winPer / total) * 100;
+
+                      return winPercentage >= 70
+                        ? `Hot`
+                        : winPercentage >= 50
+                        ? `Stable`
+                        : `Cold`;
+                    })()}
+                    </p>
+                  </div>
+                  <div
+                    style={{ width: "33%" }}
+                    className="flex justify-center flex-col items-center"
+                  >
+                    <GaugeChart
+                      id="gauge-chart-1"
+                      nrOfLevels={10}
+                      percent={dozenScores[2]/ 666}
+                      colors={["#A78BFA", "#7C3AED", "#8B5CF6", "#5B21B6"]}
+                      arcWidth={0.3}
+                      hideText={true}
+                      style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
+                    />
+                    <p className="text-white font-bold text-center">{dozenHSC[2]}</p>
+                  </div>
+              </div>
+
+
+              <div className="border flex border-2 border-purple-500  p-1 rounded-xl">
+                  <div
+                    style={{ width: "33%" }}
+                    className="flex justify-center items-center"
+                  >
+                    <h2 className="text-white text-center bg-purple-500 rounded-xl py-1 font-semibold sm:text-xs px-4  ">
+                    Dozen 3
+                    </h2>
+                  </div>
+                  {/* Overlayed text */}
+                  <div
+                    style={{ width: "33%" }}
+                    className="flex justify-center items-center"
+                  >
+                    <p
+                      style={{
+                        fontSize: "1.2rem",
+                        fontWeight: "bold",
+                        color: "#FFFFFF",
+                        width: "33%",
+                      }}
+                      className="text-center pt-1"
+                    >
+                      {(() => {
+                      const winPer = statsData.dozen3;
+                      const lossPer = statsData.dozen3_loss;
+                      const total = winPer + lossPer;
+                      const winPercentage = (winPer / total) * 100;
+
+                      return winPercentage >= 70
+                        ? `Hot`
+                        : winPercentage >= 50
+                        ? `Stable`
+                        : `Cold`;
+                    })()}
+                    </p>
+                  </div>
+                  <div
+                    style={{ width: "33%" }}
+                    className="flex justify-center flex-col items-center"
+                  >
+                    <GaugeChart
+                      id="gauge-chart-1"
+                      nrOfLevels={10}
+                      percent={dozenScores[3]/ 666}
+                      colors={["#A78BFA", "#7C3AED", "#8B5CF6", "#5B21B6"]}
+                      arcWidth={0.3}
+                      hideText={true}
+                      style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
+                    />
+                    <p className="text-white font-bold text-center">{dozenHSC[3]}</p>
+                  </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div className="flex justify-around  flex-col w-[35rem] mb-5 max-md:w-[22rem] max-sm:w-[21rem]">
+          <div className="flex justify-around bg-purple-600 text-white rounded-3xl py-1 text-md font-bold sm:text-md ">
+              <div className="   text-center  " style={{width:"33%"}}>
+                Column
+                
+              </div>
+              <div style={{ width: "33%" }} className="text-center flex items-center relative">
+                <span>Performance</span>
+                <div
+                    className="text-black cursor-pointer bg-white w-6 p-2 h-6 flex justify-center items-center rounded-full"
+                    onMouseEnter={() => setI3_btn(true)}
+                    onMouseLeave={() => setI3_btn(false)}
+                  >
+                    i
+                  </div>
+                  {i3_btn && (
+                    <div
+                      className="bg-purple-500 p-2 flex justify-between mb-4 text-start items-start text-white w-60 h-30 max-sm:w-45 max-sm:h-35 absolute max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%] bottom-6"
+                      id="statsInfo"
+                    >
+                      <div
+                        className="text-start"
+                        style={{ fontSize: "11px", paddingLeft: "5px" }}
+                      >
+                        <p>
+                          <span className="font-bold me-2">Hot : </span>&nbsp; &nbsp; &nbsp;
+                          Good table For betting ✅
+                        </p>
+
+                        <p className="border-y my-1 py-1">
+                          <span className="font-bold me-2">Stable : </span>Decent choice, be cautious ⚖️
+                        </p>
+
+                        <p>
+                          <span className="font-bold me-2">Cold : </span> &nbsp; &nbsp;Avoid,
+                          too unpredictable ❌
+                        </p>
+                      </div>
+                    </div>
+                  )}
+              </div>
+
+              <div style={{width:"33%"}} className="text-center">
+                Long Term
+              </div>
+            </div>
+            <div className="flex mt-2 flex-col gap-1">
+
+
+              <div className="border flex border-2 border-purple-500  p-1 rounded-xl">
+                  <div
+                    style={{ width: "33%" }}
+                    className="flex justify-center items-center"
+                  >
+                    <h2 className="text-white text-center bg-purple-500 rounded-xl py-1 font-semibold sm:text-xs px-4  ">
+                    Column 1
+                    </h2>
+                  </div>
+                  {/* Overlayed text */}
+                  <div
+                    style={{ width: "33%" }}
+                    className="flex justify-center items-center"
+                  >
+                    <p
+                      style={{
+                        fontSize: "1.2rem",
+                        fontWeight: "bold",
+                        color: "#FFFFFF",
+                        width: "33%",
+                      }}
+                      className="text-center pt-1"
+                    >
+                      {(() => {
+                    const winPer = statsData.col1;
+                    const lossPer = statsData.col1_loss;
+                    const total = winPer + lossPer;
+                    const winPercentage = (winPer / total) * 100;
+
+                    return winPercentage >= 70
+                      ? `Hot`
+                      : winPercentage >= 50
+                      ? `Stable`
+                      : `Cold`;
+                  })()}
+                    </p>
+                  </div>
+                  <div
+                    style={{ width: "33%" }}
+                    className="flex justify-center flex-col items-center"
+                  >
+                    <GaugeChart
+                      id="gauge-chart-1"
+                      nrOfLevels={10}
+                      percent={columnScores[1]/ 666}
+                      colors={["#A78BFA", "#7C3AED", "#8B5CF6", "#5B21B6"]}
+                      arcWidth={0.3}
+                      hideText={true}
+                      style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
+                    />
+                  <p className="text-white font-bold text-center">{columnHSC[1]}</p>
+                  </div>
+              </div>
+
+
+
+              <div className="border flex border-2 border-purple-500  p-1 rounded-xl">
+                  <div
+                    style={{ width: "33%" }}
+                    className="flex justify-center items-center"
+                  >
+                    <h2 className="text-white text-center bg-purple-500 py-1 rounded-xl font-semibold sm:text-xs px-4  ">
+                    Column 2
+                    </h2>
+                  </div>
+                  {/* Overlayed text */}
+                  <div
+                    style={{ width: "33%" }}
+                    className="flex justify-center items-center"
+                  >
+                    <p
+                      style={{
+                        fontSize: "1.2rem",
+                        fontWeight: "bold",
+                        color: "#FFFFFF",
+                        width: "33%",
+                      }}
+                      className="text-center pt-1"
+                    >
+                      {(() => {
+                    const winPer = statsData.col2;
+                    const lossPer = statsData.col2_loss;
+                    const total = winPer + lossPer;
+                    const winPercentage = (winPer / total) * 100;
+
+                    return winPercentage >= 70
+                      ? `Hot`
+                      : winPercentage >= 50
+                      ? `Stable`
+                      : `Cold`;
+                  })()}
+                    </p>
+                  </div>
+                  <div
+                    style={{ width: "33%" }}
+                    className="flex justify-center flex-col items-center"
+                  >
+                    <GaugeChart
+                      id="gauge-chart-1"
+                      nrOfLevels={10}
+                      percent={columnScores[2]/ 666}
+                      colors={["#A78BFA", "#7C3AED", "#8B5CF6", "#5B21B6"]}
+                      arcWidth={0.3}
+                      hideText={true}
+                      style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
+                    />
+                   <p className="text-white font-bold text-center">{columnHSC[2]}</p>
+                  </div>
+              </div>
+
+
+              <div className="border flex border-2 border-purple-500  p-1 rounded-xl">
+                  <div
+                    style={{ width: "33%" }}
+                    className="flex justify-center items-center"
+                  >
+                    <h2 className="text-white text-center bg-purple-500 rounded-xl py-1 font-semibold sm:text-xs px-4  ">
+                    Column 3
+                    </h2>
+                  </div>
+                  {/* Overlayed text */}
+                  <div
+                    style={{ width: "33%" }}
+                    className="flex justify-center items-center"
+                  >
+                    <p
+                      style={{
+                        fontSize: "1.2rem",
+                        fontWeight: "bold",
+                        color: "#FFFFFF",
+                        width: "33%",
+                      }}
+                      className="text-center pt-1"
+                    >
+                      {(() => {
+                    const winPer = statsData.col3;
+                    const lossPer = statsData.col3_loss;
+                    const total = winPer + lossPer;
+                    const winPercentage = (winPer / total) * 100;
+
+                    return winPercentage >= 70
+                      ? `Hot`
+                      : winPercentage >= 50
+                      ? `Stable`
+                      : `Cold`;
+                  })()}
+                    </p>
+                  </div>
+                  <div
+                    style={{ width: "33%" }}
+                    className="flex justify-center flex-col items-center"
+                  >
+                    <GaugeChart
+                      id="gauge-chart-1"
+                      nrOfLevels={10}
+                      percent={columnScores[3]/ 666}
+                      colors={["#A78BFA", "#7C3AED", "#8B5CF6", "#5B21B6"]}
+                      arcWidth={0.3}
+                      hideText={true}
+                      style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
+                    />
+                   <p className="text-white font-bold text-center">{columnHSC[3]}</p>
+                  </div>
+              </div>
+              {/* <div
+                className="border border-2 border-purple-500  p-3 rounded-xl"
+                style={{
+                  position: "relative",
+                  width: "33%",
+                  display: "inline-block",
+                }}
+              >
+                <h2 className="text-white mb-5 text-center bg-purple-500 rounded-xl font-semibold">
+                  Column 3
+                </h2>
+                <GaugeChart
+                  id="gauge-chart-1"
+                  nrOfLevels={10}
+                  percent={columnScores[3] / 666}
+                  colors={["#A78BFA", "#7C3AED", "#8B5CF6", "#5B21B6"]}
+                  arcWidth={0.3}
+                  hideText={true}
+                />
+                
+                <p
+                  style={{
+                    fontSize: "1.2rem",
+                    fontWeight: "bold",
+                    color: "#FFFFFF",
+                  }}
+                  className="text-center pt-1"
+                >
+                  {(() => {
+                    const winPer = statsData.col3;
+                    const lossPer = statsData.col3_loss;
+                    const total = winPer + lossPer;
+                    const winPercentage = (winPer / total) * 100;
+
+                    return winPercentage >= 70
+                      ? `Hot`
+                      : winPercentage >= 50
+                      ? `Stable`
+                      : `Cold`;
+                  })()}
+                </p>
+              </div> */}
+            </div>
+          </div>
+
+
+
+
+
+
+          {/* <table
+            className="border w-[35rem] max-md:w-[22rem] max-sm:w-[21rem]  "
+            style={{ marginTop: "35rem" }}
           >
             <tr className="max-sm:h-20 max-md:h-20">
               <th className="w-[30%] max-sm:w-[30] border py-2 bg-yellow-500 text-black">
@@ -2412,7 +3428,7 @@ const Project4 = ({ theme }) => {
               </th>
             </tr>
 
-            {/* Numbers */}
+           
             <tr>
               <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 Numbers
@@ -2461,7 +3477,6 @@ const Project4 = ({ theme }) => {
               </td>
             </tr>
 
-            {/* Dozen */}
             <tr>
               <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 Dozen
@@ -2510,7 +3525,7 @@ const Project4 = ({ theme }) => {
               </td>
             </tr>
 
-            {/* Column */}
+           
             <tr>
               <td className="font-semibold text-center p-1 border max-sm:text-sm">
                 Column
@@ -2558,8 +3573,9 @@ const Project4 = ({ theme }) => {
                 </button>
               </td>
             </tr>
-          </table>
+          </table> */}
 
+          
           {/* <table className="border w-[35rem] max-md:w-[22rem] max-sm:w-[18rem] mt-6">
             <tr className="max-sm:h-20 max-md:h-20">
               <th className="w-[30%] max-sm:w-[30] border py-2 bg-yellow-500 text-black">
@@ -2927,23 +3943,493 @@ const Project4 = ({ theme }) => {
 
           {/* 2nd table Agroup Bgroup Cgroup */}
 
-        
+          {/* <table className="border w-[35rem] max-md:w-[22rem] max-sm:w-[18rem] mt-6">
+            <tr className="max-sm:h-20 max-md:h-20">
+              <th className="w-[30%] max-sm:w-[30] border py-2 bg-yellow-500 text-black">
+                Numbers
+              </th>
+              <th className="w-[40%] max-sm:w-[50] border bg-yellow-500 text-black break-words relative">
+                Hot/Stable/Cold
+                <div
+                  className="text-gray-400 absolute  cursor-pointer bg-neutral-700 w-5 h-5 flex justify-center items-center rounded-full"
+                  onMouseEnter={() => setI1_btn(true)}
+                  onMouseLeave={() => setI1_btn(false)}
+                  style={{ right: "10px", bottom: "6px" }}
+                >
+                  i
+                </div>
+                <div
+                  className="bg-customPurple p-2 flex justify-between mb-4 text-start  items-start text-white w-60 h-24 max-sm:w-45 max-sm:h-35 absolute bottom-6 max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%]"
+                  style={{ display: i1_btn ? "flex" : "none" }}
+                  id="statsInfo"
+                >
+                  <div
+                    className="text-start"
+                    style={{ fontSize: "11px", paddingLeft: "5px" }}
+                  >
+                    <p>
+                      <span className="font-bold me-2">Hot : </span>&nbsp;
+                      &nbsp; &nbsp; Good table For betting ✅
+                    </p>
+
+                    <p className="border-y my-1 py-1">
+                      <span className="font-bold me-2">Stable : </span>Decent
+                      choice,be cautious ⚖️
+                    </p>
+
+                    <p>
+                      <span className="font-bold me-2">Cold : </span> &nbsp;
+                      &nbsp;Avoid, too unpredictable ❌
+                    </p>
+                  </div>
+                </div>
+              </th>
+              <th className="w-[30%] bg-yellow-500 max-sm:w-[20] text-black">
+                Score
+              </th>
+            </tr>
+            
+
+           
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                A-Group
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.Agroup;
+                  const lossPer = statsData.Agroup_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.Agroup;
+                  const lossPer = statsData.Agroup_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+              <td className="font-semibold text-center border max-sm:text-sm  ">
+                {rowDataScores.A}
+              </td>
+            </tr>
+
+           
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                B-Group
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.Bgroup;
+                  const lossPer = statsData.Bgroup_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.Bgroup;
+                  const lossPer = statsData.Bgroup_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+              <td className="font-semibold text-center border max-sm:text-sm  ">
+                {rowDataScores.B}
+              </td>
+            </tr>
+
+          
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                C-Group
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.Cgroup;
+                  const lossPer = statsData.Cgroup_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.Cgroup;
+                  const lossPer = statsData.Cgroup_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+              <td className="font-semibold text-center border max-sm:text-sm  ">
+                {rowDataScores.C}
+              </td>
+            </tr>
+          </table> */}
+
+         
+
           {/* 3'rd Table 1'stDozen,2nd-Dozen,3rd-Dozen */}
 
           {/* <p>Dozen 1: {dozenScores[1]} ({dozenStatus[1]})</p>
                 <p>Dozen 2: {dozenScores[2]} ({dozenStatus[2]})</p>
                 <p>Dozen 3: {dozenScores[3]} ({dozenStatus[3]})</p> */}
 
-        
+          {/* <table className="border w-[35rem] max-md:w-[22rem] max-sm:w-[18rem] mt-6">
+            <tr className="max-sm:h-20 max-md:h-20">
+              <th className="w-[30%] max-sm:w-[30] border py-2 bg-yellow-500 text-black">
+                Dozen
+              </th>
+              <th className="w-[40%] max-sm:w-[50] border bg-yellow-500 text-black break-words relative">
+                Hot/Stable/Cold
+                <div
+                  className="text-gray-400 absolute  cursor-pointer bg-neutral-700 w-5 h-5 flex justify-center items-center rounded-full"
+                  onMouseEnter={() => setI2_btn(true)}
+                  onMouseLeave={() => setI2_btn(false)}
+                  style={{ right: "10px", bottom: "6px" }}
+                >
+                  i
+                </div>
+                <div
+                  className="bg-customPurple p-2 flex justify-between mb-4 text-start  items-start text-white w-60 h-24 max-sm:w-45 max-sm:h-35 absolute bottom-6 max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%]"
+                  style={{ display: i2_btn ? "flex" : "none" }}
+                  id="statsInfo"
+                >
+                  <div
+                    className="text-start"
+                    style={{ fontSize: "11px", paddingLeft: "5px" }}
+                  >
+                    <p>
+                      <span className="font-bold me-2">Hot : </span>&nbsp;
+                      &nbsp; &nbsp; Good table For betting ✅
+                    </p>
+
+                    <p className="border-y my-1 py-1">
+                      <span className="font-bold me-2">Stable : </span>Decent
+                      choice,be cautious ⚖️
+                    </p>
+
+                    <p>
+                      <span className="font-bold me-2">Cold : </span> &nbsp;
+                      &nbsp;Avoid, too unpredictable ❌
+                    </p>
+                  </div>
+                </div>
+              </th>
+              <th className="w-[30%] bg-yellow-500 max-sm:w-[20] text-black">
+                Score
+              </th>
+            </tr>
+            
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                1st Dozen
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.dozen1;
+                  const lossPer = statsData.dozen1_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.dozen1;
+                  const lossPer = statsData.dozen1_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+              <td className="font-semibold text-center border max-sm:text-sm  ">
+                {dozenScores[1]}
+              </td>
+            </tr>
+
+          
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                2nd Dozen
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.dozen2;
+                  const lossPer = statsData.dozen2_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.dozen2;
+                  const lossPer = statsData.dozen2_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+              <td className="font-semibold text-center border max-sm:text-sm  ">
+                {dozenScores[2]}
+              </td>
+            </tr>
+
+         
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                3rd Dozen
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.dozen3;
+                  const lossPer = statsData.dozen3_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.dozen3;
+                  const lossPer = statsData.dozen3_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+              <td className="font-semibold text-center border max-sm:text-sm  ">
+                {dozenScores[3]}
+              </td>
+            </tr>
+          </table> */}
 
           {/* 4th table Column Table 1ST column, 2nd Column ,3rd Column */}
 
+          {/* <table className="border w-[35rem] max-md:w-[22rem] max-sm:w-[18rem] mt-6">
+            <tr className="max-sm:h-20 max-md:h-20">
+              <th className="w-[30%] max-sm:w-[30] border py-2 bg-yellow-500 text-black">
+                Columns
+              </th>
+              <th className="w-[40%] max-sm:w-[50] border bg-yellow-500 text-black break-words relative">
+                Hot/Stable/Cold
+                <div
+                  className="text-gray-400 absolute  cursor-pointer bg-neutral-700 w-5 h-5 flex justify-center items-center rounded-full"
+                  onMouseEnter={() => setI3_btn(true)}
+                  onMouseLeave={() => setI3_btn(false)}
+                  style={{ right: "10px", bottom: "6px" }}
+                >
+                  i
+                </div>
+                <div
+                  className="bg-customPurple p-2 flex justify-between mb-4 text-start  items-start text-white w-60 h-24 max-sm:w-45 max-sm:h-35 absolute bottom-6 max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%]"
+                  style={{ display: i3_btn ? "flex" : "none" }}
+                  id="statsInfo"
+                >
+                  <div
+                    className="text-start"
+                    style={{ fontSize: "11px", paddingLeft: "5px" }}
+                  >
+                    <p>
+                      <span className="font-bold me-2">Hot : </span>&nbsp;
+                      &nbsp; &nbsp; Good table For betting ✅
+                    </p>
+
+                    <p className="border-y my-1 py-1">
+                      <span className="font-bold me-2">Stable : </span>Decent
+                      choice,be cautious ⚖️
+                    </p>
+
+                    <p>
+                      <span className="font-bold me-2">Cold : </span> &nbsp;
+                      &nbsp;Avoid, too unpredictable ❌
+                    </p>
+                  </div>
+                </div>
+              </th>
+              <th className="w-[30%] bg-yellow-500 max-sm:w-[20] text-black">
+                Score
+              </th>
+            </tr>
+            
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                Column 1
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.col1;
+                  const lossPer = statsData.col1_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.col1;
+                  const lossPer = statsData.col1_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+              <td className="font-semibold text-center border max-sm:text-sm  ">
+                {columnScores[1]}
+              </td>
+            </tr>
+
           
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                Column 2
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.col2;
+                  const lossPer = statsData.col2_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.col2;
+                  const lossPer = statsData.col2_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+              <td className="font-semibold text-center border max-sm:text-sm  ">
+                {columnScores[2]}
+              </td>
+            </tr>
+
+           
+            <tr>
+              <td className="font-semibold text-center p-1 border max-sm:text-sm">
+                Column 3
+              </td>
+              <td
+                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
+                  const winPer = statsData.col3;
+                  const lossPer = statsData.col3_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? "bg-red-500 text-white"
+                    : winPercentage >= 50
+                    ? "bg-transparent"
+                    : "bg-green-300 text-black";
+                })()}`}
+              >
+                {(() => {
+                  const winPer = statsData.col3;
+                  const lossPer = statsData.col3_loss;
+                  const total = winPer + lossPer;
+                  const winPercentage = (winPer / total) * 100;
+
+                  return winPercentage >= 70
+                    ? `Hot`
+                    : winPercentage >= 50
+                    ? `Stable`
+                    : `Cold`;
+                })()}
+              </td>
+              <td className="font-semibold text-center border max-sm:text-sm  ">
+                {columnScores[3]}
+              </td>
+            </tr>
+          </table> */}
         </div>
       </div>
 
       <div
-        className="h-[30vh] mt-5 w-full overflow-y-scroll rounded-xl text-center p-2 scrollOff"
+        className="h-[25vh] mt-5 w-full overflow-y-scroll text-center rounded-xl p-2 scrollOff"
         // className="h-[35vh] mt-5 w-full rounded-xl p-2 flex justify-center items-center flex-col"
         style={{
           background:
@@ -2958,14 +4444,14 @@ const Project4 = ({ theme }) => {
         }}
       >
         <h2
-          className={`text-lg font-bold my-4 ${
+          className={`text-lg font-bold my-4 text-center ${
             theme === "dark" ? "text-white" : "text-black"
           }`}
         >
           Money Management Tool
-        </h2>
-        <span className={`${theme === "dark" ? "text-white" : "text-black"}`}>
-          <i className="fa-regular fa-clock mx-3"></i>Coming Soon !
+        </h2> 
+         <span className={`${theme === "dark" ? "text-white" : "text-black"}`}>
+          <i className="fa-regular fa-clock mx-3 "></i>Coming Soon !
         </span>
         {/* <button
           onClick={() => setMoneyManagementData([])}
