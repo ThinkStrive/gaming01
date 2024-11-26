@@ -2429,7 +2429,7 @@ const Project4 = ({ theme }) => {
           background: `linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9))`,
           minHeight: "100vh",
           overflow: "scroll",
-          scrollbarWidth: "none",
+          // scrollbarWidth: "",
         }}
         onClick={() => setShowPopup(false)}
       >
