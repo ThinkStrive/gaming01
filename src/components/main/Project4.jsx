@@ -4466,7 +4466,7 @@ setHistoryData([...historyData, changedHistoryData]);
       </div>
 
       <div
-        className="h-[75vh] mt-5 w-full overflow-y-scroll rounded-xl p-2 scrollOff"
+        className="h-[25vh] text-center mt-5 w-full overflow-y-scroll rounded-xl p-2 scrollOff"
         // className="h-[35vh] mt-5 w-full rounded-xl p-2 flex justify-center items-center flex-col"
         style={{
           background:
@@ -4480,17 +4480,26 @@ setHistoryData([...historyData, changedHistoryData]);
           border: theme === "dark" ? "white 2px solid" : "black 2px solid",
         }}
       >
-        {/* <h2
+        <h2
           className={`text-lg font-bold my-4 ${
             theme === "dark" ? "text-white" : "text-black"
           }`}
         >
           Money Management Tool
-        </h2> */}
-        {/* <span className={`${theme === "dark" ? "text-white" : "text-black"}`}>
+        </h2> 
+        <span className={`${theme === "dark" ? "text-white" : "text-black"}`}>
           <i className="fa-regular fa-clock mx-3"></i>Coming Soon !
-        </span> */}
-        <button
+        </span>
+       
+      </div>
+
+      {planLockScreen && <Lock setPlanLockScreen={setPlanLockScreen} />}
+    </>
+  );
+};
+
+export default Project4;
+ {/* <button
           onClick={() => setMoneyManagementData([])}
           className="border py-1 px-4 rounded-lg mb-2 mx-2"
         >
@@ -4506,12 +4515,4 @@ setHistoryData([...historyData, changedHistoryData]);
           moneyManagementData={moneyManagementData}
           theme={theme}
           lockProfitValue={lockProfitValue}
-        />
-      </div>
-
-      {planLockScreen && <Lock setPlanLockScreen={setPlanLockScreen} />}
-    </>
-  );
-};
-
-export default Project4;
+        /> */}
