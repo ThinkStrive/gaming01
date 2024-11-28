@@ -3,54 +3,43 @@ import { useToast } from "../../../resources/Toast";
 
 const PatternPre = ({ historyData, isAlertAllowed }) => {
   const showToast = useToast();
+
+  
+  const checkPattern = (condition, message) => {
+    if (condition && isAlertAllowed) {
+      showToast(message, "success");
+    }
+  };
+
+  
   const checkPlayerStreak = () => {
     const recentEntries = historyData.slice(-4);
-    const isPlayerStreak = recentEntries.every(
-      (data) => data.color === "black",
-    );
-
-    if (isPlayerStreak && isAlertAllowed) {
-      showToast("Red/Black Streak detected", "success");
-    }
+    const isPlayerStreak = recentEntries.every((data) => data.color === "black");
+    checkPattern(isPlayerStreak, "Red/Black Streak detected");
   };
 
   const checkBankerStreak = () => {
     const recentEntries = historyData.slice(-4);
     const isBankerStreak = recentEntries.every((data) => data.color === "red");
-
-    if (isBankerStreak && isAlertAllowed) {
-      showToast("Red/Black Streak detected", "success");
-    }
+    checkPattern(isBankerStreak, "Red/Black Streak detected");
   };
 
   const checkPingPongPattern = () => {
     const recentEntries = historyData.slice(-4);
-    const isPingPong = recentEntries.every((data, index) => {
-      if (index % 2 === 0) {
-        return data.color === "black";
-      } else {
-        return data.color === "red";
-      }
-    });
-
-    if (isPingPong && isAlertAllowed) {
-      showToast("Ping Pong Pattern detected, Red/Black", "success");
-    }
+    const isPingPong = recentEntries.every((data, index) => 
+      (index % 2 === 0 && data.color === "black") ||
+      (index % 2 === 1 && data.color === "red")
+    );
+    checkPattern(isPingPong, "Ping Pong Pattern detected, Red/Black");
   };
 
   const checkDoublePingPongPattern = () => {
     const recentEntries = historyData.slice(-8);
-    const isDoublePingPong = recentEntries.every((data, index) => {
-      if (index % 4 === 0 || index % 4 === 1) {
-        return data.color === "black";
-      } else if (index % 4 === 2 || index % 4 === 3) {
-        return data.color === "red";
-      }
-    });
-
-    if (isDoublePingPong && isAlertAllowed) {
-      showToast("Double Ping Pong Pattern detected, Red/Black", "success");
-    }
+    const isDoublePingPong = recentEntries.every((data, index) =>
+      (index % 4 < 2 && data.color === "black") ||
+      (index % 4 >= 2 && data.color === "red")
+    );
+    checkPattern(isDoublePingPong, "Double Ping Pong Pattern detected, Red/Black");
   };
 
   const checkSandwichPattern = () => {
@@ -64,15 +53,11 @@ const PatternPre = ({ historyData, isAlertAllowed }) => {
       recentEntries[5]?.color === "black" &&
       recentEntries[6]?.color === "black" &&
       recentEntries[7]?.color === "black";
-
-    if (isSandwich && isAlertAllowed) {
-      showToast("Sandwich Pattern detected, Red/Black", "success");
-    }
+    checkPattern(isSandwich, "Sandwich Pattern detected, Red/Black");
   };
 
   const checkOneTwoOneTwoPattern = () => {
     const recentEntries = historyData.slice(-6);
-
     const isPattern =
       recentEntries[0]?.color === "black" &&
       recentEntries[1]?.color === "red" &&
@@ -80,15 +65,11 @@ const PatternPre = ({ historyData, isAlertAllowed }) => {
       recentEntries[3]?.color === "black" &&
       recentEntries[4]?.color === "red" &&
       recentEntries[5]?.color === "red";
-
-    if (isPattern && isAlertAllowed) {
-      showToast("One Two Two Pattern detected, Red/Black", "success");
-    }
+    checkPattern(isPattern, "One Two Two Pattern detected, Red/Black");
   };
 
-  const checkStickWIthThePlayerPattern = () => {
+  const checkStickWithPlayerPattern = () => {
     const recentEntries = historyData.slice(-9);
-
     const isPattern =
       recentEntries[0]?.color === "black" &&
       recentEntries[1]?.color === "black" &&
@@ -99,15 +80,11 @@ const PatternPre = ({ historyData, isAlertAllowed }) => {
       recentEntries[6]?.color === "black" &&
       recentEntries[7]?.color === "red" &&
       recentEntries[8]?.color === "red";
-
-    if (isPattern && isAlertAllowed) {
-      showToast("Stick With the Player Pattern detected, Red/Black", "success");
-    }
+    checkPattern(isPattern, "Stick With the Player Pattern detected, Red/Black");
   };
 
-  const checkSwitchWIthThePlayerPattern = () => {
+  const checkSwitchWithPlayerPattern = () => {
     const recentEntries = historyData.slice(-9);
-
     const isPattern =
       recentEntries[0]?.color === "red" &&
       recentEntries[1]?.color === "red" &&
@@ -118,18 +95,11 @@ const PatternPre = ({ historyData, isAlertAllowed }) => {
       recentEntries[6]?.color === "red" &&
       recentEntries[7]?.color === "red" &&
       recentEntries[8]?.color === "black";
-
-    if (isPattern && isAlertAllowed) {
-      showToast(
-        "Switch With the Player Pattern detected, Red/Black",
-        "success",
-      );
-    }
+    checkPattern(isPattern, "Switch With the Player Pattern detected, Red/Black");
   };
 
-  const checkStickWIthTheBankerPattern = () => {
+  const checkStickWithBankerPattern = () => {
     const recentEntries = historyData.slice(-8);
-
     const isPattern =
       recentEntries[0]?.color === "red" &&
       recentEntries[1]?.color === "red" &&
@@ -139,15 +109,11 @@ const PatternPre = ({ historyData, isAlertAllowed }) => {
       recentEntries[5]?.color === "red" &&
       recentEntries[6]?.color === "red" &&
       recentEntries[7]?.color === "black";
-
-    if (isPattern && isAlertAllowed) {
-      showToast("Stick With the Banker Pattern detected, Red/Black", "success");
-    }
+    checkPattern(isPattern, "Stick With the Banker Pattern detected, Red/Black");
   };
 
-  const checkSwitchWIthTheBankerPattern = () => {
+  const checkSwitchWithBankerPattern = () => {
     const recentEntries = historyData.slice(-8);
-
     const isPattern =
       recentEntries[0]?.color === "black" &&
       recentEntries[1]?.color === "black" &&
@@ -157,15 +123,10 @@ const PatternPre = ({ historyData, isAlertAllowed }) => {
       recentEntries[5]?.color === "black" &&
       recentEntries[6]?.color === "black" &&
       recentEntries[7]?.color === "red";
-
-    if (isPattern && isAlertAllowed) {
-      showToast(
-        "Switch With the Banker Pattern detected, Red/Black",
-        "success",
-      );
-    }
+    checkPattern(isPattern, "Switch With the Banker Pattern detected, Red/Black");
   };
 
+  
   const handleCheckPatterns = () => {
     if (historyData.length >= 4) {
       checkPlayerStreak();
@@ -175,17 +136,15 @@ const PatternPre = ({ historyData, isAlertAllowed }) => {
     if (historyData.length >= 6) {
       checkOneTwoOneTwoPattern();
     }
-
     if (historyData.length >= 8) {
       checkDoublePingPongPattern();
       checkSandwichPattern();
-      checkStickWIthTheBankerPattern();
-      checkSwitchWIthTheBankerPattern();
+      checkStickWithBankerPattern();
+      checkSwitchWithBankerPattern();
     }
-
     if (historyData.length >= 9) {
-      checkStickWIthThePlayerPattern();
-      checkSwitchWIthThePlayerPattern();
+      checkStickWithPlayerPattern();
+      checkSwitchWithPlayerPattern();
     }
   };
 

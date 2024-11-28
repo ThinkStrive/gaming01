@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, Route, Routes, useNavigate } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import BlackRed from "./BlackRed";
 import OddEven from "./OddEven";
 import BigSmall from "./BigSmall";
@@ -8,13 +8,10 @@ import PatternPre from "../../project1/pattern/PatternPre";
 import PatternBigSmall from "../../project1/pattern/PatternBigSmall";
 import PatternOddEven from "../../project1/pattern/PatternOddEven";
 import His from "./His";
-import background from "../../../../assets/imgs/2002.i029.002_realistic-poker-club-illustration.jpg";
 import "../../../../Style/History.css";
 
 const History = ({ historyData, isAlertAllowed }) => {
   const [activeTab, setActiveTab] = useState("blackRed");
-
-
 
   const [historyCountData, setHistoryCountData] = useState({
     red: 0,
@@ -27,7 +24,6 @@ const History = ({ historyData, isAlertAllowed }) => {
   });
 
   const handleFindCountOfAllData = () => {
-    // Initialize counters
     let redCount = 0;
     let blackCount = 0;
     let evenCount = 0;
@@ -36,39 +32,21 @@ const History = ({ historyData, isAlertAllowed }) => {
     let smallCount = 0;
     let zeroCount = 0;
 
-    // Loop through historyData to calculate the counts
     historyData.forEach((data) => {
-      // Count color
-      if (data.color === "red") {
-        redCount++;
-      } else if (data.color === "black") {
-        blackCount++;
-      }
-
-      // Count size (small/big)
-      if (data.size === "small") {
-        smallCount++;
-      } else if (data.size === "large") {
-        bigCount++;
-      }
-
-      // Count odd/even
-      if (data.odd_even === "odd") {
-        oddCount++;
-      } else if (data.odd_even === "even") {
-        evenCount++;
-      }
-
+      if (data.color === "red") redCount++;
+      if (data.color === "black") blackCount++;
+      if (data.size === "small") smallCount++;
+      if (data.size === "large") bigCount++;
+      if (data.odd_even === "odd") oddCount++;
+      if (data.odd_even === "even") evenCount++;
       if (
         data.color === "zero" &&
         data.odd_even === "zero" &&
         data.size === "zero"
-      ) {
+      )
         zeroCount++;
-      }
     });
 
-    // Update the historyCountData state with the calculated counts
     setHistoryCountData({
       red: redCount,
       black: blackCount,
@@ -85,151 +63,101 @@ const History = ({ historyData, isAlertAllowed }) => {
   }, [historyData]);
 
   return (
-    <div>
-      <div
-        className=" p-3 w-full  rounded-lg"
-        style={{
-          background: "transparant",
-        }}
-      >
-        <div className="flex w-full justify-evenly items-center mb-10 overflow-x-auto">
-          <div className="flex justify-center items-center">
-            <div className="bg-red-500 rounded-[50%] w-5 h-5"></div>
-            <p className="mx-2 text-white font-semibold">
-              {historyCountData.red}
-            </p>
-          </div>
-          <div className="flex justify-center items-center">
-            <div className="bg-black rounded-[50%] w-5 h-5"></div>
-            <p className="mx-2 text-white font-semibold">
-              {historyCountData.black}
-            </p>
-          </div>
-          <div className="flex justify-center items-center">
-            <div className="bg-blue-500 text-white rounded-[25%] w-5 h-5 flex justify-center items-center">
-              S
+    <div className="mb-5 md:mb-8 bg-purple-950 rounded-lg text-white px-3 py-3 md:p-8">
+      {/* Summary Section */}
+      <div className="flex flex-wrap justify-evenly items-center gap-4 md:gap-6 mb-5 md:mb-8 bg-darkNavy p-1.5 md:p-3 rounded-xl">
+        {[
+          { color: "bg-red-500", label: historyCountData.red, icon: "R" },
+          { color: "bg-black", label: historyCountData.black, icon: "BL" },
+          { color: "bg-blue-500", label: historyCountData.small, icon: "S" },
+          { color: "bg-red-500", label: historyCountData.big, icon: "B" },
+          { color: "bg-blue-500", label: historyCountData.odd, icon: "O" },
+          { color: "bg-red-500", label: historyCountData.even, icon: "E" },
+          { color: "bg-green-500", label: historyCountData.zero, icon: "Z" },
+        ].map((item, index) => (
+          <div key={index} className="flex items-center gap-2 md:gap-4">
+            <div
+              className={`${item.color} text-white rounded-full w-8 md:w-10 h-8 md:h-10 flex justify-center items-center text-base md:text-lg font-bold`}
+            >
+              {item.icon}
             </div>
-            <p className="mx-2 text-white font-semibold">
-              {historyCountData.small}
-            </p>
+            <p className="text-base md:text-lg font-semibold">{item.label}</p>
           </div>
-          <div className="flex justify-center items-center">
-            <div className="bg-red-500 text-white rounded-[25%] w-5 h-5 flex justify-center items-center">
-              B
-            </div>
-            <p className="mx-2 text-white font-semibold">
-              {historyCountData.big}
-            </p>
-          </div>
-          <div className="flex justify-center items-center">
-            <div className="bg-blue-500 text-white rounded-[25%] w-5 h-5 flex justify-center items-center">
-              O
-            </div>
-            <p className="mx-2 text-white font-semibold">
-              {historyCountData.odd}
-            </p>
-          </div>
-          <div className="flex justify-center items-center">
-            <div className="bg-red-500 text-white rounded-[25%] w-5 h-5 flex justify-center items-center">
-              E
-            </div>
-            <p className="mx-2 text-white font-semibold">
-              {historyCountData.even}
-            </p>
-          </div>
-          <div className="flex justify-center items-center">
-            <div className="bg-green-500 text-white rounded-[25%] w-5 h-5 flex justify-center items-center">
-              Z
-            </div>
-            <p className="mx-2 text-white font-semibold">
-              {historyCountData.zero}
-            </p>
-          </div>
-        </div>
-
-        <div className="px-10 max-sm:p-3 overflow-scroll max-sm:h-48 h-72 custom-scrollbar">
-          <Routes>
-            <Route
-              path="/blackRed"
-              element={<BlackRed historyData={historyData} />}
-            />
-            <Route
-              path="/oddEven"
-              element={<OddEven historyData={historyData} />}
-            />
-            <Route
-              path="/bigSmall"
-              element={<BigSmall historyData={historyData} />}
-            />
-            <Route
-              path="/dozenCol"
-              element={<DozenCol historyData={historyData} />}
-            />
-
-            <Route path="/his" element={<His historyData={historyData} />} />
-          </Routes>
-        </div>
-
-        <div className="w-full h-10 flex justify-evenly items-center border-t border-gray-500 mt-4">
-          <Link
-            to="blackRed"
-            className={`${
-              activeTab === "blackRed"
-                ? "bg-red-500 text-white font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1 rounded-lg"
-                : "transparent text-white font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1"
-            }`}
-            onClick={() => setActiveTab("blackRed")}
-          >
-            Red / Black
-          </Link>
-          <Link
-            to="bigSmall"
-            className={`${
-              activeTab === "bigSmall"
-                ? "bg-red-500 text-white font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1 rounded-lg"
-                : "transparent text-white font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1"
-            }`}
-            onClick={() => setActiveTab("bigSmall")}
-          >
-            Big / Small
-          </Link>
-          <Link
-            to="oddEven"
-            className={`${
-              activeTab === "oddEven"
-                ? "bg-red-500 text-white font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1 rounded-lg"
-                : "transparent text-white font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1"
-            }`}
-            onClick={() => setActiveTab("oddEven")}
-          >
-            Odd / Even
-          </Link>
-          <Link
-            to="dozenCol"
-            className={`${
-              activeTab === "dozenCol"
-                ? "bg-red-500 text-white font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1 rounded-lg"
-                : "transparent text-white font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1"
-            }`}
-            onClick={() => setActiveTab("dozenCol")}
-          >
-            Dozen / Column
-          </Link>
-
-          <Link
-            to="his"
-            className={`${
-              activeTab === "his"
-                ? "bg-red-500 text-white font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1 rounded-lg"
-                : "transparent text-white font-semibold p-2 mt-2 max-sm:text-xs max-sm:font-bold max-sm:p-1"
-            }`}
-            onClick={() => setActiveTab("his")}
-          >
-            History
-          </Link>
-        </div>
+        ))}
       </div>
 
+      {/* Routes Section */}
+      <div className="overflow-auto custom-scrollbar h-[300px] py-2 bg-darkNavy rounded-xl px-2 md:px-4">
+        <Routes>
+          <Route
+            path="/blackRed"
+            element={<BlackRed historyData={historyData} />}
+          />
+          <Route
+            path="/oddEven"
+            element={<OddEven historyData={historyData} />}
+          />
+          <Route
+            path="/bigSmall"
+            element={<BigSmall historyData={historyData} />}
+          />
+          <Route
+            path="/dozenCol"
+            element={<DozenCol historyData={historyData} />}
+          />
+          <Route path="/his" element={<His historyData={historyData} />} />
+        </Routes>
+      </div>
+
+      {/* Tabs Section */}
+      <div
+        className="flex items-center justify-between mt-6 pt-4 px-3 md:px-6 space-x-2 "
+        style={{
+          borderTop: "1px solid white",
+        }}
+      >
+        {[
+          {
+            fullLabel: "Red Black",
+            shortLabel: "R / B",
+            path: "blackRed",
+            tab: "blackRed",
+          },
+          {
+            fullLabel: "Big Small",
+            shortLabel: "B / S",
+            path: "bigSmall",
+            tab: "bigSmall",
+          },
+          {
+            fullLabel: "Odd Even",
+            shortLabel: "O / E",
+            path: "oddEven",
+            tab: "oddEven",
+          },
+          {
+            fullLabel: "Dozen Column",
+            shortLabel: "D / C",
+            path: "dozenCol",
+            tab: "dozenCol",
+          },
+          { fullLabel: "History", shortLabel: "History", path: "his", tab: "his" },
+        ].map((item) => (
+          <Link
+            key={item.tab}
+            to={item.path}
+            className={`${
+              activeTab === item.tab ? "bg-red-500" : "text-white bg-[#7F00FF]"
+            } px-2 py-1 rounded-md font-semibold sm:px-2.5 sm:py-1.5 text-sm  sm:text-base md:px-3 md:py-2`}
+            onClick={() => setActiveTab(item.tab)}
+          >
+            <span className="hidden sm:inline">{item.fullLabel}</span>
+            <span className="sm:hidden">{item.shortLabel}</span>
+          </Link>
+        ))}
+      </div>
+
+      {/* Pattern Components */}
       <div>
         <PatternPre historyData={historyData} isAlertAllowed={isAlertAllowed} />
         <PatternBigSmall

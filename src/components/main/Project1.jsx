@@ -39,6 +39,14 @@ const Project1 = ({ theme }) => {
   const [isAlertAllowed, setIsAlertAllowed] = useState(false);
   const [i_btn, setI_btn] = useState(false);
 
+
+// --- project 4 states ------------
+
+const [rowHoverEffect, setRowHoverEffect] = useState(false);
+const [dozenHoverEffect, setDozenHoverEffect] = useState(false);
+const [colHoverEffect, setColHoverEffect] = useState(false);
+
+
   const [landedNumbersDD, setLandedNumbersDD] = useState(() => {
     const savedLandedNumbersDD = localStorage.getItem("landedNumbersDD");
     return savedLandedNumbersDD ? JSON.parse(savedLandedNumbersDD) : [];
@@ -278,6 +286,27 @@ const Project1 = ({ theme }) => {
         nonSingleStreetData: {},
       };
   });
+  const [dozenScores, setDozenScores] = useState(() => {
+    const savedDozenScores = localStorage.getItem("dozenScores");
+    return savedDozenScores
+      ? JSON.parse(savedDozenScores)
+      : { 1: 0, 2: 0, 3: 0 };
+  });
+
+  const [columnScores, setColumnScores] = useState(() => {
+    const savedColumnScores = localStorage.getItem("columnScores");
+    return savedColumnScores
+      ? JSON.parse(savedColumnScores)
+      : { 1: 0, 2: 0, 3: 0 };
+  });
+
+  const [rowDataScores, setRowDataScores] = useState(() => {
+    const savedRowDataScores = localStorage.getItem("rowDataScores");
+    return savedRowDataScores
+      ? JSON.parse(savedRowDataScores)
+      : { A: 0, B: 0, C: 0 };
+  });
+
 
   const [lastHitNumber, setLastHitNumber] = useState(() => {
     const savedLastHitNumber = localStorage.getItem("lastHitNumber");
@@ -288,6 +317,161 @@ const Project1 = ({ theme }) => {
     const savedHistoryData = localStorage.getItem("historyData");
     return savedHistoryData ? JSON.parse(savedHistoryData) : [];
   });
+
+
+
+  const [unitData, setUnitData] = useState(() => {
+    const savedHistoryData = localStorage.getItem("unitData4");
+    return savedHistoryData ? JSON.parse(savedHistoryData) : 1;
+  });
+  const [unitDataDozen, setUnitDataDozen] = useState(() => {
+    const savedHistoryData = localStorage.getItem("unitDataDozen4");
+    return savedHistoryData ? JSON.parse(savedHistoryData) : 1;
+  });
+  const [unitDataCol, setUnitDataCol] = useState(() => {
+    const savedHistoryData = localStorage.getItem("unitData4Col");
+    return savedHistoryData ? JSON.parse(savedHistoryData) : 1;
+  });
+
+
+// project 4 state Initialization start-------------------
+
+  const [rowData, setRowData] = useState(() => {
+    const savedCountData = localStorage.getItem("rowData4");
+    return savedCountData ? JSON.parse(savedCountData) : [];
+  });
+  const [dozenRowData, setDozenRowData] = useState(() => {
+    const savedCountData = localStorage.getItem("dozenRowData4");
+    return savedCountData ? JSON.parse(savedCountData) : [];
+  });
+
+  const [colRowData, setColRowData] = useState(() => {
+    const savedCountData = localStorage.getItem("colRowData4");
+    return savedCountData ? JSON.parse(savedCountData) : [];
+  });
+
+  const [suggestion, setSuggestion] = useState(() => {
+    return localStorage.getItem("suggestion4") || "";
+  });
+
+  const [repeatLetter, setRepeatLetter] = useState(() => {
+    return localStorage.getItem("repeatLetter4") || "";
+  });
+
+  const [repeatDozen, setRepeatDozen] = useState(() => {
+    return localStorage.getItem("repeatDozen4") || "";
+  });
+
+  const [repeatCol, setRepeatCol] = useState(() => {
+    return localStorage.getItem("repeatCol4") || "";
+  });
+
+  const [suggestionActive, setSuggestionActive] = useState(() => {
+    return JSON.parse(localStorage.getItem("suggestionActive4")) || false;
+  });
+
+  const [suggestionActiveDozen, setSuggestionActiveDozen] = useState(() => {
+    return JSON.parse(localStorage.getItem("suggestionActiveDozen4")) || false;
+  });
+
+  const [suggestionActiveCol, setSuggestionActiveCol] = useState(() => {
+    return JSON.parse(localStorage.getItem("suggestionActiveCol4")) || false;
+  });
+
+  const [userMissedSuggestion, setUserMissedSuggestion] = useState(() => {
+    return JSON.parse(localStorage.getItem("userMissedSuggestion4")) || false;
+  });
+
+  const [userMissedSuggestionDozen, setUserMissedSuggestionDozen] = useState(
+    () => {
+      return (
+        JSON.parse(localStorage.getItem("userMissedSuggestionDozen4")) || false
+      );
+    }
+  );
+
+  const [userMissedSuggestionCol, setUserMissedSuggestionCol] = useState(() => {
+    return (
+      JSON.parse(localStorage.getItem("userMissedSuggestionCol4")) || false
+    );
+  });
+
+
+
+
+  const [analyzeData, setAnalyzeData] = useState(() => {
+    const savedCountData = localStorage.getItem("analyzeData4");
+    return savedCountData
+      ? JSON.parse(savedCountData)
+      : {
+          winPerData: 0,
+          lossPerData: 0,
+          dozenWinPer: 0,
+          dozenLossPer: 0,
+          colWinPer: 0,
+          colLossPer: 0,
+        };
+  });
+
+  console.log('analyzeData', analyzeData);
+
+
+
+  const [statsData, setStatsData] = useState(() => {
+    const savedCountData = localStorage.getItem("StatisticsData");
+    return savedCountData
+      ? JSON.parse(savedCountData)
+      : {
+          Agroup: 0,
+          Agroup_loss: 0,
+          Bgroup: 0,
+          Bgroup_loss: 0,
+          Cgroup: 0,
+          Cgroup_loss: 0,
+          dozen1: 0,
+          dozen1_loss: 0,
+          dozen2: 0,
+          dozen2_loss: 0,
+          dozen3: 0,
+          dozen3_loss: 0,
+          col1: 0,
+          col1_loss: 0,
+          col2: 0,
+          col2_loss: 0,
+          col3: 0,
+          col3_loss: 0,
+          odd: 0,
+          odd_loss: 0,
+          even: 0,
+          even_loss: 0,
+        };
+  });
+
+  const [moneyManagementData, setMoneyManagementData] = useState(() => {
+    const savedHistoryData = localStorage.getItem("moneyManagement4");
+    return savedHistoryData ? JSON.parse(savedHistoryData) : [];
+  });
+
+
+  const [suggestionProcessedRow, setSuggestionProcessedRow] = useState(() => {
+    const savedHistoryData = localStorage.getItem("suggestionProcessedRow4");
+    return savedHistoryData ? JSON.parse(savedHistoryData) : null;
+  });
+
+  const [suggestionProcessedDoz, setSuggestionProcessedDoz] = useState(() => {
+    const savedHistoryData = localStorage.getItem("suggestionProcessedDoz4");
+    return savedHistoryData ? JSON.parse(savedHistoryData) : null;
+  });
+
+  const [suggestionProcessedCol, setSuggestionProcessedCol] = useState(() => {
+    const savedHistoryData = localStorage.getItem("suggestionProcessedCol4");
+    return savedHistoryData ? JSON.parse(savedHistoryData) : null;
+  });
+
+
+
+// project 4 state Initialization End-------------------
+
 
   // Save `countData` to local storage whenever it changes
   useEffect(() => {
@@ -367,11 +551,457 @@ const Project1 = ({ theme }) => {
   }, [columnScoresDD]);
 
 
+// -----project 4 local storage start 
+
+useEffect(() => {
+  console.log("nalyze project 1")
+  localStorage.setItem("analyzeData4", JSON.stringify(analyzeData));
+}, [analyzeData]);
+
+useEffect(() => {
+  localStorage.setItem("unitData4", JSON.stringify(unitData));
+}, [unitData]);
+
+useEffect(() => {
+  localStorage.setItem("dozenScores", JSON.stringify(dozenScores));
+}, [dozenScores]);
+
+useEffect(() => {
+  localStorage.setItem("columnScores", JSON.stringify(columnScores));
+}, [columnScores]);
+
+useEffect(() => {
+  localStorage.setItem("rowDataScores", JSON.stringify(rowDataScores));
+}, [rowDataScores]);
+useEffect(() => {
+  localStorage.setItem("rowData4", JSON.stringify(rowData));
+}, [rowData]);
+useEffect(() => {
+  localStorage.setItem("StatisticsData", JSON.stringify(statsData));
+}, [statsData]);
+
+
+let [isReachedTimeToIncreaseLetter, setIsReachedTimeToIncreaseLetter] =
+useState(false);
 
 
 
+useEffect(() => {
+  let newLossEntries = [];
+
+  // Check letter loss
+  if (rowData.length > 1 && rowHoverEffect) {
+    const previousRow = rowData[rowData.length - 2];
+    const lastRow = rowData[rowData.length - 1];
+    if (
+      Object.keys(previousRow).length === 3 &&
+      Object.keys(lastRow).length === 3 &&
+      repeatLetter &&
+      !Object.values(lastRow).includes(repeatLetter) &&
+      !userMissedSuggestion
+    ) {
+      if (isAlertAllowed && rowHoverEffect) {
+        showToast(`Book Your Loss!`, "error");
+      }
+
+      setUnitData(1);
+      setRepeatLetter("");
+      setUserMissedSuggestion(true);
+      setSuggestionActive(false);
+      setAnalyzeData((prev) => ({
+        ...prev,
+        lossPerData: prev.lossPerData + 1,
+      }));
+
+      setStatsData((prev) => ({
+        ...prev,
+        Agroup_loss:
+          repeatLetter === "A" ? prev.Agroup_loss + 1 : prev.Agroup_loss,
+        Bgroup_loss:
+          repeatLetter === "B" ? prev.Bgroup_loss + 1 : prev.Bgroup_loss,
+        Cgroup_loss:
+          repeatLetter === "C" ? prev.Cgroup_loss + 1 : prev.Cgroup_loss,
+      }));
+
+      // Prepare the letter loss entry
+      newLossEntries.push({
+        spin: lastHitNumber,
+        winLoss: "L",
+        unit: unitData,
+        total: repeatLetter === "A" ? unitData * -11.5 : unitData * -12,
+        covered: repeatLetter === "A" ? 13 : 12,
+      });
+    }
+  }
+
+  // Check dozen loss
+  if (dozenRowData.length > 1 && dozenHoverEffect) {
+    const previousRow = dozenRowData[dozenRowData.length - 2];
+    const lastRow = dozenRowData[dozenRowData.length - 1];
+    if (
+      Object.keys(previousRow).length === 3 &&
+      Object.keys(lastRow).length === 3 &&
+      repeatDozen &&
+      !Object.values(lastRow).includes(repeatDozen) &&
+      !userMissedSuggestionDozen
+    ) {
+      if (isAlertAllowed && dozenHoverEffect) {
+        showToast(`Book Your Loss!`, "error");
+      }
+      setUnitDataDozen(1);
+      setRepeatDozen("");
+      setUserMissedSuggestionDozen(true);
+      setSuggestionActiveDozen(false);
+      setAnalyzeData((prev) => ({
+        ...prev,
+        dozenLossPer: prev.dozenLossPer + 1,
+      }));
+
+      setStatsData((prev) => ({
+        ...prev,
+        dozen1_loss:
+          repeatDozen === "1" ? prev.dozen1_loss + 1 : prev.dozen1_loss,
+        dozen2_loss:
+          repeatDozen === "2" ? prev.dozen2_loss + 1 : prev.dozen2_loss,
+        dozen3_loss:
+          repeatDozen === "3" ? prev.dozen3_loss + 1 : prev.dozen3_loss,
+      }));
+
+      // Prepare the dozen loss entry
+      newLossEntries.push({
+        spin: lastHitNumber,
+        winLoss: "L",
+        unit: unitDataDozen,
+        total: unitDataDozen * -1,
+        covered:
+          repeatDozen === "1" ? "D1" : repeatDozen === "2" ? "D2" : "D3",
+      });
+    }
+  }
+
+  // Check column loss
+  if (colRowData.length > 1 && colHoverEffect) {
+    const previousRow = colRowData[colRowData.length - 2];
+    const lastRow = colRowData[colRowData.length - 1];
+    if (
+      Object.keys(previousRow).length === 3 &&
+      Object.keys(lastRow).length === 3 &&
+      repeatCol &&
+      !Object.values(lastRow).includes(repeatCol) &&
+      !userMissedSuggestionCol
+    ) {
+      console.log("repeatCol", repeatCol);
+      if (isAlertAllowed && colHoverEffect) {
+        showToast(`Book Your Loss! col`, "error");
+      }
+
+      setUnitDataCol(1);
+      setRepeatCol("");
+      setUserMissedSuggestionCol(true);
+      setSuggestionActiveCol(false);
+      setAnalyzeData((prev) => ({
+        ...prev,
+        colLossPer: prev.colLossPer + 1,
+      }));
+
+      setStatsData((prev) => ({
+        ...prev,
+        col1_loss: repeatCol === "1" ? prev.col1_loss + 1 : prev.col1_loss,
+        col2_loss: repeatCol === "2" ? prev.col2_loss + 1 : prev.col2_loss,
+        col3_loss: repeatCol === "3" ? prev.col3_loss + 1 : prev.col3_loss,
+      }));
+
+      // Prepare the column loss entry
+      newLossEntries.push({
+        spin: lastHitNumber,
+        winLoss: "L",
+        unit: unitDataCol,
+        total: unitDataCol * -1,
+        covered: repeatCol === "1" ? "C1" : repeatCol === "2" ? "C2" : "C3",
+      });
+    }
+  }
+
+  // If there are any losses, update the money management data once
+  // if (newLossEntries.length > 0) {
+  //   setMoneyManagementData((prevData) => [...prevData, ...newLossEntries]);
+  // }
+}, [
+  rowData,
+  dozenRowData,
+  colRowData,
+  repeatLetter,
+  repeatDozen,
+  repeatCol,
+  userMissedSuggestion,
+  userMissedSuggestionDozen,
+  userMissedSuggestionCol,
+]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+useEffect(() => {
+  if (rowData.length > 0) {
+    const lastRowIndex = rowData.length - 1;
+    const lastRow = rowData[lastRowIndex];
+
+    // Only process if we haven't already processed this row's first column
+    if (
+      Object.keys(lastRow).length === 3 &&
+      suggestionProcessedRow !== lastRowIndex
+    ) {
+      const values = Object.values(lastRow);
+      const occurrences = values.reduce((acc, letter) => {
+        acc[letter] = (acc[letter] || 0) + 1;
+        return acc;
+      }, {});
+      const repeatedLetter = Object.keys(occurrences).find(
+        (letter) => occurrences[letter] > 1
+      );
+
+      // Check if the repeated letter is in the first column
+      if (repeatedLetter) {
+        // Only trigger the suggestion if it hasn't been processed for this row
+        setRepeatLetter(repeatedLetter);
+        setSuggestionActive(true);
+        setUserMissedSuggestion(false);
+        setSuggestion(`Suggestion: The repeated letter is ${repeatedLetter}`);
+
+        // Add data to moneyManagementData only for the first column
+        const newEntry = {
+          spin: "",
+          winLoss: "",
+          unit: unitData,
+          total: 0,
+          covered: repeatedLetter === "A" ? 13 : 12,
+        };
+
+        setMoneyManagementData((prevData) => {
+          const updatedData = [...prevData, newEntry];
+          localStorage.setItem(
+            "moneyManagement4",
+            JSON.stringify(updatedData)
+          );
+          return updatedData;
+        });
+
+        // Mark this row as processed to prevent duplicate additions for this row
+        setSuggestionProcessedRow(lastRowIndex);
+      } else if (!repeatedLetter) {
+        // Reset if there's no repeated letter
+        setSuggestion("");
+        // setRepeatLetter("");
+        // setSuggestionActive(false);
+        setSuggestionProcessedRow(null); // Reset flag if no suggestion
+      }
+    }
+  }
+}, [rowData, repeatLetter, userMissedSuggestion, lastHitNumber, unitData]);
+
+useEffect(() => {
+  if (dozenRowData.length > 0) {
+    const lastRowIndex = dozenRowData.length - 1;
+    const lastRow = dozenRowData[lastRowIndex];
+
+    // Only process if we haven't already processed this row's first column
+    if (
+      Object.keys(lastRow).length === 3 &&
+      suggestionProcessedDoz !== lastRowIndex
+    ) {
+      const values = Object.values(lastRow);
+      const occurrences = values.reduce((acc, dozen) => {
+        acc[dozen] = (acc[dozen] || 0) + 1;
+        return acc;
+      }, {});
+      const repeatedDozen = Object.keys(occurrences).find(
+        (dozen) => occurrences[dozen] > 1
+      );
+
+      // Check if the repeated dozen is in the first column
+      if (repeatedDozen && repeatedDozen != 0) {
+        console.log("repeated dozen is coming", repeatedDozen);
+        // Only trigger the suggestion if it hasn't been processed for this row
+        setRepeatDozen(repeatedDozen);
+        setSuggestionActiveDozen(true);
+        setUserMissedSuggestionDozen(false);
+        setSuggestion(`Suggestion: The repeated dozen is ${repeatedDozen}`);
+
+        // Add data to moneyManagementData only for the first column
+        // const newEntry = {
+        //   spin: "",
+        //   winLoss: "",
+        //   unit: unitDataDozen,
+        //   total: 0,
+        //   covered:
+        //     repeatedDozen === "1"
+        //       ? "D1"
+        //       : repeatedDozen === "2"
+        //       ? "D2"
+        //       : "D3",
+        // };
+
+        // setMoneyManagementData((prevData) => {
+        //   const updatedData = [...prevData, newEntry];
+        //   localStorage.setItem(
+        //     "moneyManagement4",
+        //     JSON.stringify(updatedData)
+        //   );
+        //   return updatedData;
+        // });
+
+        // Mark this row as processed to prevent duplicate additions for this row
+        setSuggestionProcessedDoz(lastRowIndex);
+      } else if (!repeatedDozen) {
+        // Reset if there's no repeated dozen
+        setSuggestion("");
+        // setRepeatDozen("");
+        // setSuggestionActiveDozen(false);
+        setSuggestionProcessedDoz(null); // Reset flag if no suggestion
+      }
+    }
+  }
+}, [
+  dozenRowData,
+  repeatDozen,
+  userMissedSuggestionDozen,
+  lastHitNumber,
+  unitData,
+]);
+
+useEffect(() => {
+  if (colRowData.length > 0) {
+    const lastRowIndex = colRowData.length - 1;
+    const lastRow = colRowData[lastRowIndex];
+
+    // Only process if we haven't already processed this row's first column
+    if (
+      Object.keys(lastRow).length === 3 &&
+      suggestionProcessedCol !== lastRowIndex
+    ) {
+      const values = Object.values(lastRow);
+      const occurrences = values.reduce((acc, col) => {
+        acc[col] = (acc[col] || 0) + 1;
+        return acc;
+      }, {});
+      const repeatedCol = Object.keys(occurrences).find(
+        (col) => occurrences[col] > 1
+      );
+
+      // Check if the repeated col is in the first column
+      if (repeatedCol && repeatedCol != 0) {
+        // Only trigger the suggestion if it hasn't been processed for this row
+        setRepeatCol(repeatedCol);
+        setSuggestionActiveCol(true);
+        setUserMissedSuggestionCol(false);
+        setSuggestion(`Suggestion: The repeated column is ${repeatedCol}`);
+
+        // Add data to moneyManagementData only for the first column
+        // const newEntry = {
+        //   spin: "",
+        //   winLoss: "",
+        //   unit: unitDataCol,
+        //   total: 0,
+        //   covered:
+        //     repeatedCol === "1" ? "C1" : repeatedCol === "2" ? "C2" : "C3",
+        // };
+
+        // setMoneyManagementData((prevData) => {
+        //   const updatedData = [...prevData, newEntry];
+        //   localStorage.setItem(
+        //     "moneyManagement4",
+        //     JSON.stringify(updatedData)
+        //   );
+        //   return updatedData;
+        // });
+
+        // Mark this row as processed to prevent duplicate additions for this row
+        setSuggestionProcessedCol(lastRowIndex);
+      } else if (!repeatedCol) {
+        // Reset if there's no repeated col
+        setSuggestion("");
+        // setRepeatCol("");
+        // setSuggestionActiveCol(false);
+        setSuggestionProcessedCol(null); // Reset flag if no suggestion
+      }
+    }
+  }
+}, [colRowData, repeatCol, userMissedSuggestionCol, lastHitNumber, unitData]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// -----project 4 local storage end 
 
   const carouselRef = useRef(null);
+
+
+  const initialScores = Array.from({ length: 36 }, (_, i) => 36 - i); 
+
+  useEffect(() => {
+    // Calculate the new scores for each dozen, column, and row once the array length reaches 30
+    if (landedNumbersDD.length >= 36) {
+      const newDozenScores = { 1: 0, 2: 0, 3: 0 };
+      const newColumnScores = { 1: 0, 2: 0, 3: 0 };
+      const newRowDataScores = { A: 0, B: 0, C: 0 };
+
+      // Only calculate scores for the first 36 items
+      landedNumbersDD.slice(0, 36).forEach((entry, index) => {
+        const score = initialScores[index] || 0;
+
+        // Update dozen scores
+        if (entry.doz) {
+          newDozenScores[entry.doz] += score;
+        }
+
+        // Update column scores
+        if (entry.col) {
+          newColumnScores[entry.col] += score;
+        }
+
+        // Update row data scores
+        if (entry.letter) {
+          newRowDataScores[entry.letter] += score;
+        }
+      });
+
+      setDozenScores(newDozenScores);
+      setColumnScores(newColumnScores);
+      setRowDataScores(newRowDataScores);
+
+    }
+  }, [landedNumbersDD]);
+
 
   useEffect(() => {
     // Scroll to item 2 on component mount
@@ -662,6 +1292,107 @@ const Project1 = ({ theme }) => {
       highEvenBlack: 0,
       highOddBlack: 0,
     };
+
+    // 4 project RESET INITIALIZATION
+    setColHoverEffect(false);
+    setDozenHoverEffect(false);
+    setRowHoverEffect(false);
+    const initialRowData = [];
+    const initialDozenRowData = [];
+    const initialColRowData = [];
+    const initialSuggestion = "";
+    const initialRepeatLetter = "";
+    const initialRepeatDozen = "";
+    const initialRepeatCol = "";
+    const initialSuggestionActive = false;
+    const initialUserMissedSuggestion = false;
+    const initialAnalyzeData = {
+      winPerData: 0,
+      lossPerData: 0,
+      dozenWinPer: 0,
+      dozenLossPer: 0,
+      colWinPer: 0,
+      colLossPer: 0,
+    };
+    const initialStatsData = {
+      Agroup: 0,
+      Agroup_loss: 0,
+      Bgroup: 0,
+      Bgroup_loss: 0,
+      Cgroup: 0,
+      Cgroup_loss: 0,
+      dozen1: 0,
+      dozen1_loss: 0,
+      dozen2: 0,
+      dozen2_loss: 0,
+      dozen3: 0,
+      dozen3_loss: 0,
+      col1: 0,
+      col1_loss: 0,
+      col2: 0,
+      col2_loss: 0,
+      col3: 0,
+      col3_loss: 0,
+      odd: 0,
+      odd_loss: 0,
+      even: 0,
+      even_loss: 0,
+    };
+    
+    setAnalyzeData(initialAnalyzeData);
+    setStatsData(initialStatsData);
+    setRowData(initialRowData);
+    setDozenRowData(initialDozenRowData);
+    setColRowData(initialColRowData);
+    setSuggestion(initialSuggestion);
+    setRepeatLetter(initialRepeatLetter);
+    setRepeatDozen(initialRepeatDozen);
+    setRepeatCol(initialRepeatCol);
+    setDozenScores({ 1: 0, 2: 0, 3: 0 });
+    setColumnScores({ 1: 0, 2: 0, 3: 0 });
+    setRowDataScores({ A: 0, B: 0, C: 0 });
+
+
+    localStorage.setItem("analyzeData4", JSON.stringify(initialAnalyzeData));
+    localStorage.setItem("rowData4", JSON.stringify(initialRowData));
+    localStorage.setItem("dozenRowData4", JSON.stringify(initialDozenRowData));
+    localStorage.setItem("colRowData4", JSON.stringify(initialColRowData));
+
+    localStorage.setItem("suggestionProcessedRow4", JSON.stringify(null));
+    localStorage.setItem("suggestionProcessedDoz4", JSON.stringify(null));
+    localStorage.setItem("suggestionProcessedCol4", JSON.stringify(null));
+
+    localStorage.setItem(
+      "suggestionActive4",
+      JSON.stringify(initialSuggestionActive)
+    );
+    localStorage.setItem(
+      "userMissedSuggestion4",
+      JSON.stringify(initialUserMissedSuggestion)
+    );
+    localStorage.setItem(
+      "suggestionActiveDozen4",
+      JSON.stringify(initialSuggestionActive)
+    );
+    localStorage.setItem(
+      "userMissedSuggestionDozen4",
+      JSON.stringify(initialUserMissedSuggestion)
+    );
+    localStorage.setItem(
+      "suggestionActiveCol4",
+      JSON.stringify(initialSuggestionActive)
+    );
+    localStorage.setItem(
+      "userMissedSuggestionCol4",
+      JSON.stringify(initialUserMissedSuggestion)
+    );
+
+
+
+    // 4 th project reset end
+
+
+
     setDoubleStreetData(resetDoubleData);
     setNonDoubleStreetData(resetDoubleData);
     setSingleStreetData(resetSingleStreetData);
@@ -1280,14 +2011,14 @@ const Project1 = ({ theme }) => {
   };
 
 
-  const handleClickNumber = (key, number, dozen, col, oddEven, color, range, ssRange, dsRange, wTracker,quadra,letter) => {
+  const handleClickNumber = (key, number, doz,dozen, col, oddEven, color, range, ssRange, dsRange, wTracker,quadra,letter) => {
     const {
       countUpdates,
       summaryUpdates,
       doubleStreetDataUpdates,
       circleDataUpdates,
       singleStreetDataUpdates,
-      landedNumbersDD
+
     } = updateMapping[key];
 
     setPreviousState({
@@ -1512,8 +2243,410 @@ const Project1 = ({ theme }) => {
       His_num: number,
     };
 
+    // project 4 Analyz Data Functions  Start-------------
+
+    setRowData((prevRowData) => {
+      const lastRow = prevRowData[prevRowData.length - 1];
+      if (!lastRow || Object.keys(lastRow).length >= 3) {
+        return [...prevRowData, { [`let1`]: letter }];
+      } else {
+        const keyIndex = Object.keys(lastRow).length + 1;
+        const updatedRow = { ...lastRow, [`let${keyIndex}`]: letter };
+        return [...prevRowData.slice(0, -1), updatedRow];
+      }
+    });
+
+     if (suggestionActive) {
+      if (letter === repeatLetter) {
+        setSuggestionActive(false);
+        setSuggestion("");
+        if (isAlertAllowed && rowHoverEffect) {
+          showToast(`Win Number!`, "success");
+        }
+        setUnitData(unitData + 1);
+        setRepeatLetter("");
+        setAnalyzeData((prev) => ({
+          ...prev,
+          winPerData: prev.winPerData + 1,
+        }));
+
+        setStatsData((prev) => ({
+          ...prev,
+          Agroup: repeatLetter === "A" ? prev.Agroup + 1 : prev.Agroup,
+          Bgroup: repeatLetter === "B" ? prev.Bgroup + 1 : prev.Bgroup,
+          Cgroup: repeatLetter === "C" ? prev.Cgroup + 1 : prev.Cgroup,
+        }));
+
+        setMoneyManagementData((prevData) => {
+          // Flag to indicate if an update has been made
+          let updateMade = false;
+          const updatedData = prevData.map((entry, index) => {
+            // Get the reverse indices of the last three objects: 3, 2, 1
+            if (
+              !updateMade && // Update only if no prior match was made
+              entry.spin === "" && // Match condition
+              entry.winLoss === "" &&
+              entry.total === 0 &&
+              (entry.covered === 13 || entry.covered === 12) // Fix logical condition
+            ) {
+              updateMade = true;
+              return {
+                ...entry,
+                spin: {
+                  number: number,
+                  color: "",
+                },
+                winLoss: "W",
+                total: letter === "A" ? unitData * 23 : unitData * 24,
+              };
+            }
+            return entry; // Keep other entries unchanged
+          });
+
+          return updatedData;
+        });
+
+        if (!isReachedTimeToIncreaseLetter) {
+          setUnitData(unitData / 2);
+        }
+
+        if (unitData >= 3) {
+          setUnitData(1);
+        } else {
+          setUnitData(unitData + 1);
+        }
+      } else {
+        setSuggestion(`Suggestion: The repeated letter is ${repeatLetter}`);
+
+        // Step 1: Update `moneyManagementData` with the winLoss: "L" entry
+        setMoneyManagementData((prevData) => {
+          const updatedData = prevData.map((entry, index) => {
+            if (
+              index >= prevData.length - 3 && // Only check the last three objects
+              entry.spin === "" && // Match condition
+              entry.winLoss === "" &&
+              entry.total === 0
+            ) {
+              return {
+                ...entry,
+                spin: {
+                  number: number,
+                  color: "",
+                },
+                winLoss: "L",
+                total: -1,
+              };
+            }
+            return entry;
+          });
+
+          // Save updated data to localStorage
+          localStorage.setItem("moneyManagement4", JSON.stringify(updatedData));
+          return updatedData;
+        });
+
+        // Step 2: Use the updated `moneyManagementData` to calculate `bothLose`
+        setMoneyManagementData((prevData) => {
+          const filteredData = prevData.filter(
+            (entry) => entry.covered === 13 || entry.covered === 12
+          );
+
+
+          // Skip the last entry and pick the two before it
+          const lastTwoEntries = filteredData.slice(-2); // Get the second-last and third-last entries
+          console.log("lastTwoEntries", lastTwoEntries);
+
+          // Ensure there are exactly two entries and check if both have `winLoss` as "L"
+          const bothLose =
+            lastTwoEntries.length === 2 &&
+            lastTwoEntries.every((entry) => entry.winLoss === "L");
+          console.log("bothLose", bothLose);
+
+          // Update states based on `bothLose`
+          if (bothLose) {
+            setUnitData((prevUnit) => prevUnit * 2);
+          }
+
+          setIsReachedTimeToIncreaseLetter(bothLose);
+
+          // Add a new entry if needed
+          if ((landedNumbersDD.length + 1) % 3 !== 0) {
+            const newEntry = {
+              spin: "",
+              winLoss: "",
+              unit: bothLose ? unitData * 2 : unitData,
+              total: 0,
+              covered: repeatLetter === "A" ? 13 : 12,
+            };
+
+            const newData = [...prevData, newEntry];
+            localStorage.setItem("moneyManagement4", JSON.stringify(newData));
+            return newData;
+          }
+
+          return prevData;
+        });
+      }
+    }
+
+    setDozenRowData((prevRowData) => {
+      const lastRow = prevRowData[prevRowData.length - 1];
+      if (!lastRow || Object.keys(lastRow).length >= 3) {
+        return [...prevRowData, { [`doz1`]: doz }];
+      } else {
+        const keyIndex = Object.keys(lastRow).length + 1;
+        const updatedRow = { ...lastRow, [`doz${keyIndex}`]: doz };
+        return [...prevRowData.slice(0, -1), updatedRow];
+      }
+    });
+    setColRowData((prevRowData) => {
+      const lastRow = prevRowData[prevRowData.length - 1];
+      if (!lastRow || Object.keys(lastRow).length >= 3) {
+        return [...prevRowData, { [`col1`]: col }];
+      } else {
+        const keyIndex = Object.keys(lastRow).length + 1;
+        const updatedRow = { ...lastRow, [`col${keyIndex}`]: col };
+        return [...prevRowData.slice(0, -1), updatedRow];
+      }
+    });
+
+    if (suggestionActiveDozen) {
+      if (doz === repeatDozen) {
+        setSuggestionActiveDozen(false);
+        setSuggestion("");
+        if (isAlertAllowed && dozenHoverEffect) {
+          showToast(`Win Dozen!`, "success");
+        }
+      
+        // setUnitDataDozen(unitDataDozen + 1);
+        setRepeatDozen("");
+        setAnalyzeData((prev) => ({
+          ...prev,
+          dozenWinPer: prev.dozenWinPer + 1,
+        }));
+
+        setStatsData((prev) => ({
+          ...prev,
+          dozen1: repeatDozen === "1" ? prev.dozen1 + 1 : prev.dozen1,
+          dozen2: repeatDozen === "2" ? prev.dozen2 + 1 : prev.dozen2,
+          dozen3: repeatDozen === "3" ? prev.dozen3 + 1 : prev.dozen3,
+        }));
+
+        // Add to money management for dozens
+        // setMoneyManagementData((prevData) => [
+        //   ...prevData,
+        //   {
+        //     spin: {
+        //       number: number,
+        //       color:
+        //         clickedDataUpdates.red === 1
+        //           ? "red"
+        //           : clickedDataUpdates.black === 1
+        //           ? "black"
+        //           : "zero",
+        //     },
+        //     winLoss: "W",
+        //     unit: unitDataDozen,
+        //     total: unitDataDozen * 2,
+        //     covered: doz === "1" ? "D1" : doz === "2" ? "D2" : "D3",
+        //   },
+        // ]);
+        // setMoneyManagementData((prevData) => {
+        //   const updatedData = prevData.map((entry, index) => {
+        //     if (
+        //       index >= prevData.length - 3 && // Only check the last three objects
+        //       entry.spin === "" && // Match condition
+        //       entry.winLoss === "" &&
+        //       entry.total === 0 &&
+        //       entry.covered === 'D1' || 'D2' | 'D3'
+        //     ) {
+        //       return {
+        //         ...entry,
+        //         spin: {
+        //           number: number,
+        //           color:
+        //             clickedDataUpdates.red === 1
+        //               ? "red"
+        //               : clickedDataUpdates.black === 1
+        //               ? "black"
+        //               : "zero",
+        //         },
+        //         winLoss: "W",
+        //         total: unitDataDozen * 2,
+        //       };
+        //     }
+        //     return entry;
+        //   });
+        //   return updatedData;
+        // });
+      } else {
+        setSuggestion(`Suggestion: The repeated dozen is ${repeatDozen}`);
+        // setMoneyManagementData((prevData) => {
+        //   const updatedData = prevData.map((entry, index) => {
+        //     if (
+        //       index >= prevData.length - 3 && // Only check the last three objects
+        //       entry.spin === "" && // Match condition
+        //       entry.winLoss === "" &&
+        //       entry.total === 0
+        //     ) {
+        //       return {
+        //         ...entry,
+        //         spin: {
+        //           number: number,
+        //           color:
+        //             clickedDataUpdates.red === 1
+        //               ? "red"
+        //               : clickedDataUpdates.black === 1
+        //               ? "black"
+        //               : "zero",
+        //         },
+        //         winLoss: "L",
+        //         total: -1,
+        //       };
+        //     }
+        //     return entry;
+        //   });
+        //   return updatedData;
+        // });
+        // const newEntry = {
+        //   spin: "",
+        //   winLoss: "",
+        //   unit: unitDataDozen,
+        //   total: 0,
+        //   covered:
+        //   repeatDozen === "1" ? "D1" : repeatDozen === "2" ? "D2" : "D3",
+        // };
+
+        // setMoneyManagementData((prevData) => {
+        //   const updatedData = [...prevData, newEntry];
+        //   localStorage.setItem("moneyManagement4", JSON.stringify(updatedData));
+        //   return updatedData;
+        // });
+      }
+    }
+
+    // Handle suggestions for Column
+    if (suggestionActiveCol) {
+      if (col === repeatCol) {
+        setSuggestionActiveCol(false);
+        setSuggestion("");
+        if (isAlertAllowed && colHoverEffect) {
+          showToast(`Win Column!`, "success");
+        }
+     
+        // setUnitDataCol(unitDataCol + 1);
+        setRepeatCol("");
+        setAnalyzeData((prev) => ({
+          ...prev,
+          colWinPer: prev.colWinPer + 1,
+        }));
+
+        setStatsData((prev) => ({
+          ...prev,
+          col1: repeatCol === "1" ? prev.col1 + 1 : prev.col1,
+          col2: repeatCol === "2" ? prev.col2 + 1 : prev.col2,
+          col3: repeatCol === "3" ? prev.col3 + 1 : prev.col3,
+        }));
+
+        // Add to money management for columns
+        // setMoneyManagementData((prevData) => [
+        //   ...prevData,
+        //   {
+        //     spin: {
+        //       number: number,
+        //       color:
+        //         clickedDataUpdates.red === 1
+        //           ? "red"
+        //           : clickedDataUpdates.black === 1
+        //           ? "black"
+        //           : "zero",
+        //     },
+        //     winLoss: "W",
+        //     unit: unitDataCol,
+        //     total: unitDataCol * 2,
+        //     covered: col === "1" ? "C1" : col === "2" ? "C2" : "C3",
+        //   },
+        // ]);
+        // setMoneyManagementData((prevData) => {
+        //   const updatedData = prevData.map((entry, index) => {
+        //     if (
+        //       index >= prevData.length - 3 && // Only check the last three objects
+        //       entry.spin === "" && // Match condition
+        //       entry.winLoss === "" &&
+        //       entry.total === 0 &&
+        //       entry.covered === 'C1' || 'c2' || 'C3'
+        //     ) {
+        //       return {
+        //         ...entry,
+        //         spin: {
+        //           number: number,
+        //           color:
+        //             clickedDataUpdates.red === 1
+        //               ? "red"
+        //               : clickedDataUpdates.black === 1
+        //               ? "black"
+        //               : "zero",
+        //         },
+        //         winLoss: "W",
+        //         total: unitDataCol * 2,
+        //       };
+        //     }
+        //     return entry;
+        //   });
+        //   return updatedData;
+        // });
+      } else {
+        setSuggestion(`Suggestion: The repeated column is ${repeatCol}`);
+        // setMoneyManagementData((prevData) => {
+        //   const updatedData = prevData.map((entry, index) => {
+        //     if (
+        //       index >= prevData.length - 3 && // Only check the last three objects
+        //       entry.spin === "" && // Match condition
+        //       entry.winLoss === "" &&
+        //       entry.total === 0
+        //     ) {
+        //       return {
+        //         ...entry,
+        //         spin: {
+        //           number: number,
+        //           color:
+        //             clickedDataUpdates.red === 1
+        //               ? "red"
+        //               : clickedDataUpdates.black === 1
+        //               ? "black"
+        //               : "zero",
+        //         },
+        //         winLoss: "L",
+        //         total: -1,
+        //       };
+        //     }
+        //     return entry;
+        //   });
+        //   return updatedData;
+        // });
+        // const newEntry = {
+        //   spin: "",
+        //   winLoss: "",
+        //   unit: unitDataCol,
+        //   total: 0,
+        //   covered:
+        //   repeatCol === "1" ? "C1" : repeatCol === "2" ? "C2" : "C3",
+        // };
+
+        // setMoneyManagementData((prevData) => {
+        //   const updatedData = [...prevData, newEntry];
+        //   localStorage.setItem("moneyManagement4", JSON.stringify(updatedData));
+        //   return updatedData;
+        // });
+      }
+    }
+
+
+
+
+        // project 4 Analyz Data Functions  END-------------
     setHistoryData([...historyData, changedHistoryData]);
-    setLandedNumbersDD((prev) => [{ key, number, dozen, col, oddEven, color, range, ssRange, dsRange ,wTracker,quadra,letter}, ...prev]);
+    setLandedNumbersDD((prev) => [{ key, number,doz, dozen, col, oddEven, color, range, ssRange, dsRange ,wTracker,quadra,letter}, ...prev]);
   };
 
 
@@ -2071,6 +3204,7 @@ const Project1 = ({ theme }) => {
                           handleClickNumber(
                             item.numString,
                             item.num,
+                            item.doz,
                             item.dozen,
                             item.col,
                             item.oddOrEven,
@@ -2225,16 +3359,18 @@ const Project1 = ({ theme }) => {
                       onClick={() =>
                         handleClickNumber(
                           item.numString,
-                          item.num,
-                          item.dozen,
-                          item.col,
-                          item.oddOrEven,
-                          item.color,
-                          item.range,
-                          item.ssRange,
-                          item.dsRange,
-                          item.wTracker,
-                          item.quadra
+                            item.num,
+                            item.doz,
+                            item.dozen,
+                            item.col,
+                            item.oddOrEven,
+                            item.color,
+                            item.range,
+                            item.ssRange,
+                            item.dsRange,
+                            item.wTracker,
+                            item.quadra,
+                            item.letter
                         )
                       }
                       style={{
@@ -2657,7 +3793,7 @@ const Project1 = ({ theme }) => {
           {/* Four Tables Container for wide screen */}
 
         <div className="md:flex hidden flex-col items-center w-full p-3 border-2 border-purple-950 rounded-xl gap-5 mt-10" >
-          <div className="text-white px-2 w-full h-[200px] flex flex-col gap-2" style={{ height: "400px"}}>
+          <div className="text-white px-2 w-full h-[200px] flex flex-col gap-2" style={{ height: "415px"}}>
             {/* Tabs */}
             <div className="tabs tabs-boxed bg-purple-800 mb-1 p-1" >
               {['Streets Tracker', 'Wheel Section Breakdown', 'QuadraBet Tracker'].map((tab2) => (
@@ -2709,7 +3845,7 @@ const Project1 = ({ theme }) => {
 
         {/* Mobile Screen Tables */}
         <div className="flex flex-col items-center w-full  p-1 border-2 border-purple-950 rounded-xl gap-5 md:hidden" >
-          <div className="text-white px-2 w-full h-[200px] flex flex-col gap-5" style={{ height: "700px" }}>
+          <div className="text-white px-2 w-full h-[200px] flex flex-col gap-5" style={{ height: "auto" }}>
 
             {/* Tabs */}
             <div className="tabs tabs-boxed bg-purple-800 mb-1 py-3" >

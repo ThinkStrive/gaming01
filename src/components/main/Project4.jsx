@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { data } from "../reuse/project4/logic/RouletteData.js";
+import { data } from "../reuse/project1/logic/Project1ComponetRenderData.js";
 import "../../Style/Main.css";
 import { GrPowerReset } from "react-icons/gr";
-
-import GaugeChart from "react-gauge-chart";
-
 import { useToast } from "../resources/Toast.jsx";
 import Analyze from "../reuse/project4/Analyze.jsx";
+
+import GaugeChart from "react-gauge-chart";
 import { CgInsights } from "react-icons/cg";
 import background from "../../assets/imgs/2002.i029.002_realistic-poker-club-illustration.jpg";
 import MoneyManagementTable from "../reuse/project4/MoneyManagementTable.jsx";
-// import { TiThMenuOutline } from "react-icons/ti";
-// import { AiOutlineClose } from "react-icons/ai";
-// import { PiListNumbers } from "react-icons/pi";
-// import { DiVim } from "react-icons/di";
 import Lock from "../resources/Lock.jsx";
 import axios from "axios";
 import { USER_DETAILS } from "../api/ApiDetails.js";
@@ -36,10 +31,9 @@ const Project4 = ({ theme }) => {
 
   // const showSidebar = () => setSidebar(!sidebar);
 
-  const maxItems = 36; // Maximum items in the FIFO list
   const initialScores = Array.from({ length: 36 }, (_, i) => 36 - i); // Initial score array from 30 to 1
   const [landedNumbers, setLandedNumbers] = useState(() => {
-    const savedLandedNumbers = localStorage.getItem("landedNumbers");
+    const savedLandedNumbers = localStorage.getItem("landedNumbersDD");
     return savedLandedNumbers ? JSON.parse(savedLandedNumbers) : [];
   });
 
@@ -64,8 +58,13 @@ const Project4 = ({ theme }) => {
       : { A: 0, B: 0, C: 0 };
   });
 
+  // const [historyData, setHistoryData] = useState(() => {
+  //   const savedHistoryData = localStorage.getItem("historyData");
+  //   return savedHistoryData ? JSON.parse(savedHistoryData) : [];
+  // });
+
   const [countData, setCountData] = useState(() => {
-    const savedCountData = localStorage.getItem("countData4");
+    const savedCountData = localStorage.getItem("countData");
     return savedCountData
       ? JSON.parse(savedCountData)
       : {
@@ -83,6 +82,664 @@ const Project4 = ({ theme }) => {
           col_three: 0,
         };
   });
+
+  const [summaryData, setSummaryData] = useState(() => {
+    const savedSummaryData = localStorage.getItem("summaryData");
+    return savedSummaryData
+      ? JSON.parse(savedSummaryData)
+      : {
+        lowEvenRed: 0,
+        lowOddRed: 0,
+        highEvenRed: 0,
+        highOddRed: 0,
+        lowEvenBlack: 0,
+        lowOddBlack: 0,
+        highEvenBlack: 0,
+        highOddBlack: 0,
+      };
+  });
+
+  const [nonSummaryData, setNonSummaryData] = useState(() => {
+    const savedSummaryData = localStorage.getItem("nonSummaryData");
+    return savedSummaryData
+      ? JSON.parse(savedSummaryData)
+      : {
+        lowEvenRed: 0,
+        lowOddRed: 0,
+        highEvenRed: 0,
+        highOddRed: 0,
+        lowEvenBlack: 0,
+        lowOddBlack: 0,
+        highEvenBlack: 0,
+        highOddBlack: 0,
+      };
+  });  
+
+  const [circleData, setCircleData] = useState(() => {
+    const isSaved = localStorage.getItem("circleData");
+    return isSaved
+      ? JSON.parse(isSaved)
+      : {
+        zero: 0,
+        orphe: 0,
+        tires: 0,
+      };
+  });
+
+  const [nonCircleData, setNonCircleData] = useState(() => {
+    const isSaved = localStorage.getItem("nonCircleData");
+    return isSaved
+      ? JSON.parse(isSaved)
+      : {
+        zero: 0,
+        duZero: 0,
+        orphe: 0,
+        tires: 0,
+      };
+  });
+
+
+  const [lastHitData, setLastHitData] = useState(() => {
+    const savedLastHitData = localStorage.getItem("lastHitData");
+    return savedLastHitData
+      ? JSON.parse(savedLastHitData)
+      : {
+        red: 0,
+        black: 0,
+        even: 0,
+        odd: 0,
+        one_eighteen: 0,
+        nineteen_thirtySix: 0,
+        dozen_one: 0,
+        dozen_two: 0,
+        dozen_three: 0,
+        col_one: 0,
+        col_two: 0,
+        col_three: 0,
+      };
+  });
+
+
+  const [doubleStreetData, setDoubleStreetData] = useState(() => {
+    const savedData = localStorage.getItem("doubleStreetData");
+    return savedData
+      ? JSON.parse(savedData)
+      : {
+        one_six: 0,
+        seven_twelve: 0,
+        thirteen_eighteen: 0,
+        nineteen_twentyFour: 0,
+        twentyFive_thirty: 0,
+        thirtyOne_thirtySix: 0,
+      };
+  });
+
+  const [nonDoubleStreetData, setNonDoubleStreetData] = useState(() => {
+    const savedData = localStorage.getItem("nonDoubleStreetData");
+    return savedData
+      ? JSON.parse(savedData)
+      : {
+        one_six: 0,
+        seven_twelve: 0,
+        thirteen_eighteen: 0,
+        nineteen_twentyFour: 0,
+        twentyFive_thirty: 0,
+        thirtyOne_thirtySix: 0,
+      };
+  });
+
+
+  const [singleStreetData, setSingleStreetData] = useState(() => {
+    const savedData = localStorage.getItem("singleStreetData");
+    return savedData
+      ? JSON.parse(savedData)
+      : {
+        one_three: 0,
+        four_six: 0,
+        seven_nine: 0,
+        ten_twelve: 0,
+        thirteen_fifteen: 0,
+        sixteen_eighteen: 0,
+        nineteen_twentyOne: 0,
+        twentyTwo_twentyFour: 0,
+        twentyFive_twentySeven: 0,
+        twentyEight_thirty: 0,
+        thirtyOne_thirtyThree: 0,
+        thirtyFour_thirtySix: 0,
+      };
+  });
+
+  const [nonSingleStreetData, setNonSingleStreetData] = useState(() => {
+    const savedData = localStorage.getItem("nonSingleStreetData");
+    return savedData
+      ? JSON.parse(savedData)
+      : {
+        one_three: 0,
+        four_six: 0,
+        seven_nine: 0,
+        ten_twelve: 0,
+        thirteen_fifteen: 0,
+        sixteen_eighteen: 0,
+        nineteen_twentyOne: 0,
+        twentyTwo_twentyFour: 0,
+        twentyFive_twentySeven: 0,
+        twentyEight_thirty: 0,
+        thirtyOne_thirtyThree: 0,
+        thirtyFour_thirtySix: 0,
+      };
+  });
+
+ 
+
+  // const [previousState, setPreviousState] = useState(() => {
+  //   const savedData = localStorage.getItem("previousData");
+  //   return savedData
+  //     ? JSON.parse(savedData)
+  //     : {
+  //       countData: {},
+  //       doubleStreetData: {},
+  //       singleStreetData: {},
+  //       summaryData: {},
+  //       nonSummaryData: {},
+  //       circleData: {},
+  //       lastHitNumber: {},
+  //       lastHitData: {},
+  //       nonCircleData: {},
+  //       historyData: [],
+  //       nonDoubleStreetData: {},
+  //       nonSingleStreetData: {},
+  //     };
+  // });
+
+
+
+  const updateMapping = {
+    zero: {
+      countUpdates: {},
+      summaryUpdates: {},
+      doubleStreetDataUpdates: {},
+      singleStreetDataUpdates: {},
+      circleDataUpdates: { zero: 1 },
+    },
+    doubleZero: {
+      countUpdates: {},
+      summaryUpdates: {},
+      doubleStreetDataUpdates: {},
+      singleStreetDataUpdates: {},
+      circleDataUpdates: { zero: 1 },
+    },
+    one: {
+      countUpdates: {
+        red: 1,
+        odd: 1,
+        one_eighteen: 1,
+        dozen_one: 1,
+        col_one: 1,
+      },
+      summaryUpdates: { lowOddRed: 1 },
+      doubleStreetDataUpdates: { one_six: 1 },
+      singleStreetDataUpdates: { one_three: 1 },
+      circleDataUpdates: { orphe: 1 },
+    },
+    two: {
+      countUpdates: {
+        black: 1,
+        even: 1,
+        one_eighteen: 1,
+        dozen_one: 1,
+        col_two: 1,
+      },
+      summaryUpdates: { lowEvenBlack: 1 },
+      doubleStreetDataUpdates: { one_six: 1 },
+      singleStreetDataUpdates: { one_three: 1 },
+      circleDataUpdates: { zero: 1 },
+    },
+    three: {
+      countUpdates: {
+        red: 1,
+        odd: 1,
+        one_eighteen: 1,
+        dozen_one: 1,
+        col_three: 1,
+      },
+      summaryUpdates: { lowOddRed: 1 },
+      doubleStreetDataUpdates: { one_six: 1 },
+      singleStreetDataUpdates: { one_three: 1 },
+      circleDataUpdates: { zero: 1 },
+    },
+    four: {
+      countUpdates: {
+        black: 1,
+        even: 1,
+        one_eighteen: 1,
+        dozen_one: 1,
+        col_one: 1,
+      },
+      summaryUpdates: { lowEvenBlack: 1 },
+      doubleStreetDataUpdates: { one_six: 1 },
+      singleStreetDataUpdates: { four_six: 1 },
+      circleDataUpdates: { zero: 1 },
+    },
+    five: {
+      countUpdates: {
+        red: 1,
+        odd: 1,
+        one_eighteen: 1,
+        dozen_one: 1,
+        col_two: 1,
+      },
+      summaryUpdates: { lowOddRed: 1 },
+      doubleStreetDataUpdates: { one_six: 1 },
+      singleStreetDataUpdates: { four_six: 1 },
+      circleDataUpdates: { tires: 1 },
+    },
+    six: {
+      countUpdates: {
+        black: 1,
+        even: 1,
+        one_eighteen: 1,
+        dozen_one: 1,
+        col_three: 1,
+      },
+      summaryUpdates: { lowEvenBlack: 1 },
+      doubleStreetDataUpdates: { one_six: 1 },
+      singleStreetDataUpdates: { four_six: 1 },
+      circleDataUpdates: { orphe: 1 },
+    },
+    seven: {
+      countUpdates: {
+        red: 1,
+        odd: 1,
+        one_eighteen: 1,
+        dozen_one: 1,
+        col_one: 1,
+      },
+      summaryUpdates: { lowOddRed: 1 },
+      doubleStreetDataUpdates: { seven_twelve: 1 },
+      singleStreetDataUpdates: { seven_nine: 1 },
+      circleDataUpdates: { zero: 1 },
+    },
+    eight: {
+      countUpdates: {
+        black: 1,
+        even: 1,
+        one_eighteen: 1,
+        dozen_one: 1,
+        col_two: 1,
+      },
+      summaryUpdates: { lowEvenBlack: 1 },
+      doubleStreetDataUpdates: { seven_twelve: 1 },
+      singleStreetDataUpdates: { seven_nine: 1 },
+      circleDataUpdates: { tires: 1 },
+    },
+    nine: {
+      countUpdates: {
+        red: 1,
+        odd: 1,
+        one_eighteen: 1,
+        dozen_one: 1,
+        col_three: 1,
+      },
+      summaryUpdates: { lowOddRed: 1 },
+      doubleStreetDataUpdates: { seven_twelve: 1 },
+      singleStreetDataUpdates: { seven_nine: 1 },
+      circleDataUpdates: { orphe: 1 },
+    },
+    ten: {
+      countUpdates: {
+        black: 1,
+        even: 1,
+        one_eighteen: 1,
+        dozen_one: 1,
+        col_one: 1,
+      },
+      summaryUpdates: { lowEvenBlack: 1 },
+      doubleStreetDataUpdates: { seven_twelve: 1 },
+      singleStreetDataUpdates: { ten_twelve: 1 },
+      circleDataUpdates: { tires: 1 },
+    },
+    eleven: {
+      countUpdates: {
+        black: 1,
+        odd: 1,
+        one_eighteen: 1,
+        dozen_one: 1,
+        col_two: 1,
+      },
+      summaryUpdates: { lowOddBlack: 1 },
+      doubleStreetDataUpdates: { seven_twelve: 1 },
+      singleStreetDataUpdates: { ten_twelve: 1 },
+      circleDataUpdates: { tires: 1 },
+    },
+    twelve: {
+      countUpdates: {
+        red: 1,
+        even: 1,
+        one_eighteen: 1,
+        dozen_one: 1,
+        col_three: 1,
+      },
+      summaryUpdates: { lowEvenRed: 1 },
+      doubleStreetDataUpdates: { seven_twelve: 1 },
+      singleStreetDataUpdates: { ten_twelve: 1 },
+      circleDataUpdates: { zero: 1 },
+    },
+    thirteen: {
+      countUpdates: {
+        black: 1,
+        odd: 1,
+        one_eighteen: 1,
+        dozen_two: 1,
+        col_one: 1,
+      },
+      summaryUpdates: { lowOddBlack: 1 },
+      doubleStreetDataUpdates: { thirteen_eighteen: 1 },
+      singleStreetDataUpdates: { thirteen_fifteen: 1 },
+      circleDataUpdates: { tires: 1 },
+    },
+    fourteen: {
+      countUpdates: {
+        red: 1,
+        even: 1,
+        one_eighteen: 1,
+        dozen_two: 1,
+        col_two: 1,
+      },
+      summaryUpdates: { lowEvenRed: 1 },
+      doubleStreetDataUpdates: { thirteen_eighteen: 1 },
+      singleStreetDataUpdates: { thirteen_fifteen: 1 },
+      circleDataUpdates: { orphe: 1 },
+    },
+    fifteen: {
+      countUpdates: {
+        black: 1,
+        odd: 1,
+        one_eighteen: 1,
+        dozen_two: 1,
+        col_three: 1,
+      },
+      summaryUpdates: { lowOddBlack: 1 },
+      doubleStreetDataUpdates: { thirteen_eighteen: 1 },
+      singleStreetDataUpdates: { thirteen_fifteen: 1 },
+      circleDataUpdates: { zero: 1 },
+    },
+    sixteen: {
+      countUpdates: {
+        red: 1,
+        even: 1,
+        one_eighteen: 1,
+        dozen_two: 1,
+        col_one: 1,
+      },
+      summaryUpdates: { lowEvenRed: 1 },
+      doubleStreetDataUpdates: { thirteen_eighteen: 1 },
+      singleStreetDataUpdates: { sixteen_eighteen: 1 },
+      circleDataUpdates: { tires: 1 },
+    },
+    seventeen: {
+      countUpdates: {
+        black: 1,
+        odd: 1,
+        one_eighteen: 1,
+        dozen_two: 1,
+        col_two: 1,
+      },
+      summaryUpdates: { lowOddBlack: 1 },
+      doubleStreetDataUpdates: { thirteen_eighteen: 1 },
+      singleStreetDataUpdates: { sixteen_eighteen: 1 },
+      circleDataUpdates: { orphe: 1 },
+    },
+    eighteen: {
+      countUpdates: {
+        red: 1,
+        even: 1,
+        one_eighteen: 1,
+        dozen_two: 1,
+        col_three: 1,
+      },
+      summaryUpdates: { lowEvenRed: 1 },
+      doubleStreetDataUpdates: { thirteen_eighteen: 1 },
+      singleStreetDataUpdates: { sixteen_eighteen: 1 },
+      circleDataUpdates: { zero: 1 },
+    },
+    nineteen: {
+      countUpdates: {
+        red: 1,
+        odd: 1,
+        nineteen_thirtySix: 1,
+        dozen_two: 1,
+        col_one: 1,
+      },
+      summaryUpdates: { highOddRed: 1 },
+      doubleStreetDataUpdates: { nineteen_twentyFour: 1 },
+      singleStreetDataUpdates: { nineteen_twentyOne: 1 },
+      circleDataUpdates: { zero: 1 },
+    },
+    twenty: {
+      countUpdates: {
+        black: 1,
+        even: 1,
+        nineteen_thirtySix: 1,
+        dozen_two: 1,
+        col_two: 1,
+      },
+      summaryUpdates: { highEvenBlack: 1 },
+      doubleStreetDataUpdates: { nineteen_twentyFour: 1 },
+      singleStreetDataUpdates: { nineteen_twentyOne: 1 },
+      circleDataUpdates: { orphe: 1 },
+    },
+    twentyOne: {
+      countUpdates: {
+        red: 1,
+        odd: 1,
+        nineteen_thirtySix: 1,
+        dozen_two: 1,
+        col_three: 1,
+      },
+      summaryUpdates: { highOddRed: 1 },
+      doubleStreetDataUpdates: { nineteen_twentyFour: 1 },
+      singleStreetDataUpdates: { nineteen_twentyOne: 1 },
+      circleDataUpdates: { zero: 1 },
+    },
+    twentyTwo: {
+      countUpdates: {
+        black: 1,
+        even: 1,
+        nineteen_thirtySix: 1,
+        dozen_two: 1,
+        col_one: 1,
+      },
+      summaryUpdates: { highEvenBlack: 1 },
+      doubleStreetDataUpdates: { nineteen_twentyFour: 1 },
+      singleStreetDataUpdates: { twentyTwo_twentyFour: 1 },
+      circleDataUpdates: { zero: 1 },
+    },
+    twentyThree: {
+      countUpdates: {
+        red: 1,
+        odd: 1,
+        nineteen_thirtySix: 1,
+        dozen_two: 1,
+        col_two: 1,
+      },
+      summaryUpdates: { highOddRed: 1 },
+      doubleStreetDataUpdates: { nineteen_twentyFour: 1 },
+      singleStreetDataUpdates: { twentyTwo_twentyFour: 1 },
+      circleDataUpdates: { tires: 1 },
+    },
+    twentyFour: {
+      countUpdates: {
+        black: 1,
+        even: 1,
+        nineteen_thirtySix: 1,
+        dozen_two: 1,
+        col_three: 1,
+      },
+      summaryUpdates: { highEvenBlack: 1 },
+      doubleStreetDataUpdates: { nineteen_twentyFour: 1 },
+      singleStreetDataUpdates: { twentyTwo_twentyFour: 1 },
+      circleDataUpdates: { tires: 1 },
+    },
+    twentyFive: {
+      countUpdates: {
+        red: 1,
+        odd: 1,
+        nineteen_thirtySix: 1,
+        dozen_three: 1,
+        col_one: 1,
+      },
+      summaryUpdates: { highOddRed: 1 },
+      doubleStreetDataUpdates: { twentyFive_thirty: 1 },
+      singleStreetDataUpdates: { twentyFive_twentySeven: 1 },
+      circleDataUpdates: { zero: 1 },
+    },
+    twentySix: {
+      countUpdates: {
+        black: 1,
+        even: 1,
+        nineteen_thirtySix: 1,
+        dozen_three: 1,
+        col_two: 1,
+      },
+      summaryUpdates: { highEvenBlack: 1 },
+      doubleStreetDataUpdates: { twentyFive_thirty: 1 },
+      singleStreetDataUpdates: { twentyFive_twentySeven: 1 },
+      circleDataUpdates: { zero: 1 },
+    },
+    twentySeven: {
+      countUpdates: {
+        red: 1,
+        odd: 1,
+        nineteen_thirtySix: 1,
+        dozen_three: 1,
+        col_three: 1,
+      },
+      summaryUpdates: { highOddRed: 1 },
+      doubleStreetDataUpdates: { twentyFive_thirty: 1 },
+      singleStreetDataUpdates: { twentyFive_twentySeven: 1 },
+      circleDataUpdates: { tires: 1 },
+    },
+    twentyEight: {
+      countUpdates: {
+        black: 1,
+        even: 1,
+        nineteen_thirtySix: 1,
+        dozen_three: 1,
+        col_one: 1,
+      },
+      summaryUpdates: { highEvenBlack: 1 },
+      doubleStreetDataUpdates: { twentyFive_thirty: 1 },
+      singleStreetDataUpdates: { twentyEight_thirty: 1 },
+      circleDataUpdates: { zero: 1 },
+    },
+    twentyNine: {
+      countUpdates: {
+        black: 1,
+        odd: 1,
+        nineteen_thirtySix: 1,
+        dozen_three: 1,
+        col_two: 1,
+      },
+      summaryUpdates: { highOddBlack: 1 },
+      doubleStreetDataUpdates: { twentyFive_thirty: 1 },
+      singleStreetDataUpdates: { twentyEight_thirty: 1 },
+      circleDataUpdates: { zero: 1 },
+    },
+    thirty: {
+      countUpdates: {
+        red: 1,
+        even: 1,
+        nineteen_thirtySix: 1,
+        dozen_three: 1,
+        col_three: 1,
+      },
+      summaryUpdates: { highEvenRed: 1 },
+      doubleStreetDataUpdates: { twentyFive_thirty: 1 },
+      singleStreetDataUpdates: { twentyEight_thirty: 1 },
+      circleDataUpdates: { tires: 1 },
+    },
+    thirtyOne: {
+      countUpdates: {
+        black: 1,
+        odd: 1,
+        nineteen_thirtySix: 1,
+        dozen_three: 1,
+        col_one: 1,
+      },
+      summaryUpdates: { highOddBlack: 1 },
+      doubleStreetDataUpdates: { thirtyOne_thirtySix: 1 },
+      singleStreetDataUpdates: { thirtyOne_thirtyThree: 1 },
+      circleDataUpdates: { orphe: 1 },
+    },
+    thirtyTwo: {
+      countUpdates: {
+        red: 1,
+        even: 1,
+        nineteen_thirtySix: 1,
+        dozen_three: 1,
+        col_two: 1,
+      },
+      summaryUpdates: { highEvenRed: 1 },
+      doubleStreetDataUpdates: { thirtyOne_thirtySix: 1 },
+      singleStreetDataUpdates: { thirtyOne_thirtyThree: 1 },
+      circleDataUpdates: { zero: 1 },
+    },
+    thirtyThree: {
+      countUpdates: {
+        black: 1,
+        odd: 1,
+        nineteen_thirtySix: 1,
+        dozen_three: 1,
+        col_three: 1,
+      },
+      summaryUpdates: { highOddBlack: 1 },
+      doubleStreetDataUpdates: { thirtyOne_thirtySix: 1 },
+      singleStreetDataUpdates: { thirtyOne_thirtyThree: 1 },
+      circleDataUpdates: { tires: 1 },
+    },
+    thirtyFour: {
+      countUpdates: {
+        red: 1,
+        even: 1,
+        nineteen_thirtySix: 1,
+        dozen_three: 1,
+        col_one: 1,
+      },
+      summaryUpdates: { highEvenRed: 1 },
+      doubleStreetDataUpdates: { thirtyOne_thirtySix: 1 },
+      singleStreetDataUpdates: { thirtyFour_thirtySix: 1 },
+      circleDataUpdates: { orphe: 1 },
+    },
+    thirtyFive: {
+      countUpdates: {
+        black: 1,
+        odd: 1,
+        nineteen_thirtySix: 1,
+        dozen_three: 1,
+        col_two: 1,
+      },
+      summaryUpdates: { highOddBlack: 1 },
+      doubleStreetDataUpdates: { thirtyOne_thirtySix: 1 },
+      singleStreetDataUpdates: { thirtyFour_thirtySix: 1 },
+      circleDataUpdates: { zero: 1 },
+    },
+    thirtySix: {
+      countUpdates: {
+        red: 1,
+        even: 1,
+        nineteen_thirtySix: 1,
+        dozen_three: 1,
+        col_three: 1,
+      },
+      summaryUpdates: { highEvenRed: 1 },
+      doubleStreetDataUpdates: { thirtyOne_thirtySix: 1 },
+      singleStreetDataUpdates: { thirtyFour_thirtySix: 1 },
+      circleDataUpdates: { tires: 1 },
+    },
+  };
+
+
+
 
   const handleClickRowHoverData = () => {
     if (landedNumbers.length > 36) {
@@ -120,7 +777,6 @@ const Project4 = ({ theme }) => {
         };
   });
 
-
   const [statsData, setStatsData] = useState(() => {
     const savedCountData = localStorage.getItem("StatisticsData");
     return savedCountData
@@ -152,11 +808,73 @@ const Project4 = ({ theme }) => {
   });
 
 
+
+//-----------1st project start--------------------
+
+ // Save `summaryData` to local storage whenever it changes
+ useEffect(() => {
+  localStorage.setItem("summaryData", JSON.stringify(summaryData));
+}, [summaryData]);
+
+useEffect(() => {
+  localStorage.setItem("nonSummaryData", JSON.stringify(nonSummaryData));
+}, [nonSummaryData]);
+
+// Save `lastHitData` to local storage whenever it changes
+
+
+useEffect(() => {
+  localStorage.setItem("doubleStreetData", JSON.stringify(doubleStreetData));
+}, [doubleStreetData]);
+
+useEffect(() => {
+  localStorage.setItem(
+    "nonDoubleStreetData",
+    JSON.stringify(nonDoubleStreetData),
+  );
+}, [nonDoubleStreetData]);
+
+
+useEffect(() => {
+  localStorage.setItem("singleStreetData", JSON.stringify(singleStreetData));
+}, [singleStreetData]);
+
+
+useEffect(() => {
+  localStorage.setItem(
+    "nonSingleStreetData",
+    JSON.stringify(nonSingleStreetData),
+  );
+}, [nonSingleStreetData]);
+
+useEffect(() => {
+  localStorage.setItem("circleData", JSON.stringify(circleData));
+}, [circleData]);
+
+useEffect(() => {
+  localStorage.setItem("nonCircleData", JSON.stringify(nonCircleData));
+}, [nonCircleData]);
+
+
+ // Save `lastHitData` to local storage whenever it changes
+ useEffect(() => {
+  localStorage.setItem("lastHitData", JSON.stringify(lastHitData));
+}, [lastHitData]);
+
+
+
+
+
+
+//-----------1st project End--------------------
+
+
+
+
   const [rowData, setRowData] = useState(() => {
     const savedCountData = localStorage.getItem("rowData4");
     return savedCountData ? JSON.parse(savedCountData) : [];
   });
-
 
   const [dozenRowData, setDozenRowData] = useState(() => {
     const savedCountData = localStorage.getItem("dozenRowData4");
@@ -215,12 +933,12 @@ const Project4 = ({ theme }) => {
   });
 
   const [lastHitNumber, setLastHitNumber] = useState(() => {
-    const savedLastHitNumber = localStorage.getItem("lastHitNumber4");
+    const savedLastHitNumber = localStorage.getItem("lastHitNumber");
     return savedLastHitNumber ? JSON.parse(savedLastHitNumber) : null;
   });
 
   const [historyData, setHistoryData] = useState(() => {
-    const savedHistoryData = localStorage.getItem("historyData4");
+    const savedHistoryData = localStorage.getItem("historyData");
     return savedHistoryData ? JSON.parse(savedHistoryData) : [];
   });
 
@@ -276,11 +994,11 @@ const Project4 = ({ theme }) => {
   }, [lockProfitValue]);
 
   useEffect(() => {
-    localStorage.setItem("countData4", JSON.stringify(countData));
+    localStorage.setItem("countData", JSON.stringify(countData));
   }, [countData]);
 
   useEffect(() => {
-    localStorage.setItem("landedNumbers", JSON.stringify(landedNumbers));
+    localStorage.setItem("landedNumbersDD", JSON.stringify(landedNumbers));
   }, [landedNumbers]);
 
   useEffect(() => {
@@ -297,12 +1015,12 @@ const Project4 = ({ theme }) => {
 
   // Save `lastHitNumber` to local storage whenever it changes
   useEffect(() => {
-    localStorage.setItem("lastHitNumber4", JSON.stringify(lastHitNumber));
+    localStorage.setItem("lastHitNumber", JSON.stringify(lastHitNumber));
   }, [lastHitNumber]);
 
   // Save `historyData` to local storage whenever it changes
   useEffect(() => {
-    localStorage.setItem("historyData4", JSON.stringify(historyData));
+    localStorage.setItem("historyData", JSON.stringify(historyData));
   }, [historyData]);
 
   useEffect(() => {
@@ -376,9 +1094,9 @@ const Project4 = ({ theme }) => {
     localStorage.setItem("StatisticsData", JSON.stringify(statsData));
   }, [statsData]);
 
-  useEffect(() => {
-    localStorage.setItem("StatisticsData", JSON.stringify(statsData));
-  }, [analyzeData]);
+  // useEffect(() => {
+  //   localStorage.setItem("StatisticsData", JSON.stringify(statsData));
+  // }, [analyzeData]);
 
   useEffect(() => {
     localStorage.setItem(
@@ -461,6 +1179,7 @@ const Project4 = ({ theme }) => {
       even: 0,
       even_loss: 0,
     };
+    
 
     // Reset the component's state
     setRowData(initialRowData);
@@ -497,7 +1216,7 @@ const Project4 = ({ theme }) => {
     localStorage.setItem("dozenRowData4", JSON.stringify(initialDozenRowData));
     localStorage.setItem("colRowData4", JSON.stringify(initialColRowData));
     localStorage.setItem("moneyManagement4", JSON.stringify([]));
-    localStorage.setItem("landedNumbers", JSON.stringify([]));
+    localStorage.setItem("landedNumbersDD", JSON.stringify([]));
     localStorage.setItem("dozenScores", JSON.stringify({ 1: 0, 2: 0, 3: 0 }));
     localStorage.setItem("columnScores", JSON.stringify({ 1: 0, 2: 0, 3: 0 }));
     localStorage.setItem("rowDataScores", JSON.stringify({ A: 0, B: 0, C: 0 }));
@@ -557,347 +1276,98 @@ const Project4 = ({ theme }) => {
 
     let emptyArray = [];
 
+    let resetDoubleData = {
+      one_six: 0,
+      seven_twelve: 0,
+      thirteen_eighteen: 0,
+      nineteen_twentyFour: 0,
+      twentyFive_thirty: 0,
+      thirtyOne_thirtySix: 0,
+    };
+
+    let resetSingleStreetData = {
+      one_three: 0,
+      four_six: 0,
+      seven_nine: 0,
+      ten_twelve: 0,
+      thirteen_fifteen: 0,
+      sixteen_eighteen: 0,
+      nineteen_twentyOne: 0,
+      twentyTwo_twentyFour: 0,
+      twentyFive_twentySeven: 0,
+      twentyEight_thirty: 0,
+      thirtyOne_thirtyThree: 0,
+      thirtyFour_thirtySix: 0,
+    };
+    let resetCircleData = {
+      zero: 0,
+      duZero: 0,
+      orphe: 0,
+      tires: 0,
+    };
+    let summaryResetData = {
+      lowEvenRed: 0,
+      lowOddRed: 0,
+      highEvenRed: 0,
+      highOddRed: 0,
+      lowEvenBlack: 0,
+      lowOddBlack: 0,
+      highEvenBlack: 0,
+      highOddBlack: 0,
+    };
+
+
+    setDoubleStreetData(resetDoubleData);
+    setNonDoubleStreetData(resetDoubleData);
+    setSingleStreetData(resetSingleStreetData);
+    setNonSingleStreetData(resetSingleStreetData);
+    setSummaryData(summaryResetData);
+    setNonSummaryData(summaryResetData);
+    setLastHitData(resetState);
+    setLastHitNumber(null);
+    setCircleData(resetCircleData);
+    setNonCircleData(resetCircleData);
+    setLandedNumbers([]);
+
+
+
     // Also reset the data in local storage
-    localStorage.setItem("countData4", JSON.stringify(resetState));
+    localStorage.setItem("countData", JSON.stringify(resetState));
     localStorage.setItem("rowData4", JSON.stringify(emptyArray));
     localStorage.setItem("dozenRowData4", JSON.stringify(emptyArray));
     localStorage.setItem("colRowData4", JSON.stringify(emptyArray));
-    localStorage.setItem("lastHitNumber4", null);
-    localStorage.setItem("historyData4", JSON.stringify([]));
+    localStorage.setItem("lastHitNumber", null);
+    localStorage.setItem("summaryData", JSON.stringify(summaryResetData));
+    localStorage.setItem("landedNumbersDD", JSON.stringify([]));
+    localStorage.setItem("dozenScoresDD", JSON.stringify({ 1: 0, 2: 0, 3: 0 }));
+    localStorage.setItem("columnScoresDD", JSON.stringify({ 1: 0, 2: 0, 3: 0 }));
+    localStorage.setItem("historyData", JSON.stringify([]));
+    localStorage.setItem("nonSummaryData", JSON.stringify(summaryResetData));
+    localStorage.setItem("doubleStreetData", JSON.stringify(resetDoubleData));
+    localStorage.setItem("nonDoubleStreetData", JSON.stringify(resetDoubleData));
+    localStorage.setItem("singleStreetData", JSON.stringify(resetSingleStreetData));
+    localStorage.setItem("nonSingleStreetData", JSON.stringify(resetSingleStreetData));
+    localStorage.setItem("circleData", JSON.stringify(resetCircleData));
+    localStorage.setItem("nonCircleData", JSON.stringify(resetCircleData));
   };
 
-  const updateMapping = {
-    zero: {
-      countUpdates: {},
-    },
-    doubleZero: {
-      countUpdates: {},
-    },
-    one: {
-      countUpdates: {
-        red: 1,
-        odd: 1,
-        one_eighteen: 1,
-        dozen_one: 1,
-        col_one: 1,
-      },
-    },
-    two: {
-      countUpdates: {
-        black: 1,
-        even: 1,
-        one_eighteen: 1,
-        dozen_one: 1,
-        col_two: 1,
-      },
-    },
-    three: {
-      countUpdates: {
-        red: 1,
-        odd: 1,
-        one_eighteen: 1,
-        dozen_one: 1,
-        col_three: 1,
-      },
-    },
-    four: {
-      countUpdates: {
-        black: 1,
-        even: 1,
-        one_eighteen: 1,
-        dozen_one: 1,
-        col_one: 1,
-      },
-    },
-    five: {
-      countUpdates: {
-        red: 1,
-        odd: 1,
-        one_eighteen: 1,
-        dozen_one: 1,
-        col_two: 1,
-      },
-    },
-    six: {
-      countUpdates: {
-        black: 1,
-        even: 1,
-        one_eighteen: 1,
-        dozen_one: 1,
-        col_three: 1,
-      },
-    },
-    seven: {
-      countUpdates: {
-        red: 1,
-        odd: 1,
-        one_eighteen: 1,
-        dozen_one: 1,
-        col_one: 1,
-      },
-    },
-    eight: {
-      countUpdates: {
-        black: 1,
-        even: 1,
-        one_eighteen: 1,
-        dozen_one: 1,
-        col_two: 1,
-      },
-    },
-    nine: {
-      countUpdates: {
-        red: 1,
-        odd: 1,
-        one_eighteen: 1,
-        dozen_one: 1,
-        col_three: 1,
-      },
-    },
-    ten: {
-      countUpdates: {
-        black: 1,
-        even: 1,
-        one_eighteen: 1,
-        dozen_one: 1,
-        col_one: 1,
-      },
-    },
-    eleven: {
-      countUpdates: {
-        black: 1,
-        odd: 1,
-        one_eighteen: 1,
-        dozen_one: 1,
-        col_two: 1,
-      },
-    },
-    twelve: {
-      countUpdates: {
-        red: 1,
-        even: 1,
-        one_eighteen: 1,
-        dozen_one: 1,
-        col_three: 1,
-      },
-    },
-    thirteen: {
-      countUpdates: {
-        black: 1,
-        odd: 1,
-        one_eighteen: 1,
-        dozen_two: 1,
-        col_one: 1,
-      },
-    },
-    fourteen: {
-      countUpdates: {
-        red: 1,
-        even: 1,
-        one_eighteen: 1,
-        dozen_two: 1,
-        col_two: 1,
-      },
-    },
-    fifteen: {
-      countUpdates: {
-        black: 1,
-        odd: 1,
-        one_eighteen: 1,
-        dozen_two: 1,
-        col_three: 1,
-      },
-    },
-    sixteen: {
-      countUpdates: {
-        red: 1,
-        even: 1,
-        one_eighteen: 1,
-        dozen_two: 1,
-        col_one: 1,
-      },
-    },
-    seventeen: {
-      countUpdates: {
-        black: 1,
-        odd: 1,
-        one_eighteen: 1,
-        dozen_two: 1,
-        col_two: 1,
-      },
-    },
-    eighteen: {
-      countUpdates: {
-        red: 1,
-        even: 1,
-        one_eighteen: 1,
-        dozen_two: 1,
-        col_three: 1,
-      },
-    },
-    nineteen: {
-      countUpdates: {
-        red: 1,
-        odd: 1,
-        nineteen_thirtySix: 1,
-        dozen_two: 1,
-        col_one: 1,
-      },
-    },
-    twenty: {
-      countUpdates: {
-        black: 1,
-        even: 1,
-        nineteen_thirtySix: 1,
-        dozen_two: 1,
-        col_two: 1,
-      },
-    },
-    twentyOne: {
-      countUpdates: {
-        red: 1,
-        odd: 1,
-        nineteen_thirtySix: 1,
-        dozen_two: 1,
-        col_three: 1,
-      },
-    },
-    twentyTwo: {
-      countUpdates: {
-        black: 1,
-        even: 1,
-        nineteen_thirtySix: 1,
-        dozen_two: 1,
-        col_one: 1,
-      },
-    },
-    twentyThree: {
-      countUpdates: {
-        red: 1,
-        odd: 1,
-        nineteen_thirtySix: 1,
-        dozen_two: 1,
-        col_two: 1,
-      },
-    },
-    twentyFour: {
-      countUpdates: {
-        black: 1,
-        even: 1,
-        nineteen_thirtySix: 1,
-        dozen_two: 1,
-        col_three: 1,
-      },
-    },
-    twentyFive: {
-      countUpdates: {
-        red: 1,
-        odd: 1,
-        nineteen_thirtySix: 1,
-        dozen_three: 1,
-        col_one: 1,
-      },
-    },
-    twentySix: {
-      countUpdates: {
-        black: 1,
-        even: 1,
-        nineteen_thirtySix: 1,
-        dozen_three: 1,
-        col_two: 1,
-      },
-    },
-    twentySeven: {
-      countUpdates: {
-        red: 1,
-        odd: 1,
-        nineteen_thirtySix: 1,
-        dozen_three: 1,
-        col_three: 1,
-      },
-    },
-    twentyEight: {
-      countUpdates: {
-        black: 1,
-        even: 1,
-        nineteen_thirtySix: 1,
-        dozen_three: 1,
-        col_one: 1,
-      },
-    },
-    twentyNine: {
-      countUpdates: {
-        black: 1,
-        odd: 1,
-        nineteen_thirtySix: 1,
-        dozen_three: 1,
-        col_two: 1,
-      },
-    },
-    thirty: {
-      countUpdates: {
-        red: 1,
-        even: 1,
-        nineteen_thirtySix: 1,
-        dozen_three: 1,
-        col_three: 1,
-      },
-    },
-    thirtyOne: {
-      countUpdates: {
-        black: 1,
-        odd: 1,
-        nineteen_thirtySix: 1,
-        dozen_three: 1,
-        col_one: 1,
-      },
-    },
-    thirtyTwo: {
-      countUpdates: {
-        red: 1,
-        even: 1,
-        nineteen_thirtySix: 1,
-        dozen_three: 1,
-        col_two: 1,
-      },
-    },
-    thirtyThree: {
-      countUpdates: {
-        black: 1,
-        odd: 1,
-        nineteen_thirtySix: 1,
-        dozen_three: 1,
-        col_three: 1,
-      },
-    },
-    thirtyFour: {
-      countUpdates: {
-        red: 1,
-        even: 1,
-        nineteen_thirtySix: 1,
-        dozen_three: 1,
-        col_one: 1,
-      },
-    },
-    thirtyFive: {
-      countUpdates: {
-        black: 1,
-        odd: 1,
-        nineteen_thirtySix: 1,
-        dozen_three: 1,
-        col_two: 1,
-      },
-    },
-    thirtySix: {
-      countUpdates: {
-        red: 1,
-        even: 1,
-        nineteen_thirtySix: 1,
-        dozen_three: 1,
-        col_three: 1,
-      },
-    },
-  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   useEffect(() => {
     let newLossEntries = [];
@@ -1002,6 +1472,7 @@ const Project4 = ({ theme }) => {
         !Object.values(lastRow).includes(repeatCol) &&
         !userMissedSuggestionCol
       ) {
+        console.log("repeatCol", repeatCol);
         if (isAlertAllowed && colHoverEffect) {
           showToast(`Book Your Loss! col`, "error");
         }
@@ -1127,6 +1598,7 @@ const Project4 = ({ theme }) => {
 
         // Check if the repeated dozen is in the first column
         if (repeatedDozen && repeatedDozen != 0) {
+          console.log("repeated dozen is coming", repeatedDozen);
           // Only trigger the suggestion if it hasn't been processed for this row
           setRepeatDozen(repeatedDozen);
           setSuggestionActiveDozen(true);
@@ -1241,13 +1713,214 @@ const Project4 = ({ theme }) => {
 
   useEffect(() => {}, [moneyManagementData]);
 
+
+
+
+
+
+
+
+  
   // Handle when user clicks a letter/number
-  const handleClickNumber = (key, number, letter, doz, col) => {
-    const { countUpdates } = updateMapping[key];
+  const handleClickNumber = (key, number, doz,dozen, col, oddEven, color, range, ssRange, dsRange, wTracker,quadra,letter) => {
+    const {
+      countUpdates,
+      summaryUpdates,
+      doubleStreetDataUpdates,
+      circleDataUpdates,
+      singleStreetDataUpdates,
+    } = updateMapping[key];
+
+
+   
+
+    // Update countData
+    setCountData((prevState) => {
+      const updatedCounts = {};
+      Object.keys(countUpdates).forEach((field) => {
+        updatedCounts[field] = prevState[field] + countUpdates[field];
+      });
+      return { ...prevState, ...updatedCounts };
+    });
+
+    setDoubleStreetData((prevState) => {
+      const updatedCounts = {};
+      Object.keys(doubleStreetDataUpdates).forEach((field) => {
+        updatedCounts[field] =
+          prevState[field] + doubleStreetDataUpdates[field];
+      });
+      return { ...prevState, ...updatedCounts };
+    });
+
+    setSingleStreetData((prevState) => {
+      const updatedCounts = {};
+      Object.keys(singleStreetDataUpdates).forEach((field) => {
+        updatedCounts[field] =
+          prevState[field] + singleStreetDataUpdates[field];
+      });
+      return { ...prevState, ...updatedCounts };
+    });
+    setSummaryData((prevState) => {
+      const updatedSummary = {};
+      Object.keys(summaryUpdates).forEach((field) => {
+        updatedSummary[field] = prevState[field] + summaryUpdates[field];
+      });
+      return { ...prevState, ...updatedSummary };
+    });
+
+    setCircleData((prevState) => {
+      const updatedSummary = {};
+      Object.keys(circleDataUpdates).forEach((field) => {
+        updatedSummary[field] = prevState[field] + circleDataUpdates[field];
+      });
+      return { ...prevState, ...updatedSummary };
+    });
+
+
+
+
+    setLastHitData((prevLastHitData) => {
+      const updatedLastHitData = {};
+
+      Object.keys(prevLastHitData).forEach((field) => {
+        updatedLastHitData[field] =
+          clickedDataUpdates[field] > 0 ? 0 : prevLastHitData[field] + 1;
+      });
+
+      return updatedLastHitData;
+    });
+
+
+
+
     const clickedDataUpdates = {
       red: countUpdates.red || 0,
       black: countUpdates.black || 0,
+      even: countUpdates.even || 0,
+      odd: countUpdates.odd || 0,
+      one_eighteen: countUpdates.one_eighteen || 0,
+      nineteen_thirtySix: countUpdates.nineteen_thirtySix || 0,
+      dozen_one: countUpdates.dozen_one || 0,
+      dozen_two: countUpdates.dozen_two || 0,
+      dozen_three: countUpdates.dozen_three || 0,
+      col_one: countUpdates.col_one || 0,
+      col_two: countUpdates.col_two || 0,
+      col_three: countUpdates.col_three || 0,
     };
+
+    const clickedDataDoubleStreetData = {
+      one_six: doubleStreetDataUpdates.one_six || 0,
+      seven_twelve: doubleStreetDataUpdates.seven_twelve || 0,
+      thirteen_eighteen: doubleStreetDataUpdates.thirteen_eighteen || 0,
+      nineteen_twentyFour: doubleStreetDataUpdates.nineteen_twentyFour || 0,
+      twentyFive_thirty: doubleStreetDataUpdates.twentyFive_thirty || 0,
+      thirtyOne_thirtySix: doubleStreetDataUpdates.thirtyOne_thirtySix || 0,
+    };
+
+    const clickedSummaryData = {
+      lowEvenRed: summaryUpdates.lowEvenRed || 0,
+      lowOddRed: summaryUpdates.lowOddRed || 0,
+      highEvenRed: summaryUpdates.highEvenRed || 0,
+      highOddRed: summaryUpdates.highOddRed || 0,
+      lowEvenBlack: summaryUpdates.lowEvenBlack || 0,
+      lowOddBlack: summaryUpdates.lowOddBlack || 0,
+      highEvenBlack: summaryUpdates.highEvenBlack || 0,
+      highOddBlack: summaryUpdates.highOddBlack || 0,
+    };
+
+    const clickedDataSingleStreetData = {
+      one_three: singleStreetDataUpdates.one_three || 0,
+      four_six: singleStreetDataUpdates.four_six || 0,
+      seven_nine: singleStreetDataUpdates.seven_nine || 0,
+      ten_twelve: singleStreetDataUpdates.ten_twelve || 0,
+      thirteen_fifteen: singleStreetDataUpdates.thirteen_fifteen || 0,
+      sixteen_eighteen: singleStreetDataUpdates.sixteen_eighteen || 0,
+      nineteen_twentyOne: singleStreetDataUpdates.nineteen_twentyOne || 0,
+      twentyTwo_twentyFour: singleStreetDataUpdates.twentyTwo_twentyFour || 0,
+      twentyFive_twentySeven:
+        singleStreetDataUpdates.twentyFive_twentySeven || 0,
+      twentyEight_thirty: singleStreetDataUpdates.twentyEight_thirty || 0,
+      thirtyOne_thirtyThree: singleStreetDataUpdates.thirtyOne_thirtyThree || 0,
+      thirtyFour_thirtySix: singleStreetDataUpdates.thirtyFour_thirtySix || 0,
+    };
+
+    const clickedCircleData = {
+      zero: circleDataUpdates.zero || 0,
+      duZero: circleDataUpdates.duZero || 0,
+      orphe: circleDataUpdates.orphe || 0,
+      tires: circleDataUpdates.tires || 0,
+    };
+
+    setLastHitNumber({
+      number: number,
+      color:
+        clickedDataUpdates.red === 1
+          ? "red"
+          : clickedDataUpdates.black === 1
+            ? "black"
+            : "zero",
+    });
+
+    // setLastHitData((prevLastHitData) => {
+    //   const updatedLastHitData = {};
+
+    //   Object.keys(prevLastHitData).forEach((field) => {
+    //     updatedLastHitData[field] =
+    //       clickedDataUpdates[field] > 0 ? 0 : prevLastHitData[field] + 1;
+    //   });
+
+    //   return updatedLastHitData;
+    // });
+
+    setNonSummaryData((prevLastHitData) => {
+      const updatedLastHitData = {};
+
+      Object.keys(prevLastHitData).forEach((field) => {
+        updatedLastHitData[field] =
+          clickedSummaryData[field] > 0 ? 0 : prevLastHitData[field] + 1;
+      });
+
+      return updatedLastHitData;
+    });
+
+    setNonDoubleStreetData((prevLastHitData) => {
+      const updatedLastHitData = {};
+
+      Object.keys(prevLastHitData).forEach((field) => {
+        updatedLastHitData[field] =
+          clickedDataDoubleStreetData[field] > 0
+            ? 0
+            : prevLastHitData[field] + 1;
+      });
+
+      return updatedLastHitData;
+    });
+
+    setNonCircleData((prevLastHitData) => {
+      const updatedLastHitData = {};
+
+      Object.keys(prevLastHitData).forEach((field) => {
+        updatedLastHitData[field] =
+          clickedCircleData[field] > 0 ? 0 : prevLastHitData[field] + 1;
+      });
+
+      return updatedLastHitData;
+    });
+
+    setNonSingleStreetData((prevLastHitData) => {
+      const updatedLastHitData = {};
+
+      Object.keys(prevLastHitData).forEach((field) => {
+        updatedLastHitData[field] =
+          clickedDataSingleStreetData[field] > 0
+            ? 0
+            : prevLastHitData[field] + 1;
+      });
+
+      return updatedLastHitData;
+    });
+
+
     setLastHitNumber({
       number: number,
       color:
@@ -1257,6 +1930,48 @@ const Project4 = ({ theme }) => {
           ? "black"
           : "zero",
     });
+
+// History Data Updates From First Project
+
+let changedHistoryData = {
+  color:
+    clickedDataUpdates.red === 1
+      ? "red"
+      : clickedDataUpdates.black === 1
+        ? "black"
+        : "zero",
+  size:
+    clickedDataUpdates.one_eighteen === 1
+      ? "small"
+      : clickedDataUpdates.nineteen_thirtySix === 1
+        ? "large"
+        : "zero",
+  odd_even:
+    clickedDataUpdates.odd === 1
+      ? "odd"
+      : clickedDataUpdates.even === 1
+        ? "even"
+        : "zero",
+  dozen:
+    clickedDataUpdates.dozen_one === 1
+      ? "1st"
+      : clickedDataUpdates.dozen_two === 1
+        ? "2nd"
+        : clickedDataUpdates.dozen_three === 1
+          ? "3rd"
+          : "zero",
+  column:
+    clickedDataUpdates.col_one === 1
+      ? "1st"
+      : clickedDataUpdates.col_two === 1
+        ? "2nd"
+        : clickedDataUpdates.col_three === 1
+          ? "3rd"
+          : "zero",
+  His_num: number,
+};
+
+setHistoryData([...historyData, changedHistoryData]);
     // Set Row Data for Letter
     setRowData((prevRowData) => {
       const lastRow = prevRowData[prevRowData.length - 1];
@@ -1268,6 +1983,10 @@ const Project4 = ({ theme }) => {
         return [...prevRowData.slice(0, -1), updatedRow];
       }
     });
+
+
+
+
 
     // Update statsData based on letter, dozen, and column
 
@@ -1400,18 +2119,19 @@ const Project4 = ({ theme }) => {
 
           // Skip the last entry and pick the two before it
           const lastTwoEntries = filteredData.slice(-2); // Get the second-last and third-last entries
-
+          console.log("lastTwoEntries", lastTwoEntries);
 
           // Ensure there are exactly two entries and check if both have `winLoss` as "L"
           const bothLose =
             lastTwoEntries.length === 2 &&
             lastTwoEntries.every((entry) => entry.winLoss === "L");
-
+          console.log("bothLose", bothLose);
 
           // Update states based on `bothLose`
           if (bothLose) {
             setUnitData((prevUnit) => prevUnit * 2);
           }
+
           setIsReachedTimeToIncreaseLetter(bothLose);
 
           // Add a new entry if needed
@@ -1686,7 +2406,7 @@ const Project4 = ({ theme }) => {
     }
 
     // Add new number to the FIFO queue without any max length
-    setLandedNumbers((prev) => [{ key, number, letter, doz, col }, ...prev]);
+    setLandedNumbers((prev) => [{ key, number,doz, dozen, col, oddEven, color, range, ssRange, dsRange ,wTracker,quadra,letter}, ...prev]);
 
     // }
     // else {
@@ -1702,7 +2422,6 @@ const Project4 = ({ theme }) => {
     //   localStorage.setItem("colRowData4", JSON.stringify([]));
     // }
   };
-
 
   useEffect(() => {
     // Calculate the new scores for each dozen, column, and row once the array length reaches 30
@@ -1735,10 +2454,15 @@ const Project4 = ({ theme }) => {
       setColumnScores(newColumnScores);
       setRowDataScores(newRowDataScores);
 
-
+      console.log("Updated Dozen Scores:", newDozenScores);
+      // console.log("Updated Column Scores:", newColumnScores);
+      // console.log("Updated Row Data Scores:", newRowDataScores);
     }
   }, [landedNumbers]);
 
+  // console.log("dozen data", dozenScores);
+  // console.log("col data", columnScores);
+  // console.log("row data", rowDataScores);
 
 
   const handleClickResetUnitData = () => {
@@ -1756,6 +2480,8 @@ const Project4 = ({ theme }) => {
       try {
         let userData = JSON.parse(sessionStorage.getItem("userData"));
         const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
+
+        console.log("response", response.data);
 
         if (!response.data.data.projectsPlan.project4) {
           setPlanLockScreen(true);
@@ -1791,16 +2517,12 @@ const Project4 = ({ theme }) => {
     }
   };
 
-// ===== i need to add this logic to project 1 & 4 integration
-
-
-
   const determineImage = (() => {
     const winPer = analyzeData.dozenWinPer;
     const lossPer = analyzeData.dozenLossPer;
     const total = winPer + lossPer;
     const winPercentage = (winPer / total) * 100;
-
+  
     if (winPercentage >= 70) {
       return {
         label: "Hot",
@@ -1818,6 +2540,7 @@ const Project4 = ({ theme }) => {
       };
     }
   })();
+
   const determineStatusAndImage = (() => {
     const winPer = analyzeData.dozenWinPer;
     const lossPer = analyzeData.dozenLossPer;
@@ -1865,17 +2588,7 @@ const Project4 = ({ theme }) => {
     }
   })();
 
-// this for speedometer hot stable cold function
 
-
-  const getHSC = (value) => {
-    const percentage = Math.round((value / 666) * 100);
-    return percentage <= 22 
-      ? "COLD" 
-      : percentage <= 33 
-      ? "STABLE" 
-      : "HOT";
-  };
   const getStatus = (scores) => {
     const values = Object.values(scores);
     const maxScore = Math.max(...values);
@@ -1899,6 +2612,13 @@ const Project4 = ({ theme }) => {
   const NumberHSC = getStatus(rowDataScores);
   const dozenHSC = getStatus(dozenScores);
   const columnHSC = getStatus(columnScores);
+
+
+
+
+
+
+
 
 
   return (
@@ -2197,7 +2917,7 @@ const Project4 = ({ theme }) => {
           </div>
         </div>
       </div>
-      <div className="px-4 main h-[75.5vh] flex">
+      <div className="px-4 main h-[75.5vh] flex text-white ">
         <div
           className="mt-1 w-[90%] flex justify-center items-center md:h-[76vh] max-[800px]:h-[75vh] max-[600px]:h-full md:py-4"
           // style={{ height: "100vh" }}
@@ -2207,7 +2927,7 @@ const Project4 = ({ theme }) => {
             // style={{ height: "70vw" }}
           >
             <div className="w-[100%] h-full max-sm:h-[100%] lg:h-[90%] md:h-[110%] xl:h-[50rem]">
-              <div className="w-[82%] ml-[18%] h-[7%]  text-white flex">
+              <div className="w-[82%] ml-[18%] h-[7%] flex">
                 <div
                   className={`${
                     repeatLetter === "A" && rowHoverEffect
@@ -2219,7 +2939,7 @@ const Project4 = ({ theme }) => {
                     borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
                   }}
                 >
-                  <p>0</p>
+                  <p className="text-white">0</p>
                 </div>
                 {/* <div
                   className={`${
@@ -2238,7 +2958,7 @@ const Project4 = ({ theme }) => {
 
               <div className="w-full h-full flex">
                 {/* dozens */}
-                <div className="w-[17%] max-lg:w[30rem] text-white border-white h-[86%]">
+                <div className="w-[17%] max-lg:w[30rem] font-white border-white h-[86%]">
                   <div
                     className="h-[33.33%] border flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold"
                     style={{
@@ -2285,14 +3005,22 @@ const Project4 = ({ theme }) => {
                   {data.map((item) => {
                     return (
                       <div
-                        className={`w-[33.33%] flex justify-center text-white items-center border cursor-pointer number--divs`}
+                        className={`w-[33.33%] flex justify-center items-center border cursor-pointer number--divs`}
                         onClick={() =>
                           handleClickNumber(
                             item.numString,
                             item.num,
-                            item.letter,
+                            item.doz,
                             item.dozen,
-                            item.col
+                            item.col,
+                            item.oddOrEven,
+                            item.color,
+                            item.range,
+                            item.ssRange,
+                            item.dsRange,
+                            item.wTracker,
+                            item.quadra,
+                            item.letter
                           )
                         }
                         style={{
@@ -2311,7 +3039,7 @@ const Project4 = ({ theme }) => {
                   })}
 
                   {/* cols */}
-                  <div className="w-full flex border-white text-white">
+                  <div className="w-full flex border-white font-white">
                     <div
                       className="w-[33.3%]  h-full border flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold"
                       style={{
@@ -2429,22 +3157,12 @@ const Project4 = ({ theme }) => {
           background: `linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9))`,
           minHeight: "100vh",
           overflow: "scroll",
-          // scrollbarWidth: "",
+          scrollbarWidth: "",
         }}
         onClick={() => setShowPopup(false)}
       >
         <div className="max-sm:mr-4">
           {/* Table 1 of Statistics */}
-
-
-
-
-
-
-
-
-
-
           <div className="flex justify-around  flex-col w-[35rem] max-md:w-[22rem] max-sm:w-[21rem]  "
             style={{ marginTop: "65rem" }}
           >
@@ -3373,209 +4091,9 @@ const Project4 = ({ theme }) => {
               </div> */}
             </div>
           </div>
+         
+         
 
-
-
-
-
-
-          {/* <table
-            className="border w-[35rem] max-md:w-[22rem] max-sm:w-[21rem]  "
-            style={{ marginTop: "35rem" }}
-          >
-            <tr className="max-sm:h-20 max-md:h-20">
-              <th className="w-[30%] max-sm:w-[30] border py-2 bg-yellow-500 text-black">
-                Category
-              </th>
-              <th className="w-[40%] max-sm:w-[50] border bg-yellow-500 text-black break-words relative">
-                Hot/Stable/Cold
-                <div
-                  className="text-gray-400 absolute  cursor-pointer bg-neutral-700 w-5 h-5 flex justify-center items-center rounded-full"
-                  onMouseEnter={() => setI_btn(true)}
-                  onMouseLeave={() => setI_btn(false)}
-                  style={{ right: "10px", bottom: "6px" }}
-                >
-                  i
-                </div>
-                <div
-                  className="bg-customPurple p-2 flex justify-between mb-4 text-start  items-start text-white w-60 h-24 max-sm:w-45 max-sm:h-35 absolute bottom-6 max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%]"
-                  style={{ display: i_btn ? "flex" : "none" }}
-                  id="statsInfo"
-                >
-                  <div
-                    className="text-start"
-                    style={{ fontSize: "11px", paddingLeft: "5px" }}
-                  >
-                    <p>
-                      <span className="font-bold me-2">Hot : </span>&nbsp;
-                      &nbsp; &nbsp; Good table For betting ✅
-                    </p>
-
-                    <p className="border-y my-1 py-1">
-                      <span className="font-bold me-2">Stable : </span>Decent
-                      choice,be cautious ⚖️
-                    </p>
-
-                    <p>
-                      <span className="font-bold me-2">Cold : </span> &nbsp;
-                      &nbsp;Avoid, too unpredictable ❌
-                    </p>
-                  </div>
-                </div>
-              </th>
-              <th className="w-[30%] bg-yellow-500 max-sm:w-[20] text-black">
-                ON/OFF
-              </th>
-            </tr>
-
-           
-            <tr>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                Numbers
-              </td>
-              <td
-                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
-                  const winPer = analyzeData.winPerData;
-                  const lossPer = analyzeData.lossPerData;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
-
-                  return winPercentage >= 70
-                    ? "bg-red-500 text-white"
-                    : winPercentage >= 50
-                    ? "bg-transparent"
-                    : "bg-green-300 text-black";
-                })()}`}
-              >
-                {(() => {
-                  const winPer = analyzeData.winPerData;
-                  const lossPer = analyzeData.lossPerData;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
-
-                  return winPercentage >= 70
-                    ? `Hot`
-                    : winPercentage >= 50
-                    ? `Stable`
-                    : `Cold`;
-                })()}
-              </td>
-              <td className="font-semibold text-center border max-sm:text-sm  ">
-                <button
-                  onClick={handleClickRowHoverData}
-                  className="menu-bars bg-black text-white px-2  rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                >
-                  {" "}
-                  <span
-                    className={`${
-                      rowHoverEffect ? "text-green-500" : "text-red-500"
-                    }`}
-                  >
-                    {rowHoverEffect ? "On" : "Off"}
-                  </span>
-                </button>
-              </td>
-            </tr>
-
-            <tr>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                Dozen
-              </td>
-              <td
-                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
-                  const winPer = analyzeData.dozenWinPer;
-                  const lossPer = analyzeData.dozenLossPer;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
-
-                  return winPercentage >= 70
-                    ? "bg-red-500 text-white"
-                    : winPercentage >= 50
-                    ? "bg-transparent"
-                    : "bg-green-300 text-black";
-                })()}`}
-              >
-                {(() => {
-                  const winPer = analyzeData.dozenWinPer;
-                  const lossPer = analyzeData.dozenLossPer;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
-
-                  return winPercentage >= 70
-                    ? `Hot`
-                    : winPercentage >= 50
-                    ? `Stable`
-                    : `Cold`;
-                })()}
-              </td>
-              <td className="font-semibold text-center border max-sm:text-sm  ">
-                <button
-                  onClick={handleClickDozenHoverData}
-                  className="menu-bars bg-black text-white px-2  rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                >
-                  {" "}
-                  <span
-                    className={`${
-                      dozenHoverEffect ? "text-green-500" : "text-red-500"
-                    }`}
-                  >
-                    {dozenHoverEffect ? "On" : "Off"}
-                  </span>
-                </button>
-              </td>
-            </tr>
-
-           
-            <tr>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                Column
-              </td>
-              <td
-                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
-                  const winPer = analyzeData.colWinPer;
-                  const lossPer = analyzeData.colLossPer;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
-
-                  return winPercentage >= 70
-                    ? "bg-red-500 text-white"
-                    : winPercentage >= 50
-                    ? "bg-transparent"
-                    : "bg-green-300 text-black";
-                })()}`}
-              >
-                {(() => {
-                  const winPer = analyzeData.colWinPer;
-                  const lossPer = analyzeData.colLossPer;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
-
-                  return winPercentage >= 70
-                    ? `Hot`
-                    : winPercentage >= 50
-                    ? `Stable`
-                    : `Cold`;
-                })()}
-              </td>
-              <td className="font-semibold text-center border max-sm:text-sm  ">
-                <button
-                  onClick={handleClickColHoverData}
-                  className="menu-bars bg-black text-white px-2 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                >
-                  {" "}
-                  <span
-                    className={`${
-                      colHoverEffect ? "text-green-500" : "text-red-500"
-                    }`}
-                  >
-                    {colHoverEffect ? "On" : "Off"}
-                  </span>
-                </button>
-              </td>
-            </tr>
-          </table> */}
-
-          
           {/* <table className="border w-[35rem] max-md:w-[22rem] max-sm:w-[18rem] mt-6">
             <tr className="max-sm:h-20 max-md:h-20">
               <th className="w-[30%] max-sm:w-[30] border py-2 bg-yellow-500 text-black">
@@ -3943,493 +4461,12 @@ const Project4 = ({ theme }) => {
 
           {/* 2nd table Agroup Bgroup Cgroup */}
 
-          {/* <table className="border w-[35rem] max-md:w-[22rem] max-sm:w-[18rem] mt-6">
-            <tr className="max-sm:h-20 max-md:h-20">
-              <th className="w-[30%] max-sm:w-[30] border py-2 bg-yellow-500 text-black">
-                Numbers
-              </th>
-              <th className="w-[40%] max-sm:w-[50] border bg-yellow-500 text-black break-words relative">
-                Hot/Stable/Cold
-                <div
-                  className="text-gray-400 absolute  cursor-pointer bg-neutral-700 w-5 h-5 flex justify-center items-center rounded-full"
-                  onMouseEnter={() => setI1_btn(true)}
-                  onMouseLeave={() => setI1_btn(false)}
-                  style={{ right: "10px", bottom: "6px" }}
-                >
-                  i
-                </div>
-                <div
-                  className="bg-customPurple p-2 flex justify-between mb-4 text-start  items-start text-white w-60 h-24 max-sm:w-45 max-sm:h-35 absolute bottom-6 max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%]"
-                  style={{ display: i1_btn ? "flex" : "none" }}
-                  id="statsInfo"
-                >
-                  <div
-                    className="text-start"
-                    style={{ fontSize: "11px", paddingLeft: "5px" }}
-                  >
-                    <p>
-                      <span className="font-bold me-2">Hot : </span>&nbsp;
-                      &nbsp; &nbsp; Good table For betting ✅
-                    </p>
-
-                    <p className="border-y my-1 py-1">
-                      <span className="font-bold me-2">Stable : </span>Decent
-                      choice,be cautious ⚖️
-                    </p>
-
-                    <p>
-                      <span className="font-bold me-2">Cold : </span> &nbsp;
-                      &nbsp;Avoid, too unpredictable ❌
-                    </p>
-                  </div>
-                </div>
-              </th>
-              <th className="w-[30%] bg-yellow-500 max-sm:w-[20] text-black">
-                Score
-              </th>
-            </tr>
-            
-
-           
-            <tr>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                A-Group
-              </td>
-              <td
-                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
-                  const winPer = statsData.Agroup;
-                  const lossPer = statsData.Agroup_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
-
-                  return winPercentage >= 70
-                    ? "bg-red-500 text-white"
-                    : winPercentage >= 50
-                    ? "bg-transparent"
-                    : "bg-green-300 text-black";
-                })()}`}
-              >
-                {(() => {
-                  const winPer = statsData.Agroup;
-                  const lossPer = statsData.Agroup_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
-
-                  return winPercentage >= 70
-                    ? `Hot`
-                    : winPercentage >= 50
-                    ? `Stable`
-                    : `Cold`;
-                })()}
-              </td>
-              <td className="font-semibold text-center border max-sm:text-sm  ">
-                {rowDataScores.A}
-              </td>
-            </tr>
-
-           
-            <tr>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                B-Group
-              </td>
-              <td
-                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
-                  const winPer = statsData.Bgroup;
-                  const lossPer = statsData.Bgroup_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
-
-                  return winPercentage >= 70
-                    ? "bg-red-500 text-white"
-                    : winPercentage >= 50
-                    ? "bg-transparent"
-                    : "bg-green-300 text-black";
-                })()}`}
-              >
-                {(() => {
-                  const winPer = statsData.Bgroup;
-                  const lossPer = statsData.Bgroup_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
-
-                  return winPercentage >= 70
-                    ? `Hot`
-                    : winPercentage >= 50
-                    ? `Stable`
-                    : `Cold`;
-                })()}
-              </td>
-              <td className="font-semibold text-center border max-sm:text-sm  ">
-                {rowDataScores.B}
-              </td>
-            </tr>
-
           
-            <tr>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                C-Group
-              </td>
-              <td
-                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
-                  const winPer = statsData.Cgroup;
-                  const lossPer = statsData.Cgroup_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
-
-                  return winPercentage >= 70
-                    ? "bg-red-500 text-white"
-                    : winPercentage >= 50
-                    ? "bg-transparent"
-                    : "bg-green-300 text-black";
-                })()}`}
-              >
-                {(() => {
-                  const winPer = statsData.Cgroup;
-                  const lossPer = statsData.Cgroup_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
-
-                  return winPercentage >= 70
-                    ? `Hot`
-                    : winPercentage >= 50
-                    ? `Stable`
-                    : `Cold`;
-                })()}
-              </td>
-              <td className="font-semibold text-center border max-sm:text-sm  ">
-                {rowDataScores.C}
-              </td>
-            </tr>
-          </table> */}
-
-         
-
-          {/* 3'rd Table 1'stDozen,2nd-Dozen,3rd-Dozen */}
-
-          {/* <p>Dozen 1: {dozenScores[1]} ({dozenStatus[1]})</p>
-                <p>Dozen 2: {dozenScores[2]} ({dozenStatus[2]})</p>
-                <p>Dozen 3: {dozenScores[3]} ({dozenStatus[3]})</p> */}
-
-          {/* <table className="border w-[35rem] max-md:w-[22rem] max-sm:w-[18rem] mt-6">
-            <tr className="max-sm:h-20 max-md:h-20">
-              <th className="w-[30%] max-sm:w-[30] border py-2 bg-yellow-500 text-black">
-                Dozen
-              </th>
-              <th className="w-[40%] max-sm:w-[50] border bg-yellow-500 text-black break-words relative">
-                Hot/Stable/Cold
-                <div
-                  className="text-gray-400 absolute  cursor-pointer bg-neutral-700 w-5 h-5 flex justify-center items-center rounded-full"
-                  onMouseEnter={() => setI2_btn(true)}
-                  onMouseLeave={() => setI2_btn(false)}
-                  style={{ right: "10px", bottom: "6px" }}
-                >
-                  i
-                </div>
-                <div
-                  className="bg-customPurple p-2 flex justify-between mb-4 text-start  items-start text-white w-60 h-24 max-sm:w-45 max-sm:h-35 absolute bottom-6 max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%]"
-                  style={{ display: i2_btn ? "flex" : "none" }}
-                  id="statsInfo"
-                >
-                  <div
-                    className="text-start"
-                    style={{ fontSize: "11px", paddingLeft: "5px" }}
-                  >
-                    <p>
-                      <span className="font-bold me-2">Hot : </span>&nbsp;
-                      &nbsp; &nbsp; Good table For betting ✅
-                    </p>
-
-                    <p className="border-y my-1 py-1">
-                      <span className="font-bold me-2">Stable : </span>Decent
-                      choice,be cautious ⚖️
-                    </p>
-
-                    <p>
-                      <span className="font-bold me-2">Cold : </span> &nbsp;
-                      &nbsp;Avoid, too unpredictable ❌
-                    </p>
-                  </div>
-                </div>
-              </th>
-              <th className="w-[30%] bg-yellow-500 max-sm:w-[20] text-black">
-                Score
-              </th>
-            </tr>
-            
-            <tr>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                1st Dozen
-              </td>
-              <td
-                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
-                  const winPer = statsData.dozen1;
-                  const lossPer = statsData.dozen1_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
-
-                  return winPercentage >= 70
-                    ? "bg-red-500 text-white"
-                    : winPercentage >= 50
-                    ? "bg-transparent"
-                    : "bg-green-300 text-black";
-                })()}`}
-              >
-                {(() => {
-                  const winPer = statsData.dozen1;
-                  const lossPer = statsData.dozen1_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
-
-                  return winPercentage >= 70
-                    ? `Hot`
-                    : winPercentage >= 50
-                    ? `Stable`
-                    : `Cold`;
-                })()}
-              </td>
-              <td className="font-semibold text-center border max-sm:text-sm  ">
-                {dozenScores[1]}
-              </td>
-            </tr>
-
-          
-            <tr>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                2nd Dozen
-              </td>
-              <td
-                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
-                  const winPer = statsData.dozen2;
-                  const lossPer = statsData.dozen2_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
-
-                  return winPercentage >= 70
-                    ? "bg-red-500 text-white"
-                    : winPercentage >= 50
-                    ? "bg-transparent"
-                    : "bg-green-300 text-black";
-                })()}`}
-              >
-                {(() => {
-                  const winPer = statsData.dozen2;
-                  const lossPer = statsData.dozen2_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
-
-                  return winPercentage >= 70
-                    ? `Hot`
-                    : winPercentage >= 50
-                    ? `Stable`
-                    : `Cold`;
-                })()}
-              </td>
-              <td className="font-semibold text-center border max-sm:text-sm  ">
-                {dozenScores[2]}
-              </td>
-            </tr>
-
-         
-            <tr>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                3rd Dozen
-              </td>
-              <td
-                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
-                  const winPer = statsData.dozen3;
-                  const lossPer = statsData.dozen3_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
-
-                  return winPercentage >= 70
-                    ? "bg-red-500 text-white"
-                    : winPercentage >= 50
-                    ? "bg-transparent"
-                    : "bg-green-300 text-black";
-                })()}`}
-              >
-                {(() => {
-                  const winPer = statsData.dozen3;
-                  const lossPer = statsData.dozen3_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
-
-                  return winPercentage >= 70
-                    ? `Hot`
-                    : winPercentage >= 50
-                    ? `Stable`
-                    : `Cold`;
-                })()}
-              </td>
-              <td className="font-semibold text-center border max-sm:text-sm  ">
-                {dozenScores[3]}
-              </td>
-            </tr>
-          </table> */}
-
-          {/* 4th table Column Table 1ST column, 2nd Column ,3rd Column */}
-
-          {/* <table className="border w-[35rem] max-md:w-[22rem] max-sm:w-[18rem] mt-6">
-            <tr className="max-sm:h-20 max-md:h-20">
-              <th className="w-[30%] max-sm:w-[30] border py-2 bg-yellow-500 text-black">
-                Columns
-              </th>
-              <th className="w-[40%] max-sm:w-[50] border bg-yellow-500 text-black break-words relative">
-                Hot/Stable/Cold
-                <div
-                  className="text-gray-400 absolute  cursor-pointer bg-neutral-700 w-5 h-5 flex justify-center items-center rounded-full"
-                  onMouseEnter={() => setI3_btn(true)}
-                  onMouseLeave={() => setI3_btn(false)}
-                  style={{ right: "10px", bottom: "6px" }}
-                >
-                  i
-                </div>
-                <div
-                  className="bg-customPurple p-2 flex justify-between mb-4 text-start  items-start text-white w-60 h-24 max-sm:w-45 max-sm:h-35 absolute bottom-6 max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%]"
-                  style={{ display: i3_btn ? "flex" : "none" }}
-                  id="statsInfo"
-                >
-                  <div
-                    className="text-start"
-                    style={{ fontSize: "11px", paddingLeft: "5px" }}
-                  >
-                    <p>
-                      <span className="font-bold me-2">Hot : </span>&nbsp;
-                      &nbsp; &nbsp; Good table For betting ✅
-                    </p>
-
-                    <p className="border-y my-1 py-1">
-                      <span className="font-bold me-2">Stable : </span>Decent
-                      choice,be cautious ⚖️
-                    </p>
-
-                    <p>
-                      <span className="font-bold me-2">Cold : </span> &nbsp;
-                      &nbsp;Avoid, too unpredictable ❌
-                    </p>
-                  </div>
-                </div>
-              </th>
-              <th className="w-[30%] bg-yellow-500 max-sm:w-[20] text-black">
-                Score
-              </th>
-            </tr>
-            
-            <tr>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                Column 1
-              </td>
-              <td
-                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
-                  const winPer = statsData.col1;
-                  const lossPer = statsData.col1_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
-
-                  return winPercentage >= 70
-                    ? "bg-red-500 text-white"
-                    : winPercentage >= 50
-                    ? "bg-transparent"
-                    : "bg-green-300 text-black";
-                })()}`}
-              >
-                {(() => {
-                  const winPer = statsData.col1;
-                  const lossPer = statsData.col1_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
-
-                  return winPercentage >= 70
-                    ? `Hot`
-                    : winPercentage >= 50
-                    ? `Stable`
-                    : `Cold`;
-                })()}
-              </td>
-              <td className="font-semibold text-center border max-sm:text-sm  ">
-                {columnScores[1]}
-              </td>
-            </tr>
-
-          
-            <tr>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                Column 2
-              </td>
-              <td
-                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
-                  const winPer = statsData.col2;
-                  const lossPer = statsData.col2_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
-
-                  return winPercentage >= 70
-                    ? "bg-red-500 text-white"
-                    : winPercentage >= 50
-                    ? "bg-transparent"
-                    : "bg-green-300 text-black";
-                })()}`}
-              >
-                {(() => {
-                  const winPer = statsData.col2;
-                  const lossPer = statsData.col2_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
-
-                  return winPercentage >= 70
-                    ? `Hot`
-                    : winPercentage >= 50
-                    ? `Stable`
-                    : `Cold`;
-                })()}
-              </td>
-              <td className="font-semibold text-center border max-sm:text-sm  ">
-                {columnScores[2]}
-              </td>
-            </tr>
-
-           
-            <tr>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                Column 3
-              </td>
-              <td
-                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
-                  const winPer = statsData.col3;
-                  const lossPer = statsData.col3_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
-
-                  return winPercentage >= 70
-                    ? "bg-red-500 text-white"
-                    : winPercentage >= 50
-                    ? "bg-transparent"
-                    : "bg-green-300 text-black";
-                })()}`}
-              >
-                {(() => {
-                  const winPer = statsData.col3;
-                  const lossPer = statsData.col3_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
-
-                  return winPercentage >= 70
-                    ? `Hot`
-                    : winPercentage >= 50
-                    ? `Stable`
-                    : `Cold`;
-                })()}
-              </td>
-              <td className="font-semibold text-center border max-sm:text-sm  ">
-                {columnScores[3]}
-              </td>
-            </tr>
-          </table> */}
         </div>
       </div>
 
       <div
-        className="h-[25vh] mt-5 w-full overflow-y-scroll text-center rounded-xl p-2 scrollOff"
+        className="h-[75vh] mt-5 w-full overflow-y-scroll rounded-xl p-2 scrollOff"
         // className="h-[35vh] mt-5 w-full rounded-xl p-2 flex justify-center items-center flex-col"
         style={{
           background:
@@ -4443,17 +4480,17 @@ const Project4 = ({ theme }) => {
           border: theme === "dark" ? "white 2px solid" : "black 2px solid",
         }}
       >
-        <h2
-          className={`text-lg font-bold my-4 text-center ${
+        {/* <h2
+          className={`text-lg font-bold my-4 ${
             theme === "dark" ? "text-white" : "text-black"
           }`}
         >
           Money Management Tool
-        </h2> 
-         <span className={`${theme === "dark" ? "text-white" : "text-black"}`}>
-          <i className="fa-regular fa-clock mx-3 "></i>Coming Soon !
-        </span>
-        {/* <button
+        </h2> */}
+        {/* <span className={`${theme === "dark" ? "text-white" : "text-black"}`}>
+          <i className="fa-regular fa-clock mx-3"></i>Coming Soon !
+        </span> */}
+        <button
           onClick={() => setMoneyManagementData([])}
           className="border py-1 px-4 rounded-lg mb-2 mx-2"
         >
@@ -4469,7 +4506,7 @@ const Project4 = ({ theme }) => {
           moneyManagementData={moneyManagementData}
           theme={theme}
           lockProfitValue={lockProfitValue}
-        /> */}
+        />
       </div>
 
       {planLockScreen && <Lock setPlanLockScreen={setPlanLockScreen} />}
