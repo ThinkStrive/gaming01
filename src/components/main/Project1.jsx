@@ -413,7 +413,7 @@ const [colHoverEffect, setColHoverEffect] = useState(false);
         };
   });
 
-  console.log('analyzeData', analyzeData);
+  // console.log('analyzeData', analyzeData);
 
 
 
@@ -554,7 +554,7 @@ const [colHoverEffect, setColHoverEffect] = useState(false);
 // -----project 4 local storage start 
 
 useEffect(() => {
-  console.log("nalyze project 1")
+  // console.log("nalyze project 1")
   localStorage.setItem("analyzeData4", JSON.stringify(analyzeData));
 }, [analyzeData]);
 
@@ -690,7 +690,7 @@ useEffect(() => {
       !Object.values(lastRow).includes(repeatCol) &&
       !userMissedSuggestionCol
     ) {
-      console.log("repeatCol", repeatCol);
+      // console.log("repeatCol", repeatCol);
       if (isAlertAllowed && colHoverEffect) {
         showToast(`Book Your Loss! col`, "error");
       }
@@ -838,7 +838,7 @@ useEffect(() => {
 
       // Check if the repeated dozen is in the first column
       if (repeatedDozen && repeatedDozen != 0) {
-        console.log("repeated dozen is coming", repeatedDozen);
+        // console.log("repeated dozen is coming", repeatedDozen);
         // Only trigger the suggestion if it hasn't been processed for this row
         setRepeatDozen(repeatedDozen);
         setSuggestionActiveDozen(true);
@@ -2354,13 +2354,13 @@ useEffect(() => {
 
           // Skip the last entry and pick the two before it
           const lastTwoEntries = filteredData.slice(-2); // Get the second-last and third-last entries
-          console.log("lastTwoEntries", lastTwoEntries);
+          // console.log("lastTwoEntries", lastTwoEntries);
 
           // Ensure there are exactly two entries and check if both have `winLoss` as "L"
           const bothLose =
             lastTwoEntries.length === 2 &&
             lastTwoEntries.every((entry) => entry.winLoss === "L");
-          console.log("bothLose", bothLose);
+          // console.log("bothLose", bothLose);
 
           // Update states based on `bothLose`
           if (bothLose) {

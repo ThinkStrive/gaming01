@@ -1472,7 +1472,7 @@ useEffect(() => {
         !Object.values(lastRow).includes(repeatCol) &&
         !userMissedSuggestionCol
       ) {
-        console.log("repeatCol", repeatCol);
+        // console.log("repeatCol", repeatCol);
         if (isAlertAllowed && colHoverEffect) {
           showToast(`Book Your Loss! col`, "error");
         }
@@ -1598,7 +1598,7 @@ useEffect(() => {
 
         // Check if the repeated dozen is in the first column
         if (repeatedDozen && repeatedDozen != 0) {
-          console.log("repeated dozen is coming", repeatedDozen);
+          // console.log("repeated dozen is coming", repeatedDozen);
           // Only trigger the suggestion if it hasn't been processed for this row
           setRepeatDozen(repeatedDozen);
           setSuggestionActiveDozen(true);
@@ -2119,13 +2119,13 @@ setHistoryData([...historyData, changedHistoryData]);
 
           // Skip the last entry and pick the two before it
           const lastTwoEntries = filteredData.slice(-2); // Get the second-last and third-last entries
-          console.log("lastTwoEntries", lastTwoEntries);
+          // console.log("lastTwoEntries", lastTwoEntries);
 
           // Ensure there are exactly two entries and check if both have `winLoss` as "L"
           const bothLose =
             lastTwoEntries.length === 2 &&
             lastTwoEntries.every((entry) => entry.winLoss === "L");
-          console.log("bothLose", bothLose);
+          // console.log("bothLose", bothLose);
 
           // Update states based on `bothLose`
           if (bothLose) {
@@ -2454,7 +2454,7 @@ setHistoryData([...historyData, changedHistoryData]);
       setColumnScores(newColumnScores);
       setRowDataScores(newRowDataScores);
 
-      console.log("Updated Dozen Scores:", newDozenScores);
+      // console.log("Updated Dozen Scores:", newDozenScores);
       // console.log("Updated Column Scores:", newColumnScores);
       // console.log("Updated Row Data Scores:", newRowDataScores);
     }
@@ -2481,7 +2481,7 @@ setHistoryData([...historyData, changedHistoryData]);
         let userData = JSON.parse(sessionStorage.getItem("userData"));
         const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
 
-        console.log("response", response.data);
+        // console.log("response", response.data);
 
         if (!response.data.data.projectsPlan.project4) {
           setPlanLockScreen(true);
