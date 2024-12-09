@@ -8,14 +8,11 @@ import Analyze from "../reuse/project4/Analyze.jsx";
 import GaugeChart from "react-gauge-chart";
 import { CgInsights } from "react-icons/cg";
 import background from "../../assets/imgs/2002.i029.002_realistic-poker-club-illustration.jpg";
-// import MoneyManagementTable from "../reuse/project4/MoneyManagementTable.jsx";
+import MoneyManagementTable from "../reuse/project4/MoneyManagementTable.jsx";
 import Lock from "../resources/Lock.jsx";
 import axios from "axios";
 import { USER_DETAILS } from "../api/ApiDetails.js";
-
-
-import ManualManagement from "../reuse/project4/MoneyManagementTable.jsx";
-
+import { json } from "react-router-dom";
 const Project4 = ({ theme }) => {
   const [isAlertAllowed, setIsAlertAllowed] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -1475,6 +1472,7 @@ useEffect(() => {
         !Object.values(lastRow).includes(repeatCol) &&
         !userMissedSuggestionCol
       ) {
+        // console.log("repeatCol", repeatCol);
         if (isAlertAllowed && colHoverEffect) {
           showToast(`Book Your Loss! col`, "error");
         }
@@ -1600,6 +1598,7 @@ useEffect(() => {
 
         // Check if the repeated dozen is in the first column
         if (repeatedDozen && repeatedDozen != 0) {
+          // console.log("repeated dozen is coming", repeatedDozen);
           // Only trigger the suggestion if it hasn't been processed for this row
           setRepeatDozen(repeatedDozen);
           setSuggestionActiveDozen(true);
@@ -2120,11 +2119,13 @@ setHistoryData([...historyData, changedHistoryData]);
 
           // Skip the last entry and pick the two before it
           const lastTwoEntries = filteredData.slice(-2); // Get the second-last and third-last entries
+          // console.log("lastTwoEntries", lastTwoEntries);
 
           // Ensure there are exactly two entries and check if both have `winLoss` as "L"
           const bothLose =
             lastTwoEntries.length === 2 &&
             lastTwoEntries.every((entry) => entry.winLoss === "L");
+          // console.log("bothLose", bothLose);
 
           // Update states based on `bothLose`
           if (bothLose) {
@@ -2453,9 +2454,15 @@ setHistoryData([...historyData, changedHistoryData]);
       setColumnScores(newColumnScores);
       setRowDataScores(newRowDataScores);
 
+      // console.log("Updated Dozen Scores:", newDozenScores);
+      // console.log("Updated Column Scores:", newColumnScores);
+      // console.log("Updated Row Data Scores:", newRowDataScores);
     }
   }, [landedNumbers]);
 
+  // console.log("dozen data", dozenScores);
+  // console.log("col data", columnScores);
+  // console.log("row data", rowDataScores);
 
 
   const handleClickResetUnitData = () => {
@@ -2473,6 +2480,8 @@ setHistoryData([...historyData, changedHistoryData]);
       try {
         let userData = JSON.parse(sessionStorage.getItem("userData"));
         const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
+
+        // console.log("response", response.data);
 
         if (!response.data.data.projectsPlan.project4) {
           setPlanLockScreen(true);
@@ -4457,7 +4466,7 @@ setHistoryData([...historyData, changedHistoryData]);
       </div>
 
       <div
-        className="h-[100%] text-center mt-5 w-full overflow-y-scroll rounded-xl p-2 scrollOff"
+        className="h-[25vh] text-center mt-5 w-full overflow-y-scroll rounded-xl p-2 scrollOff"
         // className="h-[35vh] mt-5 w-full rounded-xl p-2 flex justify-center items-center flex-col"
         style={{
           background:
@@ -4472,15 +4481,16 @@ setHistoryData([...historyData, changedHistoryData]);
         }}
       >
         <h2
-          className={`text-lg font-bold my-4 bg-purplegrad rounded-xl py-2 ${
+          className={`text-lg font-bold my-4 ${
             theme === "dark" ? "text-white" : "text-black"
-
           }`}
         >
           Money Management Tool
         </h2> 
-        
-       <ManualManagement />
+        <span className={`${theme === "dark" ? "text-white" : "text-black"}`}>
+          <i className="fa-regular fa-clock mx-3"></i>Coming Soon !
+        </span>
+       
       </div>
 
       {planLockScreen && <Lock setPlanLockScreen={setPlanLockScreen} />}
