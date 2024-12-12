@@ -29,7 +29,9 @@ export default {
         lightGreen: "#C8E6C9",
         lightBlue1:"#B3E5FC",
         mediumBlue1:"#2196F3",
-        darkBlue1:"#0D47A1"
+        darkBlue1:"#0D47A1",
+        superPurple:"#7F00FF"
+        
       },
       backgroundImage: {
         'purplegrad2': 'linear-gradient(90deg, rgba(2,0,36,1) 16%, rgba(82,9,121,1) 80%, rgba(124,0,255,1) 100%)',
@@ -39,7 +41,14 @@ export default {
         'stable':"linear-gradient(90deg, rgba(249,168,54,1) 0%, rgba(255,218,0,1) 30%, rgba(241,159,27,1) 100%)",
         'lastHlow':" linear-gradient(90deg, rgba(160,249,54,1) 0%, rgba(255,252,0,1) 30%, rgba(241,188,27,1) 100%)",
         'lastHmedium':"linear-gradient(90deg, rgba(249,132,54,1) 0%, rgba(255,235,0,1) 75%, rgba(241,87,27,1) 100%)",
-        'lastHhigh':'linear-gradient(90deg, rgba(178,181,181,1) 0%, rgba(0,95,255,1) 53%, rgba(176,183,186,1) 100%)'
+        'lastHhigh':'linear-gradient(90deg, rgba(178,181,181,1) 0%, rgba(0,95,255,1) 53%, rgba(176,183,186,1) 100%)',
+        'Banker':'linear-gradient(90deg, rgba(111,3,3,1) 0%, rgba(205,38,38,1) 65%, rgba(116,15,15,1) 100%)',
+        'Player':' linear-gradient(90deg, rgba(4,12,94,1) 0%, rgba(23,70,235,1) 55%, rgba(9,60,139,1) 100%)',
+        'Tie':' linear-gradient(107deg, rgba(9,112,22,0.9669117647058824) 0%, rgba(35,196,9,0.9921218487394958) 17%, rgba(20,93,36,1) 100%)'
+      },
+      screens: {
+        "custom-md": "930px", // Custom breakpoint for right panel
+        "custom-sm":"500px"
       },
     },
   },
@@ -81,4 +90,5 @@ export default {
       "nord",
       "sunset",], // Add your chosen themes here
   },
+ 
 };

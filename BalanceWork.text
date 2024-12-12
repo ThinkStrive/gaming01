@@ -1,2 +1,352 @@
 1. Dozen / Column.
 2. History
+
+
+import React, { useState } from 'react';
+import CurrencyInput from 'react-currency-input-field';
+import Chart from 'react-apexcharts';
+
+const Planprofit = () => {
+  const [amount, setAmount] = useState('');
+  const [currency, setCurrency] = useState('$');
+  const [profitPercentage, setProfitPercentage] = useState(10);
+  const [sessionCount, setSessionCount] = useState(7);
+
+  const currencies = [
+    { label: 'United States Dollar', symbol: '$', code: 'USD' },
+    { label: 'Euro', symbol: '€', code: 'EUR' },
+    { label: 'British Pound Sterling', symbol: '£', code: 'GBP' },
+    { label: 'Indian Rupee', symbol: '₹', code: 'INR' },
+    { label: 'Japanese Yen', symbol: '¥', code: 'JPY' },
+    { label: 'Australian Dollar', symbol: '$', code: 'AUD' },
+    { label: 'Canadian Dollar', symbol: '$', code: 'CAD' },
+    { label: 'Swiss Franc', symbol: 'CHF', code: 'CHF' },
+    { label: 'Chinese Yuan', symbol: '¥', code: 'CNY' },
+    { label: 'Hong Kong Dollar', symbol: '$', code: 'HKD' },
+    { label: 'Singapore Dollar', symbol: '$', code: 'SGD' },
+    { label: 'New Zealand Dollar', symbol: '$', code: 'NZD' },
+    { label: 'Swedish Krona', symbol: 'kr', code: 'SEK' },
+    { label: 'Norwegian Krone', symbol: 'kr', code: 'NOK' },
+    { label: 'Danish Krone', symbol: 'kr', code: 'DKK' },
+    { label: 'South Korean Won', symbol: '₩', code: 'KRW' },
+    { label: 'Mexican Peso', symbol: '$', code: 'MXN' },
+    { label: 'Brazilian Real', symbol: 'R$', code: 'BRL' },
+    { label: 'South African Rand', symbol: 'R', code: 'ZAR' },
+    { label: 'Russian Ruble', symbol: '₽', code: 'RUB' },
+    { label: 'Turkish Lira', symbol: '₺', code: 'TRY' },
+    { label: 'Indonesian Rupiah', symbol: 'Rp', code: 'IDR' },
+    { label: 'Malaysian Ringgit', symbol: 'RM', code: 'MYR' },
+    { label: 'Thai Baht', symbol: '฿', code: 'THB' },
+    { label: 'Philippine Peso', symbol: '₱', code: 'PHP' },
+    { label: 'Egyptian Pound', symbol: '£', code: 'EGP' },
+    { label: 'UAE Dirham', symbol: 'د.إ', code: 'AED' },
+    { label: 'Saudi Riyal', symbol: 'ر.س', code: 'SAR' },
+    { label: 'Qatari Rial', symbol: 'ر.ق', code: 'QAR' },
+    { label: 'Kuwaiti Dinar', symbol: 'د.ك', code: 'KWD' },
+    { label: 'Omani Rial', symbol: 'ر.ع.', code: 'OMR' },
+    { label: 'Bahraini Dinar', symbol: 'ب.د', code: 'BHD' },
+    { label: 'Israeli New Shekel', symbol: '₪', code: 'ILS' },
+    { label: 'Pakistani Rupee', symbol: '₨', code: 'PKR' },
+    { label: 'Bangladeshi Taka', symbol: '৳', code: 'BDT' },
+    { label: 'Sri Lankan Rupee', symbol: 'Rs', code: 'LKR' },
+    { label: 'Vietnamese Dong', symbol: '₫', code: 'VND' },
+    { label: 'Cambodian Riel', symbol: '៛', code: 'KHR' },
+    { label: 'Nepalese Rupee', symbol: '₨', code: 'NPR' },
+    { label: 'Algerian Dinar', symbol: 'دج', code: 'DZD' },
+    { label: 'Moroccan Dirham', symbol: 'د.م.', code: 'MAD' },
+    { label: 'Kenyan Shilling', symbol: 'KSh', code: 'KES' },
+    { label: 'Ghanaian Cedi', symbol: '₵', code: 'GHS' },
+    { label: 'Ugandan Shilling', symbol: 'USh', code: 'UGX' },
+    { label: 'Tanzanian Shilling', symbol: 'TSh', code: 'TZS' },
+    { label: 'Zambian Kwacha', symbol: 'ZK', code: 'ZMK' },
+    { label: 'Botswana Pula', symbol: 'P', code: 'BWP' },
+    { label: 'Angolan Kwanza', symbol: 'Kz', code: 'AOA' },
+    { label: 'Mozambican Metical', symbol: 'MT', code: 'MZN' },
+    { label: 'Iraqi Dinar', symbol: 'ع.د', code: 'IQD' },
+    { label: 'Lebanese Pound', symbol: 'ل.ل', code: 'LBP' },
+    { label: 'Syrian Pound', symbol: 'ل.س', code: 'SYP' },
+    { label: 'Jordanian Dinar', symbol: 'د.ا', code: 'JOD' },
+    { label: 'Yemeni Rial', symbol: 'ر.ي', code: 'YER' },
+    { label: 'Armenian Dram', symbol: '֏', code: 'AMD' },
+    { label: 'Georgian Lari', symbol: '₾', code: 'GEL' },
+    { label: 'Kazakhstani Tenge', symbol: '₸', code: 'KZT' },
+    { label: 'Uzbekistani Som', symbol: 'сум', code: 'UZS' },
+    { label: 'Mongolian Tugrik', symbol: '₮', code: 'MNT' },
+    { label: 'Tajikistani Somoni', symbol: 'SM', code: 'TJS' },
+    { label: 'Turkmenistani Manat', symbol: 'm', code: 'TMT' },
+    { label: 'Kyrgyzstani Som', symbol: 'с', code: 'KGS' },
+    { label: 'Afghan Afghani', symbol: '؋', code: 'AFN' },
+    { label: 'Laotian Kip', symbol: '₭', code: 'LAK' },
+    { label: 'Bhutanese Ngultrum', symbol: 'Nu.', code: 'BTN' },
+    { label: 'Fijian Dollar', symbol: '$', code: 'FJD' },
+    { label: 'Samoan Tala', symbol: 'T', code: 'WSK' },
+    { label: 'Tongan Paʻanga', symbol: 'T$', code: 'TOP' },
+    { label: 'Vanuatu Vatu', symbol: 'Vt', code: 'VUV' },
+    { label: 'Solomon Islands Dollar', symbol: '$', code: 'SBD' },
+    { label: 'Papua New Guinean Kina', symbol: 'K', code: 'PGK' },
+    { label: 'New Caledonian Franc', symbol: '₣', code: 'XPF' },
+    { label: 'Falkland Islands Pound', symbol: '£', code: 'FKP' },
+    { label: 'Saint Helena Pound', symbol: '£', code: 'SHP' },
+    { label: 'Saint Pierre and Miquelon Euro', symbol: '€', code: 'XPF' },
+    { label: 'CFA Franc', symbol: '₣', code: 'XOF' },
+    { label: 'CFP Franc', symbol: '₣', code: 'CFP' }
+  ];
+  
+
+  // const calculateSessions = () => {
+  //   const sessions = [];
+  //   let currentAmount = parseFloat(amount) || 0;
+
+  //   for (let i = 1; i <= sessionCount; i++) {
+  //     const profit = (currentAmount * profitPercentage) / 100;
+  //     const newBalance = currentAmount + profit;
+  //     sessions.push({
+  //       session: i,
+  //       bankRoll: currentAmount.toFixed(2),
+  //       profit: profit.toFixed(2),
+  //       newBalance: newBalance.toFixed(2),
+  //     });
+  //     currentAmount = newBalance;
+  //   }
+
+  //   return sessions;
+  // };
+
+  // const handleSessionChange = (e) => {
+  //   setSessionCount(parseInt(e.target.value, 10));
+  // };
+
+  const sessionData = calculateSessions();
+
+  // Chart Data
+  const chartOptions = {
+    chart: {
+      id: 'profit-chart',
+    },
+    xaxis: {
+      categories: sessionData.map((data) => `Session ${data.session}`),
+      title: {
+        text: 'Sessions',
+      },
+    },
+    yaxis: {
+      title: {
+        text: 'Amount',
+      },
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    colors: ['#6a0dad'],
+  };
+
+  const chartSeries = [
+    {
+      name: 'New Balance',
+      data: sessionData.map((data) => parseFloat(data.newBalance)),
+    },
+  ];
+
+  return (
+    <div className='w-full h-full '>
+      <div className='flex justify-center items-center'>
+
+        <div className="bg-superPurple text-white p-3 gap-2 rounded-2xl">
+          <div className="mb-2">
+            <label className="block mb-2 text-md font-medium">Select Currency</label>
+            <select
+              className="border rounded-md p-2 w-full"
+              value={currency}
+              onChange={(e) => setCurrency(e.target.value)}
+            >
+              {currencies.map((curr) => (
+                <option key={curr.label} value={curr.symbol}>
+                  {curr.label} ({curr.symbol})
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="mb-2">
+            <label className="block mb-2 text-md font-medium">Bank Roll</label>
+            <CurrencyInput
+              id="amount"
+              name="amount"
+              placeholder="Enter amount"
+              decimalsLimit={2}
+              prefix={currency}
+              className="border rounded-md p-2 w-full"
+              onValueChange={(value) => setAmount(value)}
+            />
+          </div>
+
+          <div className="mb-2">
+            <label className="block mb-2 text-md font-medium">Stop-Loss Amount</label>
+            <CurrencyInput
+              id="stopLoss"
+              name="stopLoss"
+              placeholder="Enter stop-loss amount"
+              decimalsLimit={2}
+              prefix={currency}
+              className="border rounded-md p-2 w-full"
+              onValueChange={(value) => setStopLoss(value)}
+            />
+          </div>
+        </div>
+
+      </div>
+
+
+
+      {/* top Panel */}
+      <div className="p-4 flex flex-col md:flex-row gap-6" style={{ height: '450px' }}>
+      {/* Left Panel */}
+      <div className="w-full md:w-[30%] p-3 text-white bg-superPurple rounded-3xl gap-2">
+        <div className="text-lg font-bold mb-4 text-center bg-customBlack rounded-xl py-2 text-white">
+        Profit Trend
+        </div>
+
+        
+
+        {/* <div className="mb-4">
+          <label className="block mb-2 text-md font-medium">Profit Percentage</label>
+          <div className="flex items-center space-x-4 bg-customBlack p-3 rounded-xl">
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={profitPercentage}
+              onChange={(e) => setProfitPercentage(e.target.value)}
+              className="w-full h-4 bg-superPurple rounded-lg appearance-none cursor-pointer accent-white"
+            />
+            <span className="text-sm font-medium">{profitPercentage}%</span>
+          </div>
+        </div>
+
+        <div className="mb-4">
+          <label className="block mb-2 text-md font-medium">Number of Sessions</label>
+          <select
+            className="border rounded-md p-2 w-full"
+            value={sessionCount}
+            onChange={handleSessionChange}
+          >
+            {[7, 15, 30, 60].map((count) => (
+              <option key={count} value={count}>
+                {count} Sessions
+              </option>
+            ))}
+          </select>
+        </div> */}
+      </div>
+
+      {/* Right Panel */}
+      <div className="w-full md:w-[70%] p-3 bg-white rounded-3xl">
+        <h2 className="text-lg font-bold mb-4 text-center bg-purplegrad rounded-xl py-2 text-white">
+          Track Your Daily Profits
+        </h2>
+
+        {/* Chart Section */}
+        <div className="mt-1">
+          <h3 className="text-center font-bold text-xl mb-4">Profit Trend</h3>
+          <Chart
+            options={chartOptions}
+            series={chartSeries}
+            type="area"
+            height={300}
+          />
+        </div>
+      </div>
+
+      
+      </div>
+
+      {/* Bottom Panel */}
+      
+    </div>
+  );
+};
+
+export default Planprofit;
+
+
+
+
+ const currencies = [
+    { label: 'United States Dollar', symbol: '$', code: 'USD' },
+    { label: 'Euro', symbol: '€', code: 'EUR' },
+    { label: 'British Pound Sterling', symbol: '£', code: 'GBP' },
+    { label: 'Indian Rupee', symbol: '₹', code: 'INR' },
+    { label: 'Japanese Yen', symbol: '¥', code: 'JPY' },
+    { label: 'Australian Dollar', symbol: '$', code: 'AUD' },
+    { label: 'Canadian Dollar', symbol: '$', code: 'CAD' },
+    { label: 'Swiss Franc', symbol: 'CHF', code: 'CHF' },
+    { label: 'Chinese Yuan', symbol: '¥', code: 'CNY' },
+    { label: 'Hong Kong Dollar', symbol: '$', code: 'HKD' },
+    { label: 'Singapore Dollar', symbol: '$', code: 'SGD' },
+    { label: 'New Zealand Dollar', symbol: '$', code: 'NZD' },
+    { label: 'Swedish Krona', symbol: 'kr', code: 'SEK' },
+    { label: 'Norwegian Krone', symbol: 'kr', code: 'NOK' },
+    { label: 'Danish Krone', symbol: 'kr', code: 'DKK' },
+    { label: 'South Korean Won', symbol: '₩', code: 'KRW' },
+    { label: 'Mexican Peso', symbol: '$', code: 'MXN' },
+    { label: 'Brazilian Real', symbol: 'R$', code: 'BRL' },
+    { label: 'South African Rand', symbol: 'R', code: 'ZAR' },
+    { label: 'Russian Ruble', symbol: '₽', code: 'RUB' },
+    { label: 'Turkish Lira', symbol: '₺', code: 'TRY' },
+    { label: 'Indonesian Rupiah', symbol: 'Rp', code: 'IDR' },
+    { label: 'Malaysian Ringgit', symbol: 'RM', code: 'MYR' },
+    { label: 'Thai Baht', symbol: '฿', code: 'THB' },
+    { label: 'Philippine Peso', symbol: '₱', code: 'PHP' },
+    { label: 'Egyptian Pound', symbol: '£', code: 'EGP' },
+    { label: 'UAE Dirham', symbol: 'د.إ', code: 'AED' },
+    { label: 'Saudi Riyal', symbol: 'ر.س', code: 'SAR' },
+    { label: 'Qatari Rial', symbol: 'ر.ق', code: 'QAR' },
+    { label: 'Kuwaiti Dinar', symbol: 'د.ك', code: 'KWD' },
+    { label: 'Omani Rial', symbol: 'ر.ع.', code: 'OMR' },
+    { label: 'Bahraini Dinar', symbol: 'ب.د', code: 'BHD' },
+    { label: 'Israeli New Shekel', symbol: '₪', code: 'ILS' },
+    { label: 'Pakistani Rupee', symbol: '₨', code: 'PKR' },
+    { label: 'Bangladeshi Taka', symbol: '৳', code: 'BDT' },
+    { label: 'Sri Lankan Rupee', symbol: 'Rs', code: 'LKR' },
+    { label: 'Vietnamese Dong', symbol: '₫', code: 'VND' },
+    { label: 'Cambodian Riel', symbol: '៛', code: 'KHR' },
+    { label: 'Nepalese Rupee', symbol: '₨', code: 'NPR' },
+    { label: 'Algerian Dinar', symbol: 'دج', code: 'DZD' },
+    { label: 'Moroccan Dirham', symbol: 'د.م.', code: 'MAD' },
+    { label: 'Kenyan Shilling', symbol: 'KSh', code: 'KES' },
+    { label: 'Ghanaian Cedi', symbol: '₵', code: 'GHS' },
+    { label: 'Ugandan Shilling', symbol: 'USh', code: 'UGX' },
+    { label: 'Tanzanian Shilling', symbol: 'TSh', code: 'TZS' },
+    { label: 'Zambian Kwacha', symbol: 'ZK', code: 'ZMK' },
+    { label: 'Botswana Pula', symbol: 'P', code: 'BWP' },
+    { label: 'Angolan Kwanza', symbol: 'Kz', code: 'AOA' },
+    { label: 'Mozambican Metical', symbol: 'MT', code: 'MZN' },
+    { label: 'Iraqi Dinar', symbol: 'ع.د', code: 'IQD' },
+    { label: 'Lebanese Pound', symbol: 'ل.ل', code: 'LBP' },
+    { label: 'Syrian Pound', symbol: 'ل.س', code: 'SYP' },
+    { label: 'Jordanian Dinar', symbol: 'د.ا', code: 'JOD' },
+    { label: 'Yemeni Rial', symbol: 'ر.ي', code: 'YER' },
+    { label: 'Armenian Dram', symbol: '֏', code: 'AMD' },
+    { label: 'Georgian Lari', symbol: '₾', code: 'GEL' },
+    { label: 'Kazakhstani Tenge', symbol: '₸', code: 'KZT' },
+    { label: 'Uzbekistani Som', symbol: 'сум', code: 'UZS' },
+    { label: 'Mongolian Tugrik', symbol: '₮', code: 'MNT' },
+    { label: 'Tajikistani Somoni', symbol: 'SM', code: 'TJS' },
+    { label: 'Turkmenistani Manat', symbol: 'm', code: 'TMT' },
+    { label: 'Kyrgyzstani Som', symbol: 'с', code: 'KGS' },
+    { label: 'Afghan Afghani', symbol: '؋', code: 'AFN' },
+    { label: 'Laotian Kip', symbol: '₭', code: 'LAK' },
+    { label: 'Bhutanese Ngultrum', symbol: 'Nu.', code: 'BTN' },
+    { label: 'Fijian Dollar', symbol: '$', code: 'FJD' },
+    { label: 'Samoan Tala', symbol: 'T', code: 'WSK' },
+    { label: 'Tongan Paʻanga', symbol: 'T$', code: 'TOP' },
+    { label: 'Vanuatu Vatu', symbol: 'Vt', code: 'VUV' },
+    { label: 'Solomon Islands Dollar', symbol: '$', code: 'SBD' },
+    { label: 'Papua New Guinean Kina', symbol: 'K', code: 'PGK' },
+    { label: 'New Caledonian Franc', symbol: '₣', code: 'XPF' },
+    { label: 'Falkland Islands Pound', symbol: '£', code: 'FKP' },
+    { label: 'Saint Helena Pound', symbol: '£', code: 'SHP' },
+    { label: 'Saint Pierre and Miquelon Euro', symbol: '€', code: 'XPF' },
+    { label: 'CFA Franc', symbol: '₣', code: 'XOF' },
+    { label: 'CFP Franc', symbol: '₣', code: 'CFP' }
+  ];

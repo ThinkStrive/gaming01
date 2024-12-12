@@ -17,6 +17,8 @@ import "../Style/ProjectsNav.css";
 import ProjectsNav from "../components/nav/ProjectsNav";
 import { Feedback } from "../components/main/Feedback";
 import { Userinfo } from "../components/main/Userinfo";
+import Planprofit from "../components/main/ProfitPlan";
+
 
 function Home() {
   const [popUp, setPopUp] = useState(false);
@@ -33,6 +35,16 @@ function Home() {
     navigate("/project1/blackRed");
     // navigate('/project4')
   }, []);
+
+  useEffect(() => {
+   
+    const path = location.pathname.split("/")[1]; 
+    if (["project1", "project4","userinfo","feedback","profitplan"].includes(path)) {
+      setNavHeaderName(path);
+    } else {
+      setNavHeaderName(""); 
+    }
+  }, [location]);
 
   // ScreenShot function
   const elementToCaptureRef = useRef(null);
@@ -99,6 +111,7 @@ function Home() {
         />
         <Route path="/userinfo" element={<Userinfo/>} theme={theme} setTheme={setTheme}/>
         <Route path="/feedback" element={<Feedback theme={theme} setTheme={setTheme} />} />
+        <Route path="/profitplan" element={<Planprofit/>}/>
         <Route
           path="project3/*"
           element={<Project3 theme={theme} setTheme={setTheme} />}

@@ -136,6 +136,17 @@ useEffect(() => {
               Feedback 
             </Link>
 
+            <Link
+              to="/profitplan"  
+              className={
+                location.pathname === "/profitplan"
+                  ? "w-full bg-white text-black p-2 font-semibold rounded-lg pl-6 hover:bg-softBlue my-0.5"
+                  : "w-full p-2 font-semibold rounded-lg pl-6 hover:bg-softBlue my-0.5"
+              }
+            >
+             Daily Profit Plan 
+            </Link>
+
             {/* Help Dropdown */}
             <div className="relative items-start flex flex-col w-full bg-transparant p-2 font-semibold rounded-lg pl-6 my-0.5">
               <button
