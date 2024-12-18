@@ -58,16 +58,16 @@ const Notes = ({ setIsNotesOpen, isNotesOpen, setNotesData }) => {
         onClose={() => setIsNotesOpen(false)}
         title="Notes"
       >
-        <div className="p-4 space-y-6">
+        <div className=" p-2 md:p-4 space-y-2 md:space-y-6">
           {/* Input fields in two-column layout */}
-          <div className="flex flex-wrap justify-between gap-6">
+          <div className="flex flex-wrap justify-between gap-2 md:gap-6">
             <input
               type="text"
               name="strategy_name"
               value={notesInput.strategy_name}
               onChange={handleChangeInput}
               placeholder="Strategy Name"
-              className="w-full md:w-[45%] py-2 px-4 border border-gray-300 bg-slate-300 rounded-lg focus:outline-none text-black"
+              className="w-full md:w-[45%] py-1 md:py-2 px-2 md:px-4 border border-gray-300 bg-slate-300 rounded-md md:rounded-lg focus:outline-none text-black"
             />
             <input
               type="text"
@@ -75,7 +75,7 @@ const Notes = ({ setIsNotesOpen, isNotesOpen, setNotesData }) => {
               value={notesInput.strategy_type}
               onChange={handleChangeInput}
               placeholder="Strategy Type"
-              className="w-full md:w-[45%] py-2 px-4 border border-gray-300 bg-slate-300 rounded-lg focus:outline-none text-black"
+              className="w-full md:w-[45%] py-1 md:py-2 px-2 md:px-4 border border-gray-300 bg-slate-300 rounded-md md:rounded-lg focus:outline-none text-black"
             />
             <input
               type="text"
@@ -83,7 +83,7 @@ const Notes = ({ setIsNotesOpen, isNotesOpen, setNotesData }) => {
               value={notesInput.Buy_in}
               onChange={handleChangeInput}
               placeholder="Buy-in"
-              className="w-full md:w-[45%] py-2 px-4 border border-gray-300 bg-slate-300 rounded-lg focus:outline-none text-black"
+              className="w-full md:w-[45%] py-1 md:py-2 px-2 md:px-4 border border-gray-300 bg-slate-300 rounded-md md:rounded-lg focus:outline-none text-black"
             />
             <input
               type="text"
@@ -91,7 +91,7 @@ const Notes = ({ setIsNotesOpen, isNotesOpen, setNotesData }) => {
               value={notesInput.Average_bet}
               onChange={handleChangeInput}
               placeholder="Average Bet"
-              className="w-full md:w-[45%] py-2 px-4 border border-gray-300 bg-slate-300 rounded-lg focus:outline-none text-black"
+              className="w-full md:w-[45%] py-1 md:py-2 px-2 md:px-4 border border-gray-300 bg-slate-300 rounded-md md:rounded-lg focus:outline-none text-black"
             />
             <input
               type="text"
@@ -99,7 +99,7 @@ const Notes = ({ setIsNotesOpen, isNotesOpen, setNotesData }) => {
               value={notesInput.no_bullets}
               onChange={handleChangeInput}
               placeholder="No. of Bullets"
-              className="w-full md:w-[45%] py-2 px-4 border border-gray-300 bg-slate-300 rounded-lg focus:outline-none text-black"
+              className="w-full md:w-[45%] py-1 md:py-2 px-2 md:px-4 border border-gray-300 bg-slate-300 rounded-md md:rounded-lg focus:outline-none text-black"
             />
             <input
               type="text"
@@ -107,7 +107,7 @@ const Notes = ({ setIsNotesOpen, isNotesOpen, setNotesData }) => {
               value={notesInput.walkaway}
               onChange={handleChangeInput}
               placeholder="Walkaway Amount"
-              className="w-full md:w-[45%] py-2 px-4 border border-gray-300 bg-slate-300 rounded-lg focus:outline-none text-black"
+              className="w-full md:w-[45%] py-1 md:py-2 px-2 md:px-4 border border-gray-300 bg-slate-300 rounded-md md:rounded-lg focus:outline-none text-black"
             />
             <input
               type="text"
@@ -115,7 +115,7 @@ const Notes = ({ setIsNotesOpen, isNotesOpen, setNotesData }) => {
               value={notesInput.betting_tries}
               onChange={handleChangeInput}
               placeholder="Betting Tries"
-              className="w-full md:w-[45%] py-2 px-4 border border-gray-300 bg-slate-300 rounded-lg focus:outline-none text-black"
+              className="w-full md:w-[45%] py-1 md:py-2 px-2 md:px-4 border border-gray-300 bg-slate-300 rounded-md md:rounded-lg focus:outline-none text-black"
             />
           </div>
 
@@ -125,19 +125,19 @@ const Notes = ({ setIsNotesOpen, isNotesOpen, setNotesData }) => {
             value={notesInput.bet_settup}
             onChange={handleChangeInput}
             placeholder="Bet Setup"
-            className="w-full py-2 px-4 border border-gray-300 bg-slate-300 rounded-lg focus:outline-none text-black h-28"
+            className="w-full py-1 md:py-2 px-2 md:px-4 border border-gray-300 bg-slate-300 rounded-md md:rounded-lg focus:outline-none text-black h-16 md:h-28"
           ></textarea>
 
           {/* Buttons */}
-          <div className="flex justify-evenly items-center mt-8">
+          <div className="flex justify-evenly items-center mt-5 md:mt-8">
             <button
-              className="font-semibold text-md px-6 py-2 bg-slate-900 text-white rounded-lg hover:bg-blue-700 transition-all"
+              className="font-semibold text-base px-3 py-1 md:px-6 md:py-2 bg-slate-900 text-white rounded-md md:rounded-lg hover:bg-blue-700 transition-all"
               onClick={handleCreateNewNotes}
             >
               Save
             </button>
             <button
-              className="font-semibold text-md px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700 transition-all"
+              className="font-semibold text-base px-3 py-1 md:px-6 md:py-2 bg-red-500 text-white rounded-md md:rounded-lg hover:bg-red-700 transition-all"
               onClick={() => setIsNotesOpen(false)}
             >
               Cancel

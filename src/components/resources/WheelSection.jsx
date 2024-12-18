@@ -18,9 +18,6 @@ const WheelSection = ({
   const percent2ST = Math.round(wheelTrackerST.orphe / 3) / 35;
   const percent3ST = Math.round(wheelTrackerST.tires / 3) / 35;
 
-
-
-
   //Long Term Trend
 
   const percent1LT = Math.round(wheelTrackerLT.zero / 9) / 35;
@@ -71,6 +68,8 @@ const WheelSection = ({
   );
 
 
+
+  console.log("Zero long",wheelTrackerLT);
   
   return (
     <div className="flex  gap-5">

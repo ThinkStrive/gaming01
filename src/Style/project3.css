@@ -1,0 +1,376 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.baccaratMain{
+  font-family: "Poppins", serif,sans-serif;
+}
+.button-slant-left {
+    transform: skewX(-10deg); 
+   
+  }
+  
+  .button-slant-left span {
+    display: inline-block;
+    transform: skewX(10deg); 
+  }
+  
+  .button-slant-left:hover {
+    transform: skewX(-10deg) ; 
+  }
+  
+ 
+  .button-slant-right {
+    transform: skewX(10deg); 
+    
+  }
+  
+  .button-slant-right span {
+    display: inline-block;
+    transform: skewX(-10deg); 
+  }
+
+ 
+
+
+  /* Add this to your CSS file or within a <style> tag */
+
+  .gold-border1 {
+    border: 5px solid transparent; 
+    background: linear-gradient(90deg, lavender, #6a0dad, #6a0dad, #6a0dad, #6a0dad, #6a0dad); 
+    background-size: 300% 300%; 
+    animation: gradient-shimmer 15s  infinite; 
+    position: relative;
+    display: inline-block;
+  }
+
+  /* Animation for shimmer effect */
+  @keyframes gradient-shimmer {
+    0% {
+      background-position: 300% 0%;
+    }
+    50% {
+      background-position: 0% 0%;
+    }
+    100% {
+      background-position: 300% 0%;
+    }
+  }
+  
+
+  .animate-coin-flip {
+    animation: coin-flip 2s ease-out; /* Coin flip animation duration */
+  }
+
+/* main coin flip design*/
+@keyframes coin-flip {
+  0% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(180deg); /* Mid-flip */
+  }
+  100% {
+    transform: rotateY(360deg); /* Full rotation */
+  }
+}
+
+.glass-button {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, rgba(128, 0, 128, 0.3), rgba(238, 130, 238, 0.3)); /* Purple gradient background with transparency */
+  border: 2px solid transparent; /* Transparent border to start */
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  position: relative; /* For the glow effect */
+  backdrop-filter: blur(10px); /* Optional for frosted glass effect */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+/* Glowing gradient border effect */
+.glass-button::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(90deg, rgba(4,12,94,1) 0%, rgba(23,70,235,1) 55%, rgba(9,60,139,1) 100%); /* Gradient border */
+  border-radius: 10px;
+  z-index: -1; 
+  filter: blur(13px); 
+}
+
+/* Optional: Add hover effect */
+.glass-button:hover {
+  background: linear-gradient(135deg, rgba(23, 70, 235, 0.7), rgba(9, 60, 139, 0.7)); /* Darker gradient on hover */
+  box-shadow: 0 0 15px rgba(23, 70, 235, 0.7), 0 0 40px rgba(9, 60, 139, 0.7); /* Apply glow with your gradient shade on hover */
+}
+/* linear-gradient(90deg, rgba(111,3,3,1) 0%, rgba(205,38,38,1) 65%, rgba(116,15,15,1) 100%)  */
+
+.glass-button1 {
+  padding: 12px 24px;
+  background: linear-gradient(90deg, rgba(111, 3, 3, 1) 0%, rgba(205, 38, 38, 1) 65%, rgba(116, 15, 15, 1) 100%); /* Red gradient background */
+  border: 2px solid transparent; /* Transparent border */
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  position: relative; /* For the glow effect */
+  backdrop-filter: blur(10px); /* Optional for frosted glass effect */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+/* Glowing gradient red border effect */
+.glass-button1::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background:  linear-gradient(90deg, rgba(111, 3, 3, 1) 0%, rgba(205, 38, 38, 1) 65%, rgba(116, 15, 15, 1) 100%); /* Red gradient border */
+  border-radius: 10px;
+  z-index: -1;
+  filter: blur(7px); /* Apply blur for glowing effect */
+}
+
+/* Optional: Add hover effect with red glow */
+.glass-button1:hover {
+  background: linear-gradient(135deg, rgba(255, 69, 0, 0.7), rgba(255, 20, 20, 0.7)); /* Darker red gradient on hover */
+  box-shadow: 0 0 7px rgba(255, 0, 0, 0.7), 0 0 40px rgba(255, 69, 0, 0.7); /* Apply red glow on hover */
+}
+
+
+
+
+/* Green button */
+.glass-button2 {
+  padding: 12px 24px;
+  background: linear-gradient(107deg, rgba(9, 112, 22, 0.9669117647058824) 0%, rgba(35, 196, 9, 0.9921218487394958) 17%, rgba(20, 93, 36, 1) 100%); /* Green gradient background */
+  border: 2px solid transparent; /* Transparent border */
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  position: relative; /* For the glow effect */
+  backdrop-filter: blur(10px); /* Optional for frosted glass effect */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+/* Glowing gradient green border effect */
+.glass-button2::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(107deg, rgba(9, 112, 22, 0.9669117647058824) 0%, rgba(35, 196, 9, 0.9921218487394958) 17%, rgba(20, 93, 36, 1) 100%); /* Green gradient border */
+  border-radius: 10px;
+  z-index: -1;
+  filter: blur(8px); /* Apply blur for glowing effect */
+}
+
+/* Hover effect with green glow */
+.glass-button2:hover {
+  background: linear-gradient(135deg, rgba(23, 160, 23, 0.7), rgba(35, 196, 9, 0.7)); /* Lighter green gradient on hover */
+  box-shadow: 0 0 7px rgba(23, 160, 23, 0.7), 0 0 40px rgba(35, 196, 9, 0.7); /* Apply green glow on hover */
+}
+
+
+.cold-button {
+  position: relative;
+  background: linear-gradient(145deg, #ff7f7f, #ffb3b3,#ff4d4d);
+  color: #660000;
+  font-weight: bold;
+  text-shadow: 
+    0 0 5px #ff9999, 
+    0 0 10px #ff4d4d;
+  border: 1px solid rgba(255, 69, 69, 0.3); /* Red border */
+  box-shadow: 
+    0 0 7px rgba(255, 69, 69, 0.4), 
+    0 0 10px rgba(255, 0, 0, 0.5), 
+    0 0 11px rgba(255, 69, 69, 0.6);
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+}
+
+/* .hot-button {
+  position: relative;
+  background: linear-gradient(107deg, rgba(9,112,22,0.9669117647058824) 0%, rgba(35,196,9,0.9921218487394958) 17%, rgba(20,93,36,1) 100%); 
+  color: #fff;
+  font-weight: bold;
+  text-shadow: 
+    0 0 5px #ff4500,    
+    0 0 10px #ff6347,  
+    0 0 15px #ffd700;  
+  border: 1px solid rgba(255, 69, 0, 0.3);
+  box-shadow: 
+    0 0 8px rgba(255, 69, 0, 0.5), 
+    0 0 14px rgba(255, 140, 0, 0.6), 
+    0 0 20px rgba(255, 215, 0, 0.8); 
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+} */
+
+
+.hot-button {
+  position: relative;
+  background: linear-gradient(
+    107deg,
+    rgba(9, 112, 22, 0.96) 0%,
+    rgba(35, 196, 9, 0.99) 17%,
+    rgba(20, 93, 36, 1) 100%
+  );
+  color: #fff;
+  font-weight: bold;
+  text-shadow: 
+    0 0 5px rgba(50, 255, 50, 0.8),
+    0 0 10px rgba(0, 255, 0, 0.7), 
+    0 0 15px rgba(50, 255, 50, 0.6);
+  border: 1px solid rgba(0, 255, 0, 0.4); 
+  box-shadow: 
+    0 0 5px rgba(50, 255, 50, 0.6), 
+    0 0 7px rgba(0, 255, 0, 0.7), 
+    0 0 9px rgba(50, 255, 50, 0.8);
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+}
+
+.stable-button{
+  position: relative;
+  background: linear-gradient(
+    107deg,
+    rgba(255, 223, 0, 0.96) 0%,  /* Yellow gradient start */
+    rgba(255, 200, 50, 0.99) 17%, /* Warm yellow transition */
+    rgba(204, 163, 0, 1) 100%    /* Golden yellow end */
+  );
+  color: #fff;
+  font-weight: bold;
+  text-shadow: 
+    0 0 5px rgba(255, 255, 50, 0.8),
+    0 0 7px rgba(255, 223, 0, 0.7), 
+    0 0 10px rgba(255, 255, 50, 0.6);
+  border: 1px solid rgba(255, 223, 0, 0.4); /* Yellow border */
+  box-shadow: 
+    0 0 2px rgba(255, 255, 50, 0.6), 
+    0 0 5px rgba(255, 223, 0, 0.7), 
+    0 0 9px rgba(255, 255, 50, 0.8);
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+}
+
+
+.wait-button {
+  position: relative;
+  background: linear-gradient(
+    107deg,
+    rgba(128, 128, 128, 0.96) 0%, /* Darker grey */
+    rgba(169, 169, 169, 0.99) 17%, /* Lighter grey */
+    rgba(105, 105, 105, 1) 100% /* Dim grey */
+  );
+  color: #fff;
+  font-weight: bold;
+  text-shadow: 
+    0 0 5px rgba(192, 192, 192, 0.8), /* Silver glow */
+    0 0 10px rgba(169, 169, 169, 0.7), 
+    0 0 15px rgba(192, 192, 192, 0.6);
+  border: 1px solid rgba(169, 169, 169, 0.4); /* Grey border */
+  box-shadow: 
+    0 0 5px rgba(128, 128, 128, 0.6), 
+    0 0 7px rgba(192, 192, 192, 0.7), 
+    0 0 9px rgba(169, 169, 169, 0.8);
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+}
+
+
+.checkbox-wrapper-41 {
+  --size: 60px;
+}
+
+
+.checkbox-wrapper-41 input[type="checkbox"] {
+  appearance: none; 
+  width: var(--size);
+  height: calc(var(--size) / 2);
+  background-color: #7F00FF; 
+  border: 3px solid #ffffff;
+  border-radius: 30px 100px 100px 100px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.5s ease;
+}
+
+/* Toggle Knob */
+.checkbox-wrapper-41 input[type="checkbox"]::before {
+  content: "";
+  position: absolute;
+  width: calc(var(--size) / 2);
+  height: calc(var(--size) / 2);
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) scale(0.7);
+  border: 3px solid #6c63a6;
+  border-radius: 50%; 
+  background-color:#f12525;
+  box-sizing: border-box;
+  transition: all 0.5s ease;
+}
+
+/* Checked State */
+.checkbox-wrapper-41 input[type="checkbox"]:checked {
+  background-color: #7F00FF; 
+  border-radius: 100px 100px 30px 100px;
+}
+
+.checkbox-wrapper-41 input[type="checkbox"]:checked::before {
+  left: 50%;
+  background-color: rgb(15, 169, 15);
+  border-radius: 100px 100px 30px 100px;
+}
+
+
+
+
+/* Card Spinning Effect*/
+
+.card-container {
+  perspective: 1000px; /* Adds depth perspective for 3D effect */
+}
+
+.card-flip {
+  animation: cardFlip 1s ease-in-out;
+  transform-origin: center;
+}
+
+@keyframes cardFlip {
+  0% {
+    transform: rotateY(180deg) scale(0.9);
+    opacity: 0.2;
+  }
+  30% {
+    transform: rotateY(120deg) scale(0.95);
+    opacity: 0.5;
+  }
+  50% {
+    transform: rotateY(90deg) scale(1);
+    opacity: 0.8;
+  }
+  70% {
+    transform: rotateY(45deg) scale(1.05);
+    opacity: 0.95;
+  }
+  100% {
+    transform: rotateY(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+

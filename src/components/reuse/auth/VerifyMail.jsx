@@ -84,7 +84,7 @@ const VerifyMail = () => {
           setInputData({
             code: ["", "", "", "", "", ""], // Reset OTP
           });
-          navigate("/auth/login");
+          navigate("/project1/blackRed");
         } else {
           showToast(res.data.data, "error");
         }

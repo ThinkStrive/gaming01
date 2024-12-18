@@ -22,43 +22,52 @@ function WheelCoverage({ data, type }) {
   const whack = (unCoveredNums / totalNums) * 100;
 
   return (
-    <div
-      className="w-64 h-full max-sm:w-full text-white text-center font-semibold"
-      style={{ backgroundColor: "rgb(34,34,34)" }}
-    >
-      Coverage
-      <div
-        className="w-full flex justify-between p-1"
-        style={{ backgroundColor: "#111111", color: "rgb(0,188,0)" }}
-      >
-        <div className="w-[40%] text-left">Win</div>
-        <div
-          className="border-x-2 px-2"
-          style={{ borderColor: "rgb(34,34,34)" }}
-        >
-          {coverdNums}
+    <div className="w-[250px] bg-purple-500 rounded-md flex flex-col">
+      <h2 className="text-center text-black text-lg font-semibold p-1.5 border-b-2 border-darkNavy">
+        Coverage
+      </h2>
+      <div className="grid grid-cols-[1.6fr,1fr,1fr] px-2 py-1 text-black border-b-2 border-black bg-green-700">
+        <div className="border-r-2 border-black mr-5">
+          <span className="pl-1 font-semibold"> Win</span>
         </div>
-        <div>{win.toFixed(1)}%</div>
+        <div className="border-r-2 border-black mr-5">
+          <span className="pl-1 font-semibold"> {coverdNums}</span>
+        </div>
+        <div>
+          <span className="pl-1.5 font-semibold">
+            {win.toFixed(1)}%
+          </span>
+        </div>
       </div>
       {/*  */}
-      <div className="w-full flex justify-between p-1">
-        <div className="w-[40%] text-left">Jackpot</div>
-        <div className="px-2">{coverdNums}</div>
-        <div>{jackpot.toFixed(1)}%</div>
-      </div>
-      {/*  */}
-      <div
-        className="w-full flex justify-between p-1"
-        style={{ backgroundColor: "#111111", color: "rgb(204,0,0)" }}
-      >
-        <div className="w-[40%] text-left">Whack</div>
-        <div
-          className="border-x-2 px-2"
-          style={{ borderColor: "rgb(34,34,34)" }}
-        >
-          {unCoveredNums}
+
+      <div className="grid grid-cols-[1.6fr,1fr,1fr] px-2 py-1 text-black border-b-2 border-black bg-yellow-500">
+        <div className="border-r-2 border-black mr-5">
+          <span className="pl-1 font-semibold">Jackpot</span>
         </div>
-        <div>{totalNums === unCoveredNums ? "0" : whack.toFixed(1)}%</div>
+        <div className="border-r-2 border-black mr-5">
+          <span className="pl-1 font-semibold">{coverdNums}</span>
+        </div>
+        <div>
+          <span className="pl-1.5 font-semibold">
+            {jackpot.toFixed(1)}%
+          </span>
+        </div>
+      </div>
+
+      {/*  */}
+      <div className="grid grid-cols-[1.6fr,1fr,1fr] px-2 py-1 text-black bg-red-600">
+        <div className="border-r-2 border-black mr-5">
+          <span className="pl-1 font-semibold">Whack</span>
+        </div>
+        <div className="border-r-2 border-black mr-5">
+          <span className="pl-0.5 font-semibold">{unCoveredNums}</span>
+        </div>
+        <div>
+          <span className="pl-1.5 font-semibold">
+            {totalNums === unCoveredNums ? "0" : whack.toFixed(1)}%
+          </span>
+        </div>
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import {
 import { IoMdAdd } from "react-icons/io";
 import { IoIosSwap } from "react-icons/io";
 import { MdOutlineCameraAlt, MdDataSaverOff } from "react-icons/md";
+import { FaCoins } from "react-icons/fa";
 import { GrAnalytics } from "react-icons/gr";
 
 import {
@@ -34,13 +35,15 @@ import {
 } from "../resources/Project2CompnentRenderData";
 import WheelCoverage from "../reuse/project2/WheelCoverage";
 import RouletteGrid from "../reuse/project2/RouletteGrid";
-import _1dlr from "../../assets/imgs/coin_imgs/bet-1.svg";
+import _1dlr from "../../assets/imgs/coin_imgs/bet-1.png";
 import "../../Style/Project2.css";
 import Notes from "../reuse/project2/Notes";
 
 function Project2({ captureScreenshot, theme }) {
   // const [showCoin, setShowCoin] = useState(false);
   const [coin, setCoin] = useState({ amt: 1, img: _1dlr });
+  const [isChipsExpanded, setIsChipsExpanded] = useState(false);
+  const moonDesktopRadius = 125; // for chips flower view
   const [coinPopup, setCoinPopup] = useState(false);
   const [customCoinVal, setCustomCoinVal] = useState(0);
   const [customCoinExists, setCustomCoinExists] = useState(false);
@@ -413,8 +416,6 @@ function Project2({ captureScreenshot, theme }) {
         };
   });
 
-  console.log("showPopup : ", showPopup.show);
-
   const [isNotesOpen, setIsNotesOpen] = useState(false);
   const [isNotesContentOpen, setIsNotesContentOpen] = useState(true);
 
@@ -422,8 +423,6 @@ function Project2({ captureScreenshot, theme }) {
     const storedNotes = localStorage.getItem("notes4");
     return storedNotes ? JSON.parse(storedNotes) : null;
   });
-
-  console.log("notesData", notesData);
 
   const win_lossObject = Object.values(data);
   const equityPerSpot = Object.values(equityData);
@@ -1131,171 +1130,44 @@ function Project2({ captureScreenshot, theme }) {
   };
 
   return (
-    <div
-      className={
-        theme === "dark"
-          ? "bg-slate-500 bg-slate-900 mx-auto px-3 h-[85vh] overflow-y-scroll modal-content2"
-          : "bg-off_white mx-auto px-3 h-[85vh] overflow-y-scroll modal-content2"
-      }
-      style={{ maxWidth: "80rem" }}
-    >
-      <div className="w-full flex flex-col justify-center items-center h-[30rem] bg-slate-900 bg-transparent mt-10 max-sm:mt-0 relative">
-        <div
-          className={
-            isbtnClicked
-              ? "w-[12rem] h-[12rem] rounded-full absolute -top-10 rotate-180 z-30 max-sm:hidden"
-              : "w-[12rem] h-[2rem] rounded-full absolute top-14 rotate-180 z-10 max-sm:hidden"
-          }
-        >
-          {/* z-30 rotate-180 bg-blue-600 */}
-          <button
-            className={
-              isbtnClicked
-                ? "w-[2rem] absolute top-[2rem] left-[1rem] animation--class "
-                : "w-[2rem] absolute top-[43%] left-[35%] animation--class"
-            }
-            onClick={() => setCoinValue(1, coinImg.coin_1)}
-          >
-            <img src={coinImg.coin_1} alt="" className="rotate-180" />
-          </button>
-
-          <button
-            className={
-              isbtnClicked
-                ? "w-[2rem] absolute top-[.5rem] left-[3rem] animation--class"
-                : "w-[2rem] absolute top-[43%] right-[37%] animation--class"
-            }
-            onClick={() => setCoinValue(2, coinImg.coin_2)}
-          >
-            <img src={coinImg.coin_2} alt="" className="rotate-180" />
-          </button>
-
-          <button
-            className={
-              isbtnClicked
-                ? "w-[2rem] absolute top-[0] left-[45%] animation--class"
-                : "w-[2rem] absolute top-[43%] right-[42%] animation--class"
-            }
-            onClick={() => setCoinValue(5, coinImg.coin_5)}
-          >
-            <img src={coinImg.coin_5} alt="" className="rotate-180" />
-          </button>
-
-          <button
-            className={
-              isbtnClicked
-                ? "w-[2rem] absolute top-[.8rem] right-[2.3rem] animation--class"
-                : "w-[2rem] absolute top-[43%] right-[42%] animation--class"
-            }
-            onClick={() => setCoinValue(10, coinImg.coin_10)}
-          >
-            <img src={coinImg.coin_10} alt="" className="rotate-180" />
-          </button>
-
-          <button
-            className={
-              isbtnClicked
-                ? "w-[2rem] absolute top-[2.7rem] right-[.6rem] animation--class"
-                : "w-[2rem] absolute top-[43%] right-[42%] animation--class"
-            }
-            onClick={() => setCoinValue(25, coinImg.coin_25)}
-          >
-            <img src={coinImg.coin_25} alt="" className="rotate-180" />
-          </button>
-
-          <button
-            className={
-              isbtnClicked
-                ? "w-[2rem] absolute top-[42%] right-[0rem] animation--class"
-                : "w-[2rem] absolute top-[43%] right-[42%] animation--class"
-            }
-            onClick={() => setCoinValue(50, coinImg.coin_50)}
-          >
-            <img src={coinImg.coin_50} alt="" className="rotate-180" />
-          </button>
-
-          <button
-            className={
-              isbtnClicked
-                ? "w-[2rem] absolute top-[4.5rem] left-[0rem] animation--class"
-                : "w-[2rem] absolute top-[43%] right-[42%] animation--class"
-            }
-            onClick={() => setCoinValue(100, coinImg.coin_100)}
-          >
-            <img src={coinImg.coin_100} alt="" className="rotate-180" />
-          </button>
-
-          <button
-            className={
-              isbtnClicked
-                ? "w-[2rem] absolute top-[60%] left-[.5rem] animation--class"
-                : "w-[2rem] absolute top-[43%] right-[42%] animation--class"
-            }
-            onClick={() => setCoinValue(500, coinImg.coin_500)}
-          >
-            <img src={coinImg.coin_500} alt="" className="rotate-180" />
-          </button>
-
-          <button
-            className={
-              isbtnClicked
-                ? "w-[2rem] absolute top-[63%] right-[.7rem] animation--class"
-                : "w-[2rem] absolute top-[43%] right-[42%] animation--class"
-            }
-            onClick={() => setCoinValue(500, coinImg.coin_500)}
-          >
-            <img src={coinImg.coin_500} alt="" className="rotate-180" />
-          </button>
-
-          <button
-            className="w-[2.7rem] absolute top-[40%] left-[38%] p-1 border border-neonGreen rounded-full z-30"
-            onClick={() => setIsbtnClicked(!isbtnClicked)}
-          >
-            <img src={coin.img} alt="" className="rotate-180" />
-          </button>
-        </div>
-        <div className="w-full py-3 px-3 bg-black flex justify-between items-center md:w-[68%] md:ml-10 max-md:text-[.8rem] max-lg:text-[.8rem]">
-          <div>Total Amt Bet {totalBetAmt.amt}</div>
+    <div className="bg-purplegrad px-8 ">
+      <div className="flex flex-col justify-center items-center bg-transparent relative">
+        <div className="flex text-black justify-between items-center w-10/12 sm:w-7/12 md:w-6/12 lg:w-4/12 lg:gap-8 px-3 md:px-5 mt-6 md:mt-8 rounded-lg max-sm:mb-8">
+          <div className="bg-Tie px-2.5 py-1 -skew-x-4 rounded-md cursor-pointer whitespace-nowrap">
+            <span className="font-medium text-base md:text-lg skew-x-4 inline-block">
+              Total Bet :
+            </span>
+            <span className="ml-2 text-base sm:text-lg md:text-xl font-semibold text-white skew-x-4 inline-block">
+              {totalBetAmt.amt}
+            </span>
+          </div>
           {/* <div>EV/Spin 0</div>
           <div>Comp Val/Spin 0</div> */}
 
-          <div>
-            <button
-              className="bg-stone-600 p-2 max-sm:p-1 rounded-lg"
-              onClick={resetHandler}
-            >
-              Reset
-            </button>
-          </div>
+          <div className="flex gap-1 md:gap-3">
+            <div className="-skew-x-12 bg-Banker rounded-md">
+              <button
+                className="px-3 md:px-6 py-1 md:py-1.5 text-sm md:text-base inline-block skew-x-12 text-white"
+                onClick={resetHandler}
+              >
+                Reset
+              </button>
+            </div>
 
-          <div>
-            <button
-              className="bg-stone-600 p-2 max-sm:p-1 rounded-lg"
-              onClick={undoHandler}
-            >
-              Undo
-            </button>
+            <div className="-skew-x-12 bg-Player rounded-md">
+              <button
+                className="px-3 md:px-6 py-1 md:py-1.5 text-sm md:text-base skew-x-12 inline-block text-white"
+                onClick={undoHandler}
+              >
+                Undo
+              </button>
+            </div>
           </div>
         </div>
-        {/* Roulette Grid */}
-        <div className="w-full h-full relative flex justify-center items-center">
-          {/* swap btn */}
-          <div
-            className="absolute max-sm:hidden text-white border py-1 px-3 rounded-full rotate-90 hover:bg-gray-400 hover:text-black cursor-pointer bottom-16 right-40"
-            style={{
-              border: theme === "dark" ? "gray 1px solid" : "black 1px solid",
-            }}
-            onClick={() =>
-              setShowTable(showTable === "roulette" ? "winloss" : "roulette")
-            }
-          >
-            <IoIosSwap
-              size={24}
-              color={theme === "dark" ? "rgb(255,255,255)" : "black"}
-            />
-          </div>
 
-          <div className="w-[90%] h-full flex justify-center items-center">
+        {/* Roulette Grid */}
+        <div className="relative flex justify-center max-sm:mt-2 max-md:mt-9">
+          <div className="flex justify-center">
             {showTable === "roulette" ? (
               <RouletteGrid
                 data={data}
@@ -1338,50 +1210,56 @@ function Project2({ captureScreenshot, theme }) {
               ""
             )}
 
-            {/* Win/Loss per spot */}
+            {/* Win/Loss per spot for mobile view */}
             {showTable === "winloss" ? (
-              <div
-                className="w-[25%] h-[80%] bg-red-500 md:-rotate-90 md:h-[55vw] mt-5 max-sm:-mt-12 max-sm:w-[70%] md:-mt-10 max-md:text-[.7rem] max-lg:text-[.8rem]"
-                style={{
-                  maxHeight: "40rem",
-                  display: show === "winloss" ? "block" : "none",
-                }}
-              >
-                <div className="bg-customGreen w-full h-[9%] flex">
+              <div className=" main h-[60vh] flex max-sm:mb-8">
+                <div className="w-[95%] flex justify-center items-center md:h-[64vh] max-[800px]:h-[64vh] max-[600px]:h-full max-sm:ml-14 max-sm:mr-5">
                   <div
-                    className="w-[50%] h-full border flex justify-center items-center"
-                    style={{ width: zero === "doubleZero" ? "50%" : "100%" }}
+                    className="relative max-sm:w-[13rem] w-[16rem] max-md:h-[62vh] md:h-[520px] xl:h-[40rem] md:-rotate-90"
+                    style={{
+                      display: show === "winloss" ? "block" : "none",
+                    }}
                   >
-                    <p className="rotate-90">
-                      {zeroDivs._0 === 0 ? "" : zeroDivs._0}
-                    </p>
-                  </div>
-
-                  {zero === "doubleZero" ? (
-                    <div className="w-[50%] h-full border flex justify-center items-center">
-                      <p className="rotate-90">
-                        {zeroDivs._00 === 0 ? "" : zeroDivs._00}
-                      </p>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                </div>
-                <div className="flex flex-wrap h-full">
-                  {Data.map((item, index) => {
-                    return (
+                    <div className="bg-green-700 w-full h-[9%] flex">
                       <div
-                        className="w-[33.33%] flex justify-center items-center text-white font-semibold border"
-                        style={{ backgroundColor: item.bg }}
+                        className="w-[50%] h-full border flex justify-center items-center"
+                        style={{
+                          width: zero === "doubleZero" ? "50%" : "100%",
+                        }}
                       >
-                        <p className="rotate-90">
-                          {win_lossObject[index] === 0
-                            ? ""
-                            : win_lossObject[index]}
+                        <p className="-rotate-270 md:rotate-90 text-white">
+                          {zeroDivs._0 === 0 ? "0" : zeroDivs._0}
                         </p>
                       </div>
-                    );
-                  })}
+
+                      {zero === "doubleZero" ? (
+                        <div className="w-[50%] h-full border flex justify-center items-center">
+                          <p className="-rotate-270 md:rotate-90 text-white">
+                            {zeroDivs._00 === 0 ? "00" : zeroDivs._00}
+                          </p>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                    <div className="flex flex-wrap h-full">
+                      {Data.map((item, index) => {
+                        return (
+                          <div
+                            className="w-[33.33%] flex justify-center items-center text-white border"
+                            style={{ backgroundColor: item.bg }}
+                            key={index}
+                          >
+                            <p className="-rotate-270 md:rotate-90">
+                              {win_lossObject[index] === 0
+                                ? "0"
+                                : win_lossObject[index]}
+                            </p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
                 </div>
               </div>
             ) : (
@@ -1390,7 +1268,7 @@ function Project2({ captureScreenshot, theme }) {
           </div>
 
           {/* side boxes for small screen */}
-          <div className="text-white h-full flex flex-col justify-center gap-5 items-center md:hidden">
+          <div className="h-full flex flex-col justify-center gap-6 p-2 ml-3 mr-3 items-center md:hidden mt-5">
             <button
               onClick={() =>
                 setShowPopup({
@@ -1403,43 +1281,77 @@ function Project2({ captureScreenshot, theme }) {
                 color: theme === "dark" ? "gray" : "black",
               }}
             >
-              <MdDataSaverOff className="inline -mt-1" size={24} />
+              <MdDataSaverOff className="size-6 text-white" />
             </button>
-            <div
-              className="text-gray-500 border border-gray-500 p-1 rounded-full"
+            <button
+              className="relative z-40"
               onClick={() =>
                 setShowTable(showTable === "roulette" ? "winloss" : "roulette")
               }
             >
-              <IoIosSwap size={18} />
-            </div>
-            <button
-              onClick={captureScreenshot}
-              className="relative z-40"
-              style={{
-                color: theme === "dark" ? "gray" : "black",
-              }}
-            >
-              <MdOutlineCameraAlt className="inline -mt-1" size={24} />
+              <IoIosSwap className="size-6 text-white cursor-pointer" />
+            </button>
+            <button className="relative z-40" onClick={captureScreenshot}>
+              <MdOutlineCameraAlt className="size-6 text-white" />
             </button>
             <button
+              className="relative z-40"
               onClick={() =>
                 setShowPopup({
                   show: (showPopup.show = true),
                   showWhat: "wheelCoverage",
                 })
               }
-              className="relative z-40"
-              style={{
-                color: theme === "dark" ? "gray" : "black",
-              }}
             >
-              <GrAnalytics className="inline -mt-1" size={24} />
+              <GrAnalytics className="size-6 text-white" />
+            </button>
+
+            {/* chips small screen */}
+
+            <button
+              onClick={() => setIsChipsExpanded(!isChipsExpanded)}
+              className="relative flex items-center justify-center"
+            >
+              <FaCoins className="size-6 text-white" />
+              {isChipsExpanded && (
+                <div className="w-full h-full absolute">
+                  {coinInfo.map((item, index) => {
+                    const spacing = 30;
+                    const x = -52;
+                    const y = (index - (coinInfo.length - 1) / 2) * spacing;
+
+                    return (
+                      <div
+                        key={item.coin}
+                        className="w-[56px] h-[32px] rounded-full flex items-center justify-center cursor-pointer absolute transition-transform hover:scale-110"
+                        style={{
+                          transform: `translate(${x}px, ${y}px)`,
+                        }}
+                        onClick={() => {
+                          setCoin((prevState) => ({
+                            ...prevState,
+                            amt: item.amount,
+                            img: item.img,
+                          }));
+                          setIsChipsExpanded(false);
+                        }}
+                      >
+                        <img
+                          src={item.img}
+                          alt=""
+                          className="w-full h-full rounded-full"
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </button>
           </div>
-          {/* info ratio box */}
+
+          {/* info ratio box - table hover */}
           <div
-            className="w-40 bg-customPurple absolute top-14 right-5 z-20"
+            className="w-40 bg-customPurple absolute top-17 right-2 z-20"
             style={{ display: ratioPopup ? "block" : "none" }}
           >
             <div className="w-full p-1 bg-darkBlue text-center font-semibold">
@@ -1457,275 +1369,275 @@ function Project2({ captureScreenshot, theme }) {
               )}
             </div>
           </div>
-        </div>
-        {/* Roulette Grid Ends Here */}
-      </div>
 
-      
+          {/* swap btn  && Chips flower container*/}
+          <div className="flex justify-center items-center absolute top-[185px] -right-[320px] lg:-right-[400px] gap-2 max-md:hidden">
+            {/* chips flower view  */}
 
-      <div>
-        {notesData !== null && isNotesContentOpen === true  ? (
-          <div className="flex flex-wrap">
-            <div className="w-[100vw] flex flex-wrap justify-between items-center">
-              <div className="w-[30%]">
-                <p className="text-sm">Strategy Name</p>
-                <p className="bg-slate-800 px-3 py-2 rounded-lg my-2 text-sm">
-                  {notesData.strategy_name}
-                </p>
-              </div>
-              <div className="w-[30%]">
-                <p className="text-sm">Strategy Type</p>
-                <p className="bg-slate-800 px-3 py-2 rounded-lg my-2 text-sm">
-                  {notesData.strategy_type}
-                </p>
-              </div>
-              <div className="w-[30%]">
-                <p className="text-sm">Buy In</p>
-                <p className="bg-slate-800 px-3 py-2 rounded-lg my-2 text-sm">
-                  {notesData.Buy_in}
-                </p>
-              </div>
-            </div>
-            <div className="w-[100vw] flex flex-wrap justify-between items-center">
-              <div className="w-[30%]">
-                <p className="text-sm">Average Bet</p>
-                <p className="bg-slate-800 px-3 py-2 rounded-lg my-2 text-sm">
-                  {notesData.Average_bet}
-                </p>
-              </div>
-              <div className="w-[30%]">
-                <p className="text-sm">No of Bullets</p>
-                <p className="bg-slate-800 px-3 py-2 rounded-lg my-2 text-sm">
-                  {notesData.no_bullets}
-                </p>
-              </div>
-              <div className="w-[30%]">
-                <p className="text-sm">Walk Away</p>
-                <p className="bg-slate-800 px-3 py-2 rounded-lg my-2 text-sm">
-                  {notesData.walkaway}
-                </p>
-              </div>
-            </div>
-            <div className="w-[100vw] flex flex-wrap justify-between items-center">
-              <div className="w-[30%]">
-                <p className="text-sm">Betting Tries</p>
-                <p className="bg-slate-800 px-3 py-2 rounded-lg my-2 text-sm">
-                  {notesData.betting_tries}
-                </p>
+            <div className="border-4 border-white hover:border-cyan-500 rounded-full h-14 w-14 flex justify-center items-center">
+              <div className="relative w-[65px] h-[40px] flex items-center justify-center">
+                <div
+                  className="w-[70px] h-[45px] rounded-full flex items-center justify-center cursor-pointer z-10"
+                  onClick={() => setIsChipsExpanded(!isChipsExpanded)}
+                >
+                  <img
+                    src={coin.img}
+                    alt=""
+                    className="w-[85%] h-[85%] rounded-full"
+                  />
+                </div>
+
+                {isChipsExpanded && (
+                  <div className="w-full h-full absolute">
+                    {coinInfo.map((item, index) => {
+                      const angle = (index / (coinInfo.length - 1)) * 180;
+                      const x =
+                        moonDesktopRadius * Math.sin((angle * Math.PI) / 180);
+                      const y =
+                        moonDesktopRadius * Math.cos((angle * Math.PI) / 180);
+                      return (
+                        <div
+                          key={item.coin}
+                          className="w-[70px] h-[45px] rounded-full flex items-center justify-center cursor-pointer absolute transition-transform hover:scale-110"
+                          style={{ transform: `translate(${x}px, ${y}px)` }}
+                          onClick={() => {
+                            setCoin((prevState) => ({
+                              ...prevState,
+                              amt: item.amount,
+                              img: item.img,
+                            }));
+                            setIsChipsExpanded(false);
+                          }}
+                        >
+                          <img
+                            src={item.img}
+                            alt=""
+                            className="w-full h-full rounded-full"
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             </div>
-            <div className="w-[100vw]">
-              <p className="text-sm">Bet Settup</p>
-              <p className="bg-slate-800 px-3 py-1 rounded-lg my-2 w-[full] h-36 text-sm">
-                {notesData.bet_settup}
-              </p>
+            {/* swap btn */}
+            <div
+              id="swap-btn"
+              className=" max-md:hidden h-14 w-14 flex justify-center items-center rounded-full cursor-pointer border-4 border-white p-1 hover:border-cyan-500"
+              onClick={() =>
+                setShowTable(showTable === "roulette" ? "winloss" : "roulette")
+              }
+            >
+              <IoIosSwap className="size-8 text-off_white hover:scale-110 hover:text-cyan-500" />
             </div>
           </div>
-        ) : (
-          ""
-        )}
-      </div>
-
-      <div className="w-[100%] flex justify-between my-4" >
-        <button
-          className="px-4 py-2 bg-slate-700 rounded-lg cursor-pointer text-sm"
-          onClick={() => setIsNotesContentOpen(!isNotesContentOpen)}
-        >
-          {isNotesContentOpen === true ? 'Close' : 'Open'}
-        </button>
-        <button
-          className="px-4 py-2 bg-slate-700 rounded-lg cursor-pointer text-sm"
-          onClick={() => setIsNotesOpen(true)}
-        >
-          Notes
-        </button>
-      </div>
-
-      <div className="max-sm:hidden w-full h-[20rem] max-sm:h-[80vh] flex justify-between  pt-12 relative">
-        <div className="absolute top-0 left-0 w-full bg-black text-white py-1 text-center text-lg font-semibold">
-          Win/Loss per Spot{" "}
-          <span className="text-xs font-normal absolute right-2 top-3">
-            (Roulette Rise.com)
-          </span>
         </div>
-        <div className="w-[30%] max-[600px]:w-[50%] bg-red-500 bg-transparent flex flex-col justify-evenly items-center">
-          {/* Coins section */}
-          {/* <div className="bg-teal-600 py-2 w-[9rem] h-20 max-sm:w-full flex flex-wrap items-center justify-evenly gap-3 overflow-y-scroll overflow-x-hidden">
-            {coinInfo.map((item, index) => {
-              return (
-                <img
-                  key={index}
-                  src={item.img}
-                  alt=""
-                  className={
-                    item.amount === coin.amt
-                      ? "border border-neonGreen rounded-full p-1 hover:animate-pulse cursor-pointer w-12"
-                      : "rounded-full p-1 cursor-pointer w-12"
-                  }
-                  onClick={() =>
-                    setCoin((prevData) => {
-                      const newData = { ...prevData };
-                      newData.amt = item.amount;
-                      return newData;
-                    })
-                  }
-                />
-              );
-            })}
+      </div>
+      {/* Roulette Grid Ends Here */}
 
-            {customCoins
-              ? customCoins.map((item) => {
-                  return (
-                    <div
-                      className="bg-blue-500 w-[5rem]"
-                      onClick={() =>
-                        setCoin((prevData) => {
-                          const newData = { ...prevData };
-                          newData.amt = item;
-                          return newData;
-                        })
-                      }
-                    >
-                      {item}
-                    </div>
-                  );
-                })
-              : ""}
+      {/* win/Loss per spot */}
+      <div className="border-t-2 border-white pt-10 max-md:mt-24 mt-5 max-sm:hidden">
+        <div className="flex justify-center ">
+          <p className="bg-purple-300 text-base md:text-lg text-black font-medium md:font-semibold w-8/12 sm:6/12 md:w-4/12 py-2.5 rounded-3xl text-center">
+            win / Loss per spot
+          </p>
+        </div>
+        <div className="max-sm:hidden w-full h-[20rem] max-sm:h-[80vh] flex justify-between  pt-12 relative">
+          <div className="w-[30%] max-[600px]:w-[50%] bg-red-500 bg-transparent flex flex-col justify-evenly items-center">
+            {/*
+               // Add Custom Coin
+            <div className="bg-teal-600 py-2 w-[9rem] h-20 max-sm:w-full flex flex-wrap items-center justify-evenly gap-3 overflow-y-scroll overflow-x-hidden">
+              {coinInfo.map((item, index) => {
+                return (
+                  <img
+                    key={index}
+                    src={item.img}
+                    alt=""
+                    className={
+                      item.amount === coin.amt
+                        ? ""
+                        : "rounded-full cursor-pointer w-[80px]"
+                    }
+                    onClick={() =>
+                      setCoin((prevData) => {
+                        const newData = { ...prevData };
+                        newData.amt = item.amount;
+                        return newData;
+                      })
+                    }
+                  />
+                );
+              })}
+
+              {customCoins
+                ? customCoins.map((item) => {
+                    return (
+                      <div
+                        className="bg-blue-500 w-[5rem]"
+                        onClick={() =>
+                          setCoin((prevData) => {
+                            const newData = { ...prevData };
+                            newData.amt = item;
+                            return newData;
+                          })
+                        }
+                      >
+                        {item}
+                      </div>
+                    );
+                  })
+                : ""}
+
+              <div
+                className="px-4 h-[3.6rem] bg-gray-500 flex justify-center items-center rounded-full cursor-pointer"
+                onClick={() => setCoinPopup(coinPopup ? false : true)}
+              >
+                <IoMdAdd size={28} />
+              </div>
+            </div>
+
+           // Coin Add popup
 
             <div
-              className="px-4 h-[3.6rem] bg-gray-500 flex justify-center items-center rounded-full cursor-pointer"
-              onClick={() => setCoinPopup(coinPopup ? false : true)}
+              className="w-[15rem] h-[13rem] absolute p-2 flex flex-col justify-center items-center rounded-lg shadow-2xl backdrop-sepia bg-gray-900"
+              style={{ display: coinPopup ? "flex" : "none" }}
             >
-              <IoMdAdd size={28} />
-            </div>
-          </div> */}
-
-          {/* Coin add Popup */}
-          <div
-            className="w-[15rem] h-[13rem] absolute p-2 flex flex-col justify-center items-center rounded-lg shadow-2xl backdrop-sepia bg-gray-900"
-            style={{ display: coinPopup ? "flex" : "none" }}
-          >
-            <h2 className="text-gray-300 font-semibold text-[1rem]">
-              Add Your custom Coin here!
-            </h2>
-            <div className="flex gap-5 flex-col justify-center items-center border border-gray-500 py-4 px-2 rounded-lg">
-              <div>
-                <input
-                  type={customCoinVal}
-                  className="bg-transparent border border-gray-700 py-1 rounded-md outline-none text-[.9rem] pl-1"
-                  placeholder="Enter the amount"
-                  onInput={(e) => setCustomCoinVal(e.target.value)}
-                />
-                <p
-                  className="inline text-xs text-[rgb(204,0,0)] font-semibold"
-                  style={{ display: customCoinExists ? "inline" : "none" }}
+              <h2 className="text-gray-300 font-semibold text-[1rem]">
+                Add Your custom Coin here!
+              </h2>
+              <div className="flex gap-5 flex-col justify-center items-center border border-gray-500 py-4 px-2 rounded-lg">
+                <div>
+                  <input
+                    type={customCoinVal}
+                    className="bg-transparent border border-gray-700 py-1 rounded-md outline-none text-[.9rem] pl-1"
+                    placeholder="Enter the amount"
+                    onInput={(e) => setCustomCoinVal(e.target.value)}
+                  />
+                  <p
+                    className="inline text-xs text-[rgb(204,0,0)] font-semibold"
+                    style={{ display: customCoinExists ? "inline" : "none" }}
+                  >
+                    This coin already exists
+                  </p>
+                </div>
+                <button
+                  className="bg-white shadow-2xl w-[2rem] h-[2rem] flex justify-center items-center rounded-full text-gray-500"
+                  onClick={() => addCustomCoins(Number(customCoinVal))}
                 >
-                  This coin already exists
-                </p>
+                  <IoMdAdd size={20} />
+                </button>
               </div>
-              <button
-                className="bg-white shadow-2xl w-[2rem] h-[2rem] flex justify-center items-center rounded-full text-gray-500"
-                onClick={() => addCustomCoins(Number(customCoinVal))}
-              >
-                <IoMdAdd size={20} />
-              </button>
+            </div>
+               */}
+
+            {/* WheelCoverage */}
+            <div className="w-[14rem] lg:h-[65%] md:h-[50%] -mt-10 max-sm:rotate-90 wheel--coverage">
+              <WheelCoverage data={data} type={zero} />
             </div>
           </div>
-          {/* WheelCoverage */}
-          <div className="w-[14rem] lg:h-[65%] md:h-[50%] -mt-10 max-sm:rotate-90 wheel--coverage">
-            <WheelCoverage data={data} type={zero} />
+
+          {/* Win/Loss per spot */}
+          <div className="max-sm:w-[50%] w-[80%]  rounded-xl flex justify-center md:items-center max-[600px]:h-[100%] relative">
+            <div
+              className="w-[20%] max-xl:w-[25%] bg-red-500 md:-rotate-90 md:h-[55vw] mt-5 max-sm:w-[90%] h-[85%] md:-mt-10 max-md:text-[.7rem] max-lg:text-[.8rem]"
+              style={{
+                maxHeight: "40rem",
+                display: show === "winloss" ? "block" : "none",
+              }}
+            >
+              <div className="bg-customGreen w-full h-[9%] flex">
+                <div
+                  className="w-[50%] h-full border flex justify-center items-center"
+                  style={{ width: zero === "doubleZero" ? "50%" : "100%" }}
+                >
+                  <p className="rotate-90">
+                    {zeroDivs._0 === 0 ? "" : zeroDivs._0}
+                  </p>
+                </div>
+
+                {zero === "doubleZero" ? (
+                  <div className="w-[50%] h-full border flex justify-center items-center">
+                    <p className="rotate-90">
+                      {zeroDivs._00 === 0 ? "" : zeroDivs._00}
+                    </p>
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
+              <div className="flex flex-wrap h-full">
+                {Data.map((item, index) => {
+                  return (
+                    <div
+                      className="w-[33.33%] flex justify-center items-center text-white font-semibold border"
+                      style={{ backgroundColor: item.bg }}
+                      key={index}
+                    >
+                      <p className="rotate-90">
+                        {win_lossObject[index] === 0
+                          ? ""
+                          : win_lossObject[index]}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
+      </div>
 
-        <div className="max-sm:w-[50%] w-[80%]  rounded-xl flex justify-center md:items-center max-[600px]:h-[100%] relative">
-          {/* Win/Loss per spot */}
-          <div
-            className="w-[20%] max-xl:w-[25%] bg-red-500 md:-rotate-90 md:h-[55vw] mt-5 max-sm:w-[90%] h-[85%] md:-mt-10 max-md:text-[.7rem] max-lg:text-[.8rem]"
-            style={{
-              maxHeight: "40rem",
-              display: show === "winloss" ? "block" : "none",
-            }}
-          >
-            <div className="bg-customGreen w-full h-[9%] flex">
+      {/* equity per spot */}
+
+      <div className="border-t-2 border-white pt-10 mt-10 max-sm:hidden">
+        <div className="flex justify-center ">
+          <p className="bg-purple-300 text-base md:text-lg text-black font-medium md:font-semibold w-8/12 sm:6/12 md:w-4/12 py-2.5 rounded-3xl text-center">
+            Equity per spot
+          </p>
+        </div>
+        <div className="max-sm:hidden w-full flex justify-center items-center gap-10 h-[18rem] max-sm:h-[90vh] relative mt-10">
+          <div className="w-[15%] bg-red-500 flex flex-wrap md:-rotate-90 md:h-[55vw] mt-5 max-sm:w-[50%] h-[80%] md:-mt-10 max-md:text-[.7rem] max-lg:text-[.8rem]">
+            <div className="bg-customGreen w-full h-[8%] flex">
               <div
                 className="w-[50%] h-full border flex justify-center items-center"
                 style={{ width: zero === "doubleZero" ? "50%" : "100%" }}
               >
                 <p className="rotate-90">
-                  {zeroDivs._0 === 0 ? "" : zeroDivs._0}
+                  {zeroEquityData._0 > 0 ? zeroEquityData._0.toFixed(2) : ""}
                 </p>
               </div>
 
               {zero === "doubleZero" ? (
                 <div className="w-[50%] h-full border flex justify-center items-center">
                   <p className="rotate-90">
-                    {zeroDivs._00 === 0 ? "" : zeroDivs._00}
+                    {zeroEquityData._00 > 0
+                      ? zeroEquityData._00.toFixed(2)
+                      : ""}
                   </p>
                 </div>
               ) : (
                 ""
               )}
             </div>
-            <div className="flex flex-wrap h-full">
+
+            <div className="flex flex-wrap h-full w-full">
               {Data.map((item, index) => {
                 return (
                   <div
-                    className="w-[33.33%] flex justify-center items-center text-white font-semibold border"
+                    className="w-[33.33%] h-[8.4%] flex justify-center items-center text-white font-semibold border"
                     style={{ backgroundColor: item.bg }}
+                    key={index}
                   >
                     <p className="rotate-90">
-                      {win_lossObject[index] === 0 ? "" : win_lossObject[index]}
+                      {equityPerSpot[index] <= 0
+                        ? ""
+                        : equityPerSpot[index].toFixed(2)}
                     </p>
                   </div>
                 );
               })}
             </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-sm:hidden w-full flex justify-center items-center gap-10 h-[18rem] max-sm:h-[90vh] relative mt-10">
-        <div className="absolute -top-10 left-0 w-full bg-black text-white py-1 text-center text-lg font-semibold">
-          Equity per Spot
-        </div>
-        {/* equity per spot */}
-        <div className="w-[15%] bg-red-500 flex flex-wrap md:-rotate-90 md:h-[55vw] mt-5 max-sm:w-[50%] h-[80%] md:-mt-10 max-md:text-[.7rem] max-lg:text-[.8rem]">
-          <div className="bg-customGreen w-full h-[8%] flex">
-            <div
-              className="w-[50%] h-full border flex justify-center items-center"
-              style={{ width: zero === "doubleZero" ? "50%" : "100%" }}
-            >
-              <p className="rotate-90">
-                {zeroEquityData._0 > 0 ? zeroEquityData._0.toFixed(2) : ""}
-              </p>
-            </div>
-
-            {zero === "doubleZero" ? (
-              <div className="w-[50%] h-full border flex justify-center items-center">
-                <p className="rotate-90">
-                  {zeroEquityData._00 > 0 ? zeroEquityData._00.toFixed(2) : ""}
-                </p>
-              </div>
-            ) : (
-              ""
-            )}
-          </div>
-
-          <div className="flex flex-wrap h-full w-full">
-            {Data.map((item, index) => {
-              return (
-                <div
-                  className="w-[33.33%] h-[8.4%] flex justify-center items-center text-white font-semibold border"
-                  style={{ backgroundColor: item.bg }}
-                >
-                  <p className="rotate-90">
-                    {equityPerSpot[index] <= 0
-                      ? ""
-                      : equityPerSpot[index].toFixed(2)}
-                  </p>
-                </div>
-              );
-            })}
           </div>
         </div>
       </div>
@@ -1748,7 +1660,7 @@ function Project2({ captureScreenshot, theme }) {
         }
       >
         <div
-          className="w-[14rem] lg:h-[65%] md:h-[50%] wheel--coverage"
+          className="w-[17rem] lg:h-[65%] md:h-[50%] wheel--coverage"
           style={{
             display: showPopup.showWhat === "wheelCoverage" ? "block" : "none",
           }}
@@ -1789,6 +1701,7 @@ function Project2({ captureScreenshot, theme }) {
                 <div
                   className="w-[33.33%] h-[8.4%] flex justify-center items-center text-white font-semibold border"
                   style={{ backgroundColor: item.bg }}
+                  key={index}
                 >
                   <p className="rotate-90">
                     {equityPerSpot[index] <= 0
@@ -1802,27 +1715,114 @@ function Project2({ captureScreenshot, theme }) {
         </div>
       </div>
 
-      <footer className="w-full">
-        <ul className="flex my-1">
-          <li className="border-r-2 px-1 text-xs font-semibold h-3">
-            <a href="#">Legcy RSA</a>
-          </li>
-          <li className="border-r-2 px-1 text-xs font-semibold h-3">
-            <a href="#">Roulette Strategy</a>
-          </li>
+      {/* Notes section  && Footer*/}
+      <div>
+        {isNotesOpen && (
+          <Notes
+            isNotesOpen={isNotesOpen}
+            setIsNotesOpen={setIsNotesOpen}
+            setNotesData={setNotesData}
+          />
+        )}
 
-          <li className="px-1 text-xs font-semibold h-3">
-            <a href="#">How do I use this tool?</a>
-          </li>
-        </ul>
-      </footer>
-      {isNotesOpen && (
-        <Notes
-          isNotesOpen={isNotesOpen}
-          setIsNotesOpen={setIsNotesOpen}
-          setNotesData={setNotesData}
-        />
-      )}
+        {/* <div>
+          {notesData !== null && isNotesContentOpen === true ? (
+            <div className="flex flex-wrap">
+              <div className=" w-[100vw] flex flex-wrap justify-between items-center">
+                <div className="w-[30%]">
+                  <p className="text-sm">Strategy Name</p>
+                  <p className="bg-slate-800 px-3 py-2 rounded-lg my-2 text-sm">
+                    {notesData.strategy_name}
+                  </p>
+                </div>
+                <div className="w-[30%]">
+                  <p className="text-sm">Strategy Type</p>
+                  <p className="bg-slate-800 px-3 py-2 rounded-lg my-2 text-sm">
+                    {notesData.strategy_type}
+                  </p>
+                </div>
+                <div className="w-[30%]">
+                  <p className="text-sm">Buy In</p>
+                  <p className="bg-slate-800 px-3 py-2 rounded-lg my-2 text-sm">
+                    {notesData.Buy_in}
+                  </p>
+                </div>
+              </div>
+              <div className="w-[100vw] flex flex-wrap justify-between items-center">
+                <div className="w-[30%]">
+                  <p className="text-sm">Average Bet</p>
+                  <p className="bg-slate-800 px-3 py-2 rounded-lg my-2 text-sm">
+                    {notesData.Average_bet}
+                  </p>
+                </div>
+                <div className="w-[30%]">
+                  <p className="text-sm">No of Bullets</p>
+                  <p className="bg-slate-800 px-3 py-2 rounded-lg my-2 text-sm">
+                    {notesData.no_bullets}
+                  </p>
+                </div>
+                <div className="w-[30%]">
+                  <p className="text-sm">Walk Away</p>
+                  <p className="bg-slate-800 px-3 py-2 rounded-lg my-2 text-sm">
+                    {notesData.walkaway}
+                  </p>
+                </div>
+              </div>
+              <div className="w-[100vw] flex flex-wrap justify-between items-center">
+                <div className="w-[30%]">
+                  <p className="text-sm">Betting Tries</p>
+                  <p className="bg-slate-800 px-3 py-2 rounded-lg my-2 text-sm">
+                    {notesData.betting_tries}
+                  </p>
+                </div>
+              </div>
+              <div className="w-[100vw]">
+                <p className="text-sm">Bet Settup</p>
+                <p className="bg-slate-800 px-3 py-1 rounded-lg my-2 w-[full] h-36 text-sm">
+                  {notesData.bet_settup}
+                </p>
+              </div>
+            </div>
+          ) : (
+            ""
+          )}
+        </div> */}
+
+        {/* open close and Notes Buttons */}
+
+        <div className="w-[100%] flex justify-between my-8 max-sm:mt-14">
+          <div className="pl-4">
+            <button
+              className="px-4 py-2 bg-slate-700 rounded-lg cursor-pointer text-sm"
+              onClick={() => setIsNotesContentOpen(!isNotesContentOpen)}
+            >
+              {isNotesContentOpen === true ? "Close" : "Open"}
+            </button>
+          </div>
+          <div className="pr-4">
+            <button
+              className="px-4 py-2 bg-slate-700 rounded-lg cursor-pointer text-sm"
+              onClick={() => setIsNotesOpen(true)}
+            >
+              Notes
+            </button>
+          </div>
+        </div>
+        <footer className="w-full mb-3">
+          <ul className="flex my-1">
+            <li className="border-r-2 px-1 text-xs font-semibold h-3">
+              <a href="#">Legcy RSA</a>
+            </li>
+            <li className="border-r-2 px-1 text-xs font-semibold h-3">
+              <a href="#">Roulette Strategy</a>
+            </li>
+
+            <li className="px-1 text-xs font-semibold h-3">
+              <a href="#">How do I use this tool?</a>
+            </li>
+          </ul>
+        </footer>
+      </div>
     </div>
   );
 }

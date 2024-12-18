@@ -8,13 +8,14 @@ import Analyze from "../reuse/project4/Analyze.jsx";
 import GaugeChart from "react-gauge-chart";
 import { CgInsights } from "react-icons/cg";
 import background from "../../assets/imgs/2002.i029.002_realistic-poker-club-illustration.jpg";
-// import MoneyManagementTable from "../reuse/project4/MoneyManagementTable.jsx";
+import MoneyManagementTable from "../reuse/project4/MoneyManagementTable.jsx";
 import Lock from "../resources/Lock.jsx";
 import axios from "axios";
 import { USER_DETAILS } from "../api/ApiDetails.js";
 
-
-import ManualManagement from "../reuse/project4/MoneyManagementTable.jsx";
+import SpinCycleMoney from "../reuse/project4/TempMoneyManagement.jsx";
+import History from "../reuse/project1/history/History.jsx";
+import { max } from "moment/moment.js";
 
 const Project4 = ({ theme }) => {
   const [isAlertAllowed, setIsAlertAllowed] = useState(false);
@@ -232,6 +233,21 @@ const Project4 = ({ theme }) => {
       };
   });
 
+
+
+   const [dozenScoresDD, setDozenScoresDD] = useState(() => {
+      const savedDozenScores = localStorage.getItem("dozenScoresDD");
+      return savedDozenScores
+        ? JSON.parse(savedDozenScores)
+        : { 1: 0, 2: 0, 3: 0 };
+    });
+  
+    const [columnScoresDD, setColumnScoresDD] = useState(() => {
+      const savedColumnScores = localStorage.getItem("columnScoresDD");
+      return savedColumnScores
+        ? JSON.parse(savedColumnScores)
+        : { 1: 0, 2: 0, 3: 0 };
+    });
  
 
   // const [previousState, setPreviousState] = useState(() => {
@@ -1331,7 +1347,8 @@ useEffect(() => {
     setCircleData(resetCircleData);
     setNonCircleData(resetCircleData);
     setLandedNumbers([]);
-
+    setColumnScoresDD({ 1: 0, 2: 0, 3: 0 });
+    setDozenScoresDD({ 1: 0, 2: 0, 3: 0 });
 
 
     // Also reset the data in local storage
@@ -2422,6 +2439,8 @@ setHistoryData([...historyData, changedHistoryData]);
     // }
   };
 
+
+
   useEffect(() => {
     // Calculate the new scores for each dozen, column, and row once the array length reaches 30
     if (landedNumbers.length >= 36) {
@@ -2488,25 +2507,6 @@ setHistoryData([...historyData, changedHistoryData]);
     fetchUserDetails();
   }, []);
 
-  const calculatePercentage = (
-    numerator,
-    denominator1,
-    denominator2,
-    denominator3
-  ) => {
-    const total = denominator1 + denominator2 + denominator3;
-    const percentage = Math.round((numerator / total) * 100);
-    if (total === 0) return { className: "", label: " " };
-    // Return 0 if the total is 0 to avoid NaN
-
-    if (percentage >= 70) {
-      return { className: "bg-red-500 text-white", label: "Hot" };
-    } else if (percentage >= 50) {
-      return { className: "bg-transparent", label: "Stable" };
-    } else {
-      return { className: "bg-green-300 text-black", label: "Cold" };
-    }
-  };
 
   const determineImage = (() => {
     const winPer = analyzeData.dozenWinPer;
@@ -2607,10 +2607,422 @@ setHistoryData([...historyData, changedHistoryData]);
 
 
 
+//   const calculateStats = (data) => {
+//     const groups = {
+//         AGroup: ["Agroup", "Bgroup", "Cgroup"],
+//         dozen: ["dozen1", "dozen2", "dozen3"],
+//         col: ["col1", "col2", "col3"]
+//     };
+
+//     const results = {};
+
+//     for (const [groupName, groupItems] of Object.entries(groups)) {
+//         let highestWin = 0;
+//         let highestKey = "";
+
+//         groupItems.forEach((key) => {
+//             const win = data[key];
+//             const loss = data[`${key}_loss`];
+//             const total = win + loss;
+//             const winPercentage = total > 0 ? (win / total) * 100 : 0;
+
+//             console.log(`${key}: ${win} wins, ${loss} losses, ${winPercentage.toFixed(2)}% win rate`);
+
+//             // Check for the highest win in the group
+//             if (win > highestWin) {
+//                 highestWin = win;
+//                 highestKey = key;
+//             }
+//         });
+
+//         results[groupName] = { highestKey, highestWin };
+//     }
+
+//     return results;
+// };
+
+// // Get the stats results
+// const statsResults = calculateStats(statsData);
 
 
 
 
+// const getHighestScoreWithKey = (scores) => {
+//   const entries = Object.entries(scores); 
+//   let highestKey = null;
+//   let highestValue = -Infinity;
+
+//   for (const [key, value] of entries) {
+//       if (value > highestValue) {
+//           highestKey = key;
+//           highestValue = value;
+//       }
+//   }
+
+//   return { key: highestKey, value: highestValue };
+// };
+
+// // Get the highest scores with keys
+// const highestDozen = getHighestScoreWithKey(dozenScores);
+// const highestColumn = getHighestScoreWithKey(columnScores);
+// const highestRow = getHighestScoreWithKey(rowDataScores);
+
+// console.log("Highest Dozen:", highestDozen); 
+// console.log("Highest Column:", highestColumn); 
+// console.log("Highest Row:", highestRow);
+// // Log the results
+// console.log("Highest values in each group:", statsResults);
+
+
+
+// const calculateHighestFromScores = (scores) => {
+//   let highestKey = "";
+//   let highestWin = 0;
+
+//   // Find the key with the highest score
+//   Object.entries(scores).forEach(([key, value]) => {
+//     if (value > highestWin) {
+//       highestWin = value;
+//       highestKey = key;
+//     }
+//   });
+
+//   return { highestKey, highestWin };
+// };
+
+
+
+// // Calculate the highest value for each group
+// const highestValues = {
+//   dozen: calculateHighestFromScores(dozenScores),
+//   row: calculateHighestFromScores(rowDataScores),
+//   col: calculateHighestFromScores(columnScores),
+// };
+
+// console.log("highest Value",highestValues);
+// const calculateMaxMinFromScores = (scores) => {
+//   let highestKey = "";
+//   let highestWin = 0;
+//   let lowestKey = "";
+//   let lowestWin = Infinity;
+//   let stableKey = "";
+//   let stableWin = 0;
+
+//   // Find the key with the highest, lowest, and a representative "stable" scores
+//   Object.entries(scores).forEach(([key, value]) => {
+//     if (value > highestWin) {
+//       highestWin = value;
+//       highestKey = key;
+//     }
+//     if (value < lowestWin) {
+//       lowestWin = value;
+//       lowestKey = key;
+//     }
+//   });
+
+//   // Find the key with the "stable" win (neither high nor low)
+//   Object.entries(scores).forEach(([key, value]) => {
+//     if (value > lowestWin && value < highestWin) {
+//       stableKey = key;
+//       stableWin = value;
+//     }
+//   });
+
+//   return {
+//     highest: { key: highestKey, win: highestWin },
+//     lowest: { key: lowestKey, win: lowestWin },
+//     stable: { key: stableKey, win: stableWin }
+//   };
+// };
+
+const calculateMaxMinFromScores = (scores) => {
+  const maxPossibleScore = 105; // Maximum possible score
+  
+  // Categorize scores based on percentage of max possible score
+  const categorizeScore = (value) => {
+    const percentage = (value / maxPossibleScore) * 100;
+    
+    if (value === 0) return 'cold';
+    if (percentage <= 36) return 'stable';
+    return 'hot';
+  };
+
+  let highestKey = "";
+  let highestWin = 0;
+  let lowestKey = "";
+  let lowestWin = Infinity;
+  let stableKey = "";
+
+  // Categorize all scores
+  const categorizedScores = {};
+  Object.entries(scores).forEach(([key, value]) => {
+    const category = categorizeScore(value);
+    categorizedScores[key] = category;
+
+    // Find highest and lowest
+    if (value > highestWin) {
+      highestWin = value;
+      highestKey = key;
+    }
+    if (value < lowestWin) {
+      lowestWin = value;
+      lowestKey = key;
+    }
+
+    // Find a stable key
+    if (category === 'stable' && !stableKey) {
+      stableKey = key;
+    }
+  });
+
+  // Fallback to highest key if no stable key found
+  stableKey = stableKey || highestKey;
+
+  return {
+    highest: { 
+      key: highestKey, 
+      win: highestWin,
+      category: categorizedScores
+    },
+    lowest: { 
+      key: lowestKey, 
+      win: lowestWin,
+      category: categorizedScores
+    },
+    stable: { 
+      key: stableKey,
+      win: scores[stableKey],
+      category: 'stable'
+    },
+    categorizedScores: categorizedScores
+  };
+};
+
+const classifyScoresWithValues = (scores) => {
+  const maxValue = 105; // Maximum value for each key
+  const classifications = {};
+
+  Object.entries(scores).forEach(([key, value]) => {
+    const percentage = ((value / maxValue) * 100).toFixed(2); // Convert to percentage and round to 2 decimal places
+    let status = "";
+
+    if (value === 0) {
+      status = "cold";
+    } else if (percentage <= 36) {
+      status = "stable";
+    } else {
+      status = "hot";
+    }
+
+    classifications[key] = {
+      percentage: `${percentage}%`,
+      status,
+      value, // Include the original value for reference
+    };
+  });
+
+  return classifications;
+};
+
+
+
+// Calculate the max, min, and stable values for each group
+const maxMinValues = {
+  dozen: classifyScoresWithValues(dozenScoresDD),
+  col:classifyScoresWithValues(columnScoresDD),
+};
+
+console.log("values of max",maxMinValues)
+console.log("column score",columnScoresDD)
+
+useEffect(() => {
+  const timer = setTimeout(() => {
+    const backgroundStyles = {
+      backgroundSize: "cover", 
+      backgroundPosition: "center", 
+      backgroundRepeat: "no-repeat"
+    };
+
+    const resetContainerStyles = (container) => {
+      if (container) {
+        container.style.backgroundImage = '';
+        container.style.backgroundSize = '';
+        container.style.backgroundPosition = '';
+        container.style.backgroundRepeat = '';
+      }
+    };
+
+    const isScoresReset = 
+      Object.values(dozenScoresDD).every(score => score === 0) &&
+      Object.values(columnScoresDD).every(score => score === 0);
+
+    if (isScoresReset) {
+      ['1', '2', '3'].forEach(key => {
+        const dozenContainer = document.getElementById(`dozenContainer${key}`);
+        const columnContainer = document.getElementById(`columnContainer${key}`);
+        
+        resetContainerStyles(dozenContainer);
+        resetContainerStyles(columnContainer);
+      });
+      return;
+    }
+
+    const backgroundImages = {
+      hot: 'https://res.cloudinary.com/dxsdme4qy/image/upload/v1734435887/fireFrame_svrrrs.gif',
+      cold: 'https://res.cloudinary.com/dxsdme4qy/image/upload/v1734445367/snow-fall_geftx9.gif',
+      stable: 'https://res.cloudinary.com/dxsdme4qy/image/upload/v1734521202/stable_ggaahj.gif'
+    };
+
+    ['dozen', 'col'].forEach(group => {
+      ['1', '2', '3'].forEach(key => {
+        const container = document.getElementById(`${group}Container${key}`);
+        if (container) {
+          const scoreInfo = maxMinValues[group][key];
+
+          resetContainerStyles(container);
+
+          if (scoreInfo && backgroundImages[scoreInfo.status]) {
+            container.style.backgroundImage = `url('${backgroundImages[scoreInfo.status]}')`;
+            Object.assign(container.style, backgroundStyles);
+          }
+        }
+      });
+    });
+  }, 100); // Delay for DOM readiness
+
+  return () => clearTimeout(timer); // Cleanup timer
+}, [maxMinValues, dozenScoresDD, columnScoresDD]);
+
+
+// row data bacround hot cold image set
+
+useEffect(() => {
+  const backgroundStyles = {
+    backgroundSize: "cover", 
+    backgroundPosition: "center", 
+    backgroundRepeat: "no-repeat"
+  };
+
+  const rowLetterNumbers = {
+    A: [2, 4, 6, 13, 15, 17, 19, 21, 25, 27, 32, 34],
+    B: [1, 5, 8, 10, 11, 16, 20, 23, 24, 30, 33, 36],
+    C: [3, 7, 9, 12, 14, 18, 22, 26, 28, 29, 31, 35]
+  };
+
+  // Check if scores are reset (all zero)
+  const isScoresReset = 
+    Object.values(rowDataScores).every(score => score === 0);
+
+  if (isScoresReset) {
+    // Reset all number containers
+    data.forEach(item => {
+      const container = document.getElementById(`number-container-${item.num}`);
+      if (container) {
+        container.style.backgroundImage = '';
+        container.style.backgroundSize = '';
+        container.style.backgroundPosition = '';
+        container.style.backgroundRepeat = '';
+      }
+    });
+    return;
+  }
+
+  // Find highest and lowest row letters
+  const highestRowLetter = Object.keys(rowDataScores).reduce((a, b) => 
+    rowDataScores[a] > rowDataScores[b] ? a : b
+  );
+  
+  const lowestRowLetter = Object.keys(rowDataScores).reduce((a, b) => 
+    rowDataScores[a] < rowDataScores[b] ? a : b
+  );
+
+  // Apply backgrounds to number containers
+  data.forEach(item => {
+    const container = document.getElementById(`number-container-${item.num}`);
+    
+    if (container) {
+      if (rowLetterNumbers[highestRowLetter].includes(item.num)) {
+        // Highest row letter numbers get hot background
+        container.style.backgroundImage = `url('https://res.cloudinary.com/dxsdme4qy/image/upload/v1734419453/fire_namnig.gif')`;
+
+        // https://res.cloudinary.com/dxsdme4qy/image/upload/v1734435887/fireFrame_svrrrs.gif
+        Object.assign(container.style, backgroundStyles);
+      } else if (rowLetterNumbers[lowestRowLetter].includes(item.num)) {
+        // Lowest row letter numbers get cold background
+        container.style.backgroundImage = ``;
+        Object.assign(container.style, backgroundStyles);
+      } else {
+        // Reset other containers
+        container.style.backgroundImage = '';
+        container.style.backgroundSize = '';
+        container.style.backgroundPosition = '';
+        container.style.backgroundRepeat = '';
+      }
+    }
+  });
+}, [rowDataScores]);
+
+
+
+
+const initialScoresST = Array.from({ length: 36 }, (_, i) => 36 - i);
+  useEffect(() => {
+    // Calculate the new scores for each dozen, column, and row once the array length reaches 36
+    if (landedNumbers.length >= 36) {
+      const newDozenScores = { 1: 0, 2: 0, 3: 0 };
+      const newColumnScores = { 1: 0, 2: 0, 3: 0 };
+
+      
+      // Only calculate scores for the first 36 items
+      landedNumbers.slice(0, 3).forEach((entry, index) => {
+        const score = initialScoresST[index] || 0;
+
+        // Update dozen scores
+        if (entry.dozen) {
+          newDozenScores[entry.dozen] += score;
+        }
+        // Update column scores
+        if (entry.col) {
+          newColumnScores[entry.col] += score;
+        }
+      });
+     
+
+
+
+      setDozenScoresDD(newDozenScores);
+      setColumnScoresDD(newColumnScores);
+     
+    }
+  }, [landedNumbers]);
+
+// showing % in ui 
+
+const total = Object.values(dozenScores).reduce((sum, value) => sum + value, 0);
+
+// Convert values to percentages and round them
+const percentagesDozen = Object.fromEntries(
+  Object.entries(dozenScores).map(([key, value]) => [
+    key,
+    total === 0 ? 0 : Math.round((value / total) * 100),
+  ])
+);
+  
+// showing % in ui 
+
+  const totalColumn = Object.values(columnScores).reduce((sum, value) => sum + value, 0);
+
+  // Convert values to percentages and round them
+  const percentagesColumn = Object.fromEntries(
+    Object.entries(columnScores).map(([key, value]) => [
+      key,
+      total === 0 ? 0 : Math.round((value / totalColumn) * 100), 
+    ])
+  );
+  
+
+ 
+  
 
   return (
     <>
@@ -2908,7 +3320,7 @@ setHistoryData([...historyData, changedHistoryData]);
           </div>
         </div>
       </div>
-      <div className="px-4 main h-[75.5vh] flex text-white ">
+      <div className="px-2 main h-[75.5vh] flex text-white ">
         <div
           className="mt-1 w-[90%] flex justify-center items-center md:h-[76vh] max-[800px]:h-[75vh] max-[600px]:h-full md:py-4"
           // style={{ height: "100vh" }}
@@ -2924,7 +3336,7 @@ setHistoryData([...historyData, changedHistoryData]);
                     repeatLetter === "A" && rowHoverEffect
                       ? "bg-[#58d68d]"
                       : "bg-customGreen"
-                  } w-[100%] flex justify-center items-center cursor-pointer border`}
+                  } w-[100%] flex justify-center items-center cursor-pointer border rounded-md`}
                   onClick={() => handleClickNumber("zero", 0, "A", 0, 0)}
                   style={{
                     borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
@@ -2951,49 +3363,82 @@ setHistoryData([...historyData, changedHistoryData]);
                 {/* dozens */}
                 <div className="w-[17%] max-lg:w[30rem] font-white border-white h-[86%]">
                   <div
-                    className="h-[33.33%] border flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold"
+                    className="h-[33.33%] border bgPercentage border-slate-300 flex justify-center relative items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold rounded-md "
                     style={{
                       backgroundColor:
                         repeatDozen === "1" && dozenHoverEffect
                           ? "#58d68d"
                           : "",
-                    }}
+                    }}id="dozenContainer1"
+
                   >
+                  
                     <p className="rotate-90 w-[10rem] max-xl:text-sm max-sm:text-xs">
                       1st 12
                     </p>
+                    <p
+                      className=" bgPercentage text-white text-xs rounded-xl font-bold p-0.5 absolute rotate-90 z-[20] "
+                      style={{
+                        left: "-15px",
+                      }}
+                    >
+                      {percentagesDozen[1]}%
+                    </p>
+
                   </div>
 
                   <div
-                    className="h-[33.33%] border flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold"
+                    className="h-[33.33%] border bgPercentage border-slate-300 flex justify-center relative items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold rounded-md "
                     style={{
                       backgroundColor:
                         repeatDozen === "2" && dozenHoverEffect
                           ? "#58d68d"
                           : "",
                     }}
+                    id="dozenContainer2"
                   >
-                    <p className="rotate-90 w-[10rem] max-xl:text-sm max-sm:text-xs">
+                    <p className="rotate-90 w-[10rem] max-xl:text-sm max-sm:text-xs"
+                    
+                    >
                       2nd 12
+                    </p>
+                    <p
+                      className=" bgPercentage text-white text-xs rounded-xl font-bold p-0.5 absolute rotate-90 z-[20] "
+                      style={{
+                        left: "-15px",
+                      }}
+                    >
+                      {percentagesDozen[2]}%
                     </p>
                   </div>
 
                   <div
-                    className="h-[33.33%] border flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold"
+                    className="h-[33.33%] border bgPercentage border-slate-300 flex justify-center relative items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold rounded-md "
                     style={{
                       backgroundColor:
                         repeatDozen === "3" && dozenHoverEffect
                           ? "#58d68d"
                           : "",
                     }}
+                    id="dozenContainer3"
                   >
-                    <p className="rotate-90 w-[10rem] max-xl:text-sm max-sm:text-xs">
+                    <p className="rotate-90 w-[10rem] max-xl:text-sm max-sm:text-xs ">
                       3rd 12
                     </p>
+                    <p
+                      className=" bgPercentage text-white text-xs rounded-xl font-bold p-0.5 absolute rotate-90 z-[20] "
+                      style={{
+                        left: "-15px",
+                      }}
+                    >
+                      {percentagesDozen[3]}%
+                    </p>
                   </div>
+                  
                 </div>
+                
                 <div className="w-full h-[93%] flex flex-wrap">
-                  {data.map((item) => {
+                  {/* {data.map((item) => {
                     return (
                       <div
                         className={`w-[33.33%] flex justify-center items-center border cursor-pointer number--divs`}
@@ -3027,42 +3472,146 @@ setHistoryData([...historyData, changedHistoryData]);
                         {item.num}
                       </div>
                     );
-                  })}
+                  })} */}
+
+
+                    {data.map((item) => {
+                      return (
+                        <div
+                          id={`number-container-${item.num}`}
+                          className={`
+                            w-[33.33%] 
+                            flex 
+                            justify-center 
+                            items-center 
+                            border 
+                            cursor-pointer 
+                            number--divs
+                            relative
+                            overflow-hidden
+                            backdrop-blur-sm
+                            bg-opacity-30
+                            hover:backdrop-blur-md
+                            transition-all 
+                            duration-300 
+                            ease-in-out
+                            rounded-md
+                          `}
+                          style={{
+                            backgroundColor:
+                              item.letter === repeatLetter && rowHoverEffect
+                                ? "#58d68d"
+                                : item.bg,
+                            borderColor:
+                              theme === "light" ? "#F5F5F5" : "#0A1F44",
+                          }}
+                          onClick={() =>
+                            handleClickNumber(
+                              item.numString,
+                              item.num,
+                              item.doz,
+                              item.dozen,
+                              item.col,
+                              item.oddOrEven,
+                              item.color,
+                              item.range,
+                              item.ssRange,
+                              item.dsRange,
+                              item.wTracker,
+                              item.quadra,
+                              item.letter
+                            )
+                          }
+                          key={item.num}
+                        >
+                          {/* Glassmorphism overlay */}
+                          <div 
+                            className="
+                              absolute 
+                              inset-0 
+                              bg-white 
+                              bg-opacity-10 
+                              backdrop-blur-sm 
+                              border-opacity-10
+                              pointer-events-none
+                            "
+                          ></div>
+                          
+                          {/* Number */}
+                          <span className="relative z-10 text-white">
+                            {item.num}
+                          </span>
+                        </div>
+                      );
+                    })}
 
                   {/* cols */}
                   <div className="w-full flex border-white font-white">
-                    <div
-                      className="w-[33.3%]  h-full border flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold"
+                  <div
+                    className="w-[33.3%] h-full bgPercentage border border-slate-300 relative flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold rounded-md"
+                    style={{
+                      backgroundColor:
+                        repeatCol === "1" && colHoverEffect ? "#58d68d" : "", // Preserves your existing conditional background color logic
+                    }}
+                    id="colContainer1"
+                  >
+                    2 - 1
+                    <p
+                      className=" bgPercentage text-white text-xs rounded-xl font-bold p-0.5 absolute  z-[20] "
                       style={{
-                        backgroundColor:
-                          repeatCol === "1" && colHoverEffect ? "#58d68d" : "",
+                        bottom: "-15px",
                       }}
                     >
-                      2 - 1
-                    </div>
+                      {percentagesColumn[1]}%
+                    </p>
+                  </div>
+
                     <div
-                      className="w-[33.3%] h-full border flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold"
+                      className="w-[33.3%] bgPercentage h-full border border-slate-300 relative flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold rounded-md"
                       style={{
                         backgroundColor:
                           repeatCol === "2" && colHoverEffect ? "#58d68d" : "",
                       }}
+                      id="colContainer2"
                     >
                       2 - 1
+                      <p
+                      className=" bgPercentage text-white text-xs rounded-xl font-bold p-0.5 absolute  z-[20] "
+                      style={{
+                        bottom: "-15px",
+                      }}
+                    >
+                      {percentagesColumn[2]}%
+                    </p>
                     </div>
                     <div
-                      className="w-[33.3%] h-full border flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold"
+                      className="w-[33.3%] h-full bgPercentage border border-slate-300 relative flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold rounded-md"
                       style={{
                         backgroundColor:
                           repeatCol === "3" && colHoverEffect ? "#58d68d" : "",
                       }}
+                      id="colContainer3"
                     >
                       2 - 1
+                      <p
+                      className=" bgPercentage text-white text-xs rounded-xl font-bold p-0.5 absolute  z-[20] "
+                      style={{
+                        bottom: "-15px",
+                      }}
+                    >
+                      {percentagesColumn[3]}%
+                    </p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
+               
+                
+
+
         </div>
 
         <div className="w-[10%] h-full  max-sm:flex justify-center items-center statistics ">
@@ -3073,21 +3622,11 @@ setHistoryData([...historyData, changedHistoryData]);
           >
             <CgInsights size={24} />
           </div>
+
+          
         </div>
       </div>
-      {/* <div>
-      <p>Dozen 1: {dozenScores[1]} ({dozenStatus[1]})</p>
-    <p>Dozen 2: {dozenScores[2]} ({dozenStatus[2]})</p>
-    <p>Dozen 3: {dozenScores[3]} ({dozenStatus[3]})</p>
-
-    <p>Column 1: {columnScores[1]} ({columnStatus[1]})</p>
-    <p>Column 2: {columnScores[2]} ({columnStatus[2]})</p>
-    <p>Column 3: {columnScores[3]} ({columnStatus[3]})</p>
-
-    <p>A: {rowDataScores.A} ({rowDataStatus['A']})</p>
-    <p>B: {rowDataScores.B} ({rowDataStatus['B']})</p>
-    <p>C: {rowDataScores.C} ({rowDataStatus['C']})</p>
-        </div> */}
+      
       {/* <div className="h-[40vh] border max-sm:hidden">
         <table className="border w-[20rem]">
           <tr>
@@ -3195,7 +3734,7 @@ setHistoryData([...historyData, changedHistoryData]);
             </div>
             <div className="flex mt-2 gap-1">
               <div
-                className="border border-2 border-purple-500  p-3 rounded-xl"
+                className=" border-2 border-purple-500  p-3 rounded-xl"
                 style={{
                   position: "relative",
                   width: "33%",
@@ -3231,7 +3770,7 @@ setHistoryData([...historyData, changedHistoryData]);
                 </div>
               </div>
               <div
-                className="border border-2 border-purple-500  p-3 rounded-xl"
+                className="border-2 border-purple-500  p-3 rounded-xl"
                 style={{
                   position: "relative",
                   width: "33%",
@@ -3267,7 +3806,7 @@ setHistoryData([...historyData, changedHistoryData]);
                 </div>
               </div>
               <div
-                className="border border-2 border-purple-500  p-3 rounded-xl"
+                className="border-2 border-purple-500  p-3 rounded-xl"
                 style={{
                   position: "relative",
                   width: "33%",
@@ -3308,12 +3847,42 @@ setHistoryData([...historyData, changedHistoryData]);
 
           <div className="flex justify-around  flex-col w-[35rem] max-md:w-[22rem] mt-10 max-sm:w-[21rem]" >
           <div className="flex justify-around bg-purple-600 text-white rounded-3xl py-1 text-md font-bold sm:text-md ">
-              <div className="   text-center  " style={{width:"33%"}}>
-                Numbers
+              <div className="   justify-center flex relative " style={{width:"33%"}}>
+                <span>Numbers</span> <div
+                    className="text-black cursor-pointer bg-white w-6 p-2 h-6 flex justify-center items-center rounded-full "
+                    onMouseEnter={() => setI6_btn(true)}
+                    onMouseLeave={() => setI6_btn(false)}
+                  >
+                    i
+                  </div>
+                  {i6_btn && (
+                    <div
+                      className="bg-purple-500 p-2 flex justify-between mb-4 text-start items-start text-white w-60 h-30 max-sm:w-45 max-sm:h-35 absolute max-sm:text-xs max-sm:left-[10%] max-lg:-right-[15%] -right-[35%] bottom-6"
+                      id="statsInfo"
+                    >
+                      <div
+                        className="text-start"
+                        style={{ fontSize: "11px", paddingLeft: "5px" }}
+                      >
+                        <p>
+                          <span className="font-bold h-5 w-5 p-1 text-center bg-customRed ps-2 rounded-md"> 0 </span>&nbsp; &nbsp; &nbsp;
+                          2,4,6,13,15,17,19,21,25,27,32,34
+                        </p>
+
+                        <p className="border-y my-1 py-1">
+                        <span className="font-bold h-5 w-5 p-1 text-center bg-customRed ps-2 rounded-md"> 1 </span> &nbsp; &nbsp; 1,5,8,10,11,16,20,23,24,30,33,36
+                        </p>
+
+                        <p>
+                        <span className="font-bold h-5 w-5 p-1 text-center bg-customRed ps-2 rounded-md"> 3 </span> &nbsp; &nbsp;3,7,9,12,14,18,22,26,28,29,31,35
+                        </p>
+                      </div>
+                    </div>
+                  )}
               </div>
               <div style={{ width: "33%" }} className="text-center flex items-center relative">
                 <span>Performance</span>
-                <div
+                  <div
                     className="text-black cursor-pointer bg-white w-6 p-2 h-6 flex justify-center items-center rounded-full "
                     onMouseEnter={() => setI1_btn(true)}
                     onMouseLeave={() => setI1_btn(false)}
@@ -3354,7 +3923,7 @@ setHistoryData([...historyData, changedHistoryData]);
 
 
 
-              <div className="border flex border-2 border-purple-500  p-1 rounded-xl">
+              <div className="flex border-2 border-purple-500  p-1 rounded-xl">
                 <div
                   style={{ width: "33%" }}
                   className="flex justify-center items-center"
@@ -3413,7 +3982,7 @@ setHistoryData([...historyData, changedHistoryData]);
               </div>
 
 
-              <div className="border flex border-2 border-purple-500  p-1 rounded-xl">
+              <div className="flex border-2 border-purple-500  p-1 rounded-xl">
                 <div
                   style={{ width: "33%" }}
                   className="flex justify-center items-center"
@@ -3470,7 +4039,7 @@ setHistoryData([...historyData, changedHistoryData]);
               </div>
 
 
-              <div className="border flex border-2 border-purple-500  p-1 rounded-xl">
+              <div className="flex border-2 border-purple-500  p-1 rounded-xl">
                 <div
                   style={{ width: "33%" }}
                   className="flex justify-center items-center"
@@ -3658,7 +4227,7 @@ setHistoryData([...historyData, changedHistoryData]);
             </div>
             <div className="flex flex-col mt-2 gap-1">
 
-              <div className="border flex border-2 border-purple-500  p-1 rounded-xl">
+              <div className="flex border-2 border-purple-500  p-1 rounded-xl">
                   <div
                     style={{ width: "33%" }}
                     className="flex justify-center items-center"
@@ -3713,7 +4282,7 @@ setHistoryData([...historyData, changedHistoryData]);
               </div>
 
 
-              <div className="border flex border-2 border-purple-500  p-1 rounded-xl">
+              <div className="flex border-2 border-purple-500  p-1 rounded-xl">
                   <div
                     style={{ width: "33%" }}
                     className="flex justify-center items-center"
@@ -3768,7 +4337,7 @@ setHistoryData([...historyData, changedHistoryData]);
               </div>
 
 
-              <div className="border flex border-2 border-purple-500  p-1 rounded-xl">
+              <div className="flex border-2 border-purple-500  p-1 rounded-xl">
                   <div
                     style={{ width: "33%" }}
                     className="flex justify-center items-center"
@@ -3874,7 +4443,7 @@ setHistoryData([...historyData, changedHistoryData]);
             <div className="flex mt-2 flex-col gap-1">
 
 
-              <div className="border flex border-2 border-purple-500  p-1 rounded-xl">
+              <div className="flex border-2 border-purple-500  p-1 rounded-xl">
                   <div
                     style={{ width: "33%" }}
                     className="flex justify-center items-center"
@@ -3930,7 +4499,7 @@ setHistoryData([...historyData, changedHistoryData]);
 
 
 
-              <div className="border flex border-2 border-purple-500  p-1 rounded-xl">
+              <div className="flex border-2 border-purple-500  p-1 rounded-xl">
                   <div
                     style={{ width: "33%" }}
                     className="flex justify-center items-center"
@@ -3985,7 +4554,7 @@ setHistoryData([...historyData, changedHistoryData]);
               </div>
 
 
-              <div className="border flex border-2 border-purple-500  p-1 rounded-xl">
+              <div className="flex border-2 border-purple-500  p-1 rounded-xl">
                   <div
                     style={{ width: "33%" }}
                     className="flex justify-center items-center"
@@ -4455,6 +5024,46 @@ setHistoryData([...historyData, changedHistoryData]);
           
         </div>
       </div>
+      
+      <section className="max-sm:w-[85vw] max-sm:mt-12 w-[80vw] mx-auto">
+
+      <div className="flex flex-col md:flex-row w-full bg-white p-2 rounded-lg mb-3 shadow-md">
+        {/* Header Section */}
+        <div className="flex items-center w-full md:w-[20%] mb-3 md:mb-0">
+          <h1 className="text-2xl font-bold text-superPurple md:text-xl sm:text-lg">Hot Trends</h1>
+          <img
+            src="https://res.cloudinary.com/dxsdme4qy/image/upload/v1734419453/fire_namnig.gif"
+            width={50}
+            height={50}
+            alt="fire"
+            className="ml-2"
+          />
+        </div>
+
+        {/* Content Section */}
+        {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full md:w-[80%] mx-auto p-4">
+  {Object.entries(highestValues).map(([groupName, { highestKey }]) => (
+    <div
+      key={groupName}
+      className="bg-gradient-to-br from-purple-100 to-white shadow-lg rounded-lg border border-gray-200 transform hover:scale-105 transition-transform duration-300"
+    >
+      <div className="p-6 text-center">
+        <h2 className="text-xl font-bold text-superPurple mb-2 uppercase">{groupName}</h2>
+        <p className="text-2xl font-semibold text-gray-700">
+          {highestKey}
+        </p>
+      </div>
+    </div>
+  ))}
+        </div> */}
+
+      </div>
+
+
+
+     
+          <History historyData={historyData} isAlertAllowed={isAlertAllowed} />
+        </section>
 
       <div
         className="h-[100%] text-center mt-5 w-full overflow-y-scroll rounded-xl p-2 scrollOff"
@@ -4479,8 +5088,7 @@ setHistoryData([...historyData, changedHistoryData]);
         >
           Money Management Tool
         </h2> 
-        
-       <ManualManagement />
+        <SpinCycleMoney/>
       </div>
 
       {planLockScreen && <Lock setPlanLockScreen={setPlanLockScreen} />}
@@ -4506,3 +5114,15 @@ export default Project4;
           theme={theme}
           lockProfitValue={lockProfitValue}
         /> */}
+
+        // <div className="flex gap-4">
+        //           {Object.entries(highestValues).map(([groupName, { highestKey, highestWin, highestFrom }]) => (
+        //               <div key={groupName} className="bg-white p-1 shadow-lg rounded-lg border transform rotate-90">
+        //               <h2 className="text-xl font-semibold text-gray-700">{groupName}</h2>
+        //               {/* <p className="text-gray-500 mt-2">Source: {highestFrom}</p> */}
+        //               <p className="text-lg text-gray-800">
+        //                   <strong>{highestKey}</strong>:
+        //               </p>
+        //               </div>
+        //           ))}
+        //         </div>

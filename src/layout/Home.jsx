@@ -9,7 +9,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import Project1 from "../components/main/Project1";
-import Project2 from "../components/main/Project2";
+// import Project2 from "../components/main/Project2";
 import Project3 from "../components/main/Project3";
 import Project4 from "../components/main/Project4";
 import Nav from "../components/nav/nav";
@@ -17,45 +17,44 @@ import "../Style/ProjectsNav.css";
 import ProjectsNav from "../components/nav/ProjectsNav";
 import { Feedback } from "../components/main/Feedback";
 import { Userinfo } from "../components/main/Userinfo";
-import Planprofit from "../components/main/ProfitPlan";
+import Planprofit from '../components/main/ProfitPlan'
 
 
 function Home() {
   const [popUp, setPopUp] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
+  const location = useLocation(); 
   const [theme, setTheme] = useState(() => {
     const savedTheme = JSON.parse(localStorage.getItem("Theme"));
     return savedTheme ? savedTheme.theme : "dark";
   });
 
-  const [navHeaderName, setNavHeaderName] = useState("project1");
+  const [navHeaderName, setNavHeaderName] = useState("");
 
   useEffect(() => {
     navigate("/project1/blackRed");
-    // navigate('/project4')
   }, []);
 
   useEffect(() => {
    
     const path = location.pathname.split("/")[1]; 
-    if (["project1", "project4","userinfo","feedback","profitplan"].includes(path)) {
+    if (["project1", "project2", "project3", "project4","userinfo","feedback","profitplan"].includes(path)) {
       setNavHeaderName(path);
     } else {
       setNavHeaderName(""); 
     }
   }, [location]);
 
-  // ScreenShot function
+
   const elementToCaptureRef = useRef(null);
 
   const captureScreenshot = async () => {
     const canvas = await html2canvas(elementToCaptureRef.current);
     canvas.toBlob((blob) => {
-      saveAs(blob, "screenshot.png"); // Save the screenshot as a file
+      saveAs(blob, "screenshot.png"); 
     });
 
-    // Optionally, share the screenshot on supported devices (mobile):
+    
     if (navigator.share) {
       canvas.toBlob((blob) => {
         const file = new File([blob], "screenshot.png", { type: "image/png" });
@@ -72,12 +71,10 @@ function Home() {
       console.log("Can't share in this  browser.");
     }
   };
+
   return (
     <div
       ref={elementToCaptureRef}
-      // className={
-      //   theme === "dark" ? "bg-slate-900 relative" : "bg-purplegrad relative"
-      // }
       className="bg-purplegrad relative"
     >
       <ProjectsNav
@@ -93,34 +90,34 @@ function Home() {
         navHeaderName={navHeaderName}
       />
 
-      <div className="h-[90vh] md:h-[88vh] lg:h-[85vh] overflow-y-scroll" >
-      <Routes>
-        <Route
-          path="project1/*"
-          element={<Project1 theme={theme} setTheme={setTheme} />}
-        />
-        <Route
-          path="project2/*"
-          element={
-            <Project2
-              theme={theme}
-              setTheme={setTheme}
-              captureScreenshot={captureScreenshot}
-            />
-          }
-        />
-        <Route path="/userinfo" element={<Userinfo/>} theme={theme} setTheme={setTheme}/>
-        <Route path="/feedback" element={<Feedback theme={theme} setTheme={setTheme} />} />
-        <Route path="/profitplan" element={<Planprofit/>}/>
-        <Route
-          path="project3/*"
-          element={<Project3 theme={theme} setTheme={setTheme} />}
-        />
-        <Route
-          path="project4/*"
-          element={<Project4 theme={theme} setTheme={setTheme} />}
-        />
-      </Routes>
+      <div className="h-[90vh] md:h-[88vh] lg:h-[85vh] overflow-y-scroll">
+        <Routes>
+          <Route
+            path="project1/*"
+            element={<Project1 theme={theme} setTheme={setTheme} />}
+          />
+          {/* <Route
+            path="project2/*"
+            element={
+              <Project2
+                theme={theme}
+                setTheme={setTheme}
+                captureScreenshot={captureScreenshot}
+              />
+            }
+          /> */}
+          <Route path="/userinfo" element={<Userinfo />} theme={theme} setTheme={setTheme} />
+          <Route path="/feedback" element={<Feedback theme={theme} setTheme={setTheme} />} />
+          <Route path="/profitplan" element={<Planprofit/>}/>
+          <Route
+            path="project3/*"
+            element={<Project3 theme={theme} setTheme={setTheme} />}
+          />
+          <Route
+            path="project4/*"
+            element={<Project4 theme={theme} setTheme={setTheme} />}
+          />
+        </Routes>
       </div>
     </div>
   );

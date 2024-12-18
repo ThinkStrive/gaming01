@@ -350,3 +350,176 @@ export default Planprofit;
     { label: 'CFA Franc', symbol: '₣', code: 'XOF' },
     { label: 'CFP Franc', symbol: '₣', code: 'CFP' }
   ];
+
+
+
+
+  its a Baccarat short trend long trend Speedometer code i need to paste this in Right panner Under BaccaratMoney
+
+
+
+   <div className="flex flex-col items-center w-full pt-2 border-2 border-purple-950 rounded-xl mt-3">
+        
+          <div className="text-white px-2 w-full flex flex-col gap-3">
+            {/* Tabs */}
+            <div className="tabs tabs-boxed bg-purple-800 py-2">
+              {["Short Trend", "Long Trend"].map((tab) => (
+                <a
+                  key={tab}
+                  className={`tab ${
+                    activeTab === tab
+                      ? "bg-customBlack text-white text-[16px] font-bold"
+                      : "font-semibold"
+                  }`}
+                  onClick={() => handleTabClick(tab)}
+                >
+                  {tab}
+                </a>
+              ))}
+            </div>
+
+            {/* Content */}
+            <div className="content">
+              {activeTab === "Short Trend" && (
+                <div className="flex">
+                  <div className="flex overflow-x-scroll w-full gap-2 w-100">
+                    {/* Banker */}
+                    <div className="flex flex-col p-1 border-2 rounded-xl gap-2 border-purple-800 lg:w-[49%] md:w-[49%] sm:w-[140px]">
+                      <p className="text-center px-3 py-1 rounded-xl bg-Banker text-xl font-bold">Banker</p>
+                      <div className="flip-container text-center relative h-[100px]">
+                        <style>
+                          {`
+                            .gauge-chart svg g > circle {
+                              fill: white !important; 
+                            }
+                          `}
+                        </style>
+                        <GaugeChart
+                          className="gauge-chart"
+                          nrOfLevels={10}
+                          percent={shortBankerGauge}
+                          colors={["#00BFFF", "#FFFF00", "#FF4800"]}
+                          arcLength={0.777} 
+                          arcWidth={0.3} 
+                          cornerRadius={5}
+                          hideText={true} 
+                          style={{ height: "120px",width:"100%" }} 
+                        />
+                      </div>
+                      <p className="text-xl md:text-md font-bold text-center">{ShortScore.banker.text}</p>
+                    </div>
+
+                    {/* Player */}
+                    <div className="flex flex-col p-1 border-2 rounded-xl gap-2 border-purple-800 lg:w-[49%] md:w-[49%]  sm:w-[140px]">
+                      <p className="text-center px-3 py-1 rounded-xl bg-Player text-xl font-bold">Player</p>
+                      <div className="flip-container text-center relative h-[100px]">
+                        <GaugeChart
+                          className="gauge-chart"
+                          nrOfLevels={10}
+                          percent={shortPlayerGauge} 
+                          colors={["#00BFFF", "#FFFF00", "#FF4800"]}
+                          arcLength={0.777}
+                          arcWidth={0.3}
+                          cornerRadius={5}
+                          hideText={true}
+                          style={{ height: "120px" ,width:"100%"}}
+                        />
+                      </div>
+                      <p className="text-xl md:text-md font-bold text-center">{ShortScore.player.text}</p>
+                    </div>
+
+                    {/* Tie */}
+                    {/* <div className="flex flex-col p-1 border-2 rounded-xl gap-2 border-purple-800 lg:w-[32%] md:w-[32%]  sm:w-[140px]">
+                      <p className="text-center px-3 py-1 rounded-xl bg-Tie text-xl font-bold">Tie</p>
+                      <div className="flip-container text-center relative h-[100px]">
+                        <GaugeChart
+                          className="gauge-chart"
+                          nrOfLevels={10}
+                          percent={shortTieGauge} 
+                          colors={["#00BFFF", "#FFFF00", "#FF4800"]} 
+                          arcLength={0.777} 
+                          arcWidth={0.3}
+                          cornerRadius={5}
+                          hideText={true} 
+                          style={{ height: "120px",width:"100%" }} 
+                          />
+                      </div>
+                      <p className="text-xl md:text-md font-bold text-center">{ShortScore.tie.text}</p>
+                    </div> */}
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "Long Trend" && (
+                <div className="flex">
+                  <div className="w-full overflow-x-scroll flex gap-2 w-100">
+                    {/* Banker */}
+                    <div className="flex flex-col p-1 border-2 rounded-xl gap-2 border-purple-800 lg:w-[49%] md:w-[49%]  sm:w-[140px]">
+                      <p className="text-center px-3 py-1 rounded-xl bg-Banker text-xl font-bold">Banker</p>
+                      <div className="flip-container text-center relative h-[100px]">
+                        <style>
+                          {`
+                            .gauge-chart svg g > circle {
+                              fill: white !important;
+                            }
+                          `}
+                        </style>
+                        <GaugeChart
+                          className="gauge-chart"
+                          nrOfLevels={10}
+                          percent={LongBankerGauge} 
+                          colors={["#00BFFF", "#FFFF00", "#FF4800"]}
+                          arcLength={0.777}
+                          arcWidth={0.3}
+                          cornerRadius={5}
+                          hideText={true}
+                          style={{ height: "120px",width:"100%"}} 
+                        />
+                      </div>
+                      <p className="text-xl md:text-md font-bold text-center">{LongScore.banker.text}</p>
+                    </div>
+
+                    {/* Player */}
+                    <div className="flex flex-col p-1 border-2 rounded-xl gap-2 border-purple-800 lg:w-[49%] md:w-[49%]  sm:w-[140px]">
+                      <p className="text-center px-3 py-1 rounded-xl bg-Player text-xl font-bold">Player</p>
+                      <div className="flip-container text-center relative h-[100px]">
+                        <GaugeChart
+                          className="gauge-chart"
+                          nrOfLevels={10}
+                          percent={LongPlayerGauge} // 75% progress
+                          colors={["#00BFFF", "#FFFF00", "#FF4800"]}
+                          arcLength={0.777}
+                          arcWidth={0.3}
+                          cornerRadius={5}
+                          hideText={true} // Hide text
+                          style={{ height: "120px",width:"100%" }} 
+                        />
+                      </div>
+                      <p className="text-xl md:text-md font-bold text-center">{LongScore.player.text}</p>
+                    </div>
+
+                    {/* Tie */}
+                    {/* <div className="flex flex-col p-1 border-2 rounded-xl gap-2 border-purple-800 lg:w-[32%] md:w-[32%]  sm:w-[140px]">
+                      <p className="text-center px-3 py-1 rounded-xl bg-Tie text-xl font-bold">Tie</p>
+                      <div className="flip-container text-center relative h-[100px]">
+                        <GaugeChart
+                          className="gauge-chart"
+                          nrOfLevels={10}
+                          percent={LongTieGauge}
+                          colors={["#00BFFF", "#FFFF00", "#FF4800"]} 
+                          arcLength={0.777} 
+                          arcWidth={0.3} 
+                          cornerRadius={5}
+                          hideText={true} 
+                          style={{ height: "120px",width:"100%" }} 
+                        />
+                      </div>
+                      <p className="text-xl md:text-md font-bold text-center">{LongScore.tie.text}</p>
+                    </div> */}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          </div>

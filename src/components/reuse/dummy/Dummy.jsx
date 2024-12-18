@@ -1714,3 +1714,121 @@ const Project4 = ({ theme }) => {
 };
 
 export default Project4;
+
+
+
+
+
+
+
+
+
+import React, { useEffect } from "react";
+
+const FindPoints = ({ setBankerPoints, setPlayerPoints, columns, setTiePoints, setBankerPointsLong, setPlayerPointsLong, setTiePointsLong }) => {
+    
+    useEffect(() => {
+        const allValues = columns
+          .map((obj) => obj.values)
+          .flat()
+          .filter((value) => value === "B" || value === "P" || value === "T");
+      
+        console.log("all values", allValues);
+      
+        if (allValues.length < 6) return;
+      
+        // Split the allValues into chunks of 6
+        const chunks = [];
+        for (let i = 0; i < allValues.length; i += 6) {
+          chunks.push(allValues.slice(i, i + 6));
+        }
+
+        console.log('chunks', chunks)
+      
+        // Get the last chunk of 6 values
+        const lastSixValues = chunks[chunks.length - 1];
+      
+        // Initialize points
+        let calculateBankerPoints = 0;
+        let calculatePlayerPoints = 0;
+        let tiePoints = 0;
+      
+        // 1. Apply these rules once per 6 spins (Consecutive Wins, Cold Results, Single Occurrence)
+        if (lastSixValues.length === 6) {
+          // Rule 1: Consecutive Wins (+2 points per streak)
+          for (let i = 1; i < lastSixValues.length; i++) {
+            if (lastSixValues[i] === lastSixValues[i - 1]) {
+              if (lastSixValues[i] === "B") calculateBankerPoints += 2;
+              if (lastSixValues[i] === "P") calculatePlayerPoints += 2;
+            }
+          }
+      
+          // Rule 2: Cold Result (-2 points per missing result)
+          if (!lastSixValues.includes("B")) calculateBankerPoints -= 2;
+          if (!lastSixValues.includes("P")) calculatePlayerPoints -= 2;
+        //   if (!lastSixValues.includes("T")) tiePoints -= 2;
+      
+          // Rule 3: Single Occurrence (+1 point per result that appears only once)
+          const valueCounts = lastSixValues.reduce((acc, value) => {
+            acc[value] = (acc[value] || 0) + 1;
+            return acc;
+          }, {});
+          if (valueCounts["B"] === 1) calculateBankerPoints += 1;
+          if (valueCounts["P"] === 1) calculatePlayerPoints += 1;
+        //   if (valueCounts["T"] === 1) tiePoints += 1;
+        }
+      
+        // 2. Apply these rules at every click
+        // Rule 4: Repeater in Last 2 Spins (+3 points)
+        if (
+          allValues.length >= 2 &&
+          allValues[allValues.length - 1] === allValues[allValues.length - 2]
+        ) {
+          const lastResult = allValues[allValues.length - 1];
+          if (lastResult === "B") calculateBankerPoints += 3;
+          if (lastResult === "P") calculatePlayerPoints += 3;
+        //   if (lastResult === "T") tiePoints += 3;
+        }
+      
+        // Rule 5: Alternating Pattern (+2 points per alternation)
+        if (
+          allValues.length >= 2 &&
+          ((allValues[allValues.length - 1] === "B" && allValues[allValues.length - 2] === "P") ||
+            (allValues[allValues.length - 1] === "P" && allValues[allValues.length - 2] === "B"))
+        ) {
+          calculateBankerPoints += 2;
+          calculatePlayerPoints += 2;
+        }
+      
+        // Rule 6: Tie Occurs (+1 point per Tie)
+        if (allValues[allValues.length - 1] === "T") {
+          tiePoints += 1;
+        }
+      
+        // Rule 7: Tie After Streak (+2 points)
+        if (
+          allValues.length >= 3 &&
+          allValues[allValues.length - 1] === "T" &&
+          allValues[allValues.length - 2] === allValues[allValues.length - 3]
+        ) {
+          tiePoints += 2;
+        }
+      
+        // Update the state with the calculated points
+        setBankerPoints((prevPoints) => prevPoints + calculateBankerPoints);
+        setPlayerPoints((prevPoints) => prevPoints + calculatePlayerPoints);
+        // Optional: If you're using Tie points
+        setTiePoints((prevPoints) => prevPoints + tiePoints);
+      }, [columns]);
+      
+      
+      
+      
+  return (
+    <div>
+
+    </div>
+  );
+};
+
+export default FindPoints;

@@ -354,25 +354,29 @@ function RouletteGrid({
       return coinImg.coin_100;
     } else if (amount >= 500 && amount < 1000) {
       return coinImg.coin_500;
+    }else if(amount >= 1000 && amount < 5000){
+      return coinImg.coin_1000;
+    }else if(amount >= 5000 && amount < 10000){
+      return coinImg.coin_5000;
     }
 
-    return "#FFC107";
+    return coinImg.coin_5000;
   };
 
   const renderCoinDiv = (data) => {
     return data > 0 ? (
       <div
-        className="w-6 h-6 bg-yellow-500 rounded-full text-xs flex justify-center items-center text-white font-semibold md:rotate-90 absolute"
+        className="w-14 h-14 md:w-[75px] md:h-[75px] rounded-full text-xs flex justify-center items-center text-white font-semibold md:rotate-90 absolute"
         style={
           {
             // display: data > 0 ? "flex" : "none",
           }
         }
       >
-        <div className="absolute w-full h-full top-0 left-0 bg-yellow-500 rounded-full">
-          <img src={renderCoinImg(data)} alt="" />
+        <div className="absolute">
+          <img src={renderCoinImg(data)} alt="" className="w-full h-full" />
         </div>
-        <p className="absolute z-10">{data}</p>
+        {/* Displays total bet amount on top of coin <p className="absolute z-10">{data}</p> */}
       </div>
     ) : (
       ""
@@ -383,15 +387,15 @@ function RouletteGrid({
     return data.map((item) =>
       item > 0 ? (
         <div
-          className="w-6 h-6 bg-yellow-500 rounded-full text-xs flex justify-center items-center text-white font-semibold md:rotate-90 absolute"
+          className="w-14 h-14 md:w-[75px] md:h-[75px] rounded-full text-xs flex justify-center items-center text-white font-semibold md:rotate-90 absolute"
           style={{
             display: item > 0 ? "flex" : "none",
           }}
         >
-          <div className="absolute w-full h-full top-0 left-0 bg-yellow-500 rounded-full">
-            <img src={renderCoinImg(item)} alt="" />
+          <div className="absolute ">
+            <img src={renderCoinImg(item)} alt="" className="w-full h-full" />
           </div>
-          <p className="absolute z-10">{item}</p>
+          {/* <p className="absolute z-10">{item}</p> */}
         </div>
       ) : (
         ""
@@ -425,25 +429,27 @@ function RouletteGrid({
         onMouseLeave={() => removeRatioPopup()}
       >
         <div
-          className="w-6 h-6 bg-yellow-500 rounded-full text-xs flex justify-center items-center text-white md:rotate-90 relative"
+          className="w-14 h-14 md:w-[75px] md:h-[75px] rounded-full text-xs flex justify-center items-center text-white md:rotate-90 relative"
           style={{
             display: _1divData[index] > 0 ? "flex" : "none",
             background: `url(${coinImg.coin_1}) cover`,
           }}
         >
-          <div className="absolute w-full h-full top-0 left-0 bg-yellow-500 rounded-full">
-            <img src={renderCoinImg(_1divData[index])} alt="" />
+          <div className="absolute ">
+            <img src={renderCoinImg(_1divData[index])} alt="" className="w-full h-full" />
           </div>
 
-          <p className="absolute z-10">{_1divData[index]}</p>
+          {/* <p className="absolute z-10">{_1divData[index]}</p> */}
         </div>
       </div>
     </div>
   );
 
   return (
-    // Roulette Wrapper
-    <div className="relative max-sm:w-[90%] w-[23rem] max-sm:-mt-10 max-sm:h-[70vh] max-lg:h-[95vh] xl:h-[50rem] h-[95vh] md:-rotate-90 flex flex-col items-end">
+    <div className="px-4 main h-[75.5vh] flex">
+        <div className="mt-1 w-[95%] flex justify-center items-center md:h-[76vh] max-[800px]:h-[75vh] max-[600px]:h-full md:py-4">
+        {/* // Roulette Wrapper */}
+    <div className="relative max-sm:w-[19rem] w-[24rem] max-sm:-mt-10 max-sm:h-[70vh] max-md:h-[70vh] max-lg:h-[95vh] xl:h-[50rem] h-[95vh] md:-rotate-90 flex flex-col items-end">
       {/* zero switch */}
       <div
         className="absolute left-6 -top-2 max-sm:-top-9 w-12 h-24 text-black z-20 rotate-90 flex flex-col justify-center items-center cursor-pointer"
@@ -1041,6 +1047,8 @@ function RouletteGrid({
           </div>
         );
       })}
+       </div>
+        </div>
     </div>
   );
 }

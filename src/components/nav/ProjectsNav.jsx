@@ -62,31 +62,31 @@ useEffect(() => {
 
 
   const handleClickProjectSelect = (name) => {
-    setPopUp(false);  // Close sidebar on project selection
+    setPopUp(false);  
     setNavHeaderName(name);
   };
 
   const handleModalOpen = () => {
-    setIsModalOpen(true);  // Open modal
+    setIsModalOpen(true);  
   };
 
   const handleModalClose = () => {
-    setIsModalOpen(false);  // Close modal
+    setIsModalOpen(false); 
   };
 
   const handleModalOpen1 = () => {
-    setIsModalOpen1(true);  // Open modal
+    setIsModalOpen1(true);  
   };
 
   const handleModalClose1 = () => {
-    setIsModalOpen1(false);  // Close modal
+    setIsModalOpen1(false); 
   };
   const handleModalOpen2 = () => {
-    setIsModalOpen2(true);  // Open modal
+    setIsModalOpen2(true);  
   };
 
   const handleModalClose2 = () => {
-    setIsModalOpen2(false);  // Close modal
+    setIsModalOpen2(false); 
   };
   
 
@@ -114,6 +114,28 @@ useEffect(() => {
             >
               Data-Driven Roulette Tracker
             </Link>
+            {/* <Link
+              to="/project2"
+              className={
+                location.pathname === "/project2"
+                  ? "w-full bg-white p-2 text-black font-semibold rounded-lg pl-6 hover:bg-softBlue my-0.5"
+                  : "w-full p-2 font-semibold rounded-lg pl-6 hover:bg-softBlue my-0.5"
+              }
+              onClick={() => handleClickProjectSelect("project2")}
+            >
+              RSA
+            </Link> */}
+            <Link
+              to="/project3"
+              className={
+                location.pathname === "/project3"
+                  ? "w-full bg-white p-2 text-black font-semibold rounded-lg pl-6 hover:bg-softBlue my-0.5"
+                  : "w-full p-2 font-semibold rounded-lg pl-6 hover:bg-softBlue my-0.5"
+              }
+              onClick={() => handleClickProjectSelect("project3")}
+            >
+             Data-Driven Baccarat
+            </Link>
             <Link
               to="/project4"
               className={
@@ -135,7 +157,6 @@ useEffect(() => {
             >
               Feedback 
             </Link>
-
             <Link
               to="/profitplan"  
               className={
@@ -146,7 +167,6 @@ useEffect(() => {
             >
              Daily Profit Plan 
             </Link>
-
             {/* Help Dropdown */}
             <div className="relative items-start flex flex-col w-full bg-transparant p-2 font-semibold rounded-lg pl-6 my-0.5">
               <button
@@ -179,23 +199,29 @@ useEffect(() => {
 
 
 
-          <Link to="/userinfo" className="bg-purplegrad2 py-2 px-4 mb-4 rounded-xl justify-between flex border-2 border-white cursor-pointer group" >
-            <div className="flex">
-              <IoPersonCircleOutline size={50} className="rounded-full text-white" />
-              <div className="ms-2">
-                <h3 className="pb-1 text-xl overflow-hidden text-white text-ellipsis whitespace-normal">
-                  {userData.userName}
-                </h3>
-                <h5 className="text-xs overflow-hidden text-white text-ellipsis whitespace-normal">
-                  {userData.userEmail}
-                </h5>
-              </div>
-            </div>
-            <RiArrowRightSLine
-              size={35}
-              className="text-white mt-2 transition-transform duration-300 transform group-hover:translate-x-1"
-            />
-          </Link>
+          <Link to="/userinfo" className="bg-purplegrad2 py-2 px-4 mb-4 rounded-xl justify-between flex border-2 border-white cursor-pointer group">
+  <div className="flex">
+    {/* Use the profile picture stored in localStorage */}
+    <img 
+      src={localStorage.getItem("profilePicture") || <IoPersonCircleOutline size={50} className="rounded-full text-white" />} 
+      alt="Profile"
+      className="rounded-full"
+      style={{ width: 50, height: 50 }}
+    />
+    <div className="ms-2">
+      <h3 className="pb-1 text-xl overflow-hidden text-white text-ellipsis whitespace-normal">
+        {userData.userName}
+      </h3>
+      <h5 className="text-xs overflow-hidden text-white text-ellipsis whitespace-normal">
+        {userData.userEmail}
+      </h5>
+    </div>
+  </div>
+  <RiArrowRightSLine
+    size={35}
+    className="text-white mt-2 transition-transform duration-300 transform group-hover:translate-x-1"
+  />
+</Link>
 
 
 

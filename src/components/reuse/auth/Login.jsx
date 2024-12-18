@@ -151,6 +151,7 @@ const Login = ({ inputData, setInputData }) => {
         </p>
       </div>
     </div>
+    
   </section>
 
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CurrencyInput from "react-currency-input-field";
-import ProfitPlanChart from '../reuse/charts/ProfitPlanChart'
-import { FaEdit } from "react-icons/fa";
+import ProfitPlanChart from '.././reuse/charts/ProfitPlanChart'
+
 
 const Planprofit = () => {
   // currencies for Dropdown
@@ -87,27 +87,29 @@ const Planprofit = () => {
 
   // getting data from local storage
   const [savedData, setSavedData] = useState(() => {
-    const data = localStorage.getItem("profitPlanData");
+    const data = localStorage.getItem("profitPlanForm");
     return data ? JSON.parse(data) : null;
   });
 
   // destructuring with default values
   const {
     savedBankRoll = 0,
-    savedCurrency = "$",
+    savedCurrencyCode = "",
+    savedCurrency = "",
     savedSession = 0,
     savedStopLoss = 0,
     savedProfitGoal = 0,
     savedUnitSize = 0,
   } = savedData || {};
 
+  const [ currencyCode , setCurrencyCode ] = useState("USD");
   const [currency, setCurrency] = useState("$");
   const [bankRoll, setBankRoll] = useState("");
   const [unit, setUnit] = useState(1);
   const [isCustomUnit, setIsCustomUnit] = useState(false);
   const [profitGoal, setProfitGoal] = useState(10);
   const [isCustomProfit, setIsCustomProfit] = useState(false);
-  const [stopLoss, setStopLoss] = useState(1);
+  const [stopLoss, setStopLoss] = useState(25);
   const [isCustomStopLoss, setIsCustomStopLoss] = useState(false);
   const [sessions, setSessions] = useState(7);
   const [isCustomSession, setIsCustomSession] = useState(false);
@@ -116,17 +118,27 @@ const Planprofit = () => {
   const [isResetToast, setIsResetToast] = useState(false);
 
   const [calculatedData, setCalculatedData] = useState(() => {
-    const savedData = localStorage.getItem("calculatedGoalData");
-    return savedData ? JSON.parse(savedData).savedEstimatedData : [];
+    const savedData = localStorage.getItem("profitPlanGoal");
+    return savedData ? JSON.parse(savedData) : [];
   });
 
   const [calculatedProgress, setCalculatedProgress] = useState(() => {
-    const savedData = localStorage.getItem("userProgressData");
-    return savedData ? JSON.parse(savedData).savedProgress : [];
+    const savedData = localStorage.getItem("profitPlanProgress");
+    return savedData ? JSON.parse(savedData) : [];
   });
 
   const [editableRow, setEditableRow] = useState(null);
   const [newFinalBalance, setNewFinalBalance] = useState("");
+
+  // currency Change dropdown
+
+  const handleCurrencyChange = (e)=>{
+    const selectedCode = e.target.value;
+    setCurrencyCode(selectedCode);
+    const selectedCurrency = currencies.find(currency => currency.code === selectedCode);
+    const currencySymbol = selectedCurrency.symbol;
+    setCurrency(currencySymbol);
+  }
 
   // Dropdown Change logic
   const handleDropdownChange = (field, value) => {
@@ -218,6 +230,8 @@ const Planprofit = () => {
     return false;
   };
 
+  
+
   // handling submit button click
   const handleSubmit = () => {
     const isFormValid = validate();
@@ -227,6 +241,7 @@ const Planprofit = () => {
         const updateData = {
           ...prev,
           savedBankRoll: parseInt(bankRoll),
+          savedCurrencyCode:currencyCode,
           savedCurrency: currency,
           savedProfitGoal: parseInt(profitGoal),
           savedSession: parseInt(sessions),
@@ -234,7 +249,7 @@ const Planprofit = () => {
           savedStopLoss: parseInt(stopLoss),
         };
 
-        localStorage.setItem("profitPlanData", JSON.stringify(updateData));
+        localStorage.setItem("profitPlanForm", JSON.stringify(updateData));
 
         return updateData;
       });
@@ -249,18 +264,18 @@ const Planprofit = () => {
 
   const handleResetClick = () => {
     setSavedData(null);
-    setUnit(1);
-    setIsCustomUnit(false);
-    setProfitGoal(10);
-    setIsCustomProfit(false);
-    setStopLoss(1);
-    setIsCustomStopLoss(false);
-    setBankRoll("");
-    setIsCustomSession(false);
-    setSessions(7);
-    localStorage.removeItem("profitPlanData");
-    localStorage.removeItem("calculatedGoalData");
-    localStorage.removeItem("userProgressData");
+    // setUnit(1);
+    // setIsCustomUnit(false);
+    // setProfitGoal(10);
+    // setIsCustomProfit(false);
+    // setStopLoss(25);
+    // setIsCustomStopLoss(false);
+    // setBankRoll("");
+    // setIsCustomSession(false);
+    // setSessions(7);
+    localStorage.removeItem("profitPlanForm");
+    localStorage.removeItem("profitPlanGoal");
+    localStorage.removeItem("profitPlanProgress");
 
     // Reset button click- Toast Notification
     setIsResetToast(true);
@@ -299,6 +314,7 @@ const Planprofit = () => {
       data.push({
         session: i,
         bankRoll: bankRoll.toFixed(2),
+        unitPercentage: unit,
         unitSize: unitSize.toFixed(2),
         stopLossSize: stopLossSize.toFixed(2),
         profitPercentage: 0,
@@ -317,28 +333,27 @@ const Planprofit = () => {
 
   useEffect(() => {
     localStorage.setItem(
-      "calculatedGoalData",
-      JSON.stringify({ savedEstimatedData: calculatedData })
+      "profitPlanGoal",
+      JSON.stringify(calculatedData)
     );
   }, [calculatedData]);
 
   useEffect(() => {
     localStorage.setItem(
-      "userProgressData",
-      JSON.stringify({ savedProgress: calculatedProgress })
+      "profitPlanProgress",
+      JSON.stringify(calculatedProgress)
     );
   }, [calculatedProgress]);
 
   useEffect(() => {
-    const savedData = JSON.parse(localStorage.getItem("userProgressData"));
+    const savedData = JSON.parse(localStorage.getItem("profitPlanProgress"));
     if (
       !savedData ||
-      !savedData.savedProgress ||
-      savedData.savedProgress.length === 0
+      savedData.length === 0
     ) {
-      calculateUserProgress(sessions);
+      calculateUserProgress(savedSession);
     } else {
-      setCalculatedProgress(savedData.savedProgress);
+      setCalculatedProgress(savedData);
     }
   }, []);
 
@@ -350,6 +365,7 @@ const Planprofit = () => {
   const handleBalanceChange = (e) => {
     setNewFinalBalance(e.target.value);
   };
+
 
   const handleSaveClick = (index) => {
     const updatedProgress = [...calculatedProgress];
@@ -363,11 +379,11 @@ const Planprofit = () => {
 
     updatedProgress[index].finalBalance = finalBalance;
 
-    const profitPercent =
+    const profitPercentage =
       ((finalBalance - updatedProgress[index].bankRoll) /
         updatedProgress[index].bankRoll) *
       100;
-    updatedProgress[index].profitPercent = profitPercent.toFixed(2);
+    updatedProgress[index].profitPercentage = profitPercentage.toFixed(2);
     updatedProgress[index].actualProfit = (
       finalBalance - updatedProgress[index].bankRoll
     ).toFixed(2);
@@ -377,19 +393,36 @@ const Planprofit = () => {
         i === index + 1 ? finalBalance : updatedProgress[i - 1].finalBalance;
 
       const bankRoll = updatedProgress[i].bankRoll;
+      const unit = updatedProgress[i].unitPercentage;
+
       updatedProgress[i].unitSize = ((bankRoll * unit) / 100).toFixed(2);
       updatedProgress[i].stopLossSize = ((bankRoll * stopLoss) / 100).toFixed(
         2
       );
 
       updatedProgress[i].finalBalance = bankRoll;
-      updatedProgress[i].profitPercent = 0;
+      updatedProgress[i].profitPercentage = 0;
       updatedProgress[i].actualProfit = 0;
     }
 
     setCalculatedProgress(updatedProgress);
+    localStorage.setItem("profitPlanProgress",JSON.stringify(updatedProgress));
     setEditableRow(null);
   };
+
+  const handleUnitPercentageChange = (e,index)=>{
+    const newPercentage = e.target.value;
+    const updatedProgress = [...calculatedProgress];
+
+    updatedProgress[index] = {
+      ...updatedProgress[index],
+      unitPercentage:newPercentage,
+      unitSize:(updatedProgress[index].bankRoll * (newPercentage || 0))/100
+    }
+
+    setCalculatedProgress(updatedProgress);
+    localStorage.setItem("profitPlanProgress",JSON.stringify(updatedProgress));
+  }
 
   return (
     <>
@@ -407,11 +440,11 @@ const Planprofit = () => {
               <select
                 className="rounded-md  p-1 md:p-1.5 w-full outline-none focus:outline-lime-400"
                 name="currency"
-                value={currency}
-                onChange={(e) => setCurrency(e.target.value)}
+                value={currencyCode}
+                onChange={handleCurrencyChange}
               >
                 {currencies.map((item, index) => (
-                  <option key={index} value={item.symbol}>
+                  <option key={index} value={item.code}>
                     {item.label} ({item.symbol})
                   </option>
                 ))}
@@ -601,11 +634,11 @@ const Planprofit = () => {
                       handleDropdownChange("stopLoss", e.target.value)
                     }
                   >
-                    <option value="1" className="max-sm:text-xs text-base">
-                      1% - Recommended
+                    <option value="25" className="max-sm:text-xs text-base">
+                      25% - Recommended
                     </option>
-                    <option value="2" className="max-sm:text-xs text-base">
-                      2% - Moderate
+                    <option value="30" className="max-sm:text-xs text-base">
+                      30% - Moderate
                     </option>
                     <option value="custom" className="max-sm:text-xs text-base">
                       Custom
@@ -666,8 +699,9 @@ const Planprofit = () => {
               <p className="text-slate-200 text-base font-medium">
                 Bank Roll :{" "}
                 <span className="text-base text-[#F5A623] font-semibold">
-                  {savedCurrency}
-                  {savedBankRoll}
+                  {savedBankRoll}&nbsp;
+                  {savedCurrencyCode}
+                  
                 </span>
               </p>
               <p className="text-slate-200 text-base font-medium">
@@ -789,7 +823,7 @@ const Planprofit = () => {
               <table className="table-auto w-full border-collapse text-sm text-white">
                 <thead>
                   <tr className="bg-purple-700 text-slate-100">
-                    <th className="border border-purple-700 px-4 py-2 text-center">
+                    <th className="border border-purple-700 px-4 py-2 text-center w-14">
                       Session
                     </th>
                     <th className="border border-purple-700 px-4 py-2 text-center">
@@ -797,6 +831,9 @@ const Planprofit = () => {
                     </th>
                     <th className="border border-purple-700 px-4 py-2 text-center">
                       Unit
+                    </th>
+                    <th className="border border-purple-700 px-4 py-2 text-center">
+                      Unit value
                     </th>
                     <th className="border border-purple-700 px-4 py-2 text-center">
                       Stoploss
@@ -817,28 +854,35 @@ const Planprofit = () => {
                 </thead>
                 <tbody>
                   {calculatedProgress.map((row, index) => (
-                    <tr key={row.session} className={`${row.session % 2 === 1 ? "bg-purple-900":"bg-purple-800"} text-slate-100 cursor-pointer hover:bg-[#7539d6]`}>
-                      <td className="border border-black px-4 py-3 text-center font-medium">
+                    <tr key={row.session} className={`${row.session % 2 === 1 ? "bg-purple-900":"bg-purple-800"} text-slate-100 cursor-pointer hover:bg-[#391f62]`}>
+                      <td className="border border-black px-1 py-1.5 text-center font-medium w-14">
                         {row.session}
                       </td>
                       <td className="border border-black px-4 py-2 text-center font-medium">
-                        {currency}
+                        <span className="text-[#F5A623]">{savedCurrency} </span>
                         {row.bankRoll}
                       </td>
+                      <td className="border border-black px-1 py-0.5 text-center font-medium">
+                        <input type="number" value={row.unitPercentage}
+                        min={1}
+                        max={100}
+                        className="px-2 py-1 bg-black text-slate-100 w-[60px] text-center rounded-md outline-none"
+                        onChange={(e)=>handleUnitPercentageChange(e,index)}
+                        />
+                      </td>
                       <td className="border border-black px-4 py-2 text-center font-medium">
-                        {currency}
+                      <span className="text-[#F5A623]">{savedCurrency} </span>
                         {row.unitSize}
                       </td>
                       <td className="border border-black px-4 py-2 text-center font-medium">
-                        {currency}
+                      <span className="text-[#F5A623]">{savedCurrency} </span>
                         {row.stopLossSize}
                       </td>
-                      <td className="border border-black px-4 py-2 text-center font-medium">
-                        {row.profitPercent || 0} %
+                      <td className="border border-black px-4 py-2 text-center font-semibold">
+                        <span className={row.profitPercentage > 0 ? "text-green-500" : row.profitPercentage < 0 ? "text-red-500" : "text-slate-100"}>{row.profitPercentage} %</span>
                       </td>
-                      <td className="border border-black px-4 py-2 text-center font-medium">
-                        {currency}
-                        {row.actualProfit}
+                      <td className="border border-black px-4 py-2 text-center font-semibold">
+                        <span className={row.profitPercentage > 0 ? "text-green-500" : row.profitPercentage < 0 ? "text-red-500" : "text-slate-100"}>{savedCurrency} {row.actualProfit}</span>
                       </td>
                       <td className="border border-black px-4 py-2 text-center font-medium">
                         {editableRow === index ? (
@@ -849,19 +893,19 @@ const Planprofit = () => {
                             className="px-2 py-1 bg-black text-slate-100 w-[100px] text-center rounded-md outline-none"
                           />
                         ) : (
-                          `${currency}${row.finalBalance}`
+                          <p><span className="text-[#F5A623]">{savedCurrency} </span>{row.finalBalance}</p>
                         )}
                       </td>
                       <td className="border border-black px-4 py-2 text-center">
                         {editableRow === index ? (
                           <button
                             onClick={() => handleSaveClick(index)}
-                            className="bg-green-700 text-white px-4 py-1 rounded font-medium"
+                            className="bg-green-700 text-black px-4 py-1 rounded font-medium"
                           >
                             Save
                           </button>
                         ) : (
-                          <button className="bg-purplegrad  text-white px-3 py-1 rounded-md font-medium"
+                          <button className="bg-red-600 text-black px-3 py-1 rounded-md font-medium"
                             onClick={() => handleEditClick(index)}
                           >
                             Edit

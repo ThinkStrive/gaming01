@@ -389,7 +389,7 @@ export function Feedback({theme, setTheme}) {
                 <div className="flex justify-center items-center w-full my-8" >
                 <button
                   type="submit"
-                  className="bg-purplegrad border-2 border-white font-semibold  py-3 px-8 feed-btn rounded-lg hover:bg-darkBlue font-bold "
+                  className="bg-coldBlue border-2 border-customBlue font-semibold  py-3 px-8 feed-btn rounded-lg hover:bg-darkBlue font-bold "
                   // style={{ width: "200px" }}
                 >
                   Submit Feedback

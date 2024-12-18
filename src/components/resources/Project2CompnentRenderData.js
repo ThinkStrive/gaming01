@@ -1,14 +1,13 @@
-import coin_01 from "../../assets/imgs/coin_imgs/bet-01.svg";
-import coin_02 from "../../assets/imgs/coin_imgs/bet-02.svg";
-import coin_05 from "../../assets/imgs/coin_imgs/bet-05.svg";
-import coin_1 from "../../assets/imgs/coin_imgs/bet-1.svg";
-import coin_2 from "../../assets/imgs/coin_imgs/bet-2.svg";
-import coin_5 from "../../assets/imgs/coin_imgs/bet-5.svg";
-import coin_10 from "../../assets/imgs/coin_imgs/bet-10.svg";
-import coin_25 from "../../assets/imgs/coin_imgs/bet-25.svg";
-import coin_50 from "../../assets/imgs/coin_imgs/bet-50.svg";
-import coin_100 from "../../assets/imgs/coin_imgs/bet-100.svg";
-import coin_500 from "../../assets/imgs/coin_imgs/bet-500.svg";
+import coin_1 from "../../assets/imgs/coin_imgs/bet-1.png";
+import coin_2 from "../../assets/imgs/coin_imgs/bet-2.png";
+import coin_5 from "../../assets/imgs/coin_imgs/bet-5.png";
+import coin_10 from "../../assets/imgs/coin_imgs/bet-10.png";
+import coin_25 from "../../assets/imgs/coin_imgs/bet-25.png";
+import coin_50 from "../../assets/imgs/coin_imgs/bet-50.png";
+import coin_100 from "../../assets/imgs/coin_imgs/bet-100.png";
+import coin_500 from "../../assets/imgs/coin_imgs/bet-500.png";
+import coin_1000 from "../../assets/imgs/coin_imgs/bet-1000.png";
+import coin_5000 from "../../assets/imgs/coin_imgs/bet-5000.png";
 
 export const coinImg = {
   coin_1,
@@ -19,6 +18,8 @@ export const coinImg = {
   coin_50,
   coin_100,
   coin_500,
+  coin_1000,
+  coin_5000
 };
 
 export const listener6Div = [
@@ -1246,4 +1247,6 @@ export const coinInfo = [
   { amount: 50, img: coin_50 },
   { amount: 100, img: coin_100 },
   { amount: 500, img: coin_500 },
+  { amount: 1000, img: coin_1000},
+  { amount: 5000, img: coin_5000}
 ];

@@ -29,13 +29,13 @@ const Nav = ({ theme, setTheme, navigate, navHeaderName }) => {
         className="h-14 w-14 lg:h-20 lg:w-20 object-contain max-sm:h-16 max-sm:w-16 max-md:h-20 max-md:w-20"
       />
       <div className="flex-1 flex flex-col items-center">
-        {/* <h1 className="text-white text-2xl lg:text-4xl font-bold text-center max-sm:text-2xl">
-          {navHeaderName === 'project1' ? 'Data-Driven' : navHeaderName === 'project2' ? 'Roulette' : 'SpinCycle Strategy'}
-        </h1> */}
-
-<h1 className="text-white text-2xl lg:text-4xl font-bold text-center max-sm:text-2xl">
+      <h1 className="text-white text-2xl lg:text-4xl font-bold text-center max-sm:text-2xl">
         {navHeaderName === 'project1' 
           ? 'Data-Driven' 
+          : navHeaderName === 'project2' 
+          ? 'Roulette' 
+          : navHeaderName === 'project3' 
+          ? 'Data-Driven Baccarat' 
           : navHeaderName === 'project4' 
           ? 'SpinCycle Strategy' 
           : navHeaderName === 'userinfo' 
@@ -44,9 +44,11 @@ const Nav = ({ theme, setTheme, navigate, navHeaderName }) => {
           ? 'Feedback' 
           : 'Daily Profit Plan '}
       </h1>
+
         <p className="text-white text-base font-semibold lg:text-xl tracking-wide uppercase text-center max-sm:text-sm">
           {navHeaderName === 'project1' ? 'Roulette Tracker' : navHeaderName === 'project2' ? 'Strategy Analyzer' : ''}
         </p>
+        
       </div>
 
       {/* <div>
