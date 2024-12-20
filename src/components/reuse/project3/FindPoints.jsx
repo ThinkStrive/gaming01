@@ -276,7 +276,7 @@ const FindPoints = ({
       }));
     }
 
-    if (slicedArray[slicedArray.length - 1] === repeaterCoin) {
+    if (slicedArray[slicedArray.length - 1] === suggestionCoin) {
       if (isSuggestionActive && allValues.length > startSuggestionCount) {
         setRepeaterCoin("Wait");
       }

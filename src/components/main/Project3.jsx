@@ -92,7 +92,7 @@ const Project3 = () => {
     bankerLoss:0
   })
 
-
+   console.log('totalWinLoss', totalWinLoss)
 
 
   useEffect(() => {
