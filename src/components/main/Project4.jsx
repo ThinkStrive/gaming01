@@ -2829,11 +2829,11 @@ const classifyScoresWithValues = (scores) => {
 // Calculate the max, min, and stable values for each group
 const maxMinValues = {
   dozen: classifyScoresWithValues(dozenScoresDD),
-  col:classifyScoresWithValues(columnScoresDD),
+  column:classifyScoresWithValues(columnScoresDD),
 };
 
-console.log("values of max",maxMinValues)
-console.log("column score",columnScoresDD)
+
+
 
 useEffect(() => {
   const timer = setTimeout(() => {
@@ -2873,7 +2873,7 @@ useEffect(() => {
       stable: 'https://res.cloudinary.com/dxsdme4qy/image/upload/v1734521202/stable_ggaahj.gif'
     };
 
-    ['dozen', 'col'].forEach(group => {
+    ['dozen', 'column'].forEach(group => {
       ['1', '2', '3'].forEach(key => {
         const container = document.getElementById(`${group}Container${key}`);
         if (container) {
@@ -2997,28 +2997,32 @@ const initialScoresST = Array.from({ length: 36 }, (_, i) => 36 - i);
   }, [landedNumbers]);
 
 // showing % in ui 
-
+// Calculate total for dozen scores
 const total = Object.values(dozenScores).reduce((sum, value) => sum + value, 0);
 
-// Convert values to percentages and round them
+// Convert values to percentages and ensure no NaN values
 const percentagesDozen = Object.fromEntries(
   Object.entries(dozenScores).map(([key, value]) => [
     key,
-    total === 0 ? 0 : Math.round((value / total) * 100),
+    total === 0 || isNaN(value) ? 0 : Math.round((value / total) * 100), // Default to 0 for NaN or division by 0
   ])
 );
-  
-// showing % in ui 
 
-  const totalColumn = Object.values(columnScores).reduce((sum, value) => sum + value, 0);
+console.log('dozenScores percentages:', percentagesDozen);
 
-  // Convert values to percentages and round them
-  const percentagesColumn = Object.fromEntries(
-    Object.entries(columnScores).map(([key, value]) => [
-      key,
-      total === 0 ? 0 : Math.round((value / totalColumn) * 100), 
-    ])
-  );
+// Calculate total for column scores
+const totalColumn = Object.values(columnScores).reduce((sum, value) => sum + value, 0);
+
+// Convert values to percentages and ensure no NaN values
+const percentagesColumn = Object.fromEntries(
+  Object.entries(columnScores).map(([key, value]) => [
+    key,
+    totalColumn === 0 || isNaN(value) ? 0 : Math.round((value / totalColumn) * 100), // Default to 0 for NaN or division by 0
+  ])
+);
+
+
+
   
 
  
@@ -3026,11 +3030,12 @@ const percentagesDozen = Object.fromEntries(
 
   return (
     <>
-      <div className="sticky lg:top-0 max-sm:top-0 md:top-0 z-30">
+      <div className="sticky lg:top-0 max-sm:top-0 md:top-0 z-30 ">
         {/* <Nav theme={theme} setTheme={setTheme} /> */}
+        
         <div
-          className="py-1 px-2 justify-between flex sm--navbar"
-          style={{ backgroundColor: "#FFFBE3" }}
+          className="py-1 px-2 justify-between flex sm--navbar bg-purple-600"
+          // style={{ backgroundColor: "#FFFBE3" }}
         >
           <div className="flex gap-4 pl-2 items-center sm--lasthit">
             {/* <div>
@@ -3045,11 +3050,11 @@ const percentagesDozen = Object.fromEntries(
                   : ""
               } ${
                 lastHitNumber?.color === "red"
-                  ? "border-customRed text-customRed border-2"
+                  ? "border-customRed bg-customRed text-white border"
                   : lastHitNumber?.color === "black"
-                  ? "border-customBlack text-customBlack border-2"
+                  ? "border-customBlack bg-customBlack text-white border-4"
                   : ""
-              } flex justify-center items-center w-7 h-7 rounded-md mt-1 px-1`}
+              } flex justify-center font-bold text-2xl items-center w-8 h-8 rounded-md mt-1 px-1`}
             >
               {lastHitNumber?.number}
             </div>
@@ -3057,7 +3062,7 @@ const percentagesDozen = Object.fromEntries(
 
           <div className="flex">
             <div
-              className="flex justify-center items-center p-0.5 py-0 rounded-md font-semibold text-sm text-gray-500"
+              className="flex justify-center items-center p-0.5 py-0 rounded-md font-semibold text-sm text-white"
               onClick={() => setIsAlertAllowed(!isAlertAllowed)}
             >
               <div>
@@ -3073,7 +3078,7 @@ const percentagesDozen = Object.fromEntries(
             </div>
 
             <button
-              className="text-gray-500 py-1 px-1 rounded-full text-sm font-semibold"
+              className="text-white py-1 px-1 rounded-full text-sm font-semibold"
               // onClick={handleClickResetButton}
             >
               Undo
@@ -3094,7 +3099,7 @@ const percentagesDozen = Object.fromEntries(
             )} */}
 
             <button
-              className="text-gray-500 py-1 px-1 rounded-full text-sm font-semibold"
+              className="text-white py-1 px-1 rounded-full text-sm font-semibold"
               onClick={handleClickResetButton}
             >
               <GrPowerReset className="inline mr-0.5 -mt-0.5 reset-icon" />
@@ -3171,8 +3176,9 @@ const percentagesDozen = Object.fromEntries(
           </div>
         </div>
 
+
         <div
-          className="flex justify-between items-center px-10 py-2 max-sm:px-3 pb-3 max-sm:hidden"
+          className="flex justify-between items-center px-10 py-2 max-sm:px-3 pb-3 max-sm:hidden "
           // style={{ backgroundColor: "rgb(81,29,91)" }}
         >
           <div className="flex bg-neutral-300 p-1 rounded-full items-center">
@@ -3377,9 +3383,9 @@ const percentagesDozen = Object.fromEntries(
                       1st 12
                     </p>
                     <p
-                      className=" bgPercentage text-white text-xs rounded-xl font-bold p-0.5 absolute rotate-90 z-[20] "
+                      className=" bgPercentage text-white text-md rounded-xl text-center  font-bold p-0.5 absolute h-[30px] w-[60px] rotate-90 z-[20] "
                       style={{
-                        left: "-15px",
+                        left: "-53px",
                       }}
                     >
                       {percentagesDozen[1]}%
@@ -3403,9 +3409,9 @@ const percentagesDozen = Object.fromEntries(
                       2nd 12
                     </p>
                     <p
-                      className=" bgPercentage text-white text-xs rounded-xl font-bold p-0.5 absolute rotate-90 z-[20] "
+                      className=" bgPercentage text-white text-md rounded-xl text-center  font-bold p-0.5 absolute h-[30px] w-[60px] rotate-90 z-[20] "
                       style={{
-                        left: "-15px",
+                        left: "-53px",
                       }}
                     >
                       {percentagesDozen[2]}%
@@ -3426,9 +3432,9 @@ const percentagesDozen = Object.fromEntries(
                       3rd 12
                     </p>
                     <p
-                      className=" bgPercentage text-white text-xs rounded-xl font-bold p-0.5 absolute rotate-90 z-[20] "
+                      className=" bgPercentage text-white text-md rounded-xl text-center  font-bold p-0.5 absolute h-[30px] w-[60px] rotate-90 z-[20] "
                       style={{
-                        left: "-15px",
+                        left: "-53px",
                       }}
                     >
                       {percentagesDozen[3]}%
@@ -3492,9 +3498,6 @@ const percentagesDozen = Object.fromEntries(
                             backdrop-blur-sm
                             bg-opacity-30
                             hover:backdrop-blur-md
-                            transition-all 
-                            duration-300 
-                            ease-in-out
                             rounded-md
                           `}
                           style={{
@@ -3553,13 +3556,13 @@ const percentagesDozen = Object.fromEntries(
                       backgroundColor:
                         repeatCol === "1" && colHoverEffect ? "#58d68d" : "", // Preserves your existing conditional background color logic
                     }}
-                    id="colContainer1"
+                    id="columnContainer1"
                   >
                     2 - 1
                     <p
-                      className=" bgPercentage text-white text-xs rounded-xl font-bold p-0.5 absolute  z-[20] "
+                      className=" bgPercentage text-white text-md text-center  rounded-xl font-bold p-1 absolute w-[60px] h-[32px]  z-[20] "
                       style={{
-                        bottom: "-15px",
+                        bottom: "-35px",
                       }}
                     >
                       {percentagesColumn[1]}%
@@ -3572,13 +3575,13 @@ const percentagesDozen = Object.fromEntries(
                         backgroundColor:
                           repeatCol === "2" && colHoverEffect ? "#58d68d" : "",
                       }}
-                      id="colContainer2"
+                      id="columnContainer2"
                     >
                       2 - 1
                       <p
-                      className=" bgPercentage text-white text-xs rounded-xl font-bold p-0.5 absolute  z-[20] "
+                      className=" bgPercentage text-white text-md text-center  rounded-xl font-bold p-1 absolute w-[60px] h-[32px]  z-[20] "
                       style={{
-                        bottom: "-15px",
+                        bottom: "-35px",
                       }}
                     >
                       {percentagesColumn[2]}%
@@ -3590,13 +3593,13 @@ const percentagesDozen = Object.fromEntries(
                         backgroundColor:
                           repeatCol === "3" && colHoverEffect ? "#58d68d" : "",
                       }}
-                      id="colContainer3"
+                      id="columnContainer3"
                     >
                       2 - 1
                       <p
-                      className=" bgPercentage text-white text-xs rounded-xl font-bold p-0.5 absolute  z-[20] "
+                      className=" bgPercentage text-white text-md text-center  rounded-xl font-bold p-1 absolute w-[60px] h-[32px]  z-[20] "
                       style={{
-                        bottom: "-15px",
+                        bottom: "-35px",
                       }}
                     >
                       {percentagesColumn[3]}%
@@ -5025,39 +5028,9 @@ const percentagesDozen = Object.fromEntries(
         </div>
       </div>
       
-      <section className="max-sm:w-[85vw] max-sm:mt-12 w-[80vw] mx-auto">
+      <section className="max-sm:w-[85vw] max-sm:mt-12 w-[80vw] mx-auto mt-10">
 
-      <div className="flex flex-col md:flex-row w-full bg-white p-2 rounded-lg mb-3 shadow-md">
-        {/* Header Section */}
-        <div className="flex items-center w-full md:w-[20%] mb-3 md:mb-0">
-          <h1 className="text-2xl font-bold text-superPurple md:text-xl sm:text-lg">Hot Trends</h1>
-          <img
-            src="https://res.cloudinary.com/dxsdme4qy/image/upload/v1734419453/fire_namnig.gif"
-            width={50}
-            height={50}
-            alt="fire"
-            className="ml-2"
-          />
-        </div>
-
-        {/* Content Section */}
-        {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full md:w-[80%] mx-auto p-4">
-  {Object.entries(highestValues).map(([groupName, { highestKey }]) => (
-    <div
-      key={groupName}
-      className="bg-gradient-to-br from-purple-100 to-white shadow-lg rounded-lg border border-gray-200 transform hover:scale-105 transition-transform duration-300"
-    >
-      <div className="p-6 text-center">
-        <h2 className="text-xl font-bold text-superPurple mb-2 uppercase">{groupName}</h2>
-        <p className="text-2xl font-semibold text-gray-700">
-          {highestKey}
-        </p>
-      </div>
-    </div>
-  ))}
-        </div> */}
-
-      </div>
+      
 
 
 

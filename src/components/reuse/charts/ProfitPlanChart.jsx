@@ -75,7 +75,7 @@ const ProfitPlanChart = ({calculatedData,calculatedProgress}) => {
 
   useEffect(() => {
    
-    const goalData = calculatedData.map((item) => parseFloat(item.bankroll));
+    const goalData = calculatedData.map((item) => parseFloat(item.newBalance));
     const progressData = calculatedProgress.map((item) => parseFloat(item.finalBalance));
     const sessionLabels = calculatedProgress.map((item) => `Session ${item.session}`);
     

@@ -51,6 +51,8 @@ const Project3 = () => {
 
   const [planLockScreen, setPlanLockScreen] = useState(true);
 
+  const [firstLogic, setFirstLogic] = useState(true);
+  const [secondLogic, setSecondLogic] = useState(false);
  
 
   useEffect(() => {
@@ -74,6 +76,27 @@ const Project3 = () => {
   }, []);
 
 
+  // useEffect(() => {
+  //   const fetchUserDetails = async () => {
+  //     try {
+  //       let userData = JSON.parse(sessionStorage.getItem("userData"));
+  //       const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
+
+  //       if (!response.data.data?.projectSubscription?.baccarat?.projectAccess) {
+  //         setPlanLockScreen(true);
+  //       } else {
+  //         setPlanLockScreen(false);
+  //       }
+  //     } catch (err) {
+  //       console.log("err", err);
+  //     }
+  //   };
+
+  //   // Call the async function
+  //   fetchUserDetails();
+  // }, []);
+
+
   const [currentImg, setCurrentImg] = useState("");
   const [isFlipping, setIsFlipping] = useState(false);
 
@@ -92,7 +115,7 @@ const Project3 = () => {
     bankerLoss:0
   })
 
-   console.log('totalWinLoss', totalWinLoss)
+
 
 
   useEffect(() => {
@@ -724,7 +747,7 @@ var countof17 = columns
                     <FaRedo className="text-md transform transition-transform duration-300 ease-in-out hover:rotate-180" />
                   </button>
                </div>
-            <div className="flex flex-col relative mt-6" >
+            <div className="flex flex-col relative " >
               <div className="flex items-center gap-3">
                 <div className="flex-col flex items-end gap-2 mt-12">
                   {/* <div className="flex justify-between w-full mr-2">
@@ -827,7 +850,7 @@ var countof17 = columns
           
           <div className="relative flex gap-4 mt-3" >
           <div>
-              {countof17.length >= 6 ? (
+              {countof17.length >= 1 ? (
                 (() => {
                   const total = totalWinLoss.totalWin + totalWinLoss.totalLoss;
                   const winPercentage =
@@ -861,7 +884,7 @@ var countof17 = columns
             </div>
 
             <div className="">
-              {countof17.length >= 6 ? (
+              {countof17.length >= 1 ? (
                 (() => {
                   const total = totalWinLoss.totalWin + totalWinLoss.totalLoss;
                   const winPercentage =
@@ -894,11 +917,23 @@ var countof17 = columns
               )}
             </div>
 
-            <div class="checkbox-wrapper-41 relative">
+            <div class="checkbox-wrapper-41 relative mt-1">
               <input type="checkbox" checked={isSuggestionActive} onChange={handleCheckboxChange}/>
             </div>
           </div>
-          
+          <div className="flex" >
+            <button className="mx-4 bg-superPurple rounded-lg text-white font-semibold border-none py-1 px-3 hover:bg-purple-400" onClick={() => {
+              setFirstLogic(!firstLogic)
+              setSecondLogic(!secondLogic)
+              handleReset()
+            }} >Core  <span className="px-2 bg-customBlack rounded-xl">{firstLogic ? 'On' : 'Off'}</span></button>
+            <button className="mx-4 bg-superPurple  rounded-lg text-white font-semibold border-none py-1 px-3 hover:bg-purple-400" onClick={() => {
+              setFirstLogic(!firstLogic)
+              setSecondLogic(!secondLogic)
+              handleReset()
+            }} > Hit & Run <span  className="px-2 bg-customBlack rounded-xl"> {secondLogic ? 'On' : 'Off'}</span></button>
+          </div>
+
 
 
 
@@ -1040,6 +1075,8 @@ var countof17 = columns
         setTotalWinLoss={setTotalWinLoss}
         setSuggestionCoin={setSuggestionCoin}
         suggestionCoin={suggestionCoin}
+        firstLogic={firstLogic}
+        secondLogic={secondLogic}
       />
         {planLockScreen && <BaccaratLock setPlanLockScreen={setPlanLockScreen} />}
 
