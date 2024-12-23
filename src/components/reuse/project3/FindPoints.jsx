@@ -663,7 +663,7 @@ const FindPoints = ({
           }
           setSuggestionCoin(countP > countB ? "P" : "B");
         } else if (lastChunk.length === 6) {
-          alert('coming')
+          // alert('coming')
           // if (isSuggestionActive && allValues.length > startSuggestionCount) {
           //   setRepeaterCoin(lastChunk[0] === "P" ? "P" : "B");
           // }
