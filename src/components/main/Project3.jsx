@@ -21,6 +21,7 @@ import { USER_DETAILS } from "../api/ApiDetails.js";
 
 import BaccaratMoney from "../reuse/project3/MoneyManagement.jsx";
 import BaccaratLock from "../resources/BaccaratLock.jsx";
+import BaccaratMaintanance from "../reuse/project3/BaccaratMaintanance.jsx";
 
 
 
@@ -53,6 +54,8 @@ const Project3 = () => {
 
   const [firstLogic, setFirstLogic] = useState(false);
   const [secondLogic, setSecondLogic] = useState(true);
+
+  const [maintananceLock,setMaintananceLockScreen ] = useState(true); 
  
 
   useEffect(() => {
@@ -1078,7 +1081,8 @@ var countof17 = columns
         firstLogic={firstLogic}
         secondLogic={secondLogic}
       />
-        {planLockScreen && <BaccaratLock setPlanLockScreen={setPlanLockScreen} />}
+        {/* {planLockScreen && <BaccaratLock setPlanLockScreen={setPlanLockScreen} />} */}
+        {maintananceLock && <BaccaratMaintanance setMaintananceLockScreen={setMaintananceLockScreen} />}
 
       </div>
       
