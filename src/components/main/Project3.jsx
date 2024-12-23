@@ -51,8 +51,8 @@ const Project3 = () => {
 
   const [planLockScreen, setPlanLockScreen] = useState(true);
 
-  const [firstLogic, setFirstLogic] = useState(true);
-  const [secondLogic, setSecondLogic] = useState(false);
+  const [firstLogic, setFirstLogic] = useState(false);
+  const [secondLogic, setSecondLogic] = useState(true);
  
 
   useEffect(() => {
@@ -922,11 +922,11 @@ var countof17 = columns
             </div>
           </div>
           <div className="flex" >
-            <button className="mx-4 bg-superPurple rounded-lg text-white font-semibold border-none py-1 px-3 hover:bg-purple-400" onClick={() => {
+            {/* <button className="mx-4 bg-superPurple rounded-lg text-white font-semibold border-none py-1 px-3 hover:bg-purple-400" onClick={() => {
               setFirstLogic(!firstLogic)
               setSecondLogic(!secondLogic)
               handleReset()
-            }} >Core  <span className="px-2 bg-customBlack rounded-xl">{firstLogic ? 'On' : 'Off'}</span></button>
+            }} >Core  <span className="px-2 bg-customBlack rounded-xl">{firstLogic ? 'On' : 'Off'}</span></button> */}
             <button className="mx-4 bg-superPurple  rounded-lg text-white font-semibold border-none py-1 px-3 hover:bg-purple-400" onClick={() => {
               setFirstLogic(!firstLogic)
               setSecondLogic(!secondLogic)
