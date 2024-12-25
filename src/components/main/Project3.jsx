@@ -6,29 +6,23 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../../Style/project3.css";
 import FindPoints from "../reuse/project3/FindPoints";
-import BankerImg from '../.././assets/imgs/red_chip_bold.png';
-import PlayerImg from '../.././assets/imgs/blue_chip_bold.png';
+import BankerImg from "../.././assets/imgs/red_chip_bold.png";
+import PlayerImg from "../.././assets/imgs/blue_chip_bold.png";
 // import GaugeChart from "react-gauge-chart";
-import WaitImg from '../../assets/imgs/wait1.gif';
+import WaitImg from "../../assets/imgs/wait1.gif";
 import { useToast } from "../resources/Toast.jsx";
-
 
 // lock the application
 import Lock from "../resources/Lock";
 import axios from "axios";
 import { USER_DETAILS } from "../api/ApiDetails.js";
 
-
 import BaccaratMoney from "../reuse/project3/MoneyManagement.jsx";
 import BaccaratLock from "../resources/BaccaratLock.jsx";
 import BaccaratMaintanance from "../reuse/project3/BaccaratMaintanance.jsx";
 
-
-
-
 const Project3 = () => {
-
-  const showToast = useToast()
+  const showToast = useToast();
   const [columns, setColumns] = useState(() => {
     const savedColumns = localStorage.getItem("columns");
     return savedColumns ? JSON.parse(savedColumns) : [];
@@ -48,15 +42,12 @@ const Project3 = () => {
   const [isSuggestionActive, setIsSuggestionActive] = useState(false);
   const [suggestionCoin, setSuggestionCoin] = useState("");
 
-
-
   const [planLockScreen, setPlanLockScreen] = useState(true);
 
   const [firstLogic, setFirstLogic] = useState(false);
   const [secondLogic, setSecondLogic] = useState(true);
 
-  const [maintananceLock,setMaintananceLockScreen ] = useState(true); 
- 
+  const [maintananceLock, setMaintananceLockScreen] = useState(false);
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -78,7 +69,6 @@ const Project3 = () => {
     fetchUserDetails();
   }, []);
 
-
   // useEffect(() => {
   //   const fetchUserDetails = async () => {
   //     try {
@@ -99,34 +89,24 @@ const Project3 = () => {
   //   fetchUserDetails();
   // }, []);
 
-
   const [currentImg, setCurrentImg] = useState("");
   const [isFlipping, setIsFlipping] = useState(false);
 
-
   const [resetTriggered, setResetTriggered] = useState(false);
-
-
-  
 
   const [totalWinLoss, setTotalWinLoss] = useState({
     totalWin: 0,
-    totalLoss : 0,
+    totalLoss: 0,
     playerWin: 0,
-    playerLoss : 0,
+    playerLoss: 0,
     bankerWin: 0,
-    bankerLoss:0
-  })
-
-
-
+    bankerLoss: 0,
+  });
 
   useEffect(() => {
     localStorage.setItem("columns", JSON.stringify(columns));
     localStorage.setItem("clickCount", JSON.stringify(clickCount));
   }, [columns, clickCount]);
-
-
 
   // Add a new result to the respective column
   // const handleClick = (type) => {
@@ -149,8 +129,6 @@ const Project3 = () => {
   // };
 
   const handleClick = (type) => {
-
-
     setColumns((prevColumns) => {
       const newColumns = [...prevColumns];
       const lastColumn = newColumns[newColumns.length - 1];
@@ -177,31 +155,31 @@ const Project3 = () => {
     }));
   };
 
- // Reset all columns and click count
- const handleReset = () => {
-  setColumns([]);
-  setClickCount({ P: 0, B: 0, T: 0 });
-  setRepeaterCoin("");
-  setBankerPoints(0);
-  setPlayerPoints(0);
-  setTiePoints(0);
-  setBankerPointsLong(0);
-  setPlayerPointsLong(0);
-  setTiePointsLong(0);
-  setTotalWinLoss({
-    totalWin: 0,
-  totalLoss : 0,
-  playerWin: 0,
-  playerLoss : 0,
-  bankerWin: 0,
-  bankerLoss:0
-  });
+  // Reset all columns and click count
+  const handleReset = () => {
+    setColumns([]);
+    setClickCount({ P: 0, B: 0, T: 0 });
+    setRepeaterCoin("");
+    setBankerPoints(0);
+    setPlayerPoints(0);
+    setTiePoints(0);
+    setBankerPointsLong(0);
+    setPlayerPointsLong(0);
+    setTiePointsLong(0);
+    setTotalWinLoss({
+      totalWin: 0,
+      totalLoss: 0,
+      playerWin: 0,
+      playerLoss: 0,
+      bankerWin: 0,
+      bankerLoss: 0,
+    });
 
-setSuggestionCoin('');
-    setIsSuggestionActive(false)
+    setSuggestionCoin("");
+    setIsSuggestionActive(false);
 
-  setResetTriggered((prev) => !prev);
-};
+    setResetTriggered((prev) => !prev);
+  };
 
   // Undo the last action
   const handleUndo = () => {
@@ -238,7 +216,6 @@ setSuggestionCoin('');
 
       return newCount;
     });
-  
   };
 
   useEffect(() => {
@@ -311,8 +288,6 @@ setSuggestionCoin('');
   //       // setRepeaterCoin("Wait");
   //     }
 
-
-
   //     if (repeaterCoin) {
   //       if (repeaterCoin === 'P' && allValues[allValues.length - 1] === 'P') {
   //         setTotalWinLoss((prev) => ({
@@ -335,7 +310,7 @@ setSuggestionCoin('');
   //           bankerLoss: prev.bankerLoss + 1,
   //         }));
   //       }
-      
+
   //       // Total win/loss update
   //       if(allValues.length > 4){
   //         if (repeaterCoin === allValues[allValues.length - 1]) {
@@ -351,8 +326,7 @@ setSuggestionCoin('');
   //         }
   //       }
   //     }
-      
-      
+
   //   }
   // }, [columns]);
 
@@ -414,8 +388,6 @@ setSuggestionCoin('');
   //   }
   // }, [columns]);
 
-
-
   // useEffect(() => {
   //  if(nineClick.length >=9){
   //   if (columns.length === 0) return;
@@ -475,7 +447,7 @@ setSuggestionCoin('');
         }
       }
     }
-    return null; 
+    return null;
   };
 
   const [activeTab, setActiveTab] = useState("Short Trend");
@@ -490,24 +462,26 @@ setSuggestionCoin('');
     // Create an object for the concept scores
     const conceptScores = {
       banker: bankerPoints,
-      player: playerPoints
+      player: playerPoints,
     };
-  
+
     const values = Object.values(conceptScores);
     const maxScore = Math.max(...values);
     const minScore = Math.min(...values);
-  
+
     const statusImages = {
       hot: {
-        text: 'HOT',
-        image: 'https://res.cloudinary.com/dxsdme4qy/image/upload/v1733227962/hot_qktoti.jpg',
+        text: "HOT",
+        image:
+          "https://res.cloudinary.com/dxsdme4qy/image/upload/v1733227962/hot_qktoti.jpg",
       },
       cold: {
-        text: 'COLD',
-        image: 'https://res.cloudinary.com/dxsdme4qy/image/upload/v1733227963/cold_nzqmy2.jpg',
-      }
+        text: "COLD",
+        image:
+          "https://res.cloudinary.com/dxsdme4qy/image/upload/v1733227963/cold_nzqmy2.jpg",
+      },
     };
-  
+
     return Object.keys(conceptScores).reduce((status, key) => {
       if (conceptScores[key] === 0) {
         status[key] = statusImages.cold; // If score is 0, set as "cold"
@@ -515,40 +489,39 @@ setSuggestionCoin('');
         status[key] = statusImages.hot; // Highest score is "hot"
       } else if (conceptScores[key] === minScore) {
         status[key] = statusImages.cold; // Lowest score is "cold"
-      } 
+      }
       return status;
     }, {});
   };
-  
-  
+
   const ShortScore = getStatus(bankerPoints, playerPoints);
-  
 
-// Long Trend for Baccarat
+  // Long Trend for Baccarat
 
-  const getStatus1 = (bankerPointsLong,playerPointsLong) => {
+  const getStatus1 = (bankerPointsLong, playerPointsLong) => {
     // Create an object for the concept scores
     const conceptScores = {
       banker: bankerPointsLong,
       player: playerPointsLong,
     };
-  
+
     const values = Object.values(conceptScores);
     const maxScore = Math.max(...values);
     const minScore = Math.min(...values);
-  
+
     const statusImages = {
       hot: {
-        text: 'Hot',
-        image: 'https://res.cloudinary.com/dxsdme4qy/image/upload/v1733227962/hot_qktoti.jpg',
+        text: "Hot",
+        image:
+          "https://res.cloudinary.com/dxsdme4qy/image/upload/v1733227962/hot_qktoti.jpg",
       },
       cold: {
-        text: 'COLD',
-        image: 'https://res.cloudinary.com/dxsdme4qy/image/upload/v1733227963/cold_nzqmy2.jpg',
+        text: "COLD",
+        image:
+          "https://res.cloudinary.com/dxsdme4qy/image/upload/v1733227963/cold_nzqmy2.jpg",
       },
-      
     };
-  
+
     return Object.keys(conceptScores).reduce((status, key) => {
       if (conceptScores[key] === 0) {
         status[key] = statusImages.cold; // If score is 0, set as "cold"
@@ -556,106 +529,104 @@ setSuggestionCoin('');
         status[key] = statusImages.hot; // Highest score is "hot"
       } else if (conceptScores[key] === minScore) {
         status[key] = statusImages.cold; // Lowest score is "cold"
-      } 
+      }
       return status;
     }, {});
   };
-  
-  const LongScore = getStatus1(bankerPointsLong,playerPointsLong);  
 
+  const LongScore = getStatus1(bankerPointsLong, playerPointsLong);
 
-// Flip design
+  // Flip design
 
+  useEffect(() => {
+    setIsFlipping(true);
+    const timeout = setTimeout(() => {
+      if (repeaterCoin === "P") {
+        setCurrentImg(PlayerImg);
+      } else if (repeaterCoin === "B") {
+        setCurrentImg(BankerImg);
+      } else {
+        setCurrentImg(WaitImg);
+      }
+      setIsFlipping(false); // Stop animation
+    }, 1000);
 
-useEffect(() => {
-  setIsFlipping(true);
-  const timeout = setTimeout(() => {
-    if (repeaterCoin === "P") {
-      setCurrentImg(PlayerImg);
-    } else if (repeaterCoin === "B") {
-      setCurrentImg(BankerImg);
+    return () => clearTimeout(timeout);
+  }, [repeaterCoin, PlayerImg, BankerImg, WaitImg]);
+
+  const shortPlayerGauge = Math.max(
+    0,
+    Math.round((playerPoints / 7) * 10) / 10
+  );
+  const shortBankerGauge = Math.max(
+    0,
+    Math.round((bankerPoints / 7) * 10) / 10
+  );
+  const shortTieGauge = Math.max(0, Math.round((tiePoints / 7) * 10) / 10);
+
+  const LongPlayerGauge = Math.max(
+    0,
+    Math.round((playerPointsLong / 19) * 10) / 10
+  );
+  const LongBankerGauge = Math.max(
+    0,
+    Math.round((bankerPointsLong / 19) * 10) / 10
+  );
+  const LongTieGauge = Math.max(0, Math.round((tiePointsLong / 19) * 10) / 10);
+
+  const handleCheckboxChange = (e) => {
+    const allValues = columns
+      .map((obj) => obj.values)
+      .flat()
+      .filter((value) => value === "B" || value === "P");
+    if (allValues.length > 5) {
+      setIsSuggestionActive(e.target.checked);
     } else {
-      setCurrentImg(WaitImg);
+      e.preventDefault();
+      showToast("Need 6 digits", "error");
     }
-    setIsFlipping(false); // Stop animation
-  }, 1000); 
+  };
 
-  return () => clearTimeout(timeout);
-}, [repeaterCoin, PlayerImg, BankerImg, WaitImg]);
-
-
-const shortPlayerGauge = Math.max(0, Math.round(playerPoints / 7 * 10) / 10);
-const shortBankerGauge = Math.max(0, Math.round(bankerPoints / 7 * 10) / 10);
-const shortTieGauge = Math.max(0, Math.round(tiePoints / 7 * 10) / 10);
-
-
-const LongPlayerGauge = Math.max(0, Math.round(playerPointsLong / 19 * 10) / 10);
-const LongBankerGauge = Math.max(0, Math.round(bankerPointsLong /19 * 10) / 10);
-const LongTieGauge = Math.max(0, Math.round(tiePointsLong / 19 * 10) / 10);
-
-
-
-const handleCheckboxChange = (e) => {
-  const allValues = columns
-    .map((obj) => obj.values)
-    .flat()
-    .filter((value) => value === "B" || value === "P");
-  if (allValues.length > 5) {
-    setIsSuggestionActive(e.target.checked);
-  } else {
-    e.preventDefault();
-    showToast("Need 6 digits", "error");
-  }
-};
-
-
-var countof17 = columns
-.map(obj=> obj.values)
-.flat()
-
-
+  var countof17 = columns.map((obj) => obj.values).flat();
 
   return (
     <div className="flex flex-col custom-md:flex-row  lg:items-start md:items-center bg-purplegrad baccaratMain">
-        {/* Left Panel */}
-        <div className="left-panel  text-white p-2 w-100 mx-auto">
-          {/* Container for columns */}
-          <div className="flex flex-col justify-center items-center">
-            <div className="tabs tabs-boxed bg-purple-500  w-full">
-              {/* Buttons to switch between boards */}
-              <div className="flex justify-center  w-full p-1 gap-2 ">
-                <button
-                  onClick={() => setActiveBoard("bigRoard")}
-                  className={`px-4 py-2  w-[50%] text-white rounded-xl font-semibold transition sm:px-2 sm:py-1 ${
-                    activeBoard === "bigRoard"
-                      ? "bg-superPurple shadow-md"
-                      : "bg-purplegrad hover:bg-slate-300 "
-                  }`}
-                >
-                  Big Road
-                </button>
-                {/* <button
-                  onClick={() => setActiveBoard("beadRoard")}
-                  className={`px-4 py-2  text-white w-[50%] rounded-xl font-semibold transition sm:px-2 sm:py-1 ${
-                    activeBoard === "beadRoard"
-                      ? "bg-superPurple shadow-md"
-                      : "bg-purplegrad hover:bg-slate-300 "
-                  }`}
-                >
-                  Bead Road 
+      {/* Left Panel */}
+      <div className="left-panel  text-white p-2 w-100 mx-auto">
+        {/* Container for columns */}
+        <div className="flex flex-col justify-center items-center">
+          <div className="tabs tabs-boxed bg-purple-500  w-full">
+            {/* Buttons to switch between boards */}
+            <div className="flex justify-center  w-full p-1 gap-2 ">
+              <button
+                onClick={() => setActiveBoard("bigRoard")}
+                className={`px-4 py-2  w-[50%] text-white rounded-xl font-semibold transition sm:px-2 sm:py-1 ${
+                  activeBoard === "bigRoard"
+                    ? "bg-superPurple shadow-md"
+                    : "bg-purplegrad hover:bg-slate-300 "
+                }`}
+              >
+                Big Road
+              </button>
+              {/* <button
+                onClick={() => setActiveBoard("beadRoard")}
+                className={`px-4 py-2  text-white w-[50%] rounded-xl font-semibold transition sm:px-2 sm:py-1 ${
+                  activeBoard === "beadRoard"
+                    ? "bg-superPurple shadow-md"
+                    : "bg-purplegrad hover:bg-slate-300 "
+                }`}
+              >
+                Bead Road
+              </button> */}
+            </div>
 
+            {/* Container for both Roards */}
+            <div className="flex w-full justify-start bg-purplegrad rounded-md">
+              {/* Big Road Ui */}
 
-                </button> */}
-                
-              </div>
-
-              {/* Container for both Roards */}
-              <div className="flex w-full justify-start bg-purplegrad rounded-md">
-                {/* Big Road Ui */}
-              
-                {activeBoard === "bigRoard" && (
-                  <div >
-                    <div
+              {activeBoard === "bigRoard" && (
+                <div>
+                  <div
                     className="rounded-2xl p-2 w-full sm:w-[400px] md:w-[500px] lg:w-[600px] "
                     style={{
                       height: "200px",
@@ -664,96 +635,165 @@ var countof17 = columns
                     }}
                     ref={containerRef}
                   >
-                    <div
-                      id="bigRoard"
-                      className=" "
-                      style={{ height: "100%"}}
-                      
-                    >
+                    <div id="bigRoard" className=" " style={{ height: "100%" }}>
                       {/* column containers */}
-                      <div className="flex flex-row gap-2 "style={{width:"335px"}}>
-                      {columns.map((column, colIndex) => (
-                        <div
-                          key={colIndex}
-                          className="flex flex-col items-center relative gap-2 "
-                        >
-                          {column.values.map((value, index) => {
-                            const prevValue =
-                              column.values.length > 0 ? column.values[0] : null;
+                      <div
+                        className="flex flex-row gap-2 "
+                        style={{ width: "335px" }}
+                      >
+                        {columns.map((column, colIndex) => (
+                          <div
+                            key={colIndex}
+                            className="flex flex-col items-center relative gap-2 "
+                          >
+                            {column.values.map((value, index) => {
+                              const prevValue =
+                                column.values.length > 0
+                                  ? column.values[0]
+                                  : null;
 
-                            // Apply separate styles for specific indices
-                            const specialStyle =
-                              index === 6
-                                ? "absolute top-[160px] left-[32px]" // Move 6th index
-                                : index === 7
-                                ? "absolute top-[160px] left-[65px]" // Move 7th index
-                                : index === 8
-                                ? "absolute top-[160px] left-[96px]" // Move 8th index
-                                : index === 9
-                                ? "absolute top-[160px] left-[128px]" // Move 9th index
-                                : index === 10
-                                ? "absolute top-[160px] left-[160px]" // Move 10th index
-                                : index === 11
-                                ? "absolute top-[160px] left-[193px]" // Move 11th index
-                                : index === 12
-                                ? "absolute top-[160px] left-[224px]" // Move 12th index
-                                : "";
-                            const backgroundClass =
-                              value === "T"
-                                ? prevValue === "B"
-                                  ? `inline-block bg-Banker text-white text-lg h-6 w-6 text-[7px] rounded-full ring-2 ring-green-600 ${specialStyle}`
-                                  : prevValue === "P"
-                                  ? `inline-block bg-Player text-white text-lg h-6 w-6 text-[7px] rounded-full ring-2 ring-green-600 ${specialStyle}`
-                                  : `${specialStyle}`
-                                : value === "B"
-                                ? `bg-Banker w-6 h-6 ${specialStyle}`
-                                : value === "P"
-                                ? `bg-Player w-6 h-6 ${specialStyle}`
-                                : `bg-tie w-6 h-6 ${specialStyle}`;
+                              // Apply separate styles for specific indices
+                              const specialStyle =
+                                index === 6
+                                  ? "absolute top-[160px] left-[32px]" // Move 6th index
+                                  : index === 7
+                                  ? "absolute top-[160px] left-[65px]" // Move 7th index
+                                  : index === 8
+                                  ? "absolute top-[160px] left-[96px]" // Move 8th index
+                                  : index === 9
+                                  ? "absolute top-[160px] left-[128px]" // Move 9th index
+                                  : index === 10
+                                  ? "absolute top-[160px] left-[160px]" // Move 10th index
+                                  : index === 11
+                                  ? "absolute top-[160px] left-[193px]" // Move 11th index
+                                  : index === 12
+                                  ? "absolute top-[160px] left-[224px]" // Move 12th index
+                                  : "";
+                              const backgroundClass =
+                                value === "T"
+                                  ? prevValue === "B"
+                                    ? `inline-block bg-Banker text-white text-lg h-6 w-6 text-[7px] rounded-full ring-2 ring-green-600 ${specialStyle}`
+                                    : prevValue === "P"
+                                    ? `inline-block bg-Player text-white text-lg h-6 w-6 text-[7px] rounded-full ring-2 ring-green-600 ${specialStyle}`
+                                    : `${specialStyle}`
+                                  : value === "B"
+                                  ? `bg-Banker w-6 h-6 ${specialStyle}`
+                                  : value === "P"
+                                  ? `bg-Player w-6 h-6 ${specialStyle}`
+                                  : `bg-tie w-6 h-6 ${specialStyle}`;
 
-                            return (
-                              <div
-                                key={index}
-                                className={`flex items-center justify-center text-sm text-lg font-semibold text-white rounded-full ${backgroundClass}`}
-                              >
-                                {value}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      ))}
+                              return (
+                                <div
+                                  key={index}
+                                  className={`flex items-center justify-center text-sm text-lg font-semibold text-white rounded-full ${backgroundClass}`}
+                                >
+                                  {value}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        ))}
                       </div>
                     </div>
-                    
-                    </div>
                   </div>
-                )}
+                </div>
+              )}
 
-                {/* Bead Road UI */}
+              {/* Bead Road UI */}
+              {activeBoard === "beadRoard" && (
+                <div
+                  className=" bg-purplegrad  p-2 w-full sm:w-[380px] md:w-[500px] lg:w-[600px]"
+                  style={{
+                    height: "200px",
+                    overflow: "scroll",
+                    scrollbarWidth: "none",
+                  }}
+                >
+                  <div
+                    id="beadRoard"
+                    className="flex flex-row gap-2 bg-purplegrad"
+                    style={{ height: "100%" }}
+                  >
+                    {columnsBead.map((column, colIndex) => (
+                      <div
+                        key={colIndex}
+                        className="flex flex-col items-center gap-2"
+                      >
+                        {column.map((value, index) => {
+                          const prevNonTValue =
+                            value === "T"
+                              ? getNonTPrevValue(columnsBead, colIndex, index)
+                              : value;
 
-                
-                
-              </div>
-              
+                          const backgroundClass =
+                            value === "T"
+                              ? prevNonTValue === "B"
+                                ? "inline-block bg-Banker text-white text-lg h-6 w-6 text-[7px] rounded-full ring-2 ring-green-600"
+                                : prevNonTValue === "P"
+                                ? "inline-block bg-Player text-white text-lg h-6 w-6 text-[7px] rounded-full ring-2 ring-green-600"
+                                : "bg-Tie w-6 h-6" // Default for "T"
+                              : value === "B"
+                              ? "bg-Banker w-6 h-6"
+                              : value === "P"
+                              ? "bg-Player w-6 h-6"
+                              : "bg-Tie"; // Default for any other value
+
+                          return (
+                            <div
+                              key={index}
+                              className={`flex items-center justify-center text-sm w-6 h-6 text-lg font-semibold text-white rounded-full ${backgroundClass}`}
+                            >
+                              {value}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ))}
+
+                    {/* //{columnsBead.map((column, colIndex) => (
+                  <div
+                    key={colIndex}
+                    className="flex flex-col items-center gap-2"
+                  >
+                    {column.map((value, index) => (
+                      <div
+                        key={index}
+                        className={`flex items-center justify-center text-sm w-6 h-6 text-lg font-semibold text-white rounded-full ${
+                          value === "B"
+                            ? "bg-Banker"
+                            : value === "P"
+                            ? "bg-Player"
+                            : "bg-Tie"
+                        }`}
+                      >
+                        {value}
+                      </div>
+                    ))}
+                  </div>
+                // ))} */}
+                  </div>
+                </div>
+              )}
             </div>
-              <div className="flex justify-end w-full mt-2">
-                {/* <button
+          </div>
+          <div className="flex justify-end w-full mt-2">
+            {/* <button
                   onClick={handleUndo}
                   className="group  bg-customBlack border-2 border-slate-300 gap-1 px-3  text-white flex rounded-full justify-center items-center shadow-lg hover:bg-superPurple hover:border-customBlack"
                 >
                  Undo <FaArrowRight className="text-md transform group-hover:translate-x-2 transition-all duration-300" /> 
                 </button> */}
-                <button
-                    onClick={handleReset}
-                    className="p-1 bg-customBlack text-white border-2 p-2  border-slate-300 rounded-full shadow-lg hover:bg-superPurple hover:border-customBlack"
-                  >
-                    <FaRedo className="text-md transform transition-transform duration-300 ease-in-out hover:rotate-180" />
-                  </button>
-               </div>
-            <div className="flex flex-col relative " >
-              <div className="flex items-center gap-3">
-                <div className="flex-col flex items-end gap-2 mt-12">
-                  {/* <div className="flex justify-between w-full mr-2">
+            <button
+              onClick={handleReset}
+              className="p-1 bg-customBlack text-white border-2 p-2  border-slate-300 rounded-full shadow-lg hover:bg-superPurple hover:border-customBlack"
+            >
+              <FaRedo className="text-md transform transition-transform duration-300 ease-in-out hover:rotate-180" />
+            </button>
+          </div>
+          <div className="flex flex-col relative ">
+            <div className="flex items-center gap-3">
+              <div className="flex-col flex items-end gap-2 mt-12">
+                {/* <div className="flex justify-between w-full mr-2">
                       <p className="button-slant-right flex items-center bg-Player text-white   md:px-2 rounded-sm text-sm md:text-base space-x-2">
                       <span>
                         <FaTrophy />
@@ -767,38 +807,32 @@ var countof17 = columns
                       <span>{totalWinLoss.bankerLoss}</span>
                     </p>
                   </div> */}
-                  <button
-                    className="button-slant-right bg-Player px-8 md:px-12 py-1.5 text-white rounded-sm text-sm md:text-base font-medium glass-button"
-                    onClick={() => handleClick("P")}
-                  >
-                    <span>Player</span>
-                  </button>
-                </div>
-                <div
-                  
+                <button
+                  className="button-slant-right bg-Player px-8 md:px-12 py-1.5 text-white rounded-sm text-sm md:text-base font-medium glass-button"
+                  onClick={() => handleClick("P")}
                 >
-                  <div
-                    className="border-[3px] rounded-full gold-border1 relative flex justify-center items-center"
-                  >
+                  <span>Player</span>
+                </button>
+              </div>
+              <div>
+                <div className="border-[3px] rounded-full gold-border1 relative flex justify-center items-center">
                   <span
                     className={`rounded-full flex justify-center items-center h-[100px] w-[100px] ${
                       isFlipping ? "animate-coin-flip" : ""
                     }`}
                     style={{
-                      transformStyle: "preserve-3d", 
+                      transformStyle: "preserve-3d",
                     }}
                   >
                     <img
-                      src={currentImg} 
+                      src={currentImg}
                       alt="Coin Image"
-                      className="w-full h-full object-cover rounded-full" 
+                      className="w-full h-full object-cover rounded-full"
                     />
                   </span>
-                  </div>
-
                 </div>
-                <div className="flex-col flex items-start gap-2 mt-12">
-
+              </div>
+              <div className="flex-col flex items-start gap-2 mt-12">
                 {/* <div className="flex justify-between w-full ml-2">
                 <p className="button-slant-left flex items-center bg-Banker text-white   md:px-2 rounded-sm text-sm md:text-base space-x-2">
                   <span>
@@ -814,15 +848,15 @@ var countof17 = columns
                 </p>
                 </div> */}
 
-                  <button
-                    className="button-slant-left bg-Banker px-8 md:px-12 text-white py-1.5 rounded-sm text-sm md:text-base font-medium glass-button1"
-                    onClick={() => handleClick("B")}
-                  >
-                    <span>Banker</span>
-                  </button>
-                </div>
+                <button
+                  className="button-slant-left bg-Banker px-8 md:px-12 text-white py-1.5 rounded-sm text-sm md:text-base font-medium glass-button1"
+                  onClick={() => handleClick("B")}
+                >
+                  <span>Banker</span>
+                </button>
               </div>
-              {/* <div className="flex justify-center">
+            </div>
+            {/* <div className="flex justify-center">
                 <div className="flex flex-col items-center mt-2">
                   {/* <p className='button-slant-middle bg-Tie text-white px-2 md:px-4 py-1 rounded-md text-sm md:text-base buttonCount'  ><span>{clickCount.T}</span></p> 
                    <button
@@ -833,11 +867,9 @@ var countof17 = columns
                   </button> 
                 </div>
               </div> */}
-            </div>
+          </div>
 
-
-
-            {/* <button className="bg-customBlack rounded-md font-bold text-superPurple p-2" onClick={() => {
+          {/* <button className="bg-customBlack rounded-md font-bold text-superPurple p-2" onClick={() => {
             const allValues = columns
             .map((obj) => obj.values)
             .flat()
@@ -849,10 +881,8 @@ var countof17 = columns
             }
           }} >{isSuggestionActive ? 'On' : 'Off'}</button> */}
 
-         
-          
-          <div className="relative flex gap-4 mt-3" >
-          <div>
+          <div className="relative flex gap-4 mt-3">
+            <div>
               {countof17.length >= 1 ? (
                 (() => {
                   const total = totalWinLoss.totalWin + totalWinLoss.totalLoss;
@@ -921,26 +951,27 @@ var countof17 = columns
             </div>
 
             <div class="checkbox-wrapper-41 relative mt-1">
-              <input type="checkbox" checked={isSuggestionActive} onChange={handleCheckboxChange}/>
+              <input
+                type="checkbox"
+                checked={isSuggestionActive}
+                onChange={handleCheckboxChange}
+              />
             </div>
           </div>
-          <div className="flex" >
+          <div className="flex">
             {/* <button className="mx-4 bg-superPurple rounded-lg text-white font-semibold border-none py-1 px-3 hover:bg-purple-400" onClick={() => {
               setFirstLogic(!firstLogic)
               setSecondLogic(!secondLogic)
               handleReset()
             }} >Core  <span className="px-2 bg-customBlack rounded-xl">{firstLogic ? 'On' : 'Off'}</span></button> */}
-            <button className="mx-4 bg-superPurple  rounded-lg text-white font-semibold border-none py-1 px-3 hover:bg-purple-400" onClick={() => {
+            {/* <button className="mx-4 bg-superPurple  rounded-lg text-white font-semibold border-none py-1 px-3 hover:bg-purple-400" onClick={() => {
               setFirstLogic(!firstLogic)
               setSecondLogic(!secondLogic)
               handleReset()
-            }} > Hit & Run <span  className="px-2 bg-customBlack rounded-xl"> {secondLogic ? 'On' : 'Off'}</span></button>
+            }} > Hit & Run <span  className="px-2 bg-customBlack rounded-xl"> {secondLogic ? 'On' : 'Off'}</span></button> */}
           </div>
 
-
-
-
-            {/* <BaccaratCard/> */}
+          {/* <BaccaratCard/> */}
 
           {/* <h2>Total :</h2>
           <div className="my-3 flex text-white" >
@@ -973,13 +1004,13 @@ var countof17 = columns
           </div>
  */}
 
-            {/* <h2>Total :</h2>
+          {/* <h2>Total :</h2>
           <div className="my-3 flex text-white" >
             <h4 className="mx-2" >Win : {totalWinLoss.totalWin}</h4>
             <h4 className="mx-2" >Loss : {totalWinLoss.totalLoss}</h4>
           </div> */}
 
-            {/* <h2>Short Trend :</h2>
+          {/* <h2>Short Trend :</h2>
             <div className="my-3 flex text-white" >
               <h4 className="mx-2" >Banker : {bankerPoints}</h4>
               <h4 className="mx-2" >Player : {playerPoints}</h4>
@@ -1008,8 +1039,8 @@ var countof17 = columns
             <h4 className="mx-2" >Player Loss : {totalWinLoss.playerLoss}</h4>
           </div> */}
 
-            {/* Button Container */}
-            {/* <div className="w-full rounded-md shadow-lg flex flex-wrap justify-center gap-4">
+          {/* Button Container */}
+          {/* <div className="w-full rounded-md shadow-lg flex flex-wrap justify-center gap-4">
           
             <button
               onClick={() => handleClick("P")}
@@ -1048,22 +1079,17 @@ var countof17 = columns
               </div>
             </button>
           </div> */}
-          </div>
-
-          
-          
-         
         </div>
-        
-        {/* Right Panel */}
-        <div className="flex justify-center items-center h-full w-full">
-          <div className="right-panel text-center p-2 lg:w-[500px] md:w-[600px] custom-sm:w-[380px] w-full max-w-[600px]  flex justify-center items-center">
-            <BaccaratMoney />
-          </div>
+      </div>
+
+      {/* Right Panel */}
+      <div className="flex justify-center items-center h-full w-full">
+        <div className="right-panel text-center p-2 lg:w-[500px] md:w-[600px] custom-sm:w-[380px] w-full max-w-[600px]  flex justify-center items-center">
+          <BaccaratMoney />
         </div>
+      </div>
 
-
-        <FindPoints
+      <FindPoints
         setBankerPoints={setBankerPoints}
         setPlayerPoints={setPlayerPoints}
         columns={columns}
@@ -1081,16 +1107,19 @@ var countof17 = columns
         firstLogic={firstLogic}
         secondLogic={secondLogic}
       />
-        {/* {planLockScreen && <BaccaratLock setPlanLockScreen={setPlanLockScreen} />} */}
-        {maintananceLock && <BaccaratMaintanance setMaintananceLockScreen={setMaintananceLockScreen} />}
-
-      </div>
-      
+      {planLockScreen && <BaccaratLock setPlanLockScreen={setPlanLockScreen} />}
+      {/* {maintananceLock && (
+        <BaccaratMaintanance
+          setMaintananceLockScreen={setMaintananceLockScreen}
+        />
+      )} */}
+    </div>
   );
 };
 
 export default Project3;
- {/* {activeBoard === "bigRoard" && (
+{
+  /* {activeBoard === "bigRoard" && (
           <div
             className="  rounded-2xl p-2 w-full sm:w-[400px] md:w-[500px] lg:w-[850px]"
             style={{
@@ -1161,10 +1190,14 @@ export default Project3;
 
             </div>
           </div>
-        )} */}
+        )} */
+}
 
-        {/* button container */}
-      {/* <div className="w-full flex justify-end gap-3 px-1 ">
+{
+  /* button container */
+}
+{
+  /* <div className="w-full flex justify-end gap-3 px-1 ">
         <button
           onClick={handleUndo}
           className="group  bg-customBlack border-2 border-slate-300 gap-1 px-3 text-white flex rounded-full justify-center items-center shadow-lg hover:bg-superPurple hover:border-customBlack"
@@ -1181,81 +1214,81 @@ export default Project3;
         </button>
       </div> 
       
-      */}
+      */
+}
 
+// {activeBoard === "beadRoard" && (
+//   <div
+//     className=" bg-purplegrad  p-2 w-full sm:w-[380px] md:w-[500px] lg:w-[600px]"
+//     style={{
+//       height: "200px",
+//       overflow: "scroll",
+//       scrollbarWidth: "none",
+//     }}
+//   >
+//     <div
+//       id="beadRoard"
+//       className="flex flex-row gap-2 bg-purplegrad"
+//       style={{ height: "100%" }}
+//     >
+//       {columnsBead.map((column, colIndex) => (
+//         <div
+//           key={colIndex}
+//           className="flex flex-col items-center gap-2"
+//         >
+//           {column.map((value, index) => {
+//             // Determine the previous non-"T" value
+//             const prevNonTValue =
+//               value === "T"
+//                 ? getNonTPrevValue(columnsBead, colIndex, index)
+//                 : value;
 
-      // {activeBoard === "beadRoard" && (
-      //   <div
-      //     className=" bg-purplegrad  p-2 w-full sm:w-[380px] md:w-[500px] lg:w-[600px]"
-      //     style={{
-      //       height: "200px",
-      //       overflow: "scroll",
-      //       scrollbarWidth: "none",
-      //     }}
-      //   >
-      //     <div
-      //       id="beadRoard"
-      //       className="flex flex-row gap-2 bg-purplegrad"
-      //       style={{ height: "100%" }}
-      //     >
-      //       {columnsBead.map((column, colIndex) => (
-      //         <div
-      //           key={colIndex}
-      //           className="flex flex-col items-center gap-2"
-      //         >
-      //           {column.map((value, index) => {
-      //             // Determine the previous non-"T" value
-      //             const prevNonTValue =
-      //               value === "T"
-      //                 ? getNonTPrevValue(columnsBead, colIndex, index)
-      //                 : value;
+//             const backgroundClass =
+//               value === "T"
+//                 ? prevNonTValue === "B"
+//                   ? "inline-block bg-Banker text-white text-lg h-6 w-6 text-[7px] rounded-full ring-2 ring-green-600"
+//                   : prevNonTValue === "P"
+//                   ? "inline-block bg-Player text-white text-lg h-6 w-6 text-[7px] rounded-full ring-2 ring-green-600"
+//                   : "bg-Tie w-6 h-6" // Default for "T"
+//                 : value === "B"
+//                 ? "bg-Banker w-6 h-6"
+//                 : value === "P"
+//                 ? "bg-Player w-6 h-6"
+//                 : "bg-Tie"; // Default for any other value
 
-      //             const backgroundClass =
-      //               value === "T"
-      //                 ? prevNonTValue === "B"
-      //                   ? "inline-block bg-Banker text-white text-lg h-6 w-6 text-[7px] rounded-full ring-2 ring-green-600"
-      //                   : prevNonTValue === "P"
-      //                   ? "inline-block bg-Player text-white text-lg h-6 w-6 text-[7px] rounded-full ring-2 ring-green-600"
-      //                   : "bg-Tie w-6 h-6" // Default for "T"
-      //                 : value === "B"
-      //                 ? "bg-Banker w-6 h-6"
-      //                 : value === "P"
-      //                 ? "bg-Player w-6 h-6"
-      //                 : "bg-Tie"; // Default for any other value
+//             return (
+//               <div
+//                 key={index}
+//                 className={`flex items-center justify-center text-sm w-6 h-6 text-lg font-semibold text-white rounded-full ${backgroundClass}`}
+//               >
+//                 {value}
+//               </div>
+//             );
+//           })}
+//         </div>
+//       ))}
 
-      //             return (
-      //               <div
-      //                 key={index}
-      //                 className={`flex items-center justify-center text-sm w-6 h-6 text-lg font-semibold text-white rounded-full ${backgroundClass}`}
-      //               >
-      //                 {value}
-      //               </div>
-      //             );
-      //           })}
-      //         </div>
-      //       ))}
-
-      //       {/* {columnsBead.map((column, colIndex) => (
-      //   <div
-      //     key={colIndex}
-      //     className="flex flex-col items-center gap-2"
-      //   >
-      //     {column.map((value, index) => (
-      //       <div
-      //         key={index}
-      //         className={`flex items-center justify-center text-sm w-6 h-6 text-lg font-semibold text-white rounded-full ${
-      //           value === "B"
-      //             ? "bg-Banker"
-      //             : value === "P"
-      //             ? "bg-Player"
-      //             : "bg-Tie"
-      //         }`}
-      //       >
-      //         {value}
-      //       </div>
-      //     ))}
-      //   </div>
-      // ))} */}
-      //     </div>
-      //   </div>
-      // )}
+//       {/* {columnsBead.map((column, colIndex) => (
+//   <div
+//     key={colIndex}
+//     className="flex flex-col items-center gap-2"
+//   >
+//     {column.map((value, index) => (
+//       <div
+//         key={index}
+//         className={`flex items-center justify-center text-sm w-6 h-6 text-lg font-semibold text-white rounded-full ${
+//           value === "B"
+//             ? "bg-Banker"
+//             : value === "P"
+//             ? "bg-Player"
+//             : "bg-Tie"
+//         }`}
+//       >
+//         {value}
+//       </div>
+//     ))}
+//   </div>
+// ))} */}
+//     </div>
+//   </div>
+// )}

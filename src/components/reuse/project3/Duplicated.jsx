@@ -27,7 +27,7 @@ const FindPoints = ({
       .flat()
       .filter((value) => value === "B" || value === "P" || value === "T");
 
-    // console.log("all values", allValues);
+    console.log("all values", allValues);
 
     // If there are fewer than 3 valid values, skip processing
     if (allValues.length < 3) {
@@ -39,7 +39,7 @@ const FindPoints = ({
     }
 
     const lastThreeValues = allValues.slice(-3); // Get the last 3 values
-    // console.log("last three values", lastThreeValues);
+    console.log("last three values", lastThreeValues);
 
     // Initialize points
     let calculateBankerPoints = 0;
@@ -239,6 +239,10 @@ const FindPoints = ({
 
       if (allValues.length === 6) {
         setInitialSlice(6);
+        setPatternWin(false)
+        setLogicWin(false)
+        setIsWin(false)
+        return;
       }
 
       console.log("isWin", isWin);
@@ -280,9 +284,11 @@ const FindPoints = ({
       }
 
       if (slicedArray[slicedArray.length - 1] === suggestionCoin) {
-        if (isSuggestionActive && allValues.length > startSuggestionCount) {
+        // if (isSuggestionActive && allValues.length > startSuggestionCount) {
           setRepeaterCoin("Wait");
-        }
+        // }
+
+        // alert('coming')
 
         if (lastSixChunks.length <= 3) {
           setPatternWin(true);
@@ -303,26 +309,26 @@ const FindPoints = ({
         // setIsWin(true);
         // setPatternWonLength(lastSixChunks.length);
 
-        if (
-          lastSixChunks[lastSixChunks.length - 1] ===
-          lastSixChunks[lastSixChunks.length - 2]
-        ) {
-          if (
-            lastSixChunks[lastSixChunks.length - 1] ===
-            lastSixChunks[lastSixChunks.length - 3]
-          ) {
-            setSuggestionCoin("Wait");
-            setIsWin(true);
-            // setPatternWin(true);
-            setPatternWonLength(lastSixChunks.length);
-            console.log("Last three values are the same; skipping suggestion.");
-          } else {
-            if (isSuggestionActive && allValues.length > startSuggestionCount) {
-              setRepeaterCoin(lastSixChunks[lastSixChunks.length - 1]);
-            }
-            setSuggestionCoin(lastSixChunks[lastSixChunks.length - 1]);
-          }
-        }
+        // if (
+        //   lastSixChunks[lastSixChunks.length - 1] ===
+        //   lastSixChunks[lastSixChunks.length - 2]
+        // ) {
+        //   if (
+        //     lastSixChunks[lastSixChunks.length - 1] ===
+        //     lastSixChunks[lastSixChunks.length - 3]
+        //   ) {
+        //     setSuggestionCoin("Wait");
+        //     setIsWin(true);
+        //     // setPatternWin(true);
+        //     setPatternWonLength(lastSixChunks.length);
+        //     console.log("Last three values are the same; skipping suggestion.");
+        //   } else {
+        //     if (isSuggestionActive && allValues.length > startSuggestionCount) {
+        //       setRepeaterCoin(lastSixChunks[lastSixChunks.length - 1]);
+        //     }
+        //     setSuggestionCoin(lastSixChunks[lastSixChunks.length - 1]);
+        //   }
+        // }
 
         console.log("isWin", isWin);
 
@@ -331,11 +337,11 @@ const FindPoints = ({
 
       console.log("lastSixChunks", lastSixChunks.length);
       console.log("lastChunk", lastChunk.length);
-      // console.log("repeaterCoin", repeaterCoin);
-      // console.log("isSuggestionActive", isSuggestionActive);
-      // console.log("startSuggestionCount", startSuggestionCount);
+      console.log("repeaterCoin", repeaterCoin);
+      console.log("isSuggestionActive", isSuggestionActive);
+      console.log("startSuggestionCount", startSuggestionCount);
       console.log("isWin", isWin);
-      // console.log("initialSlice", initialSlice);
+      console.log("initialSlice", initialSlice);
 
       if (!isWin && !patternWin) {
         if (lastChunk.length < 3) {
@@ -516,14 +522,10 @@ const FindPoints = ({
 
       if (allValues.length === 6) {
         setInitialSlice(6);
-        setIsWin(false);
-        setInitialSlice(allValues.length);
-        setSuggestionCoin("Wait");
-        setRepeaterCoin("Wait");
-        return;
+        setIsWin(false)
       }
 
-      
+      console.log("isWin", isWin);
 
       let slicedArray = allValues.slice(initialSlice);
 
@@ -539,9 +541,9 @@ const FindPoints = ({
       let lastChunk = chunks[chunks.length - 1];
       // const sixChunks = chunkArray(lastChunk, 6);
       // let lastSixChunks = sixChunks[sixChunks.length - 1];
-      // console.log("slicedArray", slicedArray);
-      // console.log("chunks", chunks);
-      // console.log("lastChunk", lastChunk);
+      console.log("slicedArray", slicedArray);
+      console.log("chunks", chunks);
+      console.log("lastChunk", lastChunk);
 
       if (
         suggestionCoin === "P" &&
@@ -562,12 +564,8 @@ const FindPoints = ({
           bankerLoss: prev.bankerLoss + 1,
         }));
       }
-      console.log("isWin", isWin);
-      console.log('suggestionCoin', suggestionCoin);
-      console.log('lastChunk[lastChunk?.length - 1]', lastChunk[lastChunk?.length - 1])
 
       if (lastChunk[lastChunk?.length - 1] === suggestionCoin) {
-        // alert('coming')
         if (isSuggestionActive && allValues.length > startSuggestionCount) {
           setRepeaterCoin("Wait");
         }
@@ -580,7 +578,7 @@ const FindPoints = ({
         setIsWin(true);
         setInitialSlice(allValues.length);
         setSuggestionCoin("Wait");
-        setRepeaterCoin("Wait");
+        setRepeaterCoin('Wait')
 
         setTotalWinLoss((prev) => ({
           ...prev,
@@ -617,16 +615,16 @@ const FindPoints = ({
       }
 
       // console.log("lastSixChunks", lastSixChunks.length);
-      // console.log("lastChunk", lastChunk.length);
-      // console.log("repeaterCoin", repeaterCoin);
+      console.log("lastChunk", lastChunk.length);
+      console.log("repeaterCoin", repeaterCoin);
       // console.log("isSuggestionActive", isSuggestionActive);
       // console.log("startSuggestionCount", startSuggestionCount);
-      // console.log("isWin", isWin);
+      console.log("isWin", isWin);
       // console.log("initialSlice", initialSlice);
 
       if (!isWin) {
         if (lastChunk.length === 2) {
-          let sameCoin = lastChunk[0] === lastChunk[1];
+          let sameCoin = lastChunk[0] === lastChunk[1]
           if (isSuggestionActive && allValues.length > startSuggestionCount) {
             setRepeaterCoin(sameCoin ? lastChunk[0] : "Wait");
           }
@@ -634,17 +632,18 @@ const FindPoints = ({
         } else if (lastChunk.length === 3) {
           let findWins0 = lastChunk[0] === lastChunk[1];
           let findWins1 = lastChunk[1] === lastChunk[2];
-          if (findWins0) {
+          if(findWins0){
             if (isSuggestionActive && allValues.length > startSuggestionCount) {
               setRepeaterCoin(findWins0 ? lastChunk[0] : "Wait");
             }
-            setSuggestionCoin(findWins0 ? lastChunk[0] : "Wait");
-          } else if (findWins1) {
+            setSuggestionCoin(findWins1 ? lastChunk[0] : "Wait");
+          }
+          else if(findWins1){
             if (isSuggestionActive && allValues.length > startSuggestionCount) {
               setRepeaterCoin(findWins1 ? lastChunk[1] : "Wait");
             }
             setSuggestionCoin(findWins1 ? lastChunk[1] : "Wait");
-          } else {
+          }else{
             if (isSuggestionActive && allValues.length > startSuggestionCount) {
               setRepeaterCoin("Wait");
             }
@@ -653,15 +652,15 @@ const FindPoints = ({
         } else if (lastChunk.length === 4) {
           const countP = lastChunk.filter((char) => char === "P").length;
           const countB = lastChunk.filter((char) => char === "B").length;
-
-          const findWins =
-            countP > countB ? "P" : countB > countP ? "B" : "Wait";
-
+        
+          const findWins = countP > countB ? "P" : countB > countP ? "B" : "Wait";
+        
           if (isSuggestionActive && allValues.length > startSuggestionCount) {
             setRepeaterCoin(findWins);
           }
           setSuggestionCoin(findWins);
-        } else if (lastChunk.length === 5) {
+        }
+         else if (lastChunk.length === 5) {
           const countP = lastChunk.filter((char) => char === "P").length;
           const countB = lastChunk.filter((char) => char === "B").length;
 
@@ -765,7 +764,8 @@ const FindPoints = ({
           setInitialSlice(allValues.length);
           setRepeaterCoin("Wait");
           setSuggestionCoin("Wait");
-        } else if (lastChunk.length < 6) {
+        } 
+        else if (lastChunk.length < 6) {
           setIsWin(false);
           setRepeaterCoin("Wait");
           setSuggestionCoin("Wait");
