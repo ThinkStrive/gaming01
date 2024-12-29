@@ -49,33 +49,13 @@ const Project3 = () => {
 
   const [maintananceLock, setMaintananceLockScreen] = useState(false);
 
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        let userData = JSON.parse(sessionStorage.getItem("userData"));
-        const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
-
-        if (!response.data.data.projectsPlan.project3) {
-          setPlanLockScreen(true);
-        } else {
-          setPlanLockScreen(false);
-        }
-      } catch (err) {
-        console.log("err", err);
-      }
-    };
-
-    // Call the async function
-    fetchUserDetails();
-  }, []);
-
   // useEffect(() => {
   //   const fetchUserDetails = async () => {
   //     try {
   //       let userData = JSON.parse(sessionStorage.getItem("userData"));
   //       const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
 
-  //       if (!response.data.data?.projectSubscription?.baccarat?.projectAccess) {
+  //       if (!response.data.data.projectsPlan.project3) {
   //         setPlanLockScreen(true);
   //       } else {
   //         setPlanLockScreen(false);
@@ -88,6 +68,26 @@ const Project3 = () => {
   //   // Call the async function
   //   fetchUserDetails();
   // }, []);
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        let userData = JSON.parse(sessionStorage.getItem("userData"));
+        const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
+
+        if (!response.data.data?.projectSubscription?.baccarat?.projectAccess) {
+          setPlanLockScreen(true);
+        } else {
+          setPlanLockScreen(false);
+        }
+      } catch (err) {
+        console.log("err", err);
+      }
+    };
+
+    // Call the async function
+    fetchUserDetails();
+  }, []);
 
   const [currentImg, setCurrentImg] = useState("");
   const [isFlipping, setIsFlipping] = useState(false);

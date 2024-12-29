@@ -514,14 +514,14 @@ const FindPoints = ({
         .filter((value) => value === "B" || value === "P");
       if (allValues.length < 1) return;
 
-      if (allValues.length === 6) {
-        setInitialSlice(6);
-        setIsWin(false);
-        setInitialSlice(allValues.length);
-        setSuggestionCoin("Wait");
-        setRepeaterCoin("Wait");
-        return;
-      }
+      // if (allValues.length === 6) {
+      //   setInitialSlice(6);
+      //   setIsWin(false);
+      //   setInitialSlice(allValues.length);
+      //   setSuggestionCoin("Wait");
+      //   setRepeaterCoin("Wait");
+      //   return;
+      // }
 
       
 
