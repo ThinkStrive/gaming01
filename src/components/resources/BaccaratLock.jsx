@@ -24,7 +24,7 @@ const BaccaratLock = ({ setPlanLockScreen }) => {
         <div className="text-center mb-4 w-full flex flex-wrap sm:flex-nowrap justify-around gap-4 h-auto sm:h-[30%] my-2">
           <div className="bg-slate-200 h-[auto] sm:h-[100%] w-full sm:w-[40%] rounded-xl shadow flex justify-evenly items-center flex-col py-4">
             <h2 className="text-black font-semibold text-xl my-2">
-              Daily Plan
+              48 Hours Plan
             </h2>
             {/* <button
               className="bg-[#242424] text-white font-bold py-2 px-6 sm:px-8 rounded-lg transition w-[80%] hover:bg-[#141414]"
@@ -33,11 +33,11 @@ const BaccaratLock = ({ setPlanLockScreen }) => {
               <PayPalBtn amount={3.99} />
             </button> */}
             <Link
-              to="https://www.paypal.com/ncp/payment/QWJGGR9ADNX7S"
+              to="https://www.paypal.com/ncp/payment/JV5QZV4RTPGS4"
               target="_blank"
               className="bg-[#242424] text-white font-bold py-2 px-6 sm:px-8 rounded-lg transition w-[80%] hover:bg-[#141414]"
             >
-              $12.00
+              $50.00
             </Link>
           </div>
           <div className="bg-slate-200 h-[auto] sm:h-[100%] w-full sm:w-[40%] rounded-xl shadow flex justify-evenly items-center flex-col py-4">
@@ -49,11 +49,11 @@ const BaccaratLock = ({ setPlanLockScreen }) => {
               <PayPalBtn amount={54.99} />
             </button> */}
             <Link
-              to="https://www.paypal.com/ncp/payment/T8NMGGSKBYDLW"
+              to="https://www.paypal.com/ncp/payment/9PZUYNYYP43GQ"
               target="_blank"
               className="bg-[#242424] text-white font-bold py-2 px-6 sm:px-8 rounded-lg transition w-[80%] hover:bg-[#141414]"
             >
-              $300.00
+              $500.00
             </Link>
           </div>
         </div>

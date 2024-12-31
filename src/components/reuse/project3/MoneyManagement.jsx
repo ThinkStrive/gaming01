@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import { IoIosRefreshCircle } from "react-icons/io";
-
+import BaccaratMoneyv3 from "./Version3Money";
+import axios from "axios";
+import { USER_DETAILS } from "../../api/ApiDetails";
+import { toast } from "react-toastify";
 const BaccaratMoney = () => {
   const levels1 = [
     { level: "Level-1", units: [1, 3, 7] },
@@ -20,6 +23,8 @@ const BaccaratMoney = () => {
   const [selectedVersion, setSelectedVersion] = useState("Version 1");
   const [levels, setLevels] = useState(levels1);
   const [activeUnit, setActiveUnit] = useState({ levelIndex: 0, unitIndex: 0 });
+  const [view, setView] = useState("BaccaratMoney");
+
 
   const handleInputChange = (event) => {
     const value = event.target.value;
@@ -117,10 +122,45 @@ const BaccaratMoney = () => {
     setActiveUnit({ levelIndex: 0, unitIndex: 0 });
   };
 
+  const handleMonthlyClick = async () => {
+    try {
+      const userData = JSON.parse(sessionStorage.getItem("userData"));
+      const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
+      const isMonthlySubscriber = response.data.data?.projectSubscription?.baccarat?.subscriptionType === "monthly";
+  
+      if (isMonthlySubscriber) {
+        setView("BaccaratMoneyv3");
+      } else {
+        toast.error("You are not a monthly subscriber. Please subscribe to access this feature.", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    } catch (error) {
+      console.error("Error checking subscription status:", error);
+    }
+  };
+
+  if (view === "BaccaratMoneyv3") {
+    return <BaccaratMoneyv3 onBack={() => setView("BaccaratMoney")} />;
+  }
+
+
+
   return (
     <div className="bg-gradient-to-br from-purple-500 to-purple-900 h-[100%] flex flex-col items-center p-1 rounded-2xl w-full">
-      <h1 className="text-2xl font-semibold text-white  bg-customBlack w-full text-center  rounded-xl md:text-xl sm:text-md">
-       Data Driven Baccarat 
+
+      <button onClick={handleMonthlyClick} className="bg-purple-700 text-white py-2 px-4 rounded-lg mb-4">
+        Monthly Member-Only Baccarat
+      </button>
+
+      <h1 className="text-2xl font-semibold text-white bg-customBlack w-full text-center rounded-xl md:text-xl sm:text-md">
+        Data Driven Baccarat
       </h1>
       <div className="flex justify-between mt-0.5">
         <h2 className="text-md text-white  bg-purplegrad px-3 font-semibold sm:text-md rounded-xl me-3 py-1">

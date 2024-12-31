@@ -22,34 +22,22 @@ const Lock = ({ setPlanLockScreen }) => {
           <i className="fa-solid fa-lock text-black text-4xl sm:text-5xl"></i>
         </h2>
         <div className="text-center mb-4 w-full flex flex-wrap sm:flex-nowrap justify-between gap-4 h-auto sm:h-[30%] my-2">
-          <div className="bg-slate-200 h-[auto] sm:h-[100%] w-full sm:w-[30%] rounded-xl shadow flex justify-evenly items-center flex-col py-4">
+          <div className="bg-slate-200 h-[auto] sm:h-[100%] w-full sm:w-[45%] rounded-xl shadow flex justify-evenly items-center flex-col py-4">
             <h2 className="text-black font-semibold text-xl my-2">
-              Daily Plan
+              48 Hours Plan
             </h2>
-            {/* <button
-              className="bg-[#242424] text-white font-bold py-2 px-6 sm:px-8 rounded-lg transition w-[80%] hover:bg-[#141414]"
-              // onClick={handleClickPayButton}
-            >
-              <PayPalBtn amount={3.99} />
-            </button> */}
             <Link
-              to="https://www.paypal.com/ncp/payment/8WG8DB23RA5AG"
+              to="https://www.paypal.com/ncp/payment/HCDYDZG87E67G"
               target="_blank"
               className="bg-[#242424] text-white font-bold py-2 px-6 sm:px-8 rounded-lg transition w-[80%] hover:bg-[#141414]"
             >
-              $3.99
+              $24.00
             </Link>
           </div>
-          <div className="bg-slate-200 h-[auto] sm:h-[100%] w-full sm:w-[30%] rounded-xl shadow flex justify-evenly items-center flex-col py-4">
+          {/* <div className="bg-slate-200 h-[auto] sm:h-[100%] w-full sm:w-[30%] rounded-xl shadow flex justify-evenly items-center flex-col py-4">
             <h2 className="text-black font-semibold text-xl my-2">
               Weekly Plan
             </h2>
-            {/* <button my-2
-              className="bg-[#242424] text-white font-bold py-2 px-6 sm:px-8 rounded-lg transition w-[80%] hover:bg-[#141414]"
-              // onClick={handleClickPayButton}
-            >
-              <PayPalBtn amount={21.99} />
-            </button> */}
             <Link
               to="https://www.paypal.com/ncp/payment/55YHH6Y8TG4CE"
               target="_blank"
@@ -57,21 +45,15 @@ const Lock = ({ setPlanLockScreen }) => {
             >
               $21.99
             </Link>
-          </div>
-          <div className="bg-slate-200 h-[auto] sm:h-[100%] w-full sm:w-[30%] rounded-xl shadow flex justify-evenly items-center flex-col py-4">
+          </div> */}
+          <div className="bg-slate-200 h-[auto] sm:h-[100%] w-full sm:w-[45%] rounded-xl shadow flex justify-evenly items-center flex-col py-4">
             <h2 className="text-black font-semibold text-xl">Monthly Plan</h2>
-            {/* <button
-              className="bg-[#242424] text-white font-bold py-2 px-6 sm:px-8 rounded-lg transition w-[80%] hover:bg-[#141414]"
-              // onClick={handleClickPayButton}
-            >
-              <PayPalBtn amount={54.99} />
-            </button> */}
             <Link
-              to="https://www.paypal.com/ncp/payment/C9V3LSP64QNQE"
+              to="https://www.paypal.com/ncp/payment/UE6LP4MHKJHWW"
               target="_blank"
               className="bg-[#242424] text-white font-bold py-2 px-6 sm:px-8 rounded-lg transition w-[80%] hover:bg-[#141414]"
             >
-              $54.99
+              $300.00
             </Link>
           </div>
         </div>
