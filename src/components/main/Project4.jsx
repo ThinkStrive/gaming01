@@ -17,6 +17,9 @@ import SpinCycleMoney from "../reuse/project4/TempMoneyManagement.jsx";
 import History from "../reuse/project1/history/History.jsx";
 import { max } from "moment/moment.js";
 
+import { FaShieldHeart } from "react-icons/fa6";
+import { SiZap } from "react-icons/si";
+
 const Project4 = ({ theme }) => {
   const [isAlertAllowed, setIsAlertAllowed] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -31,14 +34,22 @@ const Project4 = ({ theme }) => {
   const [i6_btn, setI6_btn] = useState(false);
   const [isLockFreeze, setIsLockFreeze] = useState(false);
 
-  // const [sidebar, setSidebar] = useState(false);
+  const [isEffectActive, setIsEffectActive] = useState(false);
+  const [hasShown36Toast, setHasShown36Toast] = useState(false);
 
-  // const showSidebar = () => setSidebar(!sidebar);
+  const [activeTab, setActiveTab] = useState(1);
+  const [dozenActiveTab, setDozenActiveTab] = useState(1);
+  const [columnActiveTab, setColumnActiveTab] = useState(1);
 
   const initialScores = Array.from({ length: 36 }, (_, i) => 36 - i); // Initial score array from 30 to 1
   const [landedNumbers, setLandedNumbers] = useState(() => {
     const savedLandedNumbers = localStorage.getItem("landedNumbersDD");
     return savedLandedNumbers ? JSON.parse(savedLandedNumbers) : [];
+  });
+
+  const [maximumScoreDozen, setMaximumScoreDozen] = useState(() => {
+    const savedLandedNumbers = localStorage.getItem("maximumScoreDozen");
+    return savedLandedNumbers ? JSON.parse(savedLandedNumbers) : '1';
   });
 
   const [dozenScores, setDozenScores] = useState(() => {
@@ -61,11 +72,6 @@ const Project4 = ({ theme }) => {
       ? JSON.parse(savedRowDataScores)
       : { A: 0, B: 0, C: 0 };
   });
-
-  // const [historyData, setHistoryData] = useState(() => {
-  //   const savedHistoryData = localStorage.getItem("historyData");
-  //   return savedHistoryData ? JSON.parse(savedHistoryData) : [];
-  // });
 
   const [countData, setCountData] = useState(() => {
     const savedCountData = localStorage.getItem("countData");
@@ -92,15 +98,15 @@ const Project4 = ({ theme }) => {
     return savedSummaryData
       ? JSON.parse(savedSummaryData)
       : {
-        lowEvenRed: 0,
-        lowOddRed: 0,
-        highEvenRed: 0,
-        highOddRed: 0,
-        lowEvenBlack: 0,
-        lowOddBlack: 0,
-        highEvenBlack: 0,
-        highOddBlack: 0,
-      };
+          lowEvenRed: 0,
+          lowOddRed: 0,
+          highEvenRed: 0,
+          highOddRed: 0,
+          lowEvenBlack: 0,
+          lowOddBlack: 0,
+          highEvenBlack: 0,
+          highOddBlack: 0,
+        };
   });
 
   const [nonSummaryData, setNonSummaryData] = useState(() => {
@@ -108,26 +114,26 @@ const Project4 = ({ theme }) => {
     return savedSummaryData
       ? JSON.parse(savedSummaryData)
       : {
-        lowEvenRed: 0,
-        lowOddRed: 0,
-        highEvenRed: 0,
-        highOddRed: 0,
-        lowEvenBlack: 0,
-        lowOddBlack: 0,
-        highEvenBlack: 0,
-        highOddBlack: 0,
-      };
-  });  
+          lowEvenRed: 0,
+          lowOddRed: 0,
+          highEvenRed: 0,
+          highOddRed: 0,
+          lowEvenBlack: 0,
+          lowOddBlack: 0,
+          highEvenBlack: 0,
+          highOddBlack: 0,
+        };
+  });
 
   const [circleData, setCircleData] = useState(() => {
     const isSaved = localStorage.getItem("circleData");
     return isSaved
       ? JSON.parse(isSaved)
       : {
-        zero: 0,
-        orphe: 0,
-        tires: 0,
-      };
+          zero: 0,
+          orphe: 0,
+          tires: 0,
+        };
   });
 
   const [nonCircleData, setNonCircleData] = useState(() => {
@@ -135,47 +141,45 @@ const Project4 = ({ theme }) => {
     return isSaved
       ? JSON.parse(isSaved)
       : {
-        zero: 0,
-        duZero: 0,
-        orphe: 0,
-        tires: 0,
-      };
+          zero: 0,
+          duZero: 0,
+          orphe: 0,
+          tires: 0,
+        };
   });
-
 
   const [lastHitData, setLastHitData] = useState(() => {
     const savedLastHitData = localStorage.getItem("lastHitData");
     return savedLastHitData
       ? JSON.parse(savedLastHitData)
       : {
-        red: 0,
-        black: 0,
-        even: 0,
-        odd: 0,
-        one_eighteen: 0,
-        nineteen_thirtySix: 0,
-        dozen_one: 0,
-        dozen_two: 0,
-        dozen_three: 0,
-        col_one: 0,
-        col_two: 0,
-        col_three: 0,
-      };
+          red: 0,
+          black: 0,
+          even: 0,
+          odd: 0,
+          one_eighteen: 0,
+          nineteen_thirtySix: 0,
+          dozen_one: 0,
+          dozen_two: 0,
+          dozen_three: 0,
+          col_one: 0,
+          col_two: 0,
+          col_three: 0,
+        };
   });
-
 
   const [doubleStreetData, setDoubleStreetData] = useState(() => {
     const savedData = localStorage.getItem("doubleStreetData");
     return savedData
       ? JSON.parse(savedData)
       : {
-        one_six: 0,
-        seven_twelve: 0,
-        thirteen_eighteen: 0,
-        nineteen_twentyFour: 0,
-        twentyFive_thirty: 0,
-        thirtyOne_thirtySix: 0,
-      };
+          one_six: 0,
+          seven_twelve: 0,
+          thirteen_eighteen: 0,
+          nineteen_twentyFour: 0,
+          twentyFive_thirty: 0,
+          thirtyOne_thirtySix: 0,
+        };
   });
 
   const [nonDoubleStreetData, setNonDoubleStreetData] = useState(() => {
@@ -183,34 +187,33 @@ const Project4 = ({ theme }) => {
     return savedData
       ? JSON.parse(savedData)
       : {
-        one_six: 0,
-        seven_twelve: 0,
-        thirteen_eighteen: 0,
-        nineteen_twentyFour: 0,
-        twentyFive_thirty: 0,
-        thirtyOne_thirtySix: 0,
-      };
+          one_six: 0,
+          seven_twelve: 0,
+          thirteen_eighteen: 0,
+          nineteen_twentyFour: 0,
+          twentyFive_thirty: 0,
+          thirtyOne_thirtySix: 0,
+        };
   });
-
 
   const [singleStreetData, setSingleStreetData] = useState(() => {
     const savedData = localStorage.getItem("singleStreetData");
     return savedData
       ? JSON.parse(savedData)
       : {
-        one_three: 0,
-        four_six: 0,
-        seven_nine: 0,
-        ten_twelve: 0,
-        thirteen_fifteen: 0,
-        sixteen_eighteen: 0,
-        nineteen_twentyOne: 0,
-        twentyTwo_twentyFour: 0,
-        twentyFive_twentySeven: 0,
-        twentyEight_thirty: 0,
-        thirtyOne_thirtyThree: 0,
-        thirtyFour_thirtySix: 0,
-      };
+          one_three: 0,
+          four_six: 0,
+          seven_nine: 0,
+          ten_twelve: 0,
+          thirteen_fifteen: 0,
+          sixteen_eighteen: 0,
+          nineteen_twentyOne: 0,
+          twentyTwo_twentyFour: 0,
+          twentyFive_twentySeven: 0,
+          twentyEight_thirty: 0,
+          thirtyOne_thirtyThree: 0,
+          thirtyFour_thirtySix: 0,
+        };
   });
 
   const [nonSingleStreetData, setNonSingleStreetData] = useState(() => {
@@ -218,59 +221,34 @@ const Project4 = ({ theme }) => {
     return savedData
       ? JSON.parse(savedData)
       : {
-        one_three: 0,
-        four_six: 0,
-        seven_nine: 0,
-        ten_twelve: 0,
-        thirteen_fifteen: 0,
-        sixteen_eighteen: 0,
-        nineteen_twentyOne: 0,
-        twentyTwo_twentyFour: 0,
-        twentyFive_twentySeven: 0,
-        twentyEight_thirty: 0,
-        thirtyOne_thirtyThree: 0,
-        thirtyFour_thirtySix: 0,
-      };
+          one_three: 0,
+          four_six: 0,
+          seven_nine: 0,
+          ten_twelve: 0,
+          thirteen_fifteen: 0,
+          sixteen_eighteen: 0,
+          nineteen_twentyOne: 0,
+          twentyTwo_twentyFour: 0,
+          twentyFive_twentySeven: 0,
+          twentyEight_thirty: 0,
+          thirtyOne_thirtyThree: 0,
+          thirtyFour_thirtySix: 0,
+        };
   });
 
+  const [dozenScoresDD, setDozenScoresDD] = useState(() => {
+    const savedDozenScores = localStorage.getItem("dozenScoresDD");
+    return savedDozenScores
+      ? JSON.parse(savedDozenScores)
+      : { 1: 0, 2: 0, 3: 0 };
+  });
 
-
-   const [dozenScoresDD, setDozenScoresDD] = useState(() => {
-      const savedDozenScores = localStorage.getItem("dozenScoresDD");
-      return savedDozenScores
-        ? JSON.parse(savedDozenScores)
-        : { 1: 0, 2: 0, 3: 0 };
-    });
-  
-    const [columnScoresDD, setColumnScoresDD] = useState(() => {
-      const savedColumnScores = localStorage.getItem("columnScoresDD");
-      return savedColumnScores
-        ? JSON.parse(savedColumnScores)
-        : { 1: 0, 2: 0, 3: 0 };
-    });
- 
-
-  // const [previousState, setPreviousState] = useState(() => {
-  //   const savedData = localStorage.getItem("previousData");
-  //   return savedData
-  //     ? JSON.parse(savedData)
-  //     : {
-  //       countData: {},
-  //       doubleStreetData: {},
-  //       singleStreetData: {},
-  //       summaryData: {},
-  //       nonSummaryData: {},
-  //       circleData: {},
-  //       lastHitNumber: {},
-  //       lastHitData: {},
-  //       nonCircleData: {},
-  //       historyData: [],
-  //       nonDoubleStreetData: {},
-  //       nonSingleStreetData: {},
-  //     };
-  // });
-
-
+  const [columnScoresDD, setColumnScoresDD] = useState(() => {
+    const savedColumnScores = localStorage.getItem("columnScoresDD");
+    return savedColumnScores
+      ? JSON.parse(savedColumnScores)
+      : { 1: 0, 2: 0, 3: 0 };
+  });
 
   const updateMapping = {
     zero: {
@@ -757,25 +735,22 @@ const Project4 = ({ theme }) => {
     },
   };
 
-
-
-
   const handleClickRowHoverData = () => {
-    if (landedNumbers.length > 36) {
+    if (landedNumbers.length >= 36) {
       setRowHoverEffect(!rowHoverEffect);
     } else {
       showToast("Need 36 digits to switch on", "error");
     }
   };
   const handleClickDozenHoverData = () => {
-    if (landedNumbers.length > 36) {
+    if (landedNumbers.length >= 36) {
       setDozenHoverEffect(!dozenHoverEffect);
     } else {
       showToast("Need 36 digits to switch on", "error");
     }
   };
   const handleClickColHoverData = () => {
-    if (landedNumbers.length > 36) {
+    if (landedNumbers.length >= 36) {
       setColHoverEffect(!colHoverEffect);
     } else {
       showToast("Need 36 digits to switch on", "error");
@@ -793,6 +768,42 @@ const Project4 = ({ theme }) => {
           dozenLossPer: 0,
           colWinPer: 0,
           colLossPer: 0,
+          dozenWinPerTwo: 0,
+          dozenLossPerTwo: 0,
+          colWinPerTwo: 0,
+          colLossPerTwo: 0,
+          winPerDataTwo: 0,
+          lossPerDataTwo: 0,
+        };
+  });
+
+  const [statsDataTwo, setStatsDataTwo] = useState(() => {
+    const savedCountData = localStorage.getItem("StatisticsDataTwo");
+    return savedCountData
+      ? JSON.parse(savedCountData)
+      : {
+          Agroup: 0,
+          Agroup_loss: 0,
+          Bgroup: 0,
+          Bgroup_loss: 0,
+          Cgroup: 0,
+          Cgroup_loss: 0,
+          dozen1: 0,
+          dozen1_loss: 0,
+          dozen2: 0,
+          dozen2_loss: 0,
+          dozen3: 0,
+          dozen3_loss: 0,
+          col1: 0,
+          col1_loss: 0,
+          col2: 0,
+          col2_loss: 0,
+          col3: 0,
+          col3_loss: 0,
+          odd: 0,
+          odd_loss: 0,
+          even: 0,
+          even_loss: 0,
         };
   });
 
@@ -826,69 +837,55 @@ const Project4 = ({ theme }) => {
         };
   });
 
+  //-----------1st project start--------------------
 
+  // Save `summaryData` to local storage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("summaryData", JSON.stringify(summaryData));
+  }, [summaryData]);
 
-//-----------1st project start--------------------
+  useEffect(() => {
+    localStorage.setItem("nonSummaryData", JSON.stringify(nonSummaryData));
+  }, [nonSummaryData]);
 
- // Save `summaryData` to local storage whenever it changes
- useEffect(() => {
-  localStorage.setItem("summaryData", JSON.stringify(summaryData));
-}, [summaryData]);
+  // Save `lastHitData` to local storage whenever it changes
 
-useEffect(() => {
-  localStorage.setItem("nonSummaryData", JSON.stringify(nonSummaryData));
-}, [nonSummaryData]);
+  useEffect(() => {
+    localStorage.setItem("doubleStreetData", JSON.stringify(doubleStreetData));
+  }, [doubleStreetData]);
 
-// Save `lastHitData` to local storage whenever it changes
+  useEffect(() => {
+    localStorage.setItem(
+      "nonDoubleStreetData",
+      JSON.stringify(nonDoubleStreetData)
+    );
+  }, [nonDoubleStreetData]);
 
+  useEffect(() => {
+    localStorage.setItem("singleStreetData", JSON.stringify(singleStreetData));
+  }, [singleStreetData]);
 
-useEffect(() => {
-  localStorage.setItem("doubleStreetData", JSON.stringify(doubleStreetData));
-}, [doubleStreetData]);
+  useEffect(() => {
+    localStorage.setItem(
+      "nonSingleStreetData",
+      JSON.stringify(nonSingleStreetData)
+    );
+  }, [nonSingleStreetData]);
 
-useEffect(() => {
-  localStorage.setItem(
-    "nonDoubleStreetData",
-    JSON.stringify(nonDoubleStreetData),
-  );
-}, [nonDoubleStreetData]);
+  useEffect(() => {
+    localStorage.setItem("circleData", JSON.stringify(circleData));
+  }, [circleData]);
 
+  useEffect(() => {
+    localStorage.setItem("nonCircleData", JSON.stringify(nonCircleData));
+  }, [nonCircleData]);
 
-useEffect(() => {
-  localStorage.setItem("singleStreetData", JSON.stringify(singleStreetData));
-}, [singleStreetData]);
+  // Save `lastHitData` to local storage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("lastHitData", JSON.stringify(lastHitData));
+  }, [lastHitData]);
 
-
-useEffect(() => {
-  localStorage.setItem(
-    "nonSingleStreetData",
-    JSON.stringify(nonSingleStreetData),
-  );
-}, [nonSingleStreetData]);
-
-useEffect(() => {
-  localStorage.setItem("circleData", JSON.stringify(circleData));
-}, [circleData]);
-
-useEffect(() => {
-  localStorage.setItem("nonCircleData", JSON.stringify(nonCircleData));
-}, [nonCircleData]);
-
-
- // Save `lastHitData` to local storage whenever it changes
- useEffect(() => {
-  localStorage.setItem("lastHitData", JSON.stringify(lastHitData));
-}, [lastHitData]);
-
-
-
-
-
-
-//-----------1st project End--------------------
-
-
-
+  //-----------1st project End--------------------
 
   const [rowData, setRowData] = useState(() => {
     const savedCountData = localStorage.getItem("rowData4");
@@ -917,6 +914,10 @@ useEffect(() => {
     return localStorage.getItem("repeatDozen4") || "";
   });
 
+  const [repeatDozenTwo, setRepeatDozenTwo] = useState(() => {
+    return localStorage.getItem("repeatDozen4Two") || "";
+  });
+
   const [repeatCol, setRepeatCol] = useState(() => {
     return localStorage.getItem("repeatCol4") || "";
   });
@@ -928,6 +929,14 @@ useEffect(() => {
   const [suggestionActiveDozen, setSuggestionActiveDozen] = useState(() => {
     return JSON.parse(localStorage.getItem("suggestionActiveDozen4")) || false;
   });
+
+  const [suggestionActiveDozenTwo, setSuggestionActiveDozenTwo] = useState(
+    () => {
+      return (
+        JSON.parse(localStorage.getItem("suggestionActiveDozen4Two")) || false
+      );
+    }
+  );
 
   const [suggestionActiveCol, setSuggestionActiveCol] = useState(() => {
     return JSON.parse(localStorage.getItem("suggestionActiveCol4")) || false;
@@ -944,6 +953,14 @@ useEffect(() => {
       );
     }
   );
+
+  const [userMissedSuggestionDozenTwo, setUserMissedSuggestionDozenTwo] =
+    useState(() => {
+      return (
+        JSON.parse(localStorage.getItem("userMissedSuggestionDozen4Two")) ||
+        false
+      );
+    });
 
   const [userMissedSuggestionCol, setUserMissedSuggestionCol] = useState(() => {
     return (
@@ -988,6 +1005,15 @@ useEffect(() => {
     const savedHistoryData = localStorage.getItem("suggestionProcessedDoz4");
     return savedHistoryData ? JSON.parse(savedHistoryData) : null;
   });
+
+  const [suggestionProcessedDozTwo, setSuggestionProcessedDozTwo] = useState(
+    () => {
+      const savedHistoryData = localStorage.getItem(
+        "suggestionProcessedDoz4Two"
+      );
+      return savedHistoryData ? JSON.parse(savedHistoryData) : null;
+    }
+  );
 
   const [suggestionProcessedCol, setSuggestionProcessedCol] = useState(() => {
     const savedHistoryData = localStorage.getItem("suggestionProcessedCol4");
@@ -1068,6 +1094,13 @@ useEffect(() => {
 
   useEffect(() => {
     localStorage.setItem(
+      "suggestionProcessedDoz4Two",
+      JSON.stringify(suggestionProcessedDozTwo)
+    );
+  }, [suggestionProcessedDozTwo]);
+
+  useEffect(() => {
+    localStorage.setItem(
       "suggestionProcessedCol4",
       JSON.stringify(suggestionProcessedCol)
     );
@@ -1112,6 +1145,10 @@ useEffect(() => {
   useEffect(() => {
     localStorage.setItem("StatisticsData", JSON.stringify(statsData));
   }, [statsData]);
+
+  useEffect(() => {
+    localStorage.setItem("StatisticsDataTwo", JSON.stringify(statsDataTwo));
+  }, [statsDataTwo]);
 
   // useEffect(() => {
   //   localStorage.setItem("StatisticsData", JSON.stringify(statsData));
@@ -1173,6 +1210,12 @@ useEffect(() => {
       dozenLossPer: 0,
       colWinPer: 0,
       colLossPer: 0,
+      dozenWinPerTwo: 0,
+      dozenLossPerTwo: 0,
+      colWinPerTwo: 0,
+      colLossPerTwo: 0,
+      winPerDataTwo: 0,
+      lossPerDataTwo: 0,
     };
     const initialStatsData = {
       Agroup: 0,
@@ -1198,7 +1241,6 @@ useEffect(() => {
       even: 0,
       even_loss: 0,
     };
-    
 
     // Reset the component's state
     setRowData(initialRowData);
@@ -1207,18 +1249,25 @@ useEffect(() => {
     setSuggestion(initialSuggestion);
     setRepeatLetter(initialRepeatLetter);
     setRepeatDozen(initialRepeatDozen);
+    setRepeatDozenTwo(initialRepeatDozen);
     setRepeatCol(initialRepeatCol);
+    setMaximumScoreDozen('1');
     setSuggestionActive(initialSuggestionActive);
     setUserMissedSuggestion(initialUserMissedSuggestion);
     setSuggestionActiveDozen(initialSuggestionActive);
+    setSuggestionActiveDozenTwo(initialSuggestionActive);
     setUserMissedSuggestionDozen(initialUserMissedSuggestion);
+    setUserMissedSuggestionDozenTwo(initialUserMissedSuggestion);
     setSuggestionActiveCol(initialSuggestionActive);
     setUserMissedSuggestionCol(initialUserMissedSuggestion);
     setAnalyzeData(initialAnalyzeData);
     setStatsData(initialStatsData);
+    setStatsDataTwo(initialStatsData);
+    setStatsDataTwo(initialStatsData);
     setMoneyManagementData([]);
     setSuggestionProcessedRow(null);
     setSuggestionProcessedDoz(null);
+    setSuggestionProcessedDozTwo(null);
     setSuggestionProcessedCol(null);
     setUnitData(1);
     setUnitDataDozen(1);
@@ -1241,6 +1290,7 @@ useEffect(() => {
     localStorage.setItem("rowDataScores", JSON.stringify({ A: 0, B: 0, C: 0 }));
     localStorage.setItem("suggestionProcessedRow4", JSON.stringify(null));
     localStorage.setItem("suggestionProcessedDoz4", JSON.stringify(null));
+    localStorage.setItem("suggestionProcessedDoz4Two", JSON.stringify(null));
     localStorage.setItem("suggestionProcessedCol4", JSON.stringify(null));
     localStorage.setItem("suggestion4", initialSuggestion);
     localStorage.setItem("repeatLetter4", initialRepeatLetter);
@@ -1250,6 +1300,7 @@ useEffect(() => {
     localStorage.setItem("unitDataDozen4", 1);
     localStorage.setItem("unitDataCol4", 1);
     localStorage.setItem("lockProfitValue", 0);
+    localStorage.setItem("maximumScoreDozen", '1');
     localStorage.setItem(
       "suggestionActive4",
       JSON.stringify(initialSuggestionActive)
@@ -1264,6 +1315,14 @@ useEffect(() => {
     );
     localStorage.setItem(
       "userMissedSuggestionDozen4",
+      JSON.stringify(initialUserMissedSuggestion)
+    );
+    localStorage.setItem(
+      "suggestionActiveDozen4Two",
+      JSON.stringify(initialSuggestionActive)
+    );
+    localStorage.setItem(
+      "userMissedSuggestionDozen4Two",
       JSON.stringify(initialUserMissedSuggestion)
     );
     localStorage.setItem(
@@ -1335,7 +1394,6 @@ useEffect(() => {
       highOddBlack: 0,
     };
 
-
     setDoubleStreetData(resetDoubleData);
     setNonDoubleStreetData(resetDoubleData);
     setSingleStreetData(resetSingleStreetData);
@@ -1350,7 +1408,6 @@ useEffect(() => {
     setColumnScoresDD({ 1: 0, 2: 0, 3: 0 });
     setDozenScoresDD({ 1: 0, 2: 0, 3: 0 });
 
-
     // Also reset the data in local storage
     localStorage.setItem("countData", JSON.stringify(resetState));
     localStorage.setItem("rowData4", JSON.stringify(emptyArray));
@@ -1360,34 +1417,33 @@ useEffect(() => {
     localStorage.setItem("summaryData", JSON.stringify(summaryResetData));
     localStorage.setItem("landedNumbersDD", JSON.stringify([]));
     localStorage.setItem("dozenScoresDD", JSON.stringify({ 1: 0, 2: 0, 3: 0 }));
-    localStorage.setItem("columnScoresDD", JSON.stringify({ 1: 0, 2: 0, 3: 0 }));
+    localStorage.setItem(
+      "columnScoresDD",
+      JSON.stringify({ 1: 0, 2: 0, 3: 0 })
+    );
     localStorage.setItem("historyData", JSON.stringify([]));
     localStorage.setItem("nonSummaryData", JSON.stringify(summaryResetData));
     localStorage.setItem("doubleStreetData", JSON.stringify(resetDoubleData));
-    localStorage.setItem("nonDoubleStreetData", JSON.stringify(resetDoubleData));
-    localStorage.setItem("singleStreetData", JSON.stringify(resetSingleStreetData));
-    localStorage.setItem("nonSingleStreetData", JSON.stringify(resetSingleStreetData));
+    localStorage.setItem(
+      "nonDoubleStreetData",
+      JSON.stringify(resetDoubleData)
+    );
+    localStorage.setItem(
+      "singleStreetData",
+      JSON.stringify(resetSingleStreetData)
+    );
+    localStorage.setItem(
+      "nonSingleStreetData",
+      JSON.stringify(resetSingleStreetData)
+    );
     localStorage.setItem("circleData", JSON.stringify(resetCircleData));
     localStorage.setItem("nonCircleData", JSON.stringify(resetCircleData));
   };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  console.log("dozen row data", dozenRowData);
+  console.log("Repeat dozen two", repeatDozenTwo);
+  console.log("suggestionActiveDozenTwo", suggestionActiveDozenTwo);
+  console.log("userMissedSuggestionDozenTwo", userMissedSuggestionDozenTwo);
 
   useEffect(() => {
     let newLossEntries = [];
@@ -1447,7 +1503,7 @@ useEffect(() => {
         !Object.values(lastRow).includes(repeatDozen) &&
         !userMissedSuggestionDozen
       ) {
-        if (isAlertAllowed && dozenHoverEffect) {
+        if (isAlertAllowed && dozenHoverEffect && maximumScoreDozen === '1') {
           showToast(`Book Your Loss!`, "error");
         }
         setUnitDataDozen(1);
@@ -1478,6 +1534,67 @@ useEffect(() => {
           covered:
             repeatDozen === "1" ? "D1" : repeatDozen === "2" ? "D2" : "D3",
         });
+      }
+    }
+
+    // check dozen logic two
+    if (dozenRowData.length > 1 && dozenHoverEffect) {
+      const previousRow = dozenRowData[dozenRowData.length - 2];
+      const lastRow = dozenRowData[dozenRowData.length - 1];
+      console.log("previousRow", previousRow);
+      console.log("lastRow", lastRow);
+      if (
+        Object.keys(previousRow).length === 3 &&
+        Object.keys(lastRow).length === 3 &&
+        repeatDozenTwo !== "" &&
+        previousRow.doz1 !== lastRow.doz1 &&
+        previousRow.doz2 !== lastRow.doz2 &&
+        previousRow.doz3 !== lastRow.doz3 &&
+        suggestionActiveDozenTwo
+      ) {
+        console.log('suggestionActiveDozenTwo', suggestionActiveDozenTwo)
+        if (isAlertAllowed && dozenHoverEffect && maximumScoreDozen === '2') {
+          showToast(`Book Your Loss two!`, "error");
+        }
+        setRepeatDozenTwo("");
+        setUserMissedSuggestionDozenTwo(true);
+        setSuggestionActiveDozenTwo(false);
+        setAnalyzeData((prev) => ({
+          ...prev,
+          dozenLossPerTwo: prev.dozenLossPerTwo + 1,
+        }));
+
+        // Initialize loss counters
+    let dozen1Loss = 0;
+    let dozen2Loss = 0;
+    let dozen3Loss = 0;
+
+    // Check mismatches for doz1, doz2, and doz3
+    if (previousRow.doz1 !== lastRow.doz1) {
+      if (previousRow.doz1 === "1") dozen1Loss++;
+      if (previousRow.doz1 === "2") dozen2Loss++;
+      if (previousRow.doz1 === "3") dozen3Loss++;
+    }
+
+    if (previousRow.doz2 !== lastRow.doz2) {
+      if (previousRow.doz2 === "1") dozen1Loss++;
+      if (previousRow.doz2 === "2") dozen2Loss++;
+      if (previousRow.doz2 === "3") dozen3Loss++;
+    }
+
+    if (previousRow.doz3 !== lastRow.doz3) {
+      if (previousRow.doz3 === "1") dozen1Loss++;
+      if (previousRow.doz3 === "2") dozen2Loss++;
+      if (previousRow.doz3 === "3") dozen3Loss++;
+    }
+
+    // Update loss stats
+    setStatsDataTwo((prev) => ({
+      ...prev,
+      dozen1_loss: prev.dozen1_loss + dozen1Loss,
+      dozen2_loss: prev.dozen2_loss + dozen2Loss,
+      dozen3_loss: prev.dozen3_loss + dozen3Loss,
+    }));
       }
     }
 
@@ -1530,12 +1647,13 @@ useEffect(() => {
     rowData,
     dozenRowData,
     colRowData,
-    repeatLetter,
-    repeatDozen,
-    repeatCol,
-    userMissedSuggestion,
-    userMissedSuggestionDozen,
-    userMissedSuggestionCol,
+    // repeatLetter,
+    // repeatDozen,
+    // repeatDozenTwo,
+    // repeatCol,
+    // userMissedSuggestion,
+    // userMissedSuggestionDozen,
+    // userMissedSuggestionCol,
   ]);
 
   useEffect(() => {
@@ -1600,6 +1718,7 @@ useEffect(() => {
     if (dozenRowData.length > 0) {
       const lastRowIndex = dozenRowData.length - 1;
       const lastRow = dozenRowData[lastRowIndex];
+      let previousRow = dozenRowData[lastRowIndex - 1];
 
       // Only process if we haven't already processed this row's first column
       if (
@@ -1656,11 +1775,70 @@ useEffect(() => {
           setSuggestionProcessedDoz(null); // Reset flag if no suggestion
         }
       }
+
+      console.log("lastRow", lastRow);
+      console.log("previousRow", previousRow);
+
+      // Only process if we haven't already processed this row's first column
+      if (lastRow && Object.keys(lastRow).length === 3) {
+        // Ensure previous row has valid data
+        // Get the repeated dozen from the current suggestion index
+        const repeatedDozen = lastRow.doz1;
+        if (repeatedDozen && repeatedDozen !== "0") {
+          // Trigger the suggestion
+          setRepeatDozenTwo(repeatedDozen);
+          setSuggestionActiveDozenTwo(true);
+          setUserMissedSuggestionDozenTwo(false);
+          setSuggestion(`Suggestion: The repeated dozen is ${repeatedDozen}`);
+
+          // Update the suggestion index
+          setSuggestionProcessedDozTwo(3);
+        } else {
+          // Reset if no valid suggestion is available
+          setSuggestion("");
+          setSuggestionProcessedDozTwo(null);
+        }
+      } else if (
+        previousRow &&
+        suggestionActiveDozenTwo &&
+        repeatDozenTwo !== ""
+      ) {
+        const previousRowValues = Object.values(previousRow);
+
+        // Ensure previous row has valid data
+        if (previousRowValues.length === 3) {
+          // Determine the current index for suggestion
+          let suggestionIndex =
+            suggestionProcessedDozTwo !== null
+              ? (suggestionProcessedDozTwo + 1) % previousRowValues.length
+              : 0;
+
+          // Get the repeated dozen from the current suggestion index
+          const repeatedDozen = previousRowValues[suggestionIndex];
+
+          if (repeatedDozen && repeatedDozen !== "0") {
+            // Trigger the suggestion
+            setRepeatDozenTwo(repeatedDozen);
+            // setSuggestionActiveDozenTwo(true);
+            setUserMissedSuggestionDozenTwo(false);
+            setSuggestion(`Suggestion: The repeated dozen is ${repeatedDozen}`);
+
+            // Update the suggestion index
+            setSuggestionProcessedDozTwo(suggestionIndex);
+          } else {
+            // Reset if no valid suggestion is available
+            setSuggestion("");
+            setSuggestionProcessedDozTwo(null);
+          }
+        }
+      }
     }
   }, [
     dozenRowData,
-    repeatDozen,
-    userMissedSuggestionDozen,
+    // repeatDozenTwo,
+    // repeatDozen,
+    // userMissedSuggestionDozen,
+    // userMissedSuggestionDozenTwo,
     lastHitNumber,
     unitData,
   ]);
@@ -1731,16 +1909,22 @@ useEffect(() => {
 
   useEffect(() => {}, [moneyManagementData]);
 
-
-
-
-
-
-
-
-  
   // Handle when user clicks a letter/number
-  const handleClickNumber = (key, number, doz,dozen, col, oddEven, color, range, ssRange, dsRange, wTracker,quadra,letter) => {
+  const handleClickNumber = (
+    key,
+    number,
+    doz,
+    dozen,
+    col,
+    oddEven,
+    color,
+    range,
+    ssRange,
+    dsRange,
+    wTracker,
+    quadra,
+    letter
+  ) => {
     const {
       countUpdates,
       summaryUpdates,
@@ -1748,9 +1932,6 @@ useEffect(() => {
       circleDataUpdates,
       singleStreetDataUpdates,
     } = updateMapping[key];
-
-
-   
 
     // Update countData
     setCountData((prevState) => {
@@ -1794,9 +1975,6 @@ useEffect(() => {
       return { ...prevState, ...updatedSummary };
     });
 
-
-
-
     setLastHitData((prevLastHitData) => {
       const updatedLastHitData = {};
 
@@ -1807,9 +1985,6 @@ useEffect(() => {
 
       return updatedLastHitData;
     });
-
-
-
 
     const clickedDataUpdates = {
       red: countUpdates.red || 0,
@@ -1875,20 +2050,9 @@ useEffect(() => {
         clickedDataUpdates.red === 1
           ? "red"
           : clickedDataUpdates.black === 1
-            ? "black"
-            : "zero",
+          ? "black"
+          : "zero",
     });
-
-    // setLastHitData((prevLastHitData) => {
-    //   const updatedLastHitData = {};
-
-    //   Object.keys(prevLastHitData).forEach((field) => {
-    //     updatedLastHitData[field] =
-    //       clickedDataUpdates[field] > 0 ? 0 : prevLastHitData[field] + 1;
-    //   });
-
-    //   return updatedLastHitData;
-    // });
 
     setNonSummaryData((prevLastHitData) => {
       const updatedLastHitData = {};
@@ -1938,7 +2102,6 @@ useEffect(() => {
       return updatedLastHitData;
     });
 
-
     setLastHitNumber({
       number: number,
       color:
@@ -1949,47 +2112,47 @@ useEffect(() => {
           : "zero",
     });
 
-// History Data Updates From First Project
+    // History Data Updates From First Project
 
-let changedHistoryData = {
-  color:
-    clickedDataUpdates.red === 1
-      ? "red"
-      : clickedDataUpdates.black === 1
-        ? "black"
-        : "zero",
-  size:
-    clickedDataUpdates.one_eighteen === 1
-      ? "small"
-      : clickedDataUpdates.nineteen_thirtySix === 1
-        ? "large"
-        : "zero",
-  odd_even:
-    clickedDataUpdates.odd === 1
-      ? "odd"
-      : clickedDataUpdates.even === 1
-        ? "even"
-        : "zero",
-  dozen:
-    clickedDataUpdates.dozen_one === 1
-      ? "1st"
-      : clickedDataUpdates.dozen_two === 1
-        ? "2nd"
-        : clickedDataUpdates.dozen_three === 1
+    let changedHistoryData = {
+      color:
+        clickedDataUpdates.red === 1
+          ? "red"
+          : clickedDataUpdates.black === 1
+          ? "black"
+          : "zero",
+      size:
+        clickedDataUpdates.one_eighteen === 1
+          ? "small"
+          : clickedDataUpdates.nineteen_thirtySix === 1
+          ? "large"
+          : "zero",
+      odd_even:
+        clickedDataUpdates.odd === 1
+          ? "odd"
+          : clickedDataUpdates.even === 1
+          ? "even"
+          : "zero",
+      dozen:
+        clickedDataUpdates.dozen_one === 1
+          ? "1st"
+          : clickedDataUpdates.dozen_two === 1
+          ? "2nd"
+          : clickedDataUpdates.dozen_three === 1
           ? "3rd"
           : "zero",
-  column:
-    clickedDataUpdates.col_one === 1
-      ? "1st"
-      : clickedDataUpdates.col_two === 1
-        ? "2nd"
-        : clickedDataUpdates.col_three === 1
+      column:
+        clickedDataUpdates.col_one === 1
+          ? "1st"
+          : clickedDataUpdates.col_two === 1
+          ? "2nd"
+          : clickedDataUpdates.col_three === 1
           ? "3rd"
           : "zero",
-  His_num: number,
-};
+      His_num: number,
+    };
 
-setHistoryData([...historyData, changedHistoryData]);
+    setHistoryData([...historyData, changedHistoryData]);
     // Set Row Data for Letter
     setRowData((prevRowData) => {
       const lastRow = prevRowData[prevRowData.length - 1];
@@ -2001,42 +2164,6 @@ setHistoryData([...historyData, changedHistoryData]);
         return [...prevRowData.slice(0, -1), updatedRow];
       }
     });
-
-
-
-
-
-    // Update statsData based on letter, dozen, and column
-
-    // const parsedDoz = Number(doz);
-    // const parsedCol = Number(col);
-    // setStatsData((prevStats) => {
-    //   const updatedStats = { ...prevStats };
-
-    //   // Increment corresponding counts based on letter
-    //   if (letter === "A") updatedStats.Agroup += 1;
-    //   else if (letter === "B") updatedStats.Bgroup += 1;
-    //   else if (letter === "C") updatedStats.Cgroup += 1;
-
-    //   // Increment dozen count
-    //   if (parsedDoz === 1) updatedStats.dozen1 += 1;
-    //   else if (parsedDoz === 2) updatedStats.dozen2 += 1;
-    //   else if (parsedDoz === 3) updatedStats.dozen3 += 1;
-
-    //   // Increment column count
-    //   if (parsedCol === 1) updatedStats.col1 += 1;
-    //   else if (parsedCol === 2) updatedStats.col2 += 1;
-    //   else if (parsedCol === 3) updatedStats.col3 += 1;
-
-    //   // Update odd/even counts
-    //   if (number % 2 === 0) updatedStats.even += 1;
-    //   else updatedStats.odd += 1;
-
-    //   // Save to local storage
-    //   localStorage.setItem("StatisticsData", JSON.stringify(updatedStats));
-
-    //   return updatedStats;
-    // });
 
     // Handle suggestion for letters (RowData)
     if (suggestionActive) {
@@ -2134,7 +2261,6 @@ setHistoryData([...historyData, changedHistoryData]);
             (entry) => entry.covered === 13 || entry.covered === 12
           );
 
-
           // Skip the last entry and pick the two before it
           const lastTwoEntries = filteredData.slice(-2); // Get the second-last and third-last entries
 
@@ -2196,7 +2322,7 @@ setHistoryData([...historyData, changedHistoryData]);
       if (doz === repeatDozen) {
         setSuggestionActiveDozen(false);
         setSuggestion("");
-        if (isAlertAllowed && dozenHoverEffect) {
+        if (isAlertAllowed && dozenHoverEffect && maximumScoreDozen === '1') {
           showToast(`Win Dozen!`, "success");
         }
         // setUnitDataDozen(unitDataDozen + 1);
@@ -2303,6 +2429,81 @@ setHistoryData([...historyData, changedHistoryData]);
         //   localStorage.setItem("moneyManagement4", JSON.stringify(updatedData));
         //   return updatedData;
         // });
+      }
+    }
+    console.log("suggestionActiveDozenTwo", suggestionActiveDozenTwo);
+    console.log("doz", doz);
+    console.log("repeatDozenTwo", repeatDozenTwo);
+    console.log(doz === repeatDozenTwo);
+    if (suggestionActiveDozenTwo) {
+      if (doz === repeatDozenTwo) {
+        setSuggestionActiveDozenTwo(false);
+        setSuggestion("");
+        if (isAlertAllowed && dozenHoverEffect && maximumScoreDozen === '2' ) {
+          showToast(`Win Dozen Two!`, "success");
+        }
+        // setUnitDataDozen(unitDataDozen + 1);
+        setRepeatDozenTwo("");
+        setAnalyzeData((prev) => ({
+          ...prev,
+          dozenWinPerTwo: prev.dozenWinPerTwo + 1,
+        }));
+
+        setStatsDataTwo((prev) => ({
+          ...prev,
+          dozen1: repeatDozenTwo === "1" ? prev.dozen1 + 1 : prev.dozen1,
+          dozen2: repeatDozenTwo === "2" ? prev.dozen2 + 1 : prev.dozen2,
+          dozen3: repeatDozenTwo === "3" ? prev.dozen3 + 1 : prev.dozen3,
+        }));
+
+        // setMoneyManagementData((prevData) => [
+        //   ...prevData,
+        //   {
+        //     spin: {
+        //       number: number,
+        //       color:
+        //         clickedDataUpdates.red === 1
+        //           ? "red"
+        //           : clickedDataUpdates.black === 1
+        //           ? "black"
+        //           : "zero",
+        //     },
+        //     winLoss: "W",
+        //     unit: unitDataDozen,
+        //     total: unitDataDozen * 2,
+        //     covered: doz === "1" ? "D1" : doz === "2" ? "D2" : "D3",
+        //   },
+        // ]);
+        // setMoneyManagementData((prevData) => {
+        //   const updatedData = prevData.map((entry, index) => {
+        //     if (
+        //       index >= prevData.length - 3 && // Only check the last three objects
+        //       entry.spin === "" && // Match condition
+        //       entry.winLoss === "" &&
+        //       entry.total === 0 &&
+        //       entry.covered === 'D1' || 'D2' | 'D3'
+        //     ) {
+        //       return {
+        //         ...entry,
+        //         spin: {
+        //           number: number,
+        //           color:
+        //             clickedDataUpdates.red === 1
+        //               ? "red"
+        //               : clickedDataUpdates.black === 1
+        //               ? "black"
+        //               : "zero",
+        //         },
+        //         winLoss: "W",
+        //         total: unitDataDozen * 2,
+        //       };
+        //     }
+        //     return entry;
+        //   });
+        //   return updatedData;
+        // });
+      } else {
+        setSuggestion(`Suggestion: The repeated dozen is ${repeatDozen}`);
       }
     }
 
@@ -2422,7 +2623,24 @@ setHistoryData([...historyData, changedHistoryData]);
     }
 
     // Add new number to the FIFO queue without any max length
-    setLandedNumbers((prev) => [{ key, number,doz, dozen, col, oddEven, color, range, ssRange, dsRange ,wTracker,quadra,letter}, ...prev]);
+    setLandedNumbers((prev) => [
+      {
+        key,
+        number,
+        doz,
+        dozen,
+        col,
+        oddEven,
+        color,
+        range,
+        ssRange,
+        dsRange,
+        wTracker,
+        quadra,
+        letter,
+      },
+      ...prev,
+    ]);
 
     // }
     // else {
@@ -2439,7 +2657,7 @@ setHistoryData([...historyData, changedHistoryData]);
     // }
   };
 
-
+  console.log("setStatsDataTwo", statsDataTwo);
 
   useEffect(() => {
     // Calculate the new scores for each dozen, column, and row once the array length reaches 30
@@ -2471,11 +2689,8 @@ setHistoryData([...historyData, changedHistoryData]);
       setDozenScores(newDozenScores);
       setColumnScores(newColumnScores);
       setRowDataScores(newRowDataScores);
-
     }
   }, [landedNumbers]);
-
-
 
   const handleClickResetUnitData = () => {
     let totalAmt = 0;
@@ -2507,13 +2722,12 @@ setHistoryData([...historyData, changedHistoryData]);
     fetchUserDetails();
   }, []);
 
-
   const determineImage = (() => {
     const winPer = analyzeData.dozenWinPer;
     const lossPer = analyzeData.dozenLossPer;
     const total = winPer + lossPer;
     const winPercentage = (winPer / total) * 100;
-  
+
     if (winPercentage >= 70) {
       return {
         label: "Hot",
@@ -2579,7 +2793,6 @@ setHistoryData([...historyData, changedHistoryData]);
     }
   })();
 
-
   const getStatus = (scores) => {
     const values = Object.values(scores);
     const maxScore = Math.max(...values);
@@ -2599,380 +2812,256 @@ setHistoryData([...historyData, changedHistoryData]);
       return status;
     }, {});
   };
-  
+
   const NumberHSC = getStatus(rowDataScores);
   const dozenHSC = getStatus(dozenScores);
   const columnHSC = getStatus(columnScores);
 
+  const calculateMaxMinFromScores = (scores) => {
+    const maxPossibleScore = 105; // Maximum possible score
 
+    // Categorize scores based on percentage of max possible score
+    const categorizeScore = (value) => {
+      const percentage = (value / maxPossibleScore) * 100;
 
-
-//   const calculateStats = (data) => {
-//     const groups = {
-//         AGroup: ["Agroup", "Bgroup", "Cgroup"],
-//         dozen: ["dozen1", "dozen2", "dozen3"],
-//         col: ["col1", "col2", "col3"]
-//     };
-
-//     const results = {};
-
-//     for (const [groupName, groupItems] of Object.entries(groups)) {
-//         let highestWin = 0;
-//         let highestKey = "";
-
-//         groupItems.forEach((key) => {
-//             const win = data[key];
-//             const loss = data[`${key}_loss`];
-//             const total = win + loss;
-//             const winPercentage = total > 0 ? (win / total) * 100 : 0;
-
-//             console.log(`${key}: ${win} wins, ${loss} losses, ${winPercentage.toFixed(2)}% win rate`);
-
-//             // Check for the highest win in the group
-//             if (win > highestWin) {
-//                 highestWin = win;
-//                 highestKey = key;
-//             }
-//         });
-
-//         results[groupName] = { highestKey, highestWin };
-//     }
-
-//     return results;
-// };
-
-// // Get the stats results
-// const statsResults = calculateStats(statsData);
-
-
-
-
-// const getHighestScoreWithKey = (scores) => {
-//   const entries = Object.entries(scores); 
-//   let highestKey = null;
-//   let highestValue = -Infinity;
-
-//   for (const [key, value] of entries) {
-//       if (value > highestValue) {
-//           highestKey = key;
-//           highestValue = value;
-//       }
-//   }
-
-//   return { key: highestKey, value: highestValue };
-// };
-
-// // Get the highest scores with keys
-// const highestDozen = getHighestScoreWithKey(dozenScores);
-// const highestColumn = getHighestScoreWithKey(columnScores);
-// const highestRow = getHighestScoreWithKey(rowDataScores);
-
-// console.log("Highest Dozen:", highestDozen); 
-// console.log("Highest Column:", highestColumn); 
-// console.log("Highest Row:", highestRow);
-// // Log the results
-// console.log("Highest values in each group:", statsResults);
-
-
-
-// const calculateHighestFromScores = (scores) => {
-//   let highestKey = "";
-//   let highestWin = 0;
-
-//   // Find the key with the highest score
-//   Object.entries(scores).forEach(([key, value]) => {
-//     if (value > highestWin) {
-//       highestWin = value;
-//       highestKey = key;
-//     }
-//   });
-
-//   return { highestKey, highestWin };
-// };
-
-
-
-// // Calculate the highest value for each group
-// const highestValues = {
-//   dozen: calculateHighestFromScores(dozenScores),
-//   row: calculateHighestFromScores(rowDataScores),
-//   col: calculateHighestFromScores(columnScores),
-// };
-
-// console.log("highest Value",highestValues);
-// const calculateMaxMinFromScores = (scores) => {
-//   let highestKey = "";
-//   let highestWin = 0;
-//   let lowestKey = "";
-//   let lowestWin = Infinity;
-//   let stableKey = "";
-//   let stableWin = 0;
-
-//   // Find the key with the highest, lowest, and a representative "stable" scores
-//   Object.entries(scores).forEach(([key, value]) => {
-//     if (value > highestWin) {
-//       highestWin = value;
-//       highestKey = key;
-//     }
-//     if (value < lowestWin) {
-//       lowestWin = value;
-//       lowestKey = key;
-//     }
-//   });
-
-//   // Find the key with the "stable" win (neither high nor low)
-//   Object.entries(scores).forEach(([key, value]) => {
-//     if (value > lowestWin && value < highestWin) {
-//       stableKey = key;
-//       stableWin = value;
-//     }
-//   });
-
-//   return {
-//     highest: { key: highestKey, win: highestWin },
-//     lowest: { key: lowestKey, win: lowestWin },
-//     stable: { key: stableKey, win: stableWin }
-//   };
-// };
-
-const calculateMaxMinFromScores = (scores) => {
-  const maxPossibleScore = 105; // Maximum possible score
-  
-  // Categorize scores based on percentage of max possible score
-  const categorizeScore = (value) => {
-    const percentage = (value / maxPossibleScore) * 100;
-    
-    if (value === 0) return 'cold';
-    if (percentage <= 36) return 'stable';
-    return 'hot';
-  };
-
-  let highestKey = "";
-  let highestWin = 0;
-  let lowestKey = "";
-  let lowestWin = Infinity;
-  let stableKey = "";
-
-  // Categorize all scores
-  const categorizedScores = {};
-  Object.entries(scores).forEach(([key, value]) => {
-    const category = categorizeScore(value);
-    categorizedScores[key] = category;
-
-    // Find highest and lowest
-    if (value > highestWin) {
-      highestWin = value;
-      highestKey = key;
-    }
-    if (value < lowestWin) {
-      lowestWin = value;
-      lowestKey = key;
-    }
-
-    // Find a stable key
-    if (category === 'stable' && !stableKey) {
-      stableKey = key;
-    }
-  });
-
-  // Fallback to highest key if no stable key found
-  stableKey = stableKey || highestKey;
-
-  return {
-    highest: { 
-      key: highestKey, 
-      win: highestWin,
-      category: categorizedScores
-    },
-    lowest: { 
-      key: lowestKey, 
-      win: lowestWin,
-      category: categorizedScores
-    },
-    stable: { 
-      key: stableKey,
-      win: scores[stableKey],
-      category: 'stable'
-    },
-    categorizedScores: categorizedScores
-  };
-};
-
-const classifyScoresWithValues = (scores) => {
-  const maxValue = 105; // Maximum value for each key
-  const classifications = {};
-
-  Object.entries(scores).forEach(([key, value]) => {
-    const percentage = ((value / maxValue) * 100).toFixed(2); // Convert to percentage and round to 2 decimal places
-    let status = "";
-
-    if (value === 0) {
-      status = "cold";
-    } else if (percentage <= 36) {
-      status = "stable";
-    } else {
-      status = "hot";
-    }
-
-    classifications[key] = {
-      percentage: `${percentage}%`,
-      status,
-      value, // Include the original value for reference
-    };
-  });
-
-  return classifications;
-};
-
-
-
-// Calculate the max, min, and stable values for each group
-const maxMinValues = {
-  dozen: classifyScoresWithValues(dozenScoresDD),
-  column:classifyScoresWithValues(columnScoresDD),
-};
-
-
-
-
-useEffect(() => {
-  const timer = setTimeout(() => {
-    const backgroundStyles = {
-      backgroundSize: "cover", 
-      backgroundPosition: "center", 
-      backgroundRepeat: "no-repeat"
+      if (value === 0) return "cold";
+      if (percentage <= 36) return "stable";
+      return "hot";
     };
 
-    const resetContainerStyles = (container) => {
-      if (container) {
-        container.style.backgroundImage = '';
-        container.style.backgroundSize = '';
-        container.style.backgroundPosition = '';
-        container.style.backgroundRepeat = '';
+    let highestKey = "";
+    let highestWin = 0;
+    let lowestKey = "";
+    let lowestWin = Infinity;
+    let stableKey = "";
+
+    // Categorize all scores
+    const categorizedScores = {};
+    Object.entries(scores).forEach(([key, value]) => {
+      const category = categorizeScore(value);
+      categorizedScores[key] = category;
+
+      // Find highest and lowest
+      if (value > highestWin) {
+        highestWin = value;
+        highestKey = key;
       }
+      if (value < lowestWin) {
+        lowestWin = value;
+        lowestKey = key;
+      }
+
+      // Find a stable key
+      if (category === "stable" && !stableKey) {
+        stableKey = key;
+      }
+    });
+
+    // Fallback to highest key if no stable key found
+    stableKey = stableKey || highestKey;
+
+    return {
+      highest: {
+        key: highestKey,
+        win: highestWin,
+        category: categorizedScores,
+      },
+      lowest: {
+        key: lowestKey,
+        win: lowestWin,
+        category: categorizedScores,
+      },
+      stable: {
+        key: stableKey,
+        win: scores[stableKey],
+        category: "stable",
+      },
+      categorizedScores: categorizedScores,
     };
+  };
 
-    const isScoresReset = 
-      Object.values(dozenScoresDD).every(score => score === 0) &&
-      Object.values(columnScoresDD).every(score => score === 0);
+  const classifyScoresWithValues = (scores) => {
+    const maxValue = 105; // Maximum value for each key
+    const classifications = {};
 
-    if (isScoresReset) {
-      ['1', '2', '3'].forEach(key => {
-        const dozenContainer = document.getElementById(`dozenContainer${key}`);
-        const columnContainer = document.getElementById(`columnContainer${key}`);
-        
-        resetContainerStyles(dozenContainer);
-        resetContainerStyles(columnContainer);
+    Object.entries(scores).forEach(([key, value]) => {
+      const percentage = ((value / maxValue) * 100).toFixed(2); // Convert to percentage and round to 2 decimal places
+      let status = "";
+
+      if (value === 0) {
+        status = "cold";
+      } else if (percentage <= 36) {
+        status = "stable";
+      } else {
+        status = "hot";
+      }
+
+      classifications[key] = {
+        percentage: `${percentage}%`,
+        status,
+        value, // Include the original value for reference
+      };
+    });
+
+    return classifications;
+  };
+
+  // Calculate the max, min, and stable values for each group
+  const maxMinValues = {
+    dozen: classifyScoresWithValues(dozenScoresDD),
+    column: classifyScoresWithValues(columnScoresDD),
+  };
+
+  useEffect(() => {
+    if (!isEffectActive) {
+      // Reset all backgrounds when checkbox is unchecked
+      ["1", "2", "3"].forEach((key) => {
+        ["dozen", "column"].forEach((group) => {
+          const container = document.getElementById(`${group}Container${key}`);
+          if (container) {
+            container.style.backgroundImage = "";
+            container.style.backgroundSize = "";
+            container.style.backgroundPosition = "";
+            container.style.backgroundRepeat = "";
+          }
+        });
       });
       return;
     }
 
-    const backgroundImages = {
-      hot: 'https://res.cloudinary.com/dxsdme4qy/image/upload/v1734435887/fireFrame_svrrrs.gif',
-      cold: 'https://res.cloudinary.com/dxsdme4qy/image/upload/v1734445367/snow-fall_geftx9.gif',
-      stable: 'https://res.cloudinary.com/dxsdme4qy/image/upload/v1734521202/stable_ggaahj.gif'
-    };
+    const timer = setTimeout(() => {
+      const backgroundStyles = {
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      };
 
-    ['dozen', 'column'].forEach(group => {
-      ['1', '2', '3'].forEach(key => {
-        const container = document.getElementById(`${group}Container${key}`);
+      const resetContainerStyles = (container) => {
         if (container) {
-          const scoreInfo = maxMinValues[group][key];
+          container.style.backgroundImage = "";
+          container.style.backgroundSize = "";
+          container.style.backgroundPosition = "";
+          container.style.backgroundRepeat = "";
+        }
+      };
 
-          resetContainerStyles(container);
+      const isScoresReset =
+        Object.values(dozenScoresDD).every((score) => score === 0) &&
+        Object.values(columnScoresDD).every((score) => score === 0);
 
-          if (scoreInfo && backgroundImages[scoreInfo.status]) {
-            container.style.backgroundImage = `url('${backgroundImages[scoreInfo.status]}')`;
-            Object.assign(container.style, backgroundStyles);
+      if (isScoresReset) {
+        ["1", "2", "3"].forEach((key) => {
+          resetContainerStyles(document.getElementById(`dozenContainer${key}`));
+          resetContainerStyles(
+            document.getElementById(`columnContainer${key}`)
+          );
+        });
+        return;
+      }
+
+      const backgroundImages = {
+        hot: "https://res.cloudinary.com/dxsdme4qy/image/upload/v1734435887/fireFrame_svrrrs.gif",
+        cold: "https://res.cloudinary.com/dxsdme4qy/image/upload/v1734445367/snow-fall_geftx9.gif",
+        stable:
+          "https://res.cloudinary.com/dxsdme4qy/image/upload/v1734521202/stable_ggaahj.gif",
+      };
+
+      ["dozen", "column"].forEach((group) => {
+        ["1", "2", "3"].forEach((key) => {
+          const container = document.getElementById(`${group}Container${key}`);
+          if (container) {
+            const scoreInfo = maxMinValues[group][key];
+            resetContainerStyles(container);
+
+            if (scoreInfo && backgroundImages[scoreInfo.status]) {
+              container.style.backgroundImage = `url('${
+                backgroundImages[scoreInfo.status]
+              }')`;
+              Object.assign(container.style, backgroundStyles);
+            }
           }
+        });
+      });
+    }, 100);
+
+    return () => clearTimeout(timer); // Cleanup
+  }, [isEffectActive, maxMinValues, dozenScoresDD, columnScoresDD]);
+
+  // Handle the row data effect
+  useEffect(() => {
+    if (!isEffectActive) {
+      // Reset all row backgrounds
+      data.forEach((item) => {
+        const container = document.getElementById(
+          `number-container-${item.num}`
+        );
+        if (container) {
+          container.style.backgroundImage = "";
+          container.style.backgroundSize = "";
+          container.style.backgroundPosition = "";
+          container.style.backgroundRepeat = "";
         }
       });
-    });
-  }, 100); // Delay for DOM readiness
+      return;
+    }
 
-  return () => clearTimeout(timer); // Cleanup timer
-}, [maxMinValues, dozenScoresDD, columnScoresDD]);
+    const backgroundStyles = {
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+    };
 
+    const rowLetterNumbers = {
+      A: [2, 4, 6, 13, 15, 17, 19, 21, 25, 27, 32, 34],
+      B: [1, 5, 8, 10, 11, 16, 20, 23, 24, 30, 33, 36],
+      C: [3, 7, 9, 12, 14, 18, 22, 26, 28, 29, 31, 35],
+    };
 
-// row data bacround hot cold image set
+    const isScoresReset = Object.values(rowDataScores).every(
+      (score) => score === 0
+    );
 
-useEffect(() => {
-  const backgroundStyles = {
-    backgroundSize: "cover", 
-    backgroundPosition: "center", 
-    backgroundRepeat: "no-repeat"
-  };
+    if (isScoresReset) {
+      data.forEach((item) => {
+        const container = document.getElementById(
+          `number-container-${item.num}`
+        );
+        if (container) {
+          container.style.backgroundImage = "";
+        }
+      });
+      return;
+    }
 
-  const rowLetterNumbers = {
-    A: [2, 4, 6, 13, 15, 17, 19, 21, 25, 27, 32, 34],
-    B: [1, 5, 8, 10, 11, 16, 20, 23, 24, 30, 33, 36],
-    C: [3, 7, 9, 12, 14, 18, 22, 26, 28, 29, 31, 35]
-  };
+    const highestRowLetter = Object.keys(rowDataScores).reduce((a, b) =>
+      rowDataScores[a] > rowDataScores[b] ? a : b
+    );
 
-  // Check if scores are reset (all zero)
-  const isScoresReset = 
-    Object.values(rowDataScores).every(score => score === 0);
+    const lowestRowLetter = Object.keys(rowDataScores).reduce((a, b) =>
+      rowDataScores[a] < rowDataScores[b] ? a : b
+    );
 
-  if (isScoresReset) {
-    // Reset all number containers
-    data.forEach(item => {
+    data.forEach((item) => {
       const container = document.getElementById(`number-container-${item.num}`);
       if (container) {
-        container.style.backgroundImage = '';
-        container.style.backgroundSize = '';
-        container.style.backgroundPosition = '';
-        container.style.backgroundRepeat = '';
+        if (rowLetterNumbers[highestRowLetter].includes(item.num)) {
+          container.style.backgroundImage = `url('https://res.cloudinary.com/dxsdme4qy/image/upload/v1734419453/fire_namnig.gif')`;
+          Object.assign(container.style, backgroundStyles);
+        } else if (rowLetterNumbers[lowestRowLetter].includes(item.num)) {
+          container.style.backgroundImage = "";
+        } else {
+          container.style.backgroundImage = "";
+        }
       }
     });
-    return;
-  }
+  }, [isEffectActive, rowDataScores]);
 
-  // Find highest and lowest row letters
-  const highestRowLetter = Object.keys(rowDataScores).reduce((a, b) => 
-    rowDataScores[a] > rowDataScores[b] ? a : b
-  );
-  
-  const lowestRowLetter = Object.keys(rowDataScores).reduce((a, b) => 
-    rowDataScores[a] < rowDataScores[b] ? a : b
-  );
-
-  // Apply backgrounds to number containers
-  data.forEach(item => {
-    const container = document.getElementById(`number-container-${item.num}`);
-    
-    if (container) {
-      if (rowLetterNumbers[highestRowLetter].includes(item.num)) {
-        // Highest row letter numbers get hot background
-        container.style.backgroundImage = `url('https://res.cloudinary.com/dxsdme4qy/image/upload/v1734419453/fire_namnig.gif')`;
-
-        // https://res.cloudinary.com/dxsdme4qy/image/upload/v1734435887/fireFrame_svrrrs.gif
-        Object.assign(container.style, backgroundStyles);
-      } else if (rowLetterNumbers[lowestRowLetter].includes(item.num)) {
-        // Lowest row letter numbers get cold background
-        container.style.backgroundImage = ``;
-        Object.assign(container.style, backgroundStyles);
-      } else {
-        // Reset other containers
-        container.style.backgroundImage = '';
-        container.style.backgroundSize = '';
-        container.style.backgroundPosition = '';
-        container.style.backgroundRepeat = '';
-      }
-    }
-  });
-}, [rowDataScores]);
-
-
-
-
-const initialScoresST = Array.from({ length: 36 }, (_, i) => 36 - i);
+  const initialScoresST = Array.from({ length: 36 }, (_, i) => 36 - i);
   useEffect(() => {
     // Calculate the new scores for each dozen, column, and row once the array length reaches 36
     if (landedNumbers.length >= 36) {
       const newDozenScores = { 1: 0, 2: 0, 3: 0 };
       const newColumnScores = { 1: 0, 2: 0, 3: 0 };
-
-      
       // Only calculate scores for the first 36 items
       landedNumbers.slice(0, 3).forEach((entry, index) => {
         const score = initialScoresST[index] || 0;
@@ -2986,53 +3075,131 @@ const initialScoresST = Array.from({ length: 36 }, (_, i) => 36 - i);
           newColumnScores[entry.col] += score;
         }
       });
-     
-
-
 
       setDozenScoresDD(newDozenScores);
       setColumnScoresDD(newColumnScores);
-     
     }
   }, [landedNumbers]);
 
-// showing % in ui 
-// Calculate total for dozen scores
-const total = Object.values(dozenScores).reduce((sum, value) => sum + value, 0);
+  // showing % in ui
+  // Calculate total for dozen scores
+  const total = Object.values(dozenScores).reduce(
+    (sum, value) => sum + value,
+    0
+  );
 
-// Convert values to percentages and ensure no NaN values
-const percentagesDozen = Object.fromEntries(
-  Object.entries(dozenScores).map(([key, value]) => [
-    key,
-    total === 0 || isNaN(value) ? 0 : Math.round((value / total) * 100), // Default to 0 for NaN or division by 0
-  ])
-);
+  // Convert values to percentages and ensure no NaN values
+  const percentagesDozen = Object.fromEntries(
+    Object.entries(dozenScores).map(([key, value]) => [
+      key,
+      total === 0 || isNaN(value) ? 0 : Math.round((value / total) * 100), // Default to 0 for NaN or division by 0
+    ])
+  );
 
-console.log('dozenScores percentages:', percentagesDozen);
+  console.log("dozenScores percentages:", percentagesDozen);
 
-// Calculate total for column scores
-const totalColumn = Object.values(columnScores).reduce((sum, value) => sum + value, 0);
+  // Calculate total for column scores
+  const totalColumn = Object.values(columnScores).reduce(
+    (sum, value) => sum + value,
+    0
+  );
 
-// Convert values to percentages and ensure no NaN values
-const percentagesColumn = Object.fromEntries(
-  Object.entries(columnScores).map(([key, value]) => [
-    key,
-    totalColumn === 0 || isNaN(value) ? 0 : Math.round((value / totalColumn) * 100), // Default to 0 for NaN or division by 0
-  ])
-);
+  // Convert values to percentages and ensure no NaN values
+  const percentagesColumn = Object.fromEntries(
+    Object.entries(columnScores).map(([key, value]) => [
+      key,
+      totalColumn === 0 || isNaN(value)
+        ? 0
+        : Math.round((value / totalColumn) * 100), // Default to 0 for NaN or division by 0
+    ])
+  );
+
+  //---------------------Hover showing effect new  update 22-12-2024
+  const getChancesStatus = (chancesLeft) => {
+    if (chancesLeft === 0) {
+      return {
+        isCharging: true,
+        element: (
+          <div className="w-[50px] h-[65px] flex  flex-col items-center justify-start gap-1">
+            {[...Array(3)].map((_, index) => (
+              <SiZap
+                key={index}
+                className="w-5 h-5 text-yellow-400 animate-pulse"
+                fill="currentColor"
+              />
+            ))}
+          </div>
+        ),
+      };
+    }
+
+    return {
+      isCharging: false,
+      element: (
+        <div className="bg-transparent w-[50px] h-[70px] flex flex-col items-center justify-center gap-1">
+          {[...Array(3)].map((_, index) => (
+            <FaShieldHeart
+              key={index}
+              className={`w-6 h-6 text-white ${
+                index < chancesLeft ? "animate-pulse" : ""
+              }`}
+              fill={
+                index < chancesLeft
+                  ? index === chancesLeft - 1
+                    ? "#22c55e"
+                    : "#22c55e"
+                  : "#ef4444"
+              }
+            />
+          ))}
+        </div>
+      ),
+    };
+  };
+
+  // value hover
+
+  useEffect(() => {
+    if (!isEffectActive) {
+      document.body.style.background = "white";
+    } else {
+      document.body.style.background =
+        "linear-gradient(to right, #ff7e5f, #feb47b)";
+    }
+  }, [isEffectActive]);
+
+  useEffect(() => {
+    if (landedNumbers.length === 36 && !hasShown36Toast) {
+      // Show the toast only once when the length reaches 36
+      showToast("36 reached! You're on fire!", "success");
+      setHasShown36Toast(true); // Prevents the toast from showing again
+    }
+  }, [landedNumbers, hasShown36Toast]);
+
+  console.log('analyze data', analyzeData)
 
 
+  useEffect(() =>{
+     if(landedNumbers.length >= 36){
+      const { dozenWinPer, dozenWinPerTwo } = analyzeData;
 
+      console.log('dozenWinPer', dozenWinPer)
+      console.log('dozenWinPerTwo', dozenWinPerTwo)
+
+      // Determine which dozen has the higher percentage
+      const maxScoreDozen = dozenWinPer > dozenWinPerTwo ? "1" : "2";
   
-
- 
+      // Update maximumScoreDozen based on the comparison
+      setMaximumScoreDozen(maxScoreDozen);
   
+     }
+  },[landedNumbers])
 
   return (
     <>
       <div className="sticky lg:top-0 max-sm:top-0 md:top-0 z-30 ">
         {/* <Nav theme={theme} setTheme={setTheme} /> */}
-        
+
         <div
           className="py-1 px-2 justify-between flex sm--navbar bg-purple-600"
           // style={{ backgroundColor: "#FFFBE3" }}
@@ -3083,20 +3250,6 @@ const percentagesColumn = Object.fromEntries(
             >
               Undo
             </button>
-            {/* {suggestionActiveDozen && (
-              <div className="p-1 rounded">
-                <div className="dozen--col flex justify-center items-center bg-[#58d68d] p-0.5 text-sm font-semibold cursor-pointer rounded hover:bg-gray-500 px-2">
-                  Dozen {repeatDozen}
-                </div>
-              </div>
-            )}
-            {suggestionActiveCol && (
-              <div className="p-1 rounded">
-                <div className="dozen--col flex justify-center items-center bg-[#58d68d] p-0.5 text-sm font-semibold cursor-pointer rounded hover:bg-gray-500 px-4">
-                  Column {repeatCol}
-                </div>
-              </div>
-            )} */}
 
             <button
               className="text-white py-1 px-1 rounded-full text-sm font-semibold"
@@ -3105,77 +3258,8 @@ const percentagesColumn = Object.fromEntries(
               <GrPowerReset className="inline mr-0.5 -mt-0.5 reset-icon" />
               Reset
             </button>
-            {/* <div className=" bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                <div className="menu-bars bg-black text-white px-3 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen" onClick={showSidebar}>
-                <TiThMenuOutline size={15} />
-                </div>
-            </div> */}
-
-            {/* <div className={sidebar ? "nav-menu active" : "nav-menu"}onClick={showSidebar}>
-                  <ul className="nav-menu-items ">
-                    <li id="navbar-toggle">
-                     <AiOutlineClose  size={24}/>
-                    </li>
-                    <li className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                    <button
-                        onClick={handleClickRowHoverData}
-                        className="bg-black flex text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      >
-                        Number &nbsp;{" "}
-                        <span
-                          className={`${
-                            rowHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {rowHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
-                    </li>
-                    <li className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                    <button
-                        onClick={handleClickDozenHoverData}
-                        className="bg-black flex text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      >
-                        Dozen &nbsp; &nbsp; {" "}
-                        <span
-                          className={`${
-                            dozenHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {dozenHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
-                    </li>
-                    <li className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400">
-                    <button
-                        onClick={handleClickColHoverData}
-                        className="bg-black flex text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                      >
-                        Column &nbsp;&nbsp; {" "}
-                        <span
-                          className={`${
-                            colHoverEffect ? "text-green-500" : "text-red-500"
-                          }`}
-                        >
-                          {colHoverEffect ? "On" : "Off"}
-                        </span>
-                      </button>
-                    </li>
-                    <li>
-                    <div
-                      className="bg-neutral-300 p-1 rounded-full hover:bg-gray-400"
-                      onClick={() => setShowPopup(!showPopup)}
-                    >
-                      <button className="bg-black flex text-white px-5 py-1 rounded-full btns max-sm:text-sm hover:bg-neonGreen">
-                        <CgInsights size={24} /> Statistics
-                      </button>
-                    </div>
-                    </li>
-                  </ul>
-            </div> */}
           </div>
         </div>
-
 
         <div
           className="flex justify-between items-center px-10 py-2 max-sm:px-3 pb-3 max-sm:hidden "
@@ -3372,13 +3456,13 @@ const percentagesColumn = Object.fromEntries(
                     className="h-[33.33%] border bgPercentage border-slate-300 flex justify-center relative items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold rounded-md "
                     style={{
                       backgroundColor:
-                        repeatDozen === "1" && dozenHoverEffect
+                        (maximumScoreDozen === "1" && repeatDozen === "1" && dozenHoverEffect) ||
+                        (maximumScoreDozen === "2" && repeatDozenTwo === "1" && dozenHoverEffect)
                           ? "#58d68d"
                           : "",
-                    }}id="dozenContainer1"
-
+                    }}
+                    id="dozenContainer1"
                   >
-                  
                     <p className="rotate-90 w-[10rem] max-xl:text-sm max-sm:text-xs">
                       1st 12
                     </p>
@@ -3390,22 +3474,20 @@ const percentagesColumn = Object.fromEntries(
                     >
                       {percentagesDozen[1]}%
                     </p>
-
                   </div>
 
                   <div
                     className="h-[33.33%] border bgPercentage border-slate-300 flex justify-center relative items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold rounded-md "
                     style={{
                       backgroundColor:
-                        repeatDozen === "2" && dozenHoverEffect
+                        (maximumScoreDozen === "1" && repeatDozen === "2" && dozenHoverEffect) ||
+                        (maximumScoreDozen === "2" && repeatDozenTwo === "2" && dozenHoverEffect)
                           ? "#58d68d"
                           : "",
                     }}
                     id="dozenContainer2"
                   >
-                    <p className="rotate-90 w-[10rem] max-xl:text-sm max-sm:text-xs"
-                    
-                    >
+                    <p className="rotate-90 w-[10rem] max-xl:text-sm max-sm:text-xs">
                       2nd 12
                     </p>
                     <p
@@ -3422,7 +3504,8 @@ const percentagesColumn = Object.fromEntries(
                     className="h-[33.33%] border bgPercentage border-slate-300 flex justify-center relative items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold rounded-md "
                     style={{
                       backgroundColor:
-                        repeatDozen === "3" && dozenHoverEffect
+                        (maximumScoreDozen === "1" && repeatDozen === "3" && dozenHoverEffect) ||
+                        (maximumScoreDozen === "2" && repeatDozenTwo === "3" && dozenHoverEffect)
                           ? "#58d68d"
                           : "",
                     }}
@@ -3440,9 +3523,8 @@ const percentagesColumn = Object.fromEntries(
                       {percentagesDozen[3]}%
                     </p>
                   </div>
-                  
                 </div>
-                
+
                 <div className="w-full h-[93%] flex flex-wrap">
                   {/* {data.map((item) => {
                     return (
@@ -3480,12 +3562,11 @@ const percentagesColumn = Object.fromEntries(
                     );
                   })} */}
 
-
-                    {data.map((item) => {
-                      return (
-                        <div
-                          id={`number-container-${item.num}`}
-                          className={`
+                  {data.map((item) => {
+                    return (
+                      <div
+                        id={`number-container-${item.num}`}
+                        className={`
                             w-[33.33%] 
                             flex 
                             justify-center 
@@ -3500,36 +3581,37 @@ const percentagesColumn = Object.fromEntries(
                             hover:backdrop-blur-md
                             rounded-md
                           `}
-                          style={{
-                            backgroundColor:
-                              item.letter === repeatLetter && rowHoverEffect
-                                ? "#58d68d"
-                                : item.bg,
-                            borderColor:
-                              theme === "light" ? "#F5F5F5" : "#0A1F44",
-                          }}
-                          onClick={() =>
-                            handleClickNumber(
-                              item.numString,
-                              item.num,
-                              item.doz,
-                              item.dozen,
-                              item.col,
-                              item.oddOrEven,
-                              item.color,
-                              item.range,
-                              item.ssRange,
-                              item.dsRange,
-                              item.wTracker,
-                              item.quadra,
-                              item.letter
-                            )
-                          }
-                          key={item.num}
-                        >
-                          {/* Glassmorphism overlay */}
-                          <div 
-                            className="
+                        style={{
+                          backgroundColor:
+                            item.letter === repeatLetter && rowHoverEffect
+                              ? "#58d68d"
+                              : item.bg,
+                          borderColor:
+                            theme === "light" ? "#F5F5F5" : "#0A1F44",
+                        }}
+                        onClick={() =>
+                          handleClickNumber(
+                            item.numString,
+                            item.num,
+                            item.doz,
+                            item.dozen,
+                            item.col,
+                            item.oddOrEven,
+                            item.color,
+                            item.range,
+                            item.ssRange,
+                            item.dsRange,
+                            item.wTracker,
+                            item.quadra,
+                            item.letter,
+                            item.letterTwo
+                          )
+                        }
+                        key={item.num}
+                      >
+                        {/* Glassmorphism overlay */}
+                        <div
+                          className="
                               absolute 
                               inset-0 
                               bg-white 
@@ -3538,36 +3620,36 @@ const percentagesColumn = Object.fromEntries(
                               border-opacity-10
                               pointer-events-none
                             "
-                          ></div>
-                          
-                          {/* Number */}
-                          <span className="relative z-10 text-white">
-                            {item.num}
-                          </span>
-                        </div>
-                      );
-                    })}
+                        ></div>
+
+                        {/* Number */}
+                        <span className="relative z-10 text-white">
+                          {item.num}
+                        </span>
+                      </div>
+                    );
+                  })}
 
                   {/* cols */}
                   <div className="w-full flex border-white font-white">
-                  <div
-                    className="w-[33.3%] h-full bgPercentage border border-slate-300 relative flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold rounded-md"
-                    style={{
-                      backgroundColor:
-                        repeatCol === "1" && colHoverEffect ? "#58d68d" : "", // Preserves your existing conditional background color logic
-                    }}
-                    id="columnContainer1"
-                  >
-                    2 - 1
-                    <p
-                      className=" bgPercentage text-white text-md text-center  rounded-xl font-bold p-1 absolute w-[60px] h-[32px]  z-[20] "
+                    <div
+                      className="w-[33.3%] h-full bgPercentage border border-slate-300 relative flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold rounded-md"
                       style={{
-                        bottom: "-35px",
+                        backgroundColor:
+                          repeatCol === "1" && colHoverEffect ? "#58d68d" : "", // Preserves your existing conditional background color logic
                       }}
+                      id="columnContainer1"
                     >
-                      {percentagesColumn[1]}%
-                    </p>
-                  </div>
+                      2 - 1
+                      <p
+                        className=" bgPercentage text-white text-md text-center  rounded-xl font-bold p-1 absolute w-[60px] h-[32px]  z-[20] "
+                        style={{
+                          bottom: "-35px",
+                        }}
+                      >
+                        {percentagesColumn[1]}%
+                      </p>
+                    </div>
 
                     <div
                       className="w-[33.3%] bgPercentage h-full border border-slate-300 relative flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold rounded-md"
@@ -3579,13 +3661,13 @@ const percentagesColumn = Object.fromEntries(
                     >
                       2 - 1
                       <p
-                      className=" bgPercentage text-white text-md text-center  rounded-xl font-bold p-1 absolute w-[60px] h-[32px]  z-[20] "
-                      style={{
-                        bottom: "-35px",
-                      }}
-                    >
-                      {percentagesColumn[2]}%
-                    </p>
+                        className=" bgPercentage text-white text-md text-center  rounded-xl font-bold p-1 absolute w-[60px] h-[32px]  z-[20] "
+                        style={{
+                          bottom: "-35px",
+                        }}
+                      >
+                        {percentagesColumn[2]}%
+                      </p>
                     </div>
                     <div
                       className="w-[33.3%] h-full bgPercentage border border-slate-300 relative flex justify-center items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold rounded-md"
@@ -3597,1084 +3679,121 @@ const percentagesColumn = Object.fromEntries(
                     >
                       2 - 1
                       <p
-                      className=" bgPercentage text-white text-md text-center  rounded-xl font-bold p-1 absolute w-[60px] h-[32px]  z-[20] "
-                      style={{
-                        bottom: "-35px",
-                      }}
-                    >
-                      {percentagesColumn[3]}%
-                    </p>
+                        className=" bgPercentage text-white text-md text-center  rounded-xl font-bold p-1 absolute w-[60px] h-[32px]  z-[20] "
+                        style={{
+                          bottom: "-35px",
+                        }}
+                      >
+                        {percentagesColumn[3]}%
+                      </p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
-               
-                
-
-
         </div>
 
-        <div className="w-[10%] h-full  max-sm:flex justify-center items-center statistics ">
+        <div className="w-[10%]  right-[10px] relative h-full flex  flex-col justify-around statistics ">
           <div
-            className="border rounded-full flex justify-center bg-black items-center relative cursor-pointer z-30 hover:bg-neonGreen"
+            className="border rounded-full flex justify-center mt-5 bg-black items-center relative cursor-pointer z-30 hover:bg-neonGreen"
             onClick={() => setShowPopup(!showPopup)}
             style={{ padding: "5px", width: "50px" }}
           >
             <CgInsights size={24} />
           </div>
-
-          
+          <div className="switch-container mt-3 ">
+            <input
+              type="checkbox"
+              id="toggleSwitch"
+              checked={isEffectActive}
+              onChange={() => setIsEffectActive(!isEffectActive)}
+            />
+            <label
+              htmlFor="toggleSwitch"
+              className="switch text-white text-center pt-0.5 font-bold text-md px-0.5"
+            ></label>
+          </div>
+          {/* <div className="flex gap-1">
+            {getChancesStatus(3).element}
+            <div
+              style={{
+                writingMode: "vertical-rl",
+                transform:
+                  "rotate(180deg)" ,
+                textAlign: "center",
+              }}
+              className="bgPercentage border-slate-400 relative rounded-xl mb-2 py-2 top-[-10px]"
+            >
+              NUMBER
+            </div>
+          </div>
+          <div className="flex gap-1 ">
+            {getChancesStatus(2).element}
+            <div
+              style={{
+                writingMode: "vertical-rl",
+                transform:
+                  "rotate(180deg)",
+                textAlign: "center",
+              }}
+              className="bgPercentage border-slate-400 relative rounded-xl mt-2 py-2 top-[-10px]"
+            >
+              Column
+            </div>
+          </div>
+          <div className="flex gap-1 mt-2">
+            {getChancesStatus(0).element}
+            <div
+              style={{
+                writingMode: "vertical-rl" ,
+                transform:
+                  "rotate(180deg)",
+                textAlign: "center",
+              }}
+              className="bgPercentage border-slate-400 relative rounded-xl mt-2 py-3 top-[-10px]"
+            >
+              Dozen
+            </div>
+          </div> */}
         </div>
       </div>
-      
-      {/* <div className="h-[40vh] border max-sm:hidden">
-        <table className="border w-[20rem]">
-          <tr>
-            <th className="w-[33.3%] bg-yellow-500 text-black">Catagory</th>
-            <th className="w-[33.3%] bg-green-600 p-1">Win</th>
-            <th className="w-[33.3%] bg-red-600 p-1">Loss</th>
-          </tr>
 
-          <tr>
-            <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
-              Win
-            </td>
-            <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
-              {analyzeData.winPerData}
-            </td>
-            <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
-              {analyzeData.lossPerData}
-            </td>
-          </tr>
-
-          <tr>
-            <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
-              Dozen
-            </td>
-            <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
-              {analyzeData.dozenWinPer}
-            </td>
-            <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
-              {analyzeData.dozenLossPer}
-            </td>
-          </tr>
-
-          <tr>
-            <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
-              Column
-            </td>
-            <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
-              {analyzeData.colWinPer}
-            </td>
-            <td className="bg-customGray text-black font-semibold text-center p-1 border-2 border-black">
-              {analyzeData.colLossPer}
-            </td>
-          </tr>
-        </table>
-
-        <p>Win - {analyzeData.winPerData}</p>
-        <p>Loss - {analyzeData.lossPerData}</p>
-        <p>dozen win - {analyzeData.dozenWinPer}</p>
-        <p>dozen Loss - {analyzeData.dozenLossPer}</p>
-        <p>col win - {analyzeData.colWinPer}</p>
-        <p>col Loss - {analyzeData.colLossPer}</p>
-      </div> */}
-
-      <div
-        className="w-full h-screen absolute top-0 flex justify-center items-center "
-        style={{
-          display: showPopup ? "flex" : "none",
-          background: `linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9))`,
-          minHeight: "100vh",
-          overflow: "scroll",
-          scrollbarWidth: "",
-        }}
-        onClick={() => setShowPopup(false)}
-      >
-        <div className="max-sm:mr-4">
-          {/* Table 1 of Statistics */}
-          <div className="flex justify-around  flex-col w-[35rem] max-md:w-[22rem] max-sm:w-[21rem]  "
-            style={{ marginTop: "65rem" }}
+      {showPopup && (
+        <div
+          className="w-full h-screen absolute top-0 flex justify-center items-center "
+          style={{
+            display: showPopup ? "flex" : "none",
+            background: `linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9))`,
+            minHeight: "100vh",
+            overflow: "scroll",
+            scrollbarWidth: "",
+          }}
+          onClick={() => setShowPopup(false)}
+        >
+          <div
+            className="max-sm:mr-4 "
+            style={{ paddingTop: "22rem" }}
+            onClick={(e) => e.stopPropagation()}
           >
-            <div className="bg-purple-600 text-white py-1 font-bold text-xl text-center relative rounded-3xl">
-              Category
-              <div
-                className="text-black p-1 absolute  cursor-pointer bg-white w-6 h-6 flex justify-center items-center rounded-full"
-                onMouseEnter={() => setI_btn(true)}
-                onMouseLeave={() => setI_btn(false)}
-                style={{ right: "15px", bottom: "6px" }}
-              >
-                i
-              </div>
-              <div
-                className="bg-purple-500 p-2 flex justify-between mb-4 text-start  items-start text-white w-60 h-30 max-sm:w-45 max-sm:h-35 absolute bottom-6 max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%]"
-                style={{ display: i_btn ? "flex" : "none" }}
-                id="statsInfo"
-              >
+            {/* Smart Betting  of Statistics */}
+            <div
+              className="flex justify-around flex-col w-[35rem] max-md:w-[22rem] max-sm:w-[21rem]  "
+              style={{ marginTop: "65rem" }}
+            >
+              <div className="bg-purple-600 text-white py-1 font-bold text-xl text-center relative rounded-3xl">
+                Smart Bet Selection
                 <div
-                  className="text-start"
-                  style={{ fontSize: "11px", paddingLeft: "5px" }}
-                >
-                  <p>
-                    <span className="font-bold me-2">Hot : </span>&nbsp; &nbsp;
-                    &nbsp; Good table For betting ✅
-                  </p>
-
-                  <p className="border-y my-1 py-1">
-                    <span className="font-bold me-2">Stable : </span>Decent
-                    choice,be cautious ⚖️
-                  </p>
-
-                  <p>
-                    <span className="font-bold me-2">Cold : </span> &nbsp;
-                    &nbsp;Avoid, too unpredictable ❌
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="flex mt-2 gap-1">
-              <div
-                className=" border-2 border-purple-500  p-3 rounded-xl"
-                style={{
-                  position: "relative",
-                  width: "33%",
-                  display: "inline-block",
-                }}
-              >
-                <h2 className="text-white  text-center py-1 bg-purple-500 rounded-xl font-semibold sm:text-xs">
-                  Numbers
-                </h2>
-                <div className="p-3">
-                <img
-                  src={determineImage.src}
-                  width="100%"
-                  alt={determineImage.label}
-                  className="rounded-full"
-                />
-                </div>
-                {/* Overlayed text */}
-                <div className="text-center">
-                  <button
-                    onClick={handleClickRowHoverData}
-                    className="menu-bars bg-white text-white px-4 font-bold mt-2 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                  >
-                    {" "}
-                    <span
-                      className={`${
-                        rowHoverEffect ? "text-green-500" : "text-red-500"
-                      }`}
-                    >
-                      {rowHoverEffect ? "On" : "Off"}
-                    </span>
-                  </button>
-                </div>
-              </div>
-              <div
-                className="border-2 border-purple-500  p-3 rounded-xl"
-                style={{
-                  position: "relative",
-                  width: "33%",
-                  display: "inline-block",
-                }}
-              >
-                <h2 className="text-white  text-center bg-purple-500 py-1 rounded-xl font-semibold sm:text-xs">
-                  Dozen
-                </h2>
-               <div className="p-3">
-               <img
-                  src={determineStatusAndImage.src}
-                  width="100%"
-                  alt={determineStatusAndImage.label}
-                  className="rounded-full"
-                />
-               </div>
-                {/* Overlayed text */}
-                <div className="text-center mt-2">
-                  <button
-                    onClick={handleClickDozenHoverData}
-                    className="menu-bars bg-white text-white px-4 font-bold  rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                  >
-                    {" "}
-                    <span
-                      className={`${
-                        dozenHoverEffect ? "text-green-500" : "text-red-500"
-                      }`}
-                    >
-                      {dozenHoverEffect ? "On" : "Off"}
-                    </span>
-                  </button>
-                </div>
-              </div>
-              <div
-                className="border-2 border-purple-500  p-3 rounded-xl"
-                style={{
-                  position: "relative",
-                  width: "33%",
-                  display: "inline-block",
-                }}
-              >
-                <h2 className="text-white  text-center bg-purple-500 py-1 rounded-xl font-semibold sm:text-xs">
-                  Column
-                </h2>
-                <div className="p-3 ">
-                <img
-                  src={determineStatusAndImage1.src}
-                  width="100%"
-                  alt={determineStatusAndImage1.label}
-                  className="rounded-full"
-                />
-                </div>
-                {/* Overlayed text */}
-                <div className="text-center mt-2">
-                  <button
-                    onClick={handleClickColHoverData}
-                    className="menu-bars bg-white text-white font-bold px-4 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
-                  >
-                    {" "}
-                    <span
-                      className={`${
-                        colHoverEffect ? "text-green-500" : "text-red-500"
-                      }`}
-                    >
-                      {colHoverEffect ? "On" : "Off"}
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-          <div className="flex justify-around  flex-col w-[35rem] max-md:w-[22rem] mt-10 max-sm:w-[21rem]" >
-          <div className="flex justify-around bg-purple-600 text-white rounded-3xl py-1 text-md font-bold sm:text-md ">
-              <div className="   justify-center flex relative " style={{width:"33%"}}>
-                <span>Numbers</span> <div
-                    className="text-black cursor-pointer bg-white w-6 p-2 h-6 flex justify-center items-center rounded-full "
-                    onMouseEnter={() => setI6_btn(true)}
-                    onMouseLeave={() => setI6_btn(false)}
-                  >
-                    i
-                  </div>
-                  {i6_btn && (
-                    <div
-                      className="bg-purple-500 p-2 flex justify-between mb-4 text-start items-start text-white w-60 h-30 max-sm:w-45 max-sm:h-35 absolute max-sm:text-xs max-sm:left-[10%] max-lg:-right-[15%] -right-[35%] bottom-6"
-                      id="statsInfo"
-                    >
-                      <div
-                        className="text-start"
-                        style={{ fontSize: "11px", paddingLeft: "5px" }}
-                      >
-                        <p>
-                          <span className="font-bold h-5 w-5 p-1 text-center bg-customRed ps-2 rounded-md"> 0 </span>&nbsp; &nbsp; &nbsp;
-                          2,4,6,13,15,17,19,21,25,27,32,34
-                        </p>
-
-                        <p className="border-y my-1 py-1">
-                        <span className="font-bold h-5 w-5 p-1 text-center bg-customRed ps-2 rounded-md"> 1 </span> &nbsp; &nbsp; 1,5,8,10,11,16,20,23,24,30,33,36
-                        </p>
-
-                        <p>
-                        <span className="font-bold h-5 w-5 p-1 text-center bg-customRed ps-2 rounded-md"> 3 </span> &nbsp; &nbsp;3,7,9,12,14,18,22,26,28,29,31,35
-                        </p>
-                      </div>
-                    </div>
-                  )}
-              </div>
-              <div style={{ width: "33%" }} className="text-center flex items-center relative">
-                <span>Performance</span>
-                  <div
-                    className="text-black cursor-pointer bg-white w-6 p-2 h-6 flex justify-center items-center rounded-full "
-                    onMouseEnter={() => setI1_btn(true)}
-                    onMouseLeave={() => setI1_btn(false)}
-                  >
-                    i
-                  </div>
-                  {i1_btn && (
-                    <div
-                      className="bg-purple-500 p-2 flex justify-between mb-4 text-start items-start text-white w-60 h-30 max-sm:w-45 max-sm:h-35 absolute max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%] bottom-6"
-                      id="statsInfo"
-                    >
-                      <div
-                        className="text-start"
-                        style={{ fontSize: "11px", paddingLeft: "5px" }}
-                      >
-                        <p>
-                          <span className="font-bold me-2">Hot : </span>&nbsp; &nbsp; &nbsp;
-                          Good table For betting ✅
-                        </p>
-
-                        <p className="border-y my-1 py-1">
-                          <span className="font-bold me-2">Stable : </span>Decent choice, be cautious ⚖️
-                        </p>
-
-                        <p>
-                          <span className="font-bold me-2">Cold : </span> &nbsp; &nbsp;Avoid,
-                          too unpredictable ❌
-                        </p>
-                      </div>
-                    </div>
-                  )}
-              </div>
-              <div style={{width:"33%"}} className="text-center">
-                Long Term
-              </div>
-            </div>
-            <div className="flex flex-col mt-2 gap-1">
-
-
-
-              <div className="flex border-2 border-purple-500  p-1 rounded-xl">
-                <div
-                  style={{ width: "33%" }}
-                  className="flex justify-center items-center"
-                >
-                  <h2 className="text-white text-center p-2 bg-purple-500 rounded-xl font-semibold sm:text-xs px-4  ">
-                    0
-                  </h2>
-                </div>
-                {/* Overlayed text */}
-                <div
-                  style={{ width: "33%" }}
-                  className="flex justify-center items-center"
-                >
-                  <p
-                    style={{
-                      fontSize: "1.2rem",
-                      fontWeight: "bold",
-                      color: "#FFFFFF",
-                      width: "33%",
-                    }}
-                    className="text-center pt-1"
-                  >
-                    {(() => {
-                      const winPer = statsData.Agroup;
-                      const lossPer = statsData.Agroup_loss;
-                      const total = winPer + lossPer;
-                      const winPercentage = (winPer / total) * 100;
-
-                      return winPercentage >= 70
-                        ? `Hot`
-                        : winPercentage >= 50
-                        ? `Stable`
-                        : `Cold`;
-                    })()}
-                  </p>
-                </div>
-                <div
-                  style={{ width: "33%" }}
-                  className="flex justify-center flex-col items-center"
-                >
-                  <GaugeChart
-                    id="gauge-chart-1"
-                    nrOfLevels={10}
-                    percent={rowDataScores.A / 666}
-                    colors={["#A78BFA", "#7C3AED", "#8B5CF6", "#5B21B6"]}
-                    arcWidth={0.3}
-                    hideText={true}
-                    style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
-                  />
-                  <p className="text-white font-bold text-center">
-                    {
-                      NumberHSC.A
-                    }
-                  </p>
-                </div>
-              </div>
-
-
-              <div className="flex border-2 border-purple-500  p-1 rounded-xl">
-                <div
-                  style={{ width: "33%" }}
-                  className="flex justify-center items-center"
-                >
-                  <h2 className="text-white text-center p-2 bg-purple-500 rounded-xl font-semibold sm:text-xs px-4  ">
-                    1
-                  </h2>
-                </div>
-                {/* Overlayed text */}
-                <div
-                  style={{ width: "33%" }}
-                  className="flex justify-center items-center"
-                >
-                  <p
-                    style={{
-                      fontSize: "1.2rem",
-                      fontWeight: "bold",
-                      color: "#FFFFFF",
-                      width: "33%",
-                    }}
-                    className="text-center pt-1"
-                  >
-                    {(() => {
-                      const winPer = statsData.Bgroup;
-                      const lossPer = statsData.Bgroup_loss;
-                      const total = winPer + lossPer;
-                      const winPercentage = (winPer / total) * 100;
-
-                      return winPercentage >= 70
-                        ? `Hot`
-                        : winPercentage >= 50
-                        ? `Stable`
-                        : `Cold`;
-                    })()}
-                  </p>
-                </div>
-                <div
-                  style={{ width: "33%" }}
-                  className="flex justify-center flex-col items-center"
-                >
-                  <GaugeChart
-                    id="gauge-chart-1"
-                    nrOfLevels={10}
-                    percent={rowDataScores.B / 666}
-                    colors={["#A78BFA", "#7C3AED", "#8B5CF6", "#5B21B6"]}
-                    arcWidth={0.3}
-                    hideText={true}
-                    style={{ width: "100px", height: "50px" }}
-                  />
-                  <p className="text-white font-bold text-center">
-                    {NumberHSC.B}
-                  </p>
-                </div>
-              </div>
-
-
-              <div className="flex border-2 border-purple-500  p-1 rounded-xl">
-                <div
-                  style={{ width: "33%" }}
-                  className="flex justify-center items-center"
-                >
-                  <h2 className="text-white text-center p-2 bg-purple-500 rounded-xl font-semibold sm:text-xs px-4  ">
-                    3
-                  </h2>
-                </div>
-                {/* Overlayed text */}
-                <div
-                  style={{ width: "33%" }}
-                  className="flex justify-center items-center"
-                >
-                  <p
-                    style={{
-                      fontSize: "1.2rem",
-                      fontWeight: "bold",
-                      color: "#FFFFFF",
-                      width: "33%",
-                    }}
-                    className="text-center pt-1"
-                  >
-                    {(() => {
-                      const winPer = statsData.Cgroup;
-                      const lossPer = statsData.Cgroup_loss;
-                      const total = winPer + lossPer;
-                      const winPercentage = (winPer / total) * 100;
-
-                      return winPercentage >= 70
-                        ? `Hot`
-                        : winPercentage >= 50
-                        ? `Stable`
-                        : `Cold`;
-                    })()}
-                  </p>
-                </div>
-                <div
-                  style={{ width: "33%" }}
-                  className="flex justify-center flex-col items-center"
-                >
-                  <GaugeChart
-                    id="gauge-chart-1"
-                    nrOfLevels={10}
-                    percent={rowDataScores.C / 666}
-                    colors={["#A78BFA", "#7C3AED", "#8B5CF6", "#5B21B6"]}
-                    arcWidth={0.3}
-                    hideText={true}
-                    style={{ width: "100px", height: "50px" }}
-                  />
-                  <p className="text-white font-bold text-center">
-                  {NumberHSC.C}
-                  </p>
-                </div>
-
-              </div>
-              {/* <div 
-                      className="border border-2 border-purple-500  p-3 rounded-xl"
-                      style={{
-                        position: "relative",
-                        width: "33%",
-                        display: "inline-block",
-                      }}
-                      >
-                        <h2 className="text-white mb-5 text-center bg-purple-500 rounded-xl font-semibold">B Group</h2>
-                          <GaugeChart
-                              id="gauge-chart-1"
-                              nrOfLevels={10}
-                              percent={(rowDataScores.B/666)}
-                              colors={["#A78BFA","#7C3AED" ,"#8B5CF6","#5B21B6" ]}
-                              arcWidth={0.3}
-                              hideText={true}
-                          />
-                         
-                          <p
-                              style={{
-                                  fontSize: '1.2rem',
-                                  fontWeight: 'bold',
-                                  color: '#FFFFFF',
-                              }}
-                              className="text-center pt-1"
-                          >
-
-                            {(() => {
-                              const winPer = statsData.Bgroup;
-                              const lossPer = statsData.Bgroup_loss;
-                              const total = winPer + lossPer;
-                              const winPercentage = (winPer / total) * 100;
-
-                              return winPercentage >= 70
-                                ? `Hot`
-                                : winPercentage >= 50
-                                ? `Stable`
-                                : `Cold`;
-                            })()}
-                          </p>
-                      </div> */}
-              {/* <div 
-                      className="border border-2 border-purple-500  p-3 rounded-xl"
-                      style={{
-                        position: "relative",
-                        width: "33%",
-                        display: "inline-block",
-                      }}
-                      >
-                        <h2 className="text-white mb-5 text-center bg-purple-500 rounded-xl font-semibold">C Group</h2>
-                          <GaugeChart
-                              id="gauge-chart-1"
-                              nrOfLevels={10}
-                              percent={(rowDataScores.C/666)}
-                              colors={["#A78BFA","#7C3AED" ,"#8B5CF6","#5B21B6" ]}
-                              arcWidth={0.3}
-                              hideText={true}
-                          />
-                          <p
-                              style={{
-                                  fontSize: '1.2rem',
-                                  fontWeight: 'bold',
-                                  color: '#FFFFFF',
-                              }}
-                              className="text-center pt-1"
-                          >
-
-                            {(() => {
-                              const winPer = statsData.Cgroup;
-                              const lossPer = statsData.Cgroup_loss;
-                              const total = winPer + lossPer;
-                              const winPercentage = (winPer / total) * 100;
-
-                              return winPercentage >= 70
-                                ? `Hot`
-                                : winPercentage >= 50
-                                ? `Stable`
-                                : `Cold`;
-                            })()}
-                          </p>
-                      </div> */}
-            </div>
-          </div>
-
-
-          <div className="flex justify-around  flex-col w-[35rem] max-md:w-[22rem] my-10 max-sm:w-[21rem]">
-            <div className="flex justify-around bg-purple-600 text-white rounded-3xl py-1 text-md font-bold sm:text-md ">
-              <div className="   text-center  " style={{width:"33%"}}>
-                Dozen
-                
-              </div>
-              <div style={{ width: "33%" }} className="text-center flex items-center relative">
-                <span>Performance</span>
-                <div
-                    className="text-black cursor-pointer bg-white w-6 p-2 h-6 flex justify-center items-center rounded-full "
-                    onMouseEnter={() => setI2_btn(true)}
-                    onMouseLeave={() => setI2_btn(false)}
-                  >
-                    i
-                  </div>
-                  {i2_btn && (
-                    <div
-                      className="bg-purple-500 p-2 flex justify-between mb-4 text-start items-start text-white w-60 h-30 max-sm:w-45 max-sm:h-35 absolute max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%] bottom-6"
-                      id="statsInfo"
-                    >
-                      <div
-                        className="text-start"
-                        style={{ fontSize: "11px", paddingLeft: "5px" }}
-                      >
-                        <p>
-                          <span className="font-bold me-2">Hot : </span>&nbsp; &nbsp; &nbsp;
-                          Good table For betting ✅
-                        </p>
-
-                        <p className="border-y my-1 py-1">
-                          <span className="font-bold me-2">Stable : </span>Decent choice, be cautious ⚖️
-                        </p>
-
-                        <p>
-                          <span className="font-bold me-2">Cold : </span> &nbsp; &nbsp;Avoid,
-                          too unpredictable ❌
-                        </p>
-                      </div>
-                    </div>
-                  )}
-              </div>
-              <div style={{width:"33%"}} className="text-center">
-                Long Term
-              </div>
-            </div>
-            <div className="flex flex-col mt-2 gap-1">
-
-              <div className="flex border-2 border-purple-500  p-1 rounded-xl">
-                  <div
-                    style={{ width: "33%" }}
-                    className="flex justify-center items-center"
-                  >
-                    <h2 className="text-white text-center bg-purple-500 rounded-xl py-1 font-semibold sm:text-xs px-4  ">
-                    Dozen 1
-                    </h2>
-                  </div>
-                  {/* Overlayed text */}
-                  <div
-                    style={{ width: "33%" }}
-                    className="flex justify-center items-center"
-                  >
-                    <p
-                      style={{
-                        fontSize: "1.2rem",
-                        fontWeight: "bold",
-                        color: "#FFFFFF",
-                        width: "33%",
-                      }}
-                      className="text-center pt-1"
-                    >
-                      {(() => {
-                      const winPer = statsData.dozen1;
-                      const lossPer = statsData.dozen1_loss;
-                      const total = winPer + lossPer;
-                      const winPercentage = (winPer / total) * 100;
-
-                      return winPercentage >= 70
-                        ? `Hot`
-                        : winPercentage >= 50
-                        ? `Stable`
-                        : `Cold`;
-                    })()}
-                    </p>
-                  </div>
-                  <div
-                    style={{ width: "33%" }}
-                    className="flex justify-center flex-col items-center"
-                  >
-                    <GaugeChart
-                      id="gauge-chart-1"
-                      nrOfLevels={10}
-                      percent={dozenScores[1]/ 666}
-                      colors={["#A78BFA", "#7C3AED", "#8B5CF6", "#5B21B6"]}
-                      arcWidth={0.3}
-                      hideText={true}
-                      style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
-                    />
-                    <p className="text-white font-bold text-center">{dozenHSC[1]}</p>
-                  </div>
-              </div>
-
-
-              <div className="flex border-2 border-purple-500  p-1 rounded-xl">
-                  <div
-                    style={{ width: "33%" }}
-                    className="flex justify-center items-center"
-                  >
-                    <h2 className="text-white text-center bg-purple-500 rounded-xl font-semibold sm:text-xs py-1 px-4  ">
-                    Dozen 2
-                    </h2>
-                  </div>
-                  {/* Overlayed text */}
-                  <div
-                    style={{ width: "33%" }}
-                    className="flex justify-center items-center"
-                  >
-                    <p
-                      style={{
-                        fontSize: "1.2rem",
-                        fontWeight: "bold",
-                        color: "#FFFFFF",
-                        width: "33%",
-                      }}
-                      className="text-center pt-1"
-                    >
-                      {(() => {
-                      const winPer = statsData.dozen2;
-                      const lossPer = statsData.dozen2_loss;
-                      const total = winPer + lossPer;
-                      const winPercentage = (winPer / total) * 100;
-
-                      return winPercentage >= 70
-                        ? `Hot`
-                        : winPercentage >= 50
-                        ? `Stable`
-                        : `Cold`;
-                    })()}
-                    </p>
-                  </div>
-                  <div
-                    style={{ width: "33%" }}
-                    className="flex justify-center flex-col items-center"
-                  >
-                    <GaugeChart
-                      id="gauge-chart-1"
-                      nrOfLevels={10}
-                      percent={dozenScores[2]/ 666}
-                      colors={["#A78BFA", "#7C3AED", "#8B5CF6", "#5B21B6"]}
-                      arcWidth={0.3}
-                      hideText={true}
-                      style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
-                    />
-                    <p className="text-white font-bold text-center">{dozenHSC[2]}</p>
-                  </div>
-              </div>
-
-
-              <div className="flex border-2 border-purple-500  p-1 rounded-xl">
-                  <div
-                    style={{ width: "33%" }}
-                    className="flex justify-center items-center"
-                  >
-                    <h2 className="text-white text-center bg-purple-500 rounded-xl py-1 font-semibold sm:text-xs px-4  ">
-                    Dozen 3
-                    </h2>
-                  </div>
-                  {/* Overlayed text */}
-                  <div
-                    style={{ width: "33%" }}
-                    className="flex justify-center items-center"
-                  >
-                    <p
-                      style={{
-                        fontSize: "1.2rem",
-                        fontWeight: "bold",
-                        color: "#FFFFFF",
-                        width: "33%",
-                      }}
-                      className="text-center pt-1"
-                    >
-                      {(() => {
-                      const winPer = statsData.dozen3;
-                      const lossPer = statsData.dozen3_loss;
-                      const total = winPer + lossPer;
-                      const winPercentage = (winPer / total) * 100;
-
-                      return winPercentage >= 70
-                        ? `Hot`
-                        : winPercentage >= 50
-                        ? `Stable`
-                        : `Cold`;
-                    })()}
-                    </p>
-                  </div>
-                  <div
-                    style={{ width: "33%" }}
-                    className="flex justify-center flex-col items-center"
-                  >
-                    <GaugeChart
-                      id="gauge-chart-1"
-                      nrOfLevels={10}
-                      percent={dozenScores[3]/ 666}
-                      colors={["#A78BFA", "#7C3AED", "#8B5CF6", "#5B21B6"]}
-                      arcWidth={0.3}
-                      hideText={true}
-                      style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
-                    />
-                    <p className="text-white font-bold text-center">{dozenHSC[3]}</p>
-                  </div>
-              </div>
-            </div>
-          </div>
-
-
-          <div className="flex justify-around  flex-col w-[35rem] mb-5 max-md:w-[22rem] max-sm:w-[21rem]">
-          <div className="flex justify-around bg-purple-600 text-white rounded-3xl py-1 text-md font-bold sm:text-md ">
-              <div className="   text-center  " style={{width:"33%"}}>
-                Column
-                
-              </div>
-              <div style={{ width: "33%" }} className="text-center flex items-center relative">
-                <span>Performance</span>
-                <div
-                    className="text-black cursor-pointer bg-white w-6 p-2 h-6 flex justify-center items-center rounded-full"
-                    onMouseEnter={() => setI3_btn(true)}
-                    onMouseLeave={() => setI3_btn(false)}
-                  >
-                    i
-                  </div>
-                  {i3_btn && (
-                    <div
-                      className="bg-purple-500 p-2 flex justify-between mb-4 text-start items-start text-white w-60 h-30 max-sm:w-45 max-sm:h-35 absolute max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%] bottom-6"
-                      id="statsInfo"
-                    >
-                      <div
-                        className="text-start"
-                        style={{ fontSize: "11px", paddingLeft: "5px" }}
-                      >
-                        <p>
-                          <span className="font-bold me-2">Hot : </span>&nbsp; &nbsp; &nbsp;
-                          Good table For betting ✅
-                        </p>
-
-                        <p className="border-y my-1 py-1">
-                          <span className="font-bold me-2">Stable : </span>Decent choice, be cautious ⚖️
-                        </p>
-
-                        <p>
-                          <span className="font-bold me-2">Cold : </span> &nbsp; &nbsp;Avoid,
-                          too unpredictable ❌
-                        </p>
-                      </div>
-                    </div>
-                  )}
-              </div>
-
-              <div style={{width:"33%"}} className="text-center">
-                Long Term
-              </div>
-            </div>
-            <div className="flex mt-2 flex-col gap-1">
-
-
-              <div className="flex border-2 border-purple-500  p-1 rounded-xl">
-                  <div
-                    style={{ width: "33%" }}
-                    className="flex justify-center items-center"
-                  >
-                    <h2 className="text-white text-center bg-purple-500 rounded-xl py-1 font-semibold sm:text-xs px-4  ">
-                    Column 1
-                    </h2>
-                  </div>
-                  {/* Overlayed text */}
-                  <div
-                    style={{ width: "33%" }}
-                    className="flex justify-center items-center"
-                  >
-                    <p
-                      style={{
-                        fontSize: "1.2rem",
-                        fontWeight: "bold",
-                        color: "#FFFFFF",
-                        width: "33%",
-                      }}
-                      className="text-center pt-1"
-                    >
-                      {(() => {
-                    const winPer = statsData.col1;
-                    const lossPer = statsData.col1_loss;
-                    const total = winPer + lossPer;
-                    const winPercentage = (winPer / total) * 100;
-
-                    return winPercentage >= 70
-                      ? `Hot`
-                      : winPercentage >= 50
-                      ? `Stable`
-                      : `Cold`;
-                  })()}
-                    </p>
-                  </div>
-                  <div
-                    style={{ width: "33%" }}
-                    className="flex justify-center flex-col items-center"
-                  >
-                    <GaugeChart
-                      id="gauge-chart-1"
-                      nrOfLevels={10}
-                      percent={columnScores[1]/ 666}
-                      colors={["#A78BFA", "#7C3AED", "#8B5CF6", "#5B21B6"]}
-                      arcWidth={0.3}
-                      hideText={true}
-                      style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
-                    />
-                  <p className="text-white font-bold text-center">{columnHSC[1]}</p>
-                  </div>
-              </div>
-
-
-
-              <div className="flex border-2 border-purple-500  p-1 rounded-xl">
-                  <div
-                    style={{ width: "33%" }}
-                    className="flex justify-center items-center"
-                  >
-                    <h2 className="text-white text-center bg-purple-500 py-1 rounded-xl font-semibold sm:text-xs px-4  ">
-                    Column 2
-                    </h2>
-                  </div>
-                  {/* Overlayed text */}
-                  <div
-                    style={{ width: "33%" }}
-                    className="flex justify-center items-center"
-                  >
-                    <p
-                      style={{
-                        fontSize: "1.2rem",
-                        fontWeight: "bold",
-                        color: "#FFFFFF",
-                        width: "33%",
-                      }}
-                      className="text-center pt-1"
-                    >
-                      {(() => {
-                    const winPer = statsData.col2;
-                    const lossPer = statsData.col2_loss;
-                    const total = winPer + lossPer;
-                    const winPercentage = (winPer / total) * 100;
-
-                    return winPercentage >= 70
-                      ? `Hot`
-                      : winPercentage >= 50
-                      ? `Stable`
-                      : `Cold`;
-                  })()}
-                    </p>
-                  </div>
-                  <div
-                    style={{ width: "33%" }}
-                    className="flex justify-center flex-col items-center"
-                  >
-                    <GaugeChart
-                      id="gauge-chart-1"
-                      nrOfLevels={10}
-                      percent={columnScores[2]/ 666}
-                      colors={["#A78BFA", "#7C3AED", "#8B5CF6", "#5B21B6"]}
-                      arcWidth={0.3}
-                      hideText={true}
-                      style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
-                    />
-                   <p className="text-white font-bold text-center">{columnHSC[2]}</p>
-                  </div>
-              </div>
-
-
-              <div className="flex border-2 border-purple-500  p-1 rounded-xl">
-                  <div
-                    style={{ width: "33%" }}
-                    className="flex justify-center items-center"
-                  >
-                    <h2 className="text-white text-center bg-purple-500 rounded-xl py-1 font-semibold sm:text-xs px-4  ">
-                    Column 3
-                    </h2>
-                  </div>
-                  {/* Overlayed text */}
-                  <div
-                    style={{ width: "33%" }}
-                    className="flex justify-center items-center"
-                  >
-                    <p
-                      style={{
-                        fontSize: "1.2rem",
-                        fontWeight: "bold",
-                        color: "#FFFFFF",
-                        width: "33%",
-                      }}
-                      className="text-center pt-1"
-                    >
-                      {(() => {
-                    const winPer = statsData.col3;
-                    const lossPer = statsData.col3_loss;
-                    const total = winPer + lossPer;
-                    const winPercentage = (winPer / total) * 100;
-
-                    return winPercentage >= 70
-                      ? `Hot`
-                      : winPercentage >= 50
-                      ? `Stable`
-                      : `Cold`;
-                  })()}
-                    </p>
-                  </div>
-                  <div
-                    style={{ width: "33%" }}
-                    className="flex justify-center flex-col items-center"
-                  >
-                    <GaugeChart
-                      id="gauge-chart-1"
-                      nrOfLevels={10}
-                      percent={columnScores[3]/ 666}
-                      colors={["#A78BFA", "#7C3AED", "#8B5CF6", "#5B21B6"]}
-                      arcWidth={0.3}
-                      hideText={true}
-                      style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
-                    />
-                   <p className="text-white font-bold text-center">{columnHSC[3]}</p>
-                  </div>
-              </div>
-              {/* <div
-                className="border border-2 border-purple-500  p-3 rounded-xl"
-                style={{
-                  position: "relative",
-                  width: "33%",
-                  display: "inline-block",
-                }}
-              >
-                <h2 className="text-white mb-5 text-center bg-purple-500 rounded-xl font-semibold">
-                  Column 3
-                </h2>
-                <GaugeChart
-                  id="gauge-chart-1"
-                  nrOfLevels={10}
-                  percent={columnScores[3] / 666}
-                  colors={["#A78BFA", "#7C3AED", "#8B5CF6", "#5B21B6"]}
-                  arcWidth={0.3}
-                  hideText={true}
-                />
-                
-                <p
-                  style={{
-                    fontSize: "1.2rem",
-                    fontWeight: "bold",
-                    color: "#FFFFFF",
-                  }}
-                  className="text-center pt-1"
-                >
-                  {(() => {
-                    const winPer = statsData.col3;
-                    const lossPer = statsData.col3_loss;
-                    const total = winPer + lossPer;
-                    const winPercentage = (winPer / total) * 100;
-
-                    return winPercentage >= 70
-                      ? `Hot`
-                      : winPercentage >= 50
-                      ? `Stable`
-                      : `Cold`;
-                  })()}
-                </p>
-              </div> */}
-            </div>
-          </div>
-         
-         
-
-          {/* <table className="border w-[35rem] max-md:w-[22rem] max-sm:w-[18rem] mt-6">
-            <tr className="max-sm:h-20 max-md:h-20">
-              <th className="w-[30%] max-sm:w-[30] border py-2 bg-yellow-500 text-black">
-                Numbers
-              </th>
-              <th className="w-[40%] max-sm:w-[50] border bg-yellow-500 text-black break-words relative">
-                Hot/Stable/Cold
-                <div
-                  className="text-gray-400 absolute  cursor-pointer bg-neutral-700 w-5 h-5 flex justify-center items-center rounded-full"
-                  onMouseEnter={() => setI6_btn(true)}
-                  onMouseLeave={() => setI6_btn(false)}
-                  style={{ right: "10px", bottom: "6px" }}
+                  className="text-black p-1 absolute  cursor-pointer bg-white w-6 h-6 flex justify-center items-center rounded-full"
+                  onMouseEnter={() => setI_btn(true)}
+                  onMouseLeave={() => setI_btn(false)}
+                  style={{ right: "15px", bottom: "6px" }}
                 >
                   i
                 </div>
                 <div
-                  className="bg-customPurple p-2 flex justify-between mb-4 text-start  items-start text-white w-60 h-24 max-sm:w-45 max-sm:h-35 absolute bottom-6 max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%]"
-                  style={{ display: i6_btn ? "flex" : "none" }}
+                  className="bg-purple-500 p-2 flex justify-between mb-4 text-start  items-start text-white w-60 h-30 max-sm:w-45 max-sm:h-35 absolute bottom-6 max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[25%] "
+                  style={{ display: i_btn ? "flex" : "none" }}
                   id="statsInfo"
                 >
                   <div
@@ -4697,346 +3816,2047 @@ const percentagesColumn = Object.fromEntries(
                     </p>
                   </div>
                 </div>
-              </th>
-            </tr>
-            <tr>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                A-Group
-              </td>
-              <td
-                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
-                  const winPer = statsData.Agroup;
-                  const lossPer = statsData.Agroup_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
+              </div>
+              <div className="flex mt-2 gap-1">
+                <div
+                  className=" border-2 border-purple-500  p-3 rounded-xl"
+                  style={{
+                    position: "relative",
+                    width: "33%",
+                    display: "inline-block",
+                  }}
+                >
+                  <h2 className="text-white  text-center py-1 bg-purple-500 rounded-xl font-semibold sm:text-xs">
+                    Numbers
+                  </h2>
+                  <div className="p-3">
+                    <img
+                      src={determineImage.src}
+                      width="100%"
+                      alt={determineImage.label}
+                      className="rounded-full"
+                    />
+                  </div>
+                  {/* Overlayed text */}
+                  <div className="text-center">
+                    <button
+                      onClick={handleClickRowHoverData}
+                      className="menu-bars bg-white text-white px-4 font-bold mt-2 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
+                    >
+                      {" "}
+                      <span
+                        className={`${
+                          rowHoverEffect ? "text-green-500" : "text-red-500"
+                        }`}
+                      >
+                        {rowHoverEffect ? "On" : "Off"}
+                      </span>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  className="border-2 border-purple-500  p-3 rounded-xl"
+                  style={{
+                    position: "relative",
+                    width: "33%",
+                    display: "inline-block",
+                  }}
+                >
+                  <h2 className="text-white  text-center bg-purple-500 py-1 rounded-xl font-semibold sm:text-xs">
+                    Dozen
+                  </h2>
+                  <div className="p-3">
+                    <img
+                      src={determineStatusAndImage.src}
+                      width="100%"
+                      alt={determineStatusAndImage.label}
+                      className="rounded-full"
+                    />
+                  </div>
+                  {/* Overlayed text */}
+                  <div className="text-center mt-2">
+                    <button
+                      onClick={handleClickDozenHoverData}
+                      className="menu-bars bg-white text-white px-4 font-bold  rounded-full btns max-sm:text-sm hover:bg-neonGreen"
+                    >
+                      {" "}
+                      <span
+                        className={`${
+                          dozenHoverEffect ? "text-green-500" : "text-red-500"
+                        }`}
+                      >
+                        {dozenHoverEffect ? "On" : "Off"}
+                      </span>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  className="border-2 border-purple-500  p-3 rounded-xl"
+                  style={{
+                    position: "relative",
+                    width: "33%",
+                    display: "inline-block",
+                  }}
+                >
+                  <h2 className="text-white  text-center bg-purple-500 py-1 rounded-xl font-semibold sm:text-xs">
+                    Column
+                  </h2>
+                  <div className="p-3 ">
+                    <img
+                      src={determineStatusAndImage1.src}
+                      width="100%"
+                      alt={determineStatusAndImage1.label}
+                      className="rounded-full"
+                    />
+                  </div>
+                  {/* Overlayed text */}
+                  <div className="text-center mt-2">
+                    <button
+                      onClick={handleClickColHoverData}
+                      className="menu-bars bg-white text-white font-bold px-4 rounded-full btns max-sm:text-sm hover:bg-neonGreen"
+                    >
+                      {" "}
+                      <span
+                        className={`${
+                          colHoverEffect ? "text-green-500" : "text-red-500"
+                        }`}
+                      >
+                        {colHoverEffect ? "On" : "Off"}
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                  return winPercentage >= 70
-                    ? "bg-red-500 text-white"
-                    : winPercentage >= 50
-                    ? "bg-transparent"
-                    : "bg-green-300 text-black";
-                })()}`}
-              >
-                {(() => {
-                  const winPer = statsData.Agroup;
-                  const lossPer = statsData.Agroup_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
+            {/* Numbers  */}
 
-                  return winPercentage >= 70
-                    ? `Hot`
-                    : winPercentage >= 50
-                    ? `Stable`
-                    : `Cold`;
-                })()}
-              </td>
-            </tr>
-            <tr>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                B-Group
-              </td>
-              <td
-                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
-                  const winPer = statsData.Bgroup;
-                  const lossPer = statsData.Bgroup_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
+            <div className="mt-5">
+              {/* <header className="flex gap-2 tabs tabs-boxed w-full bg-purple-800 mb-1 py-2">
+                <button
+                  className={`px-2  font-bold w-[33%] py-1 ${
+                    activeTab === 1
+                      ? "bg-white text-black"
+                      : "bg-superPurple text-white"
+                  } rounded`}
+                  onClick={() => setActiveTab(1)}
+                >
+                  12 Number
+                </button>
+                <button
+                  className={`px-2 font-bold w-[33%] py-1 ${
+                    activeTab === 2
+                      ? "bg-white text-black"
+                      : "bg-superPurple text-white"
+                  } rounded`}
+                  onClick={() => setActiveTab(2)}
+                >
+                  9 Number
+                </button>
+                <button
+                  className={`px-2 font-bold w-[33%] py-1 ${
+                    activeTab === 3
+                      ? "bg-white text-black"
+                      : "bg-superPurple text-white"
+                  } rounded`}
+                  onClick={() => setActiveTab(3)}
+                >
+                  12 Number
+                </button>
+              </header> */}
 
-                  return winPercentage >= 70
-                    ? "bg-red-500 text-white"
-                    : winPercentage >= 50
-                    ? "bg-transparent"
-                    : "bg-green-300 text-black";
-                })()}`}
-              >
-                {(() => {
-                  const winPer = statsData.Bgroup;
-                  const lossPer = statsData.Bgroup_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
+              {/* Tab Content */}
+              <div className="">
+                {/* Number 1 St Logic  */}
+                {activeTab === 1 && (
+                  <div className="flex justify-around  flex-col w-[35rem] max-md:w-[22rem]  max-sm:w-[21rem]">
+                    <div className="flex justify-around bg-purple-600 text-white rounded-md py-1 text-md font-bold sm:text-md ">
+                      <div
+                        className="   justify-center flex relative  "
+                        style={{ width: "33%" }}
+                      >
+                        <span>Numbers</span>{" "}
+                        <div
+                          className="text-black cursor-pointer bg-white w-6 p-2 h-6 flex justify-center items-center rounded-full "
+                          onMouseEnter={() => setI6_btn(true)}
+                          onMouseLeave={() => setI6_btn(false)}
+                        >
+                          i
+                        </div>
+                        {i6_btn && (
+                          <div
+                            className="bg-purple-500 p-2 flex justify-between mb-4 text-start items-start text-white w-60 h-30 max-sm:w-45 max-sm:h-35 absolute max-sm:text-xs max-sm:left-[10%] max-lg:-right-[15%] -right-[35%] bottom-6"
+                            id="statsInfo"
+                          >
+                            <div
+                              className="text-start"
+                              style={{ fontSize: "11px", paddingLeft: "5px" }}
+                            >
+                              <p>
+                                <span className="font-bold h-5 w-5 p-1 text-center bg-customRed ps-2 rounded-md">
+                                  {" "}
+                                  0{" "}
+                                </span>
+                                &nbsp; &nbsp; &nbsp;
+                                2,4,6,13,15,17,19,21,25,27,32,34
+                              </p>
 
-                  return winPercentage >= 70
-                    ? `Hot`
-                    : winPercentage >= 50
-                    ? `Stable`
-                    : `Cold`;
-                })()}
-              </td>
-            </tr>
-            <tr>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                C-Group
-              </td>
-              <td
-                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
-                  const winPer = statsData.Cgroup;
-                  const lossPer = statsData.Cgroup_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
+                              <p className="border-y my-1 py-1">
+                                <span className="font-bold h-5 w-5 p-1 text-center bg-customRed ps-2 rounded-md">
+                                  {" "}
+                                  1{" "}
+                                </span>{" "}
+                                &nbsp; &nbsp; 1,5,8,10,11,16,20,23,24,30,33,36
+                              </p>
 
-                  return winPercentage >= 70
-                    ? "bg-red-500 text-white"
-                    : winPercentage >= 50
-                    ? "bg-transparent"
-                    : "bg-green-300 text-black";
-                })()}`}
-              >
-                {(() => {
-                  const winPer = statsData.Cgroup;
-                  const lossPer = statsData.Cgroup_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
+                              <p>
+                                <span className="font-bold h-5 w-5 p-1 text-center bg-customRed ps-2 rounded-md">
+                                  {" "}
+                                  3{" "}
+                                </span>{" "}
+                                &nbsp; &nbsp;3,7,9,12,14,18,22,26,28,29,31,35
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      <div
+                        style={{ width: "33%" }}
+                        className="text-center flex items-center relative"
+                      >
+                        <span>Performance</span>
+                        <div
+                          className="text-black cursor-pointer bg-white w-6 p-2 h-6 flex justify-center items-center rounded-full "
+                          onMouseEnter={() => setI1_btn(true)}
+                          onMouseLeave={() => setI1_btn(false)}
+                        >
+                          i
+                        </div>
+                        {i1_btn && (
+                          <div
+                            className="bg-purple-500 p-2 flex justify-between mb-4 text-start items-start text-white w-60 h-30 max-sm:w-45 max-sm:h-35 absolute max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%] bottom-6"
+                            id="statsInfo"
+                          >
+                            <div
+                              className="text-start"
+                              style={{ fontSize: "11px", paddingLeft: "5px" }}
+                            >
+                              <p>
+                                <span className="font-bold me-2">Hot : </span>
+                                &nbsp; &nbsp; &nbsp; Good table For betting ✅
+                              </p>
 
-                  return winPercentage >= 70
-                    ? `Hot`
-                    : winPercentage >= 50
-                    ? `Stable`
-                    : `Cold`;
-                })()}
-              </td>
-            </tr>
-          </table>
+                              <p className="border-y my-1 py-1">
+                                <span className="font-bold me-2">
+                                  Stable :{" "}
+                                </span>
+                                Decent choice, be cautious ⚖️
+                              </p>
 
+                              <p>
+                                <span className="font-bold me-2">Cold : </span>{" "}
+                                &nbsp; &nbsp;Avoid, too unpredictable ❌
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      <div style={{ width: "33%" }} className="text-center">
+                        Long Term
+                      </div>
+                    </div>
+                    <div className="flex flex-col mt-2 gap-1">
+                      <div className="flex border-2 border-purple-500  bg-purplegrad p-1 rounded-xl">
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <h2 className="text-white text-center p-2 bg-purple-500 rounded-xl font-semibold sm:text-xs px-4  ">
+                            0
+                          </h2>
+                        </div>
+                        {/* Overlayed text */}
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <p
+                            style={{
+                              fontSize: "1.2rem",
+                              fontWeight: "bold",
+                              color: "#FFFFFF",
+                              width: "33%",
+                            }}
+                            className="text-center pt-1"
+                          >
+                            {(() => {
+                              const winPer = statsData.Agroup;
+                              const lossPer = statsData.Agroup_loss;
+                              const total = winPer + lossPer;
+                              const winPercentage = (winPer / total) * 100;
 
-          <table className="border w-[35rem] max-md:w-[22rem] max-sm:w-[18rem]">
-            <tr className="max-sm:h-20 max-md:h-20">
-              <th className="w-[30%] max-sm:w-[30] border py-2 bg-yellow-500 text-black">
-                Dozen
-              </th>
-              <th className="w-[40%] max-sm:w-[50] border bg-yellow-500 text-black break-words relative">
-                Hot/Stable/Cold
-              </th>
-            </tr>
-            <tr>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                1st Dozen
-              </td>
-              <td
-                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
-                  const winPer = statsData.dozen1;
-                  const lossPer = statsData.dozen1_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
+                              return winPercentage >= 70
+                                ? `Hot`
+                                : winPercentage >= 50
+                                ? `Stable`
+                                : `Cold`;
+                            })()}
+                          </p>
+                        </div>
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center flex-col items-center"
+                        >
+                          <GaugeChart
+                            id="gauge-chart-1"
+                            nrOfLevels={10}
+                            percent={rowDataScores.A / 666}
+                            colors={[
+                              "#A78BFA",
+                              "#7C3AED",
+                              "#8B5CF6",
+                              "#5B21B6",
+                            ]}
+                            arcWidth={0.3}
+                            hideText={true}
+                            style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
+                          />
+                          <p className="text-white font-bold text-center">
+                            {NumberHSC.A}
+                          </p>
+                        </div>
+                      </div>
 
-                  return winPercentage >= 70
-                    ? "bg-red-500 text-white"
-                    : winPercentage >= 50
-                    ? "bg-transparent"
-                    : "bg-green-300 text-black";
-                })()}`}
-              >
-                {(() => {
-                  const winPer = statsData.dozen1;
-                  const lossPer = statsData.dozen1_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
+                      <div className="flex border-2 border-purple-500 bg-purplegrad p-1 rounded-xl">
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <h2 className="text-white text-center p-2 bg-purple-500 rounded-xl font-semibold sm:text-xs px-4  ">
+                            1
+                          </h2>
+                        </div>
+                        {/* Overlayed text */}
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <p
+                            style={{
+                              fontSize: "1.2rem",
+                              fontWeight: "bold",
+                              color: "#FFFFFF",
+                              width: "33%",
+                            }}
+                            className="text-center pt-1"
+                          >
+                            {(() => {
+                              const winPer = statsData.Bgroup;
+                              const lossPer = statsData.Bgroup_loss;
+                              const total = winPer + lossPer;
+                              const winPercentage = (winPer / total) * 100;
 
-                  return winPercentage >= 70
-                    ? `Hot`
-                    : winPercentage >= 50
-                    ? `Stable`
-                    : `Cold`;
-                })()}
-              </td>
-            </tr>
+                              return winPercentage >= 70
+                                ? `Hot`
+                                : winPercentage >= 50
+                                ? `Stable`
+                                : `Cold`;
+                            })()}
+                          </p>
+                        </div>
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center flex-col items-center"
+                        >
+                          <GaugeChart
+                            id="gauge-chart-1"
+                            nrOfLevels={10}
+                            percent={rowDataScores.B / 666}
+                            colors={[
+                              "#A78BFA",
+                              "#7C3AED",
+                              "#8B5CF6",
+                              "#5B21B6",
+                            ]}
+                            arcWidth={0.3}
+                            hideText={true}
+                            style={{ width: "100px", height: "50px" }}
+                          />
+                          <p className="text-white font-bold text-center">
+                            {NumberHSC.B}
+                          </p>
+                        </div>
+                      </div>
 
-            <tr>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                2nd Dozen
-              </td>
-              <td
-                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
-                  const winPer = statsData.dozen2;
-                  const lossPer = statsData.dozen2_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
+                      <div className="flex border-2 border-purple-500 bg-purplegrad p-1 rounded-xl">
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <h2 className="text-white text-center p-2 bg-purple-500 rounded-xl font-semibold sm:text-xs px-4  ">
+                            3
+                          </h2>
+                        </div>
+                        {/* Overlayed text */}
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <p
+                            style={{
+                              fontSize: "1.2rem",
+                              fontWeight: "bold",
+                              color: "#FFFFFF",
+                              width: "33%",
+                            }}
+                            className="text-center pt-1"
+                          >
+                            {(() => {
+                              const winPer = statsData.Cgroup;
+                              const lossPer = statsData.Cgroup_loss;
+                              const total = winPer + lossPer;
+                              const winPercentage = (winPer / total) * 100;
 
-                  return winPercentage >= 70
-                    ? "bg-red-500 text-white"
-                    : winPercentage >= 50
-                    ? "bg-transparent"
-                    : "bg-green-300 text-black";
-                })()}`}
-              >
-                {(() => {
-                  const winPer = statsData.dozen2;
-                  const lossPer = statsData.dozen2_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
+                              return winPercentage >= 70
+                                ? `Hot`
+                                : winPercentage >= 50
+                                ? `Stable`
+                                : `Cold`;
+                            })()}
+                          </p>
+                        </div>
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center flex-col items-center"
+                        >
+                          <GaugeChart
+                            id="gauge-chart-1"
+                            nrOfLevels={10}
+                            percent={rowDataScores.C / 666}
+                            colors={[
+                              "#A78BFA",
+                              "#7C3AED",
+                              "#8B5CF6",
+                              "#5B21B6",
+                            ]}
+                            arcWidth={0.3}
+                            hideText={true}
+                            style={{ width: "100px", height: "50px" }}
+                          />
+                          <p className="text-white font-bold text-center">
+                            {NumberHSC.C}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
-                  return winPercentage >= 70
-                    ? `Hot`
-                    : winPercentage >= 50
-                    ? `Stable`
-                    : `Cold`;
-                })()}
-              </td>
-            </tr>
-            <tr>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                3rd Dozen
-              </td>
-              <td
-                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
-                  const winPer = statsData.dozen3;
-                  const lossPer = statsData.dozen3_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
+                {/* Number 2 Nd Logic  */}
+                {activeTab === 2 && (
+                  <div className="flex justify-around  flex-col w-[35rem] max-md:w-[22rem]  max-sm:w-[21rem]">
+                    <div className="flex justify-around bg-purple-600 text-white rounded-md py-1 text-md font-bold sm:text-md ">
+                      <div
+                        className="   justify-center flex relative "
+                        style={{ width: "33%" }}
+                      >
+                        <span>Numbers</span>{" "}
+                        <div
+                          className="text-black cursor-pointer bg-white w-6 p-2 h-6 flex justify-center items-center rounded-full "
+                          onMouseEnter={() => setI6_btn(true)}
+                          onMouseLeave={() => setI6_btn(false)}
+                        >
+                          i
+                        </div>
+                        {i6_btn && (
+                          <div
+                            className="bg-purple-500 p-2 flex justify-between mb-4 text-start items-start text-white w-60 h-30 max-sm:w-45 max-sm:h-35 absolute max-sm:text-xs max-sm:left-[10%] max-lg:-right-[15%] -right-[35%] bottom-6"
+                            id="statsInfo"
+                          >
+                            <div
+                              className="text-start"
+                              style={{ fontSize: "11px", paddingLeft: "5px" }}
+                            >
+                              <p>
+                                <span className="font-bold h-5 w-5 p-1 text-center bg-customRed ps-2 rounded-md">
+                                  {" "}
+                                  0{" "}
+                                </span>
+                                &nbsp; &nbsp; &nbsp;
+                                2,4,6,13,15,17,19,21,25,27,32,34
+                              </p>
 
-                  return winPercentage >= 70
-                    ? "bg-red-500 text-white"
-                    : winPercentage >= 50
-                    ? "bg-transparent"
-                    : "bg-green-300 text-black";
-                })()}`}
-              >
-                {(() => {
-                  const winPer = statsData.dozen3;
-                  const lossPer = statsData.dozen3_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
+                              <p className="border-y my-1 py-1">
+                                <span className="font-bold h-5 w-5 p-1 text-center bg-customRed ps-2 rounded-md">
+                                  {" "}
+                                  1{" "}
+                                </span>{" "}
+                                &nbsp; &nbsp; 1,5,8,10,11,16,20,23,24,30,33,36
+                              </p>
 
-                  return winPercentage >= 70
-                    ? `Hot`
-                    : winPercentage >= 50
-                    ? `Stable`
-                    : `Cold`;
-                })()}
-              </td>
-            </tr>
-          </table>
+                              <p>
+                                <span className="font-bold h-5 w-5 p-1 text-center bg-customRed ps-2 rounded-md">
+                                  {" "}
+                                  3{" "}
+                                </span>{" "}
+                                &nbsp; &nbsp;3,7,9,12,14,18,22,26,28,29,31,35
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      <div
+                        style={{ width: "33%" }}
+                        className="text-center flex items-center relative"
+                      >
+                        <span>Performance</span>
+                        <div
+                          className="text-black cursor-pointer bg-white w-6 p-2 h-6 flex justify-center items-center rounded-full "
+                          onMouseEnter={() => setI1_btn(true)}
+                          onMouseLeave={() => setI1_btn(false)}
+                        >
+                          i
+                        </div>
+                        {i1_btn && (
+                          <div
+                            className="bg-purple-500 p-2 flex justify-between mb-4 text-start items-start text-white w-60 h-30 max-sm:w-45 max-sm:h-35 absolute max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%] bottom-6"
+                            id="statsInfo"
+                          >
+                            <div
+                              className="text-start"
+                              style={{ fontSize: "11px", paddingLeft: "5px" }}
+                            >
+                              <p>
+                                <span className="font-bold me-2">Hot : </span>
+                                &nbsp; &nbsp; &nbsp; Good table For betting ✅
+                              </p>
 
+                              <p className="border-y my-1 py-1">
+                                <span className="font-bold me-2">
+                                  Stable :{" "}
+                                </span>
+                                Decent choice, be cautious ⚖️
+                              </p>
 
-          <table className="border w-[35rem] max-md:w-[22rem] max-sm:w-[18rem]">
-            <tr className="max-sm:h-20 max-md:h-20">
-              <th className="w-[30%] max-sm:w-[30] border py-2 bg-yellow-500 text-black">
-                Columns
-              </th>
-              <th className="w-[40%] max-sm:w-[50] border bg-yellow-500 text-black break-words relative">
-                Hot/Stable/Cold
-              </th>
-            </tr>
-            <tr>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                Column 1
-              </td>
-              <td
-                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
-                  const winPer = statsData.col1;
-                  const lossPer = statsData.col1_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
+                              <p>
+                                <span className="font-bold me-2">Cold : </span>{" "}
+                                &nbsp; &nbsp;Avoid, too unpredictable ❌
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      <div style={{ width: "33%" }} className="text-center">
+                        Long Term
+                      </div>
+                    </div>
+                    <div className="flex flex-col mt-2 gap-1">
+                      <div className="flex border-2 border-purple-500  p-1 rounded-xl">
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <h2 className="text-white text-center p-2 bg-purple-500 rounded-xl font-semibold sm:text-xs px-4  ">
+                            0
+                          </h2>
+                        </div>
+                        {/* Overlayed text */}
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <p
+                            style={{
+                              fontSize: "1.2rem",
+                              fontWeight: "bold",
+                              color: "#FFFFFF",
+                              width: "33%",
+                            }}
+                            className="text-center pt-1"
+                          >
+                            {(() => {
+                              const winPer = statsData.Agroup;
+                              const lossPer = statsData.Agroup_loss;
+                              const total = winPer + lossPer;
+                              const winPercentage = (winPer / total) * 100;
 
-                  return winPercentage >= 70
-                    ? "bg-red-500 text-white"
-                    : winPercentage >= 50
-                    ? "bg-transparent"
-                    : "bg-green-300 text-black";
-                })()}`}
-              >
-                {(() => {
-                  const winPer = statsData.col1;
-                  const lossPer = statsData.col1_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
+                              return winPercentage >= 70
+                                ? `Hot`
+                                : winPercentage >= 50
+                                ? `Stable`
+                                : `Cold`;
+                            })()}
+                          </p>
+                        </div>
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center flex-col items-center"
+                        >
+                          <GaugeChart
+                            id="gauge-chart-1"
+                            nrOfLevels={10}
+                            percent={rowDataScores.A / 666}
+                            colors={[
+                              "#A78BFA",
+                              "#7C3AED",
+                              "#8B5CF6",
+                              "#5B21B6",
+                            ]}
+                            arcWidth={0.3}
+                            hideText={true}
+                            style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
+                          />
+                          <p className="text-white font-bold text-center">
+                            {NumberHSC.A}
+                          </p>
+                        </div>
+                      </div>
 
-                  return winPercentage >= 70
-                    ? `Hot`
-                    : winPercentage >= 50
-                    ? `Stable`
-                    : `Cold`;
-                })()}
-              </td>
-            </tr>
+                      <div className="flex border-2 border-purple-500 p-1 rounded-xl">
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <h2 className="text-white text-center p-2 bg-purple-500 rounded-xl font-semibold sm:text-xs px-4  ">
+                            1
+                          </h2>
+                        </div>
+                        {/* Overlayed text */}
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <p
+                            style={{
+                              fontSize: "1.2rem",
+                              fontWeight: "bold",
+                              color: "#FFFFFF",
+                              width: "33%",
+                            }}
+                            className="text-center pt-1"
+                          >
+                            {(() => {
+                              const winPer = statsData.Bgroup;
+                              const lossPer = statsData.Bgroup_loss;
+                              const total = winPer + lossPer;
+                              const winPercentage = (winPer / total) * 100;
 
-            <tr>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                column2
-              </td>
-              <td
-                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
-                  const winPer = statsData.col2;
-                  const lossPer = statsData.col2_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
+                              return winPercentage >= 70
+                                ? `Hot`
+                                : winPercentage >= 50
+                                ? `Stable`
+                                : `Cold`;
+                            })()}
+                          </p>
+                        </div>
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center flex-col items-center"
+                        >
+                          <GaugeChart
+                            id="gauge-chart-1"
+                            nrOfLevels={10}
+                            percent={rowDataScores.B / 666}
+                            colors={[
+                              "#A78BFA",
+                              "#7C3AED",
+                              "#8B5CF6",
+                              "#5B21B6",
+                            ]}
+                            arcWidth={0.3}
+                            hideText={true}
+                            style={{ width: "100px", height: "50px" }}
+                          />
+                          <p className="text-white font-bold text-center">
+                            {NumberHSC.B}
+                          </p>
+                        </div>
+                      </div>
 
-                  return winPercentage >= 70
-                    ? "bg-red-500 text-white"
-                    : winPercentage >= 50
-                    ? "bg-transparent"
-                    : "bg-green-300 text-black";
-                })()}`}
-              >
-                {(() => {
-                  const winPer = statsData.col2;
-                  const lossPer = statsData.col2_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
+                      <div className="flex border-2 border-purple-500  p-1 rounded-xl">
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <h2 className="text-white text-center p-2 bg-purple-500 rounded-xl font-semibold sm:text-xs px-4  ">
+                            3
+                          </h2>
+                        </div>
+                        {/* Overlayed text */}
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <p
+                            style={{
+                              fontSize: "1.2rem",
+                              fontWeight: "bold",
+                              color: "#FFFFFF",
+                              width: "33%",
+                            }}
+                            className="text-center pt-1"
+                          >
+                            {(() => {
+                              const winPer = statsData.Cgroup;
+                              const lossPer = statsData.Cgroup_loss;
+                              const total = winPer + lossPer;
+                              const winPercentage = (winPer / total) * 100;
 
-                  return winPercentage >= 70
-                    ? `Hot`
-                    : winPercentage >= 50
-                    ? `Stable`
-                    : `Cold`;
-                })()}
-              </td>
-            </tr>
-            <tr>
-              <td className="font-semibold text-center p-1 border max-sm:text-sm">
-                column3
-              </td>
-              <td
-                className={`font-semibold text-center p-1 border max-sm:text-sm ${(() => {
-                  const winPer = statsData.col3;
-                  const lossPer = statsData.col3_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
+                              return winPercentage >= 70
+                                ? `Hot`
+                                : winPercentage >= 50
+                                ? `Stable`
+                                : `Cold`;
+                            })()}
+                          </p>
+                        </div>
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center flex-col items-center"
+                        >
+                          <GaugeChart
+                            id="gauge-chart-1"
+                            nrOfLevels={10}
+                            percent={rowDataScores.C / 666}
+                            colors={[
+                              "#A78BFA",
+                              "#7C3AED",
+                              "#8B5CF6",
+                              "#5B21B6",
+                            ]}
+                            arcWidth={0.3}
+                            hideText={true}
+                            style={{ width: "100px", height: "50px" }}
+                          />
+                          <p className="text-white font-bold text-center">
+                            {NumberHSC.C}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {/* Number 3 Rd Logic  */}
+                {activeTab === 3 && (
+                  <div className="flex justify-around  flex-col w-[35rem] max-md:w-[22rem]  max-sm:w-[21rem]">
+                    <div className="flex justify-around bg-purple-600 text-white rounded-md py-1 text-md font-bold sm:text-md ">
+                      <div
+                        className="   justify-center flex relative "
+                        style={{ width: "33%" }}
+                      >
+                        <span>Numbers</span>{" "}
+                        <div
+                          className="text-black cursor-pointer bg-white w-6 p-2 h-6 flex justify-center items-center rounded-full "
+                          onMouseEnter={() => setI6_btn(true)}
+                          onMouseLeave={() => setI6_btn(false)}
+                        >
+                          i
+                        </div>
+                        {i6_btn && (
+                          <div
+                            className="bg-purple-500 p-2 flex justify-between mb-4 text-start items-start text-white w-60 h-30 max-sm:w-45 max-sm:h-35 absolute max-sm:text-xs max-sm:left-[10%] max-lg:-right-[15%] -right-[35%] bottom-6"
+                            id="statsInfo"
+                          >
+                            <div
+                              className="text-start"
+                              style={{ fontSize: "11px", paddingLeft: "5px" }}
+                            >
+                              <p>
+                                <span className="font-bold h-5 w-5 p-1 text-center bg-customRed ps-2 rounded-md">
+                                  {" "}
+                                  0{" "}
+                                </span>
+                                &nbsp; &nbsp; &nbsp;
+                                2,4,6,13,15,17,19,21,25,27,32,34
+                              </p>
 
-                  return winPercentage >= 70
-                    ? "bg-red-500 text-white"
-                    : winPercentage >= 50
-                    ? "bg-transparent"
-                    : "bg-green-300 text-black";
-                })()}`}
-              >
-                {(() => {
-                  const winPer = statsData.col3;
-                  const lossPer = statsData.col3_loss;
-                  const total = winPer + lossPer;
-                  const winPercentage = (winPer / total) * 100;
+                              <p className="border-y my-1 py-1">
+                                <span className="font-bold h-5 w-5 p-1 text-center bg-customRed ps-2 rounded-md">
+                                  {" "}
+                                  1{" "}
+                                </span>{" "}
+                                &nbsp; &nbsp; 1,5,8,10,11,16,20,23,24,30,33,36
+                              </p>
 
-                  return winPercentage >= 70
-                    ? `Hot`
-                    : winPercentage >= 50
-                    ? `Stable`
-                    : `Cold`;
-                })()}
-              </td>
-            </tr>
-          </table> */}
+                              <p>
+                                <span className="font-bold h-5 w-5 p-1 text-center bg-customRed ps-2 rounded-md">
+                                  {" "}
+                                  3{" "}
+                                </span>{" "}
+                                &nbsp; &nbsp;3,7,9,12,14,18,22,26,28,29,31,35
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      <div
+                        style={{ width: "33%" }}
+                        className="text-center flex items-center relative"
+                      >
+                        <span>Performance</span>
+                        <div
+                          className="text-black cursor-pointer bg-white w-6 p-2 h-6 flex justify-center items-center rounded-full "
+                          onMouseEnter={() => setI1_btn(true)}
+                          onMouseLeave={() => setI1_btn(false)}
+                        >
+                          i
+                        </div>
+                        {i1_btn && (
+                          <div
+                            className="bg-purple-500 p-2 flex justify-between mb-4 text-start items-start text-white w-60 h-30 max-sm:w-45 max-sm:h-35 absolute max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%] bottom-6"
+                            id="statsInfo"
+                          >
+                            <div
+                              className="text-start"
+                              style={{ fontSize: "11px", paddingLeft: "5px" }}
+                            >
+                              <p>
+                                <span className="font-bold me-2">Hot : </span>
+                                &nbsp; &nbsp; &nbsp; Good table For betting ✅
+                              </p>
 
-          {/* <p>Win - {analyzeData.winPerData}</p>
-        <p>Loss - {analyzeData.lossPerData}</p>
-        <p>dozen win - {analyzeData.dozenWinPer}</p>
-        <p>dozen Loss - {analyzeData.dozenLossPer}</p>
-        <p>col win - {analyzeData.colWinPer}</p>
-        <p>col Loss - {analyzeData.colLossPer}</p> */}
+                              <p className="border-y my-1 py-1">
+                                <span className="font-bold me-2">
+                                  Stable :{" "}
+                                </span>
+                                Decent choice, be cautious ⚖️
+                              </p>
 
-          {/* 2nd table Agroup Bgroup Cgroup */}
+                              <p>
+                                <span className="font-bold me-2">Cold : </span>{" "}
+                                &nbsp; &nbsp;Avoid, too unpredictable ❌
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      <div style={{ width: "33%" }} className="text-center">
+                        Long Term
+                      </div>
+                    </div>
+                    <div className="flex flex-col mt-2 gap-1">
+                      <div className="flex border-2 border-purple-500 bg-purplegrad p-1 rounded-xl">
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <h2 className="text-white text-center p-2 bg-purple-500 rounded-xl font-semibold sm:text-xs px-4  ">
+                            0
+                          </h2>
+                        </div>
+                        {/* Overlayed text */}
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <p
+                            style={{
+                              fontSize: "1.2rem",
+                              fontWeight: "bold",
+                              color: "#FFFFFF",
+                              width: "33%",
+                            }}
+                            className="text-center pt-1"
+                          >
+                            {(() => {
+                              const winPer = statsData.Agroup;
+                              const lossPer = statsData.Agroup_loss;
+                              const total = winPer + lossPer;
+                              const winPercentage = (winPer / total) * 100;
 
-          
+                              return winPercentage >= 70
+                                ? `Hot`
+                                : winPercentage >= 50
+                                ? `Stable`
+                                : `Cold`;
+                            })()}
+                          </p>
+                        </div>
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center flex-col items-center"
+                        >
+                          <GaugeChart
+                            id="gauge-chart-1"
+                            nrOfLevels={10}
+                            percent={rowDataScores.A / 666}
+                            colors={[
+                              "#A78BFA",
+                              "#7C3AED",
+                              "#8B5CF6",
+                              "#5B21B6",
+                            ]}
+                            arcWidth={0.3}
+                            hideText={true}
+                            style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
+                          />
+                          <p className="text-white font-bold text-center">
+                            {NumberHSC.A}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex border-2 border-purple-500 bg-purplegrad p-1 rounded-xl">
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <h2 className="text-white text-center p-2 bg-purple-500 rounded-xl font-semibold sm:text-xs px-4  ">
+                            1
+                          </h2>
+                        </div>
+                        {/* Overlayed text */}
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <p
+                            style={{
+                              fontSize: "1.2rem",
+                              fontWeight: "bold",
+                              color: "#FFFFFF",
+                              width: "33%",
+                            }}
+                            className="text-center pt-1"
+                          >
+                            {(() => {
+                              const winPer = statsData.Bgroup;
+                              const lossPer = statsData.Bgroup_loss;
+                              const total = winPer + lossPer;
+                              const winPercentage = (winPer / total) * 100;
+
+                              return winPercentage >= 70
+                                ? `Hot`
+                                : winPercentage >= 50
+                                ? `Stable`
+                                : `Cold`;
+                            })()}
+                          </p>
+                        </div>
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center flex-col items-center"
+                        >
+                          <GaugeChart
+                            id="gauge-chart-1"
+                            nrOfLevels={10}
+                            percent={rowDataScores.B / 666}
+                            colors={[
+                              "#A78BFA",
+                              "#7C3AED",
+                              "#8B5CF6",
+                              "#5B21B6",
+                            ]}
+                            arcWidth={0.3}
+                            hideText={true}
+                            style={{ width: "100px", height: "50px" }}
+                          />
+                          <p className="text-white font-bold text-center">
+                            {NumberHSC.B}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex border-2 border-purple-500 bg-purplegrad p-1 rounded-xl">
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <h2 className="text-white text-center p-2 bg-purple-500 rounded-xl font-semibold sm:text-xs px-4  ">
+                            3
+                          </h2>
+                        </div>
+                        {/* Overlayed text */}
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <p
+                            style={{
+                              fontSize: "1.2rem",
+                              fontWeight: "bold",
+                              color: "#FFFFFF",
+                              width: "33%",
+                            }}
+                            className="text-center pt-1"
+                          >
+                            {(() => {
+                              const winPer = statsData.Cgroup;
+                              const lossPer = statsData.Cgroup_loss;
+                              const total = winPer + lossPer;
+                              const winPercentage = (winPer / total) * 100;
+
+                              return winPercentage >= 70
+                                ? `Hot`
+                                : winPercentage >= 50
+                                ? `Stable`
+                                : `Cold`;
+                            })()}
+                          </p>
+                        </div>
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center flex-col items-center"
+                        >
+                          <GaugeChart
+                            id="gauge-chart-1"
+                            nrOfLevels={10}
+                            percent={rowDataScores.C / 666}
+                            colors={[
+                              "#A78BFA",
+                              "#7C3AED",
+                              "#8B5CF6",
+                              "#5B21B6",
+                            ]}
+                            arcWidth={0.3}
+                            hideText={true}
+                            style={{ width: "100px", height: "50px" }}
+                          />
+                          <p className="text-white font-bold text-center">
+                            {NumberHSC.C}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Dozen */}
+
+            <div className="mt-5">
+              <header className="flex gap-2 tabs tabs-boxed w-full bg-purple-800 mb-1 py-2">
+                
+                <button
+                  className={`px-2 font-bold w-[50%] py-1 ${
+                    dozenActiveTab === 1
+                      ? "bg-white text-black"
+                      : "bg-superPurple  text-white"
+                  } rounded`}
+                  onClick={() => setDozenActiveTab(1)}
+                >
+                  Dozen 1
+                </button>
+                <button
+                  className={`px-2 font-bold w-[50%] py-1 ${
+                    dozenActiveTab === 2
+                      ? "bg-white text-black"
+                      : "bg-superPurple  text-white"
+                  } rounded`}
+                  onClick={() => setDozenActiveTab(2)}
+                >
+                  Dozen 2
+                </button>
+              </header>
+
+              {/* Tab Content */}
+              <div className="">
+                {/* Dozen 1 St Logic  */}
+                {dozenActiveTab === 1 && (
+                  <div className="flex justify-around  flex-col w-[35rem] max-md:w-[22rem]  max-sm:w-[21rem]">
+                    <div className="flex justify-around bg-purple-600 text-white rounded-md py-1 text-md font-bold sm:text-md ">
+                      <div
+                        className="   text-center  "
+                        style={{ width: "33%" }}
+                      >
+                        Dozen
+                      </div>
+                      <div
+                        style={{ width: "33%" }}
+                        className="text-center flex items-center relative"
+                      >
+                        <span>Performance</span>
+                        <div
+                          className="text-black cursor-pointer bg-white w-6 p-2 h-6 flex justify-center items-center rounded-full "
+                          onMouseEnter={() => setI2_btn(true)}
+                          onMouseLeave={() => setI2_btn(false)}
+                        >
+                          i
+                        </div>
+                        {i2_btn && (
+                          <div
+                            className="bg-purple-500 p-2 flex justify-between mb-4 text-start items-start text-white w-60 h-30 max-sm:w-45 max-sm:h-35 absolute max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%] bottom-6"
+                            id="statsInfo"
+                          >
+                            <div
+                              className="text-start"
+                              style={{ fontSize: "11px", paddingLeft: "5px" }}
+                            >
+                              <p>
+                                <span className="font-bold me-2">Hot : </span>
+                                &nbsp; &nbsp; &nbsp; Good table For betting ✅
+                              </p>
+
+                              <p className="border-y my-1 py-1">
+                                <span className="font-bold me-2">
+                                  Stable :{" "}
+                                </span>
+                                Decent choice, be cautious ⚖️
+                              </p>
+
+                              <p>
+                                <span className="font-bold me-2">Cold : </span>{" "}
+                                &nbsp; &nbsp;Avoid, too unpredictable ❌
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      <div style={{ width: "33%" }} className="text-center">
+                        Long Term
+                      </div>
+                    </div>
+                    <div className="flex flex-col mt-2 gap-1">
+                      <div className="flex border-2 border-purple-500  bg-purplegrad p-1 rounded-xl">
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <h2 className="text-white text-center bg-purple-500 rounded-xl py-1 font-semibold sm:text-xs px-4  ">
+                            Dozen 1
+                          </h2>
+                        </div>
+                        {/* Overlayed text */}
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <p
+                            style={{
+                              fontSize: "1.2rem",
+                              fontWeight: "bold",
+                              color: "#FFFFFF",
+                              width: "33%",
+                            }}
+                            className="text-center pt-1"
+                          >
+                            {(() => {
+                              const winPer = statsData.dozen1;
+                              const lossPer = statsData.dozen1_loss;
+                              const total = winPer + lossPer;
+                              const winPercentage = (winPer / total) * 100;
+
+                              return winPercentage >= 70
+                                ? `Hot`
+                                : winPercentage >= 50
+                                ? `Stable`
+                                : `Cold`;
+                            })()}
+                          </p>
+                        </div>
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center flex-col items-center"
+                        >
+                          <GaugeChart
+                            id="gauge-chart-1"
+                            nrOfLevels={10}
+                            percent={dozenScores[1] / 666}
+                            colors={[
+                              "#A78BFA",
+                              "#7C3AED",
+                              "#8B5CF6",
+                              "#5B21B6",
+                            ]}
+                            arcWidth={0.3}
+                            hideText={true}
+                            style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
+                          />
+                          <p className="text-white font-bold text-center">
+                            {dozenHSC[1]}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex border-2 border-purple-500 bg-purplegrad p-1 rounded-xl">
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <h2 className="text-white text-center bg-purple-500 rounded-xl font-semibold sm:text-xs py-1 px-4  ">
+                            Dozen 2
+                          </h2>
+                        </div>
+                        {/* Overlayed text */}
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <p
+                            style={{
+                              fontSize: "1.2rem",
+                              fontWeight: "bold",
+                              color: "#FFFFFF",
+                              width: "33%",
+                            }}
+                            className="text-center pt-1"
+                          >
+                            {(() => {
+                              const winPer = statsData.dozen2;
+                              const lossPer = statsData.dozen2_loss;
+                              const total = winPer + lossPer;
+                              const winPercentage = (winPer / total) * 100;
+
+                              return winPercentage >= 70
+                                ? `Hot`
+                                : winPercentage >= 50
+                                ? `Stable`
+                                : `Cold`;
+                            })()}
+                          </p>
+                        </div>
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center flex-col items-center"
+                        >
+                          <GaugeChart
+                            id="gauge-chart-1"
+                            nrOfLevels={10}
+                            percent={dozenScores[2] / 666}
+                            colors={[
+                              "#A78BFA",
+                              "#7C3AED",
+                              "#8B5CF6",
+                              "#5B21B6",
+                            ]}
+                            arcWidth={0.3}
+                            hideText={true}
+                            style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
+                          />
+                          <p className="text-white font-bold text-center">
+                            {dozenHSC[2]}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex border-2 border-purple-500 bg-purplegrad p-1 rounded-xl">
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <h2 className="text-white text-center bg-purple-500 rounded-xl py-1 font-semibold sm:text-xs px-4  ">
+                            Dozen 3
+                          </h2>
+                        </div>
+                        {/* Overlayed text */}
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <p
+                            style={{
+                              fontSize: "1.2rem",
+                              fontWeight: "bold",
+                              color: "#FFFFFF",
+                              width: "33%",
+                            }}
+                            className="text-center pt-1"
+                          >
+                            {(() => {
+                              const winPer = statsData.dozen3;
+                              const lossPer = statsData.dozen3_loss;
+                              const total = winPer + lossPer;
+                              const winPercentage = (winPer / total) * 100;
+
+                              return winPercentage >= 70
+                                ? `Hot`
+                                : winPercentage >= 50
+                                ? `Stable`
+                                : `Cold`;
+                            })()}
+                          </p>
+                        </div>
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center flex-col items-center"
+                        >
+                          <GaugeChart
+                            id="gauge-chart-1"
+                            nrOfLevels={10}
+                            percent={dozenScores[3] / 666}
+                            colors={[
+                              "#A78BFA",
+                              "#7C3AED",
+                              "#8B5CF6",
+                              "#5B21B6",
+                            ]}
+                            arcWidth={0.3}
+                            hideText={true}
+                            style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
+                          />
+                          <p className="text-white font-bold text-center">
+                            {dozenHSC[3]}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Dozen 2 Nd Logic  */}
+                {dozenActiveTab === 2 && (
+                  <div className="flex justify-around  flex-col w-[35rem] max-md:w-[22rem] max-sm:w-[21rem]">
+                    <div className="flex justify-around bg-purple-600 text-white rounded-md py-1 text-md font-bold sm:text-md ">
+                      <div className="text-center" style={{ width: "33%" }}>
+                        Dozen
+                      </div>
+                      <div
+                        style={{ width: "33%" }}
+                        className="text-center flex items-center relative"
+                      >
+                        <span>Performance</span>
+                        <div
+                          className="text-black cursor-pointer bg-white w-6 p-2 h-6 flex justify-center items-center rounded-full "
+                          onMouseEnter={() => setI2_btn(true)}
+                          onMouseLeave={() => setI2_btn(false)}
+                        >
+                          i
+                        </div>
+                        {i2_btn && (
+                          <div
+                            className="bg-purple-500 p-2 flex justify-between mb-4 text-start items-start text-white w-60 h-30 max-sm:w-45 max-sm:h-35 absolute max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%] bottom-6"
+                            id="statsInfo"
+                          >
+                            <div
+                              className="text-start"
+                              style={{ fontSize: "11px", paddingLeft: "5px" }}
+                            >
+                              <p>
+                                <span className="font-bold me-2">Hot : </span>
+                                &nbsp; &nbsp; &nbsp; Good table For betting ✅
+                              </p>
+
+                              <p className="border-y my-1 py-1">
+                                <span className="font-bold me-2">
+                                  Stable :{" "}
+                                </span>
+                                Decent choice, be cautious ⚖️
+                              </p>
+
+                              <p>
+                                <span className="font-bold me-2">Cold : </span>{" "}
+                                &nbsp; &nbsp;Avoid, too unpredictable ❌
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      <div style={{ width: "33%" }} className="text-center">
+                        Long Term
+                      </div>
+                    </div>
+                    <div className="flex flex-col mt-2 gap-1">
+                      <div className="flex border-2 border-purple-500 p-1 rounded-xl">
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <h2 className="text-white text-center bg-purple-500 rounded-xl py-1 font-semibold sm:text-xs px-4  ">
+                            Dozen 1
+                          </h2>
+                        </div>
+                        {/* Overlayed text */}
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <p
+                            style={{
+                              fontSize: "1.2rem",
+                              fontWeight: "bold",
+                              color: "#FFFFFF",
+                              width: "33%",
+                            }}
+                            className="text-center pt-1"
+                          >
+                            {(() => {
+                              const winPer = statsDataTwo.dozen1;
+                              const lossPer = statsDataTwo.dozen1_loss;
+                              const total = winPer + lossPer;
+                              const winPercentage = (winPer / total) * 100;
+
+                              return winPercentage >= 70
+                                ? `Hot`
+                                : winPercentage >= 50
+                                ? `Stable`
+                                : `Cold`;
+                            })()}
+                          </p>
+                        </div>
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center flex-col items-center"
+                        >
+                          <GaugeChart
+                            id="gauge-chart-1"
+                            nrOfLevels={10}
+                            percent={dozenScores[1] / 666}
+                            colors={[
+                              "#A78BFA",
+                              "#7C3AED",
+                              "#8B5CF6",
+                              "#5B21B6",
+                            ]}
+                            arcWidth={0.3}
+                            hideText={true}
+                            style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
+                          />
+                          <p className="text-white font-bold text-center">
+                            {dozenHSC[1]}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex border-2 border-purple-500 p-1 rounded-xl">
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <h2 className="text-white text-center bg-purple-500 rounded-xl font-semibold sm:text-xs py-1 px-4  ">
+                            Dozen 2
+                          </h2>
+                        </div>
+                        {/* Overlayed text */}
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <p
+                            style={{
+                              fontSize: "1.2rem",
+                              fontWeight: "bold",
+                              color: "#FFFFFF",
+                              width: "33%",
+                            }}
+                            className="text-center pt-1"
+                          >
+                            {(() => {
+                              const winPer = statsDataTwo.dozen2;
+                              const lossPer = statsDataTwo.dozen2_loss;
+                              const total = winPer + lossPer;
+                              const winPercentage = (winPer / total) * 100;
+
+                              return winPercentage >= 70
+                                ? `Hot`
+                                : winPercentage >= 50
+                                ? `Stable`
+                                : `Cold`;
+                            })()}
+                          </p>
+                        </div>
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center flex-col items-center"
+                        >
+                          <GaugeChart
+                            id="gauge-chart-1"
+                            nrOfLevels={10}
+                            percent={dozenScores[2] / 666}
+                            colors={[
+                              "#A78BFA",
+                              "#7C3AED",
+                              "#8B5CF6",
+                              "#5B21B6",
+                            ]}
+                            arcWidth={0.3}
+                            hideText={true}
+                            style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
+                          />
+                          <p className="text-white font-bold text-center">
+                            {dozenHSC[2]}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex border-2 border-purple-500 p-1 rounded-xl">
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <h2 className="text-white text-center bg-purple-500 rounded-xl py-1 font-semibold sm:text-xs px-4  ">
+                            Dozen 3
+                          </h2>
+                        </div>
+                        {/* Overlayed text */}
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <p
+                            style={{
+                              fontSize: "1.2rem",
+                              fontWeight: "bold",
+                              color: "#FFFFFF",
+                              width: "33%",
+                            }}
+                            className="text-center pt-1"
+                          >
+                            {(() => {
+                              const winPer = statsDataTwo.dozen3;
+                              const lossPer = statsDataTwo.dozen3_loss;
+                              const total = winPer + lossPer;
+                              const winPercentage = (winPer / total) * 100;
+
+                              return winPercentage >= 70
+                                ? `Hot`
+                                : winPercentage >= 50
+                                ? `Stable`
+                                : `Cold`;
+                            })()}
+                          </p>
+                        </div>
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center flex-col items-center"
+                        >
+                          <GaugeChart
+                            id="gauge-chart-1"
+                            nrOfLevels={10}
+                            percent={dozenScores[3] / 666}
+                            colors={[
+                              "#A78BFA",
+                              "#7C3AED",
+                              "#8B5CF6",
+                              "#5B21B6",
+                            ]}
+                            arcWidth={0.3}
+                            hideText={true}
+                            style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
+                          />
+                          <p className="text-white font-bold text-center">
+                            {dozenHSC[3]}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Column */}
+
+            <div className="mt-5">
+              {/* <header className="flex gap-2 tabs tabs-boxed w-full bg-purple-800 mb-1 py-2">
+               
+                <button
+                  className={`mx-2 font-bold w-[50%] py-1 ${
+                    columnActiveTab === 1
+                      ? "bg-white text-black"
+                      : "bg-superPurple text-white"
+                  } rounded`}
+                  onClick={() => setColumnActiveTab(1)}
+                >
+                  Column 1
+                </button>
+                <button
+                  className={`mx-2 font-bold w-[50%] py-1 ${
+                    columnActiveTab === 2
+                      ? "bg-white text-black"
+                      : "bg-superPurple text-white"
+                  } rounded`}
+                  onClick={() => setColumnActiveTab(2)}
+                >
+                  Column 2
+                </button>
+              </header> */}
+
+              {/* Tab Content */}
+              <div className="">
+                {/* Column 1 St Logic  */}
+                {columnActiveTab === 1 && (
+                  <div className="flex justify-around  flex-col w-[35rem] mb-5 max-md:w-[22rem] max-sm:w-[21rem]">
+                    <div className="flex justify-around bg-purple-600 text-white rounded-md py-1 text-md font-bold sm:text-md ">
+                      <div
+                        className="   text-center  "
+                        style={{ width: "33%" }}
+                      >
+                        Column
+                      </div>
+                      <div
+                        style={{ width: "33%" }}
+                        className="text-center flex items-center relative"
+                      >
+                        <span>Performance</span>
+                        <div
+                          className="text-black cursor-pointer bg-white w-6 p-2 h-6 flex justify-center items-center rounded-full"
+                          onMouseEnter={() => setI3_btn(true)}
+                          onMouseLeave={() => setI3_btn(false)}
+                        >
+                          i
+                        </div>
+                        {i3_btn && (
+                          <div
+                            className="bg-purple-500 p-2 flex justify-between mb-4 text-start items-start text-white w-60 h-30 max-sm:w-45 max-sm:h-35 absolute max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%] bottom-6"
+                            id="statsInfo"
+                          >
+                            <div
+                              className="text-start"
+                              style={{ fontSize: "11px", paddingLeft: "5px" }}
+                            >
+                              <p>
+                                <span className="font-bold me-2">Hot : </span>
+                                &nbsp; &nbsp; &nbsp; Good table For betting ✅
+                              </p>
+
+                              <p className="border-y my-1 py-1">
+                                <span className="font-bold me-2">
+                                  Stable :{" "}
+                                </span>
+                                Decent choice, be cautious ⚖️
+                              </p>
+
+                              <p>
+                                <span className="font-bold me-2">Cold : </span>{" "}
+                                &nbsp; &nbsp;Avoid, too unpredictable ❌
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      <div style={{ width: "33%" }} className="text-center">
+                        Long Term
+                      </div>
+                    </div>
+                    <div className="flex mt-2 flex-col gap-1">
+                      <div className="flex border-2 border-purple-500 bg-purplegrad  p-1 rounded-xl">
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <h2 className="text-white text-center bg-purple-500 rounded-xl py-1 font-semibold sm:text-xs px-4  ">
+                            Column 1
+                          </h2>
+                        </div>
+                        {/* Overlayed text */}
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <p
+                            style={{
+                              fontSize: "1.2rem",
+                              fontWeight: "bold",
+                              color: "#FFFFFF",
+                              width: "33%",
+                            }}
+                            className="text-center pt-1"
+                          >
+                            {(() => {
+                              const winPer = statsData.col1;
+                              const lossPer = statsData.col1_loss;
+                              const total = winPer + lossPer;
+                              const winPercentage = (winPer / total) * 100;
+
+                              return winPercentage >= 70
+                                ? `Hot`
+                                : winPercentage >= 50
+                                ? `Stable`
+                                : `Cold`;
+                            })()}
+                          </p>
+                        </div>
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center flex-col items-center"
+                        >
+                          <GaugeChart
+                            id="gauge-chart-1"
+                            nrOfLevels={10}
+                            percent={columnScores[1] / 666}
+                            colors={[
+                              "#A78BFA",
+                              "#7C3AED",
+                              "#8B5CF6",
+                              "#5B21B6",
+                            ]}
+                            arcWidth={0.3}
+                            hideText={true}
+                            style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
+                          />
+                          <p className="text-white font-bold text-center">
+                            {columnHSC[1]}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex border-2 border-purple-500 bg-purplegrad p-1 rounded-xl">
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <h2 className="text-white text-center bg-purple-500 py-1 rounded-xl font-semibold sm:text-xs px-4  ">
+                            Column 2
+                          </h2>
+                        </div>
+                        {/* Overlayed text */}
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <p
+                            style={{
+                              fontSize: "1.2rem",
+                              fontWeight: "bold",
+                              color: "#FFFFFF",
+                              width: "33%",
+                            }}
+                            className="text-center pt-1"
+                          >
+                            {(() => {
+                              const winPer = statsData.col2;
+                              const lossPer = statsData.col2_loss;
+                              const total = winPer + lossPer;
+                              const winPercentage = (winPer / total) * 100;
+
+                              return winPercentage >= 70
+                                ? `Hot`
+                                : winPercentage >= 50
+                                ? `Stable`
+                                : `Cold`;
+                            })()}
+                          </p>
+                        </div>
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center flex-col items-center"
+                        >
+                          <GaugeChart
+                            id="gauge-chart-1"
+                            nrOfLevels={10}
+                            percent={columnScores[2] / 666}
+                            colors={[
+                              "#A78BFA",
+                              "#7C3AED",
+                              "#8B5CF6",
+                              "#5B21B6",
+                            ]}
+                            arcWidth={0.3}
+                            hideText={true}
+                            style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
+                          />
+                          <p className="text-white font-bold text-center">
+                            {columnHSC[2]}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex border-2 border-purple-500 bg-purplegrad  p-1 rounded-xl">
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <h2 className="text-white text-center bg-purple-500 rounded-xl py-1 font-semibold sm:text-xs px-4  ">
+                            Column 3
+                          </h2>
+                        </div>
+                        {/* Overlayed text */}
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <p
+                            style={{
+                              fontSize: "1.2rem",
+                              fontWeight: "bold",
+                              color: "#FFFFFF",
+                              width: "33%",
+                            }}
+                            className="text-center pt-1"
+                          >
+                            {(() => {
+                              const winPer = statsData.col3;
+                              const lossPer = statsData.col3_loss;
+                              const total = winPer + lossPer;
+                              const winPercentage = (winPer / total) * 100;
+
+                              return winPercentage >= 70
+                                ? `Hot`
+                                : winPercentage >= 50
+                                ? `Stable`
+                                : `Cold`;
+                            })()}
+                          </p>
+                        </div>
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center flex-col items-center"
+                        >
+                          <GaugeChart
+                            id="gauge-chart-1"
+                            nrOfLevels={10}
+                            percent={columnScores[3] / 666}
+                            colors={[
+                              "#A78BFA",
+                              "#7C3AED",
+                              "#8B5CF6",
+                              "#5B21B6",
+                            ]}
+                            arcWidth={0.3}
+                            hideText={true}
+                            style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
+                          />
+                          <p className="text-white font-bold text-center">
+                            {columnHSC[3]}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Dozen 2 Nd Logic  */}
+                {columnActiveTab === 2 && (
+                  <div className="flex justify-around  flex-col w-[35rem] mb-5 max-md:w-[22rem] max-sm:w-[21rem]">
+                    <div className="flex justify-around bg-purple-600 text-white rounded-md py-1 text-md font-bold sm:text-md ">
+                      <div
+                        className="   text-center  "
+                        style={{ width: "33%" }}
+                      >
+                        Column
+                      </div>
+                      <div
+                        style={{ width: "33%" }}
+                        className="text-center flex items-center relative"
+                      >
+                        <span>Performance</span>
+                        <div
+                          className="text-black cursor-pointer bg-white w-6 p-2 h-6 flex justify-center items-center rounded-full"
+                          onMouseEnter={() => setI3_btn(true)}
+                          onMouseLeave={() => setI3_btn(false)}
+                        >
+                          i
+                        </div>
+                        {i3_btn && (
+                          <div
+                            className="bg-purple-500 p-2 flex justify-between mb-4 text-start items-start text-white w-60 h-30 max-sm:w-45 max-sm:h-35 absolute max-sm:text-xs max-sm:right-[10%] max-lg:-right-[15%] -right-[35%] bottom-6"
+                            id="statsInfo"
+                          >
+                            <div
+                              className="text-start"
+                              style={{ fontSize: "11px", paddingLeft: "5px" }}
+                            >
+                              <p>
+                                <span className="font-bold me-2">Hot : </span>
+                                &nbsp; &nbsp; &nbsp; Good table For betting ✅
+                              </p>
+
+                              <p className="border-y my-1 py-1">
+                                <span className="font-bold me-2">
+                                  Stable :{" "}
+                                </span>
+                                Decent choice, be cautious ⚖️
+                              </p>
+
+                              <p>
+                                <span className="font-bold me-2">Cold : </span>{" "}
+                                &nbsp; &nbsp;Avoid, too unpredictable ❌
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      <div style={{ width: "33%" }} className="text-center">
+                        Long Term
+                      </div>
+                    </div>
+                    <div className="flex mt-2 flex-col gap-1">
+                      <div className="flex border-2 border-purple-500 p-1 rounded-xl">
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <h2 className="text-white text-center bg-purple-500 rounded-xl py-1 font-semibold sm:text-xs px-4  ">
+                            Column 1
+                          </h2>
+                        </div>
+                        {/* Overlayed text */}
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <p
+                            style={{
+                              fontSize: "1.2rem",
+                              fontWeight: "bold",
+                              color: "#FFFFFF",
+                              width: "33%",
+                            }}
+                            className="text-center pt-1"
+                          >
+                            {(() => {
+                              const winPer = statsData.col1;
+                              const lossPer = statsData.col1_loss;
+                              const total = winPer + lossPer;
+                              const winPercentage = (winPer / total) * 100;
+
+                              return winPercentage >= 70
+                                ? `Hot`
+                                : winPercentage >= 50
+                                ? `Stable`
+                                : `Cold`;
+                            })()}
+                          </p>
+                        </div>
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center flex-col items-center"
+                        >
+                          <GaugeChart
+                            id="gauge-chart-1"
+                            nrOfLevels={10}
+                            percent={columnScores[1] / 666}
+                            colors={[
+                              "#A78BFA",
+                              "#7C3AED",
+                              "#8B5CF6",
+                              "#5B21B6",
+                            ]}
+                            arcWidth={0.3}
+                            hideText={true}
+                            style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
+                          />
+                          <p className="text-white font-bold text-center">
+                            {columnHSC[1]}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex border-2 border-purple-500 p-1 rounded-xl">
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <h2 className="text-white text-center bg-purple-500 py-1 rounded-xl font-semibold sm:text-xs px-4  ">
+                            Column 2
+                          </h2>
+                        </div>
+                        {/* Overlayed text */}
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <p
+                            style={{
+                              fontSize: "1.2rem",
+                              fontWeight: "bold",
+                              color: "#FFFFFF",
+                              width: "33%",
+                            }}
+                            className="text-center pt-1"
+                          >
+                            {(() => {
+                              const winPer = statsData.col2;
+                              const lossPer = statsData.col2_loss;
+                              const total = winPer + lossPer;
+                              const winPercentage = (winPer / total) * 100;
+
+                              return winPercentage >= 70
+                                ? `Hot`
+                                : winPercentage >= 50
+                                ? `Stable`
+                                : `Cold`;
+                            })()}
+                          </p>
+                        </div>
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center flex-col items-center"
+                        >
+                          <GaugeChart
+                            id="gauge-chart-1"
+                            nrOfLevels={10}
+                            percent={columnScores[2] / 666}
+                            colors={[
+                              "#A78BFA",
+                              "#7C3AED",
+                              "#8B5CF6",
+                              "#5B21B6",
+                            ]}
+                            arcWidth={0.3}
+                            hideText={true}
+                            style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
+                          />
+                          <p className="text-white font-bold text-center">
+                            {columnHSC[2]}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex border-2 border-purple-500 p-1 rounded-xl">
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <h2 className="text-white text-center bg-purple-500 rounded-xl py-1 font-semibold sm:text-xs px-4  ">
+                            Column 3
+                          </h2>
+                        </div>
+                        {/* Overlayed text */}
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <p
+                            style={{
+                              fontSize: "1.2rem",
+                              fontWeight: "bold",
+                              color: "#FFFFFF",
+                              width: "33%",
+                            }}
+                            className="text-center pt-1"
+                          >
+                            {(() => {
+                              const winPer = statsData.col3;
+                              const lossPer = statsData.col3_loss;
+                              const total = winPer + lossPer;
+                              const winPercentage = (winPer / total) * 100;
+
+                              return winPercentage >= 70
+                                ? `Hot`
+                                : winPercentage >= 50
+                                ? `Stable`
+                                : `Cold`;
+                            })()}
+                          </p>
+                        </div>
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center flex-col items-center"
+                        >
+                          <GaugeChart
+                            id="gauge-chart-1"
+                            nrOfLevels={10}
+                            percent={columnScores[3] / 666}
+                            colors={[
+                              "#A78BFA",
+                              "#7C3AED",
+                              "#8B5CF6",
+                              "#5B21B6",
+                            ]}
+                            arcWidth={0.3}
+                            hideText={true}
+                            style={{ width: "100px", height: "50px" }} // Adjust width and height as needed
+                          />
+                          <p className="text-white font-bold text-center">
+                            {columnHSC[3]}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      
+      )}
       <section className="max-sm:w-[85vw] max-sm:mt-12 w-[80vw] mx-auto mt-10">
-
-      
-
-
-
-     
-          <History historyData={historyData} isAlertAllowed={isAlertAllowed} />
-        </section>
+        <History historyData={historyData} isAlertAllowed={isAlertAllowed} />
+      </section>
 
       <div
         className="h-[100%] text-center mt-5 w-full overflow-y-scroll rounded-xl p-2 scrollOff"
@@ -5056,12 +5876,11 @@ const percentagesColumn = Object.fromEntries(
         <h2
           className={`text-lg font-bold my-4 bg-purplegrad rounded-xl py-2 ${
             theme === "dark" ? "text-white" : "text-black"
-
           }`}
         >
           Money Management Tool
-        </h2> 
-        <SpinCycleMoney/>
+        </h2>
+        <SpinCycleMoney />
       </div>
 
       {planLockScreen && <Lock setPlanLockScreen={setPlanLockScreen} />}
@@ -5070,32 +5889,3 @@ const percentagesColumn = Object.fromEntries(
 };
 
 export default Project4;
- {/* <button
-          onClick={() => setMoneyManagementData([])}
-          className="border py-1 px-4 rounded-lg mb-2 mx-2"
-        >
-          Reset
-        </button>
-        <button
-          onClick={handleClickResetUnitData}
-          className="border py-1 px-4 rounded-lg mb-2 mx-2"
-        >
-          Lock Profit {lockProfitValue}
-        </button>
-        <MoneyManagementTable
-          moneyManagementData={moneyManagementData}
-          theme={theme}
-          lockProfitValue={lockProfitValue}
-        /> */}
-
-        // <div className="flex gap-4">
-        //           {Object.entries(highestValues).map(([groupName, { highestKey, highestWin, highestFrom }]) => (
-        //               <div key={groupName} className="bg-white p-1 shadow-lg rounded-lg border transform rotate-90">
-        //               <h2 className="text-xl font-semibold text-gray-700">{groupName}</h2>
-        //               {/* <p className="text-gray-500 mt-2">Source: {highestFrom}</p> */}
-        //               <p className="text-lg text-gray-800">
-        //                   <strong>{highestKey}</strong>:
-        //               </p>
-        //               </div>
-        //           ))}
-        //         </div>
