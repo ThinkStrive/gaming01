@@ -1468,7 +1468,7 @@ const Project4 = ({ theme }) => {
         setSuggestionActive(false);
         setAnalyzeData((prev) => ({
           ...prev,
-          lossPerData: prev.lossPerData + 1,
+          lossPerData: prev.lossPerData + (+1),
         }));
 
         setStatsData((prev) => ({
@@ -1512,7 +1512,7 @@ const Project4 = ({ theme }) => {
         setSuggestionActiveDozen(false);
         setAnalyzeData((prev) => ({
           ...prev,
-          dozenLossPer: prev.dozenLossPer + 1,
+          dozenLossPer: prev.dozenLossPer + (+1),
         }));
 
         setStatsData((prev) => ({
@@ -1561,7 +1561,7 @@ const Project4 = ({ theme }) => {
         setSuggestionActiveDozenTwo(false);
         setAnalyzeData((prev) => ({
           ...prev,
-          dozenLossPerTwo: prev.dozenLossPerTwo + 1,
+          dozenLossPerTwo: prev.dozenLossPerTwo + (+1),
         }));
 
         // Initialize loss counters
@@ -1618,7 +1618,7 @@ const Project4 = ({ theme }) => {
         setSuggestionActiveCol(false);
         setAnalyzeData((prev) => ({
           ...prev,
-          colLossPer: prev.colLossPer + 1,
+          colLossPer: prev.colLossPer + (+1),
         }));
 
         setStatsData((prev) => ({
@@ -2177,7 +2177,7 @@ const Project4 = ({ theme }) => {
         setRepeatLetter("");
         setAnalyzeData((prev) => ({
           ...prev,
-          winPerData: prev.winPerData + 1,
+          winPerData: prev.winPerData + (+1),
         }));
 
         setStatsData((prev) => ({
@@ -2329,7 +2329,7 @@ const Project4 = ({ theme }) => {
         setRepeatDozen("");
         setAnalyzeData((prev) => ({
           ...prev,
-          dozenWinPer: prev.dozenWinPer + 1,
+          dozenWinPer: prev.dozenWinPer + (+1),
         }));
 
         setStatsData((prev) => ({
@@ -2446,7 +2446,7 @@ const Project4 = ({ theme }) => {
         setRepeatDozenTwo("");
         setAnalyzeData((prev) => ({
           ...prev,
-          dozenWinPerTwo: prev.dozenWinPerTwo + 1,
+          dozenWinPerTwo: prev.dozenWinPerTwo + (+1),
         }));
 
         setStatsDataTwo((prev) => ({
@@ -2519,7 +2519,7 @@ const Project4 = ({ theme }) => {
         setRepeatCol("");
         setAnalyzeData((prev) => ({
           ...prev,
-          colWinPer: prev.colWinPer + 1,
+          colWinPer: prev.colWinPer + (+1),
         }));
 
         setStatsData((prev) => ({
