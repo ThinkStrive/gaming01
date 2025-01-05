@@ -374,3 +374,47 @@
 }
 
 
+.shimmer-button {
+  position: relative;
+  overflow: hidden;
+  background: #2d2e32; 
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.shimmer-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2s infinite;
+  transform: translateX(-100%);
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.new-badge {
+  position: absolute;
+  top: -0.25rem;
+  right: -2.25rem;
+  background: #ef4444; /* red-500 */
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+}

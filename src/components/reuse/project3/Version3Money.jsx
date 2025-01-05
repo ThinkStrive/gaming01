@@ -134,9 +134,11 @@ const BaccaratMoneyv3 = ({ onBack }) => {
 
   return (
     <div className="bg-gradient-to-br from-purple-500 to-purple-900 h-[100%] flex flex-col items-center p-1 rounded-2xl w-full">
-      <button onClick={onBack} className="bg-blue-700 text-white py-2 px-4 rounded-lg mb-4">
-        Back to Baccarat Money
-      </button>
+      <div className='w-full text-end'>
+        <button onClick={onBack} className="bg-blue-700 cursor-pointer text-white py-1 px-4 rounded-lg mb-4">
+          Back 
+        </button>
+      </div>
       <h1 className="text-2xl font-semibold text-white bg-customBlack w-full text-center rounded-xl md:text-xl sm:text-md">
         Monthly Member-Only Baccarat
       </h1>

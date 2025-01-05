@@ -4,6 +4,8 @@ import BaccaratMoneyv3 from "./Version3Money";
 import axios from "axios";
 import { USER_DETAILS } from "../../api/ApiDetails";
 import { toast } from "react-toastify";
+import { FaLock } from "react-icons/fa";
+import '../../../Style/project3.css'
 const BaccaratMoney = () => {
   const levels1 = [
     { level: "Level-1", units: [1, 3, 7] },
@@ -155,9 +157,16 @@ const BaccaratMoney = () => {
   return (
     <div className="bg-gradient-to-br from-purple-500 to-purple-900 h-[100%] flex flex-col items-center p-1 rounded-2xl w-full">
 
-      <button onClick={handleMonthlyClick} className="bg-purple-700 text-white py-2 px-4 rounded-lg mb-4">
-        Monthly Member-Only Baccarat
+    <div className="relative inline-block group">
+      <button onClick={handleMonthlyClick} className="shimmer-button">
+        <div className="shimmer-effect" />
+        <span className="ml-2 font-semibold">Exclusive For Monthly Member</span>
       </button>
+      <span className="new-badge">New</span>
+      <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+        Click to unlock exclusive content
+      </div>
+    </div>
 
       <h1 className="text-2xl font-semibold text-white bg-customBlack w-full text-center rounded-xl md:text-xl sm:text-md">
         Data Driven Baccarat

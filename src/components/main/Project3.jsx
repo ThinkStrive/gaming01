@@ -20,6 +20,8 @@ import { USER_DETAILS } from "../api/ApiDetails.js";
 import BaccaratMoney from "../reuse/project3/MoneyManagement.jsx";
 import BaccaratLock from "../resources/BaccaratLock.jsx";
 import BaccaratMaintanance from "../reuse/project3/BaccaratMaintanance.jsx";
+import HitRunStrategy from "../reuse/project3/TermsBaccarat.jsx";
+import { MdTipsAndUpdates } from "react-icons/md";
 
 const Project3 = () => {
   const showToast = useToast();
@@ -42,20 +44,21 @@ const Project3 = () => {
   const [isSuggestionActive, setIsSuggestionActive] = useState(false);
   const [suggestionCoin, setSuggestionCoin] = useState("");
 
-  const [planLockScreen, setPlanLockScreen] = useState(true);
+  const [planLockScreen, setPlanLockScreen] = useState(false);
 
   const [firstLogic, setFirstLogic] = useState(false);
   const [secondLogic, setSecondLogic] = useState(true);
 
   const [maintananceLock, setMaintananceLockScreen] = useState(false);
 
+  
   // useEffect(() => {
   //   const fetchUserDetails = async () => {
   //     try {
   //       let userData = JSON.parse(sessionStorage.getItem("userData"));
   //       const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
 
-  //       if (!response.data.data.projectsPlan.project3) {
+  //       if (!response.data.data?.projectSubscription?.baccarat?.projectAccess) {
   //         setPlanLockScreen(true);
   //       } else {
   //         setPlanLockScreen(false);
@@ -69,26 +72,29 @@ const Project3 = () => {
   //   fetchUserDetails();
   // }, []);
 
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        let userData = JSON.parse(sessionStorage.getItem("userData"));
-        const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
 
-        if (!response.data.data?.projectSubscription?.baccarat?.projectAccess) {
-          setPlanLockScreen(true);
-        } else {
-          setPlanLockScreen(false);
-        }
-      } catch (err) {
-        console.log("err", err);
+  const fetchUserDetails = async () => {
+    try {
+      let userData = JSON.parse(sessionStorage.getItem("userData"));
+      const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
+
+      if (response?.data?.data?.projectSubscription?.baccarat?.projectAccess) {
+        setPlanLockScreen(false);
+      } else {
+        setPlanLockScreen(true);
       }
-    };
+    } catch (err) {
+      console.log("err", err);
+    }
+  };
 
-    // Call the async function
+  useEffect(() => {
     fetchUserDetails();
   }, []);
 
+  // const onPaymentSuccess = () => {
+  //   fetchUserDetails();
+  // }
   const [currentImg, setCurrentImg] = useState("");
   const [isFlipping, setIsFlipping] = useState(false);
 
@@ -589,6 +595,14 @@ const Project3 = () => {
 
   var countof17 = columns.map((obj) => obj.values).flat();
 
+
+
+
+  const [isOpen, setIsOpen] = useState(false);
+
+
+
+
   return (
     <div className="flex flex-col custom-md:flex-row  lg:items-start md:items-center bg-purplegrad baccaratMain">
       {/* Left Panel */}
@@ -597,7 +611,7 @@ const Project3 = () => {
         <div className="flex flex-col justify-center items-center">
           <div className="tabs tabs-boxed bg-purple-500  w-full">
             {/* Buttons to switch between boards */}
-            <div className="flex justify-center  w-full p-1 gap-2 ">
+            <div className="flex justify-center relative  w-full p-1 gap-2 ">
               <button
                 onClick={() => setActiveBoard("bigRoard")}
                 className={`px-4 py-2  w-[50%] text-white rounded-xl font-semibold transition sm:px-2 sm:py-1 ${
@@ -608,6 +622,17 @@ const Project3 = () => {
               >
                 Big Road
               </button>
+              <button style={{cursor:"pointer"}} onClick={() => setIsOpen(true)} className="absolute flex gap-1 top-1 right-0 px-2 py-1 bg-white text-superPurple rounded-2xl font-bold hover:bg-blue-600 hover:text-white" >
+              <MdTipsAndUpdates size={20}/> <span>Tips</span>
+              </button>
+
+              {isOpen && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+                  <div className="w-full max-w-md relative max-h-[90vh] overflow-y-auto">
+                    <HitRunStrategy setIsOpen={setIsOpen} />
+                  </div>
+                </div>
+              )}
               {/* <button
                 onClick={() => setActiveBoard("beadRoard")}
                 className={`px-4 py-2  text-white w-[50%] rounded-xl font-semibold transition sm:px-2 sm:py-1 ${
@@ -926,19 +951,19 @@ const Project3 = () => {
                   if (winPercentage > 60) {
                     return (
                       <div className="px-4 py-1 bg-green-500 hot-button cursor-not-allowed">
-                        Table to Play
+                        Safe to Play 
                       </div>
                     );
                   } else if (winPercentage < 40) {
                     return (
                       <div className="px-4 bg-red-500 cold-button cursor-not-allowed">
-                        Avoid This Table
+                        Do Not Bet
                       </div>
                     );
                   } else {
                     return (
                       <div className="px-3 bg-yellow-500 stable-button cursor-not-allowed">
-                        Double-Edged Table
+                        Neutral On Own Risk
                       </div>
                     );
                   }
@@ -1107,7 +1132,9 @@ const Project3 = () => {
         firstLogic={firstLogic}
         secondLogic={secondLogic}
       />
+
       {planLockScreen && <BaccaratLock setPlanLockScreen={setPlanLockScreen} />}
+      {/* {planLockScreen && <BaccaratLock onPaymentSuccess={onPaymentSuccess} />} */}
       {/* {maintananceLock && (
         <BaccaratMaintanance
           setMaintananceLockScreen={setMaintananceLockScreen}
