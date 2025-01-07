@@ -13,7 +13,8 @@ import Lock from "../resources/Lock.jsx";
 import axios from "axios";
 import { USER_DETAILS } from "../api/ApiDetails.js";
 
-import SpinCycleMoney from "../reuse/project4/TempMoneyManagement.jsx";
+// import SpinCycleMoney from "../reuse/project4/TempMoneyManagement.jsx";
+import SpinCycleMoney from "../reuse/project4/TempMoneyManagement.jsx"
 import History from "../reuse/project1/history/History.jsx";
 import { max } from "moment/moment.js";
 
