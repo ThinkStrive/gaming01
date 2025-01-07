@@ -105,15 +105,17 @@ const SpinCycleMoney = () => {
     <div className="bg-gradient-to-br from-purple-500 to-purple-900 h-[100%] flex flex-col items-center p-1 rounded-2xl w-full max-w-[450px] lg:max-w-[450px] md:max-w-[420px] sm:max-w-[380px]">
       
       
-      <div className="flex justify-between items-center w-full px-4 mt-2">
+      <div className="w-full">
+      <div className="flex flex-col sm:flex-row justify-between items-center w-full px-4 mt-2 gap-4">
         <select 
           value={selectedOdds}
           onChange={handleOddsChange}
-          className="bg-purple-700 text-white px-3 py-1 rounded-lg border border-purple-300 focus:outline-none focus:ring-2 me-1"
+          className="bg-purple-900 text-white px-3 py-1 rounded-lg border border-purple-300 focus:outline-none focus:ring-2 me-1"
         >
           <option value="29:1">29:1</option>
           <option value="35:1">35:1</option>
         </select>
+
         <div className="flex gap-4">
           <h2 className="text-md text-white bg-purplegrad px-3 font-semibold sm:text-md rounded-xl py-1">
             Profits: {totalUnits}
@@ -123,6 +125,19 @@ const SpinCycleMoney = () => {
           </h2>
         </div>
       </div>
+    </div>
+        <div className=" mt-1 gap-5 text-center">
+          <input
+            type="text"
+            placeholder="Enter StopLoss"
+            className=" px-2 py-1 bg-purplegrad text-white rounded-lg my-1 mx-1 focus:outline-none focus:ring-2 placeholder-purple-100 text-sm"
+          />
+          <input
+            type="text"
+            placeholder="Enter Goal"
+            className=" px-2 py-1 bg-purplegrad text-white rounded-lg my-1 mx-1 focus:outline-none focus:ring-2 placeholder-purple-100 text-sm"
+          />
+        </div>
 
       <div className="w-full max-w-4xl mt-1">
         {levels3.map(({ level, units }, levelIndex) => (
@@ -183,23 +198,23 @@ const SpinCycleMoney = () => {
         ))}
       </div>
       
-      <div className="flex flex-col items-start space-y-2 mt-1 w-full">
+      <div className="flex  justify-between space-y-2 mt-1 w-full">
+        <div className="flex gap-2">
+          <p className="text-md font-semibold sm:text-md text-white">Unit Size:</p>
+          <input
+            type="text"
+            value={unitSize}
+            onChange={handleInputChange}
+            className="px-3 py-1 me-2 border text-white font-semibold border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-300 focus:border-purple-500"
+            placeholder="Enter Unit Size"
+          />
+        </div>
         <button
           onClick={handleResetClick}
           className="bg-customBlack rounded-full p-0.5 text-white hover:bg- hover:rotate-180 hover:transition "
         >
           <IoIosRefreshCircle size={30} />
         </button>
-        <div className="flex gap-2">
-          <p className="text-xl font-semibold sm:text-md text-white">Unit Size:</p>
-          <input
-            type="text"
-            value={unitSize}
-            onChange={handleInputChange}
-            className="px-3 py-1 border text-white font-semibold border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-300 focus:border-purple-500"
-            placeholder="Enter Unit Size"
-          />
-        </div>
       </div>
     </div>
   );

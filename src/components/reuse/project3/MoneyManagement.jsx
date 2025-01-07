@@ -255,6 +255,18 @@ const BaccaratMoney = () => {
             
           </button>
         </div>
+        <div className=" mt-1 gap-5">
+          <input
+            type="text"
+            placeholder="Enter StopLoss"
+            className=" px-2 py-1 bg-purplegrad text-white rounded-lg my-1 mx-1 focus:outline-none focus:ring-2 placeholder-purple-100 text-sm"
+          />
+          <input
+            type="text"
+            placeholder="Enter Goal"
+            className=" px-2 py-1 bg-purplegrad text-white rounded-lg my-1 mx-1 focus:outline-none focus:ring-2 placeholder-purple-100 text-sm"
+          />
+        </div>
         <div className="flex gap-2">
           <p className="text-xl font-semibold sm:text-md text-white">Unit Size :</p>
           <input

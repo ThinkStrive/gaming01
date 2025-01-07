@@ -212,6 +212,14 @@ const BaccaratMoneyv3 = ({ onBack }) => {
       
       <div className="flex flex-col items-start space-y-2 mt-1">
         <div className="flex gap-2">
+          <p className="text-md font-semibold sm:text-md text-white">Unit Size:</p>
+          <input
+            type="text"
+            value={unitSize}
+            onChange={handleInputChange}
+            className="px-3 py-1 border text-white font-semibold font-white border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-300 focus:border-purple-500"
+            placeholder="Enter Unit Size"
+          />
           <button
             onClick={handleResetClick}
             className="bg-customBlack rounded-full p-0.5 text-white hover:bg- hover:rotate-180 hover:transition"
@@ -219,14 +227,16 @@ const BaccaratMoneyv3 = ({ onBack }) => {
             <IoIosRefreshCircle size={30} />
           </button>
         </div>
-        <div className="flex gap-2">
-          <p className="text-xl font-semibold sm:text-md text-white">Unit Size:</p>
+        <div className=" mt-1 gap-5">
           <input
             type="text"
-            value={unitSize}
-            onChange={handleInputChange}
-            className="px-3 py-1 border text-white font-semibold font-white border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-300 focus:border-purple-500"
-            placeholder="Enter Unit Size"
+            placeholder="Enter StopLoss"
+            className=" px-2 py-1 bg-purplegrad text-white rounded-lg my-1 mx-1 focus:outline-none focus:ring-2 placeholder-purple-100 text-sm"
+          />
+          <input
+            type="text"
+            placeholder="Enter Goal"
+            className=" px-2 py-1 bg-purplegrad text-white rounded-lg my-1 mx-1 focus:outline-none focus:ring-2 placeholder-purple-100 text-sm"
           />
         </div>
       </div>
