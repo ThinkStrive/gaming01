@@ -19,8 +19,10 @@ import { max } from "moment/moment.js";
 
 import { FaShieldHeart } from "react-icons/fa6";
 import { SiZap } from "react-icons/si";
+import SpinMaintanance from "../reuse/project4/SpinMaintanance.jsx";
 
 const Project4 = ({ theme }) => {
+  const [maintananceLock, setMaintananceLockScreen] = useState(true);
   const [isAlertAllowed, setIsAlertAllowed] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const showToast = useToast();
@@ -6171,7 +6173,12 @@ const Project4 = ({ theme }) => {
         <History historyData={historyData} isAlertAllowed={isAlertAllowed} />
       </section>
 
-      {planLockScreen && <Lock setPlanLockScreen={setPlanLockScreen} />}
+      {/* {planLockScreen && <Lock setPlanLockScreen={setPlanLockScreen} />} */}
+      {maintananceLock && (
+        <SpinMaintanance
+          setMaintananceLockScreen={setMaintananceLockScreen}
+        />
+      )}
     </>
   );
 };
