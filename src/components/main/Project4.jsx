@@ -22,7 +22,7 @@ import { SiZap } from "react-icons/si";
 import SpinMaintanance from "../reuse/project4/SpinMaintanance.jsx";
 
 const Project4 = ({ theme }) => {
-  const [maintananceLock, setMaintananceLockScreen] = useState(true);
+  const [maintananceLock, setMaintananceLockScreen] = useState(false);
   const [isAlertAllowed, setIsAlertAllowed] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const showToast = useToast();
@@ -2484,29 +2484,30 @@ const Project4 = ({ theme }) => {
       }
     }
     // Handle Dozen and Column Data
-    // if (doz !== 0 || col !== 0) {
-    setDozenRowData((prevRowData) => {
-      if(doz !== 'A'){
+    if (doz !== 0 || col !== 0) {
+      setDozenRowData((prevRowData) => {
+        if(doz !== 'A'){
+          const lastRow = prevRowData[prevRowData.length - 1];
+        if (!lastRow || Object.keys(lastRow).length >= 3) {
+          return [...prevRowData, { [`doz1`]: doz }];
+        } else {
+          const keyIndex = Object.keys(lastRow).length + 1;
+          const updatedRow = { ...lastRow, [`doz${keyIndex}`]: doz };
+          return [...prevRowData.slice(0, -1), updatedRow];
+        }
+        }
+      });
+      setColRowData((prevRowData) => {
         const lastRow = prevRowData[prevRowData.length - 1];
-      if (!lastRow || Object.keys(lastRow).length >= 3) {
-        return [...prevRowData, { [`doz1`]: doz }];
-      } else {
-        const keyIndex = Object.keys(lastRow).length + 1;
-        const updatedRow = { ...lastRow, [`doz${keyIndex}`]: doz };
-        return [...prevRowData.slice(0, -1), updatedRow];
-      }
-      }
-    });
-    setColRowData((prevRowData) => {
-      const lastRow = prevRowData[prevRowData.length - 1];
-      if (!lastRow || Object.keys(lastRow).length >= 3) {
-        return [...prevRowData, { [`col1`]: col }];
-      } else {
-        const keyIndex = Object.keys(lastRow).length + 1;
-        const updatedRow = { ...lastRow, [`col${keyIndex}`]: col };
-        return [...prevRowData.slice(0, -1), updatedRow];
-      }
-    });
+        if (!lastRow || Object.keys(lastRow).length >= 3) {
+          return [...prevRowData, { [`col1`]: col }];
+        } else {
+          const keyIndex = Object.keys(lastRow).length + 1;
+          const updatedRow = { ...lastRow, [`col${keyIndex}`]: col };
+          return [...prevRowData.slice(0, -1), updatedRow];
+        }
+      });
+    }
     // Handle suggestions for Dozen
     if (suggestionActiveDozen) {
       if (doz === repeatDozen) {
@@ -3691,7 +3692,7 @@ const Project4 = ({ theme }) => {
                       ? "bg-[#58d68d]"
                       : "bg-customGreen"
                   } w-[100%] flex justify-center items-center cursor-pointer border rounded-md`}
-                  onClick={() => handleClickNumber("zero", 0, "A", 0, 0)}
+                  onClick={() => handleClickNumber("zero", 0, 0, 0, 0)}
                   style={{
                     borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
                   }}
@@ -6173,7 +6174,7 @@ const Project4 = ({ theme }) => {
         <History historyData={historyData} isAlertAllowed={isAlertAllowed} />
       </section>
 
-      {/* {planLockScreen && <Lock setPlanLockScreen={setPlanLockScreen} />} */}
+      {planLockScreen && <Lock setPlanLockScreen={setPlanLockScreen} />}
       {maintananceLock && (
         <SpinMaintanance
           setMaintananceLockScreen={setMaintananceLockScreen}
