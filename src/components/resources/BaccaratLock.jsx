@@ -1,101 +1,107 @@
 import React from "react";
 import "../../Style/Lock.css";
-import { useToast } from "./Toast";
-import PayPalBtn from "./PaypalBtn";
 import { Link } from "react-router-dom";
 import { MdEmail } from "react-icons/md";
+import { BACCARAT_PLANS } from "../../utils/constants";
+import PaypalButtonComponent from "../reuse/PaypalPayment/PaypalButtonComponent";
 
 
-
-const BaccaratLock = ({ setPlanLockScreen }) => {
-  const showToast = useToast();
-  const handleClickPayButton = () => {
-    // Handle the pay button click event
-    setPlanLockScreen(false);
-    showToast("Paid Successfully", "success");
-  };
+const BaccaratLock = ({ onPaymentSuccess , returnURL }) => {
+ 
 
   return (
-    <div className="info-con-lock flex justify-center items-center min-h-screen">
-      <div className="w-[90%] sm:w-[80vw] md:w-[65vw] lg:w-[50vw] h-[90vh] sm:h-auto md:h-[75vh] lg:h-[75vh] lg:mt-[120px] md:mt-[100px] mt-[100px] rounded-lg bg-white relative px-4 sm:px-6 lg:py-6 py-2 flex flex-col justify-start items-center shadow-md overflow-y-scroll info-con-lock1">
-        <h2 className="font-semibold text-lg my-4 flex justify-center items-center w-full">
-          <i className="fa-solid fa-lock text-black text-4xl sm:text-5xl"></i>
-        </h2>
-        <div className="text-center mb-4 w-full flex flex-wrap sm:flex-nowrap justify-around gap-4 h-auto sm:h-[30%] my-2">
-          <div className="bg-slate-200 h-[auto] sm:h-[100%] w-full sm:w-[40%] rounded-xl shadow flex justify-evenly items-center flex-col py-4">
-            <h2 className="text-black font-semibold text-xl my-2">
-              48 Hours Plan
+    <div className="info-con-lock fixed inset-0 flex justify-center items-start sm:items-center overflow-y-auto bg-black/50 p-4 lg:mt-20 md:mt-16 sm:mt-14 pb-20" >
+      <div className="w-[95%] sm:w-[80vw] md:w-[70vw] lg:w-[64vw] max-h-[90vh] sm:max-h-[85vh] bg-white rounded-lg shadow-xl relative flex flex-col mt-16 sm:mt-0">
+        {/* Scrollable content container */}
+        <div className="overflow-y-auto flex-1 px-4 sm:px-6 py-4 lg:py-6">
+          {/* Lock icon header */}
+          <div className=" pb-4">
+            <h2 className="font-semibold text-lg flex justify-center items-center w-full">
+              <i className="fa-solid fa-lock text-black text-4xl sm:text-5xl"></i>
             </h2>
-            {/* <button
-              className="bg-[#242424] text-white font-bold py-2 px-6 sm:px-8 rounded-lg transition w-[80%] hover:bg-[#141414]"
-              // onClick={handleClickPayButton}
-            >
-              <PayPalBtn amount={3.99} />
-            </button> */}
-            <Link
-              to="https://www.paypal.com/ncp/payment/JV5QZV4RTPGS4"
-              target="_blank"
-              className="bg-[#242424] text-white font-bold py-2 px-6 sm:px-8 rounded-lg transition w-[80%] hover:bg-[#141414]"
-            >
-              $50.00
-            </Link>
           </div>
-          <div className="bg-slate-200 h-[auto] sm:h-[100%] w-full sm:w-[40%] rounded-xl shadow flex justify-evenly items-center flex-col py-4">
-            <h2 className="text-black font-semibold text-xl">Monthly Plan</h2>
-            {/* <button
-              className="bg-[#242424] text-white font-bold py-2 px-6 sm:px-8 rounded-lg transition w-[80%] hover:bg-[#141414]"
-              // onClick={handleClickPayButton}
-            >
-              <PayPalBtn amount={54.99} />
-            </button> */}
-            <Link
-              to="https://www.paypal.com/ncp/payment/9PZUYNYYP43GQ"
-              target="_blank"
-              className="bg-[#242424] text-white font-bold py-2 px-6 sm:px-8 rounded-lg transition w-[80%] hover:bg-[#141414]"
-            >
-              $500.00
-            </Link>
-          </div>
-        </div>
 
-        <div className="text-black px-2 sm:px-4 mt-1">
-          <h6 className="text-md font-semibold my-2 text-center sm:text-left">
-            Need Alternative Payment Options?
-          </h6>
-          <p className="text-sm text-center sm:text-left">
-            We currently accept the following payment methods:
-          </p>
-          <p className="text-sm text-center sm:text-left">
-            PayPal Debit or Credit Card (processed through PayPal – no PayPal
-            account required) If you prefer other payment methods or need
-            assistance with the payment process, feel free to reach out to us.
-          </p>
-          <div className="border w-full h-auto text-black px-4 py-2 bg-slate-200 rounded-lg my-3">
-            <p>
-              <i className="fa-brands fa-telegram text-blue-600"></i> Contact us
-              on Telegram:{" "} 
-              <Link
-                to="https://t.me/rouletterisee"
-                className="text-blue-600 font-semibold"
-                target="_blank"
+          {/* Pricing cards */}
+          <div className="text-center mb-6 w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+            {BACCARAT_PLANS.map((plan, index) => (
+              <div
+                key={index}
+                className="bg-slate-200 rounded-xl shadow flex flex-col items-center p-1"
               >
-                 https://t.me/rouletterisee
-              </Link>
-            </p>
-            <p className="flex my-2 ">
-              <MdEmail size={23} className=" text-customRed border pt-1" /> Contact us via Email:{" "}
-              <Link
-                to="mailto:rouletterise@gmail.com" 
-                className="text-blue-600 font-semibold"
-              >
-               &nbsp;  rouletterise@gmail.com
-              </Link>
-            </p>
-            <p className="text-sm my-1">
-              We’ll be <span className="text-slate-900 font-bold">happy</span>{" "}
-              to help with any questions or provide alternative options.
-            </p>
+                <div className="text-center mb-3">
+                  <h2 className="text-2xl font-bold text-black">{plan.title}</h2>
+                </div>
+                
+                <div className="flex-grow flex flex-col items-center justify-between w-full">
+                  <div className="mb-4 text-center">
+                    <span className="text-4xl font-bold text-softBlue">${plan.price}</span>
+                    <span className="text-gray-600 ml-2">/ {plan.duration}</span>
+                    
+                  </div>
+                  
+                  <div className="w-full mt-auto">
+                    <PaypalButtonComponent
+                      subFor={plan.subFor}
+                      subType={plan.subType}
+                      onPaymentSuccess={onPaymentSuccess}
+                      returnURL={returnURL}
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
+
+          {/* Payment options section */}
+          <div className="text-black">
+                      <h6 className="text-md font-semibold  text-center sm:text-left">
+                        Need Alternative Payment Options?
+                      </h6>
+                      <p className="text-sm text-center sm:text-left">
+                        We currently accept the following payment methods:
+                      </p>
+                      <p className="text-sm text-center sm:text-left mb-2">
+                        PayPal Debit or Credit Card (processed through PayPal – no PayPal
+                        account required) If you prefer other payment methods or need
+                        assistance with the payment process, feel free to reach out to us.
+                      </p>
+                      <div className="border w-full text-black px-4 py-2 bg-slate-200 rounded-lg">
+                        
+          
+          
+                        <div className="flex flex-wrap items-center gap-2 ">
+                          <div className="flex items-center gap-2">
+                            <i className="fa-brands fa-telegram text-blue-600"></i>
+                            <span className="whitespace-nowrap">Contact us on Telegram:</span>
+                          </div>
+                          <Link
+                            to="https://t.me/rouletterisee"
+                            className="text-blue-600 font-semibold hover:underline"
+                            target="_blank"
+                          >
+                            https://t.me/rouletterisee
+                          </Link>
+                        </div>
+          
+                        <div className="flex flex-wrap items-center gap-2 ">
+                          <div className="flex items-center gap-2">
+                            <MdEmail size={23} className="text-customRed min-w-[23px]" />
+                            <span className="whitespace-nowrap">Contact us via Email:</span>
+                          </div>
+                          <Link
+                            to="mailto:rouletterise@gmail.com"
+                            className="text-blue-600 font-semibold hover:underline"
+                          >
+                            rouletterise@gmail.com
+                          </Link>
+                        </div>
+                        <p className="text-sm">
+                          We'll be{" "}
+                          <span className="text-slate-900 font-bold">happy</span> to help
+                          with any questions or provide alternative options.
+                        </p>
+                      </div>
+                    </div>
         </div>
       </div>
     </div>

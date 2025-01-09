@@ -20,8 +20,11 @@ import { max } from "moment/moment.js";
 import { FaShieldHeart } from "react-icons/fa6";
 import { SiZap } from "react-icons/si";
 import SpinMaintanance from "../reuse/project4/SpinMaintanance.jsx";
+import { SPIN_CYCLE_LOCK_PAYPAL_RETURN_URL } from "../../utils/constants.js";
+import {usePlanExpiryCheck} from '../../utils/customHooks.js'
 
 const Project4 = ({ theme }) => {
+  const userData = JSON.parse(sessionStorage.getItem('userData'));
   const [maintananceLock, setMaintananceLockScreen] = useState(false);
   const [isAlertAllowed, setIsAlertAllowed] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -2965,25 +2968,58 @@ const Project4 = ({ theme }) => {
 
   const [planLockScreen, setPlanLockScreen] = useState(false);
 
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        let userData = JSON.parse(sessionStorage.getItem("userData"));
+   // custom hook to check plan expiry locally
+   usePlanExpiryCheck( userData?.subscriptionType , userData?.rouletteExpiryDate , setPlanLockScreen );
+
+  const fetchUserDetails = async () => {
+    try {
         const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
 
-        if (!response.data.data.projectsPlan.project4) {
-          setPlanLockScreen(true);
-        } else {
-          setPlanLockScreen(false);
-        }
-      } catch (err) {
-        console.log("err", err);
-      }
-    };
+        const { status, data } = response?.data;
 
-    // Call the async function
+        if (status && data) {
+            sessionStorage.setItem("userData", JSON.stringify(data));
+            setPlanLockScreen(!data?.projectsPlan?.project4);
+        }
+    } catch (err) {
+        console.log('Error fetching user details:', err);
+    }
+  };
+
+  useEffect(() => {
     fetchUserDetails();
   }, []);
+
+  const onPaymentSuccess = () => {
+    onPaymentSuccess();
+  }
+
+
+
+  // useEffect(() => {
+  //   const fetchUserDetails = async () => {
+  //     try {
+  //       let userData = JSON.parse(sessionStorage.getItem("userData"));
+  //       const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
+
+  //       if (!response.data.data.projectsPlan.project4) {
+  //         setPlanLockScreen(true);
+  //       } else {
+  //         setPlanLockScreen(false);
+  //       }
+  //     } catch (err) {
+  //       console.log("err", err);
+  //     }
+  //   };
+
+  //   // Call the async function
+  //   fetchUserDetails();
+  // }, []);
+
+
+
+
+
 
   const determineImage = (() => {
     const winPer = analyzeData.dozenWinPer;
@@ -3462,6 +3498,7 @@ const Project4 = ({ theme }) => {
 
   return (
     <>
+    
       <div className="sticky lg:top-0 max-sm:top-0 md:top-0 z-30 ">
         {/* <Nav theme={theme} setTheme={setTheme} /> */}
 
@@ -6174,12 +6211,15 @@ const Project4 = ({ theme }) => {
         <History historyData={historyData} isAlertAllowed={isAlertAllowed} />
       </section>
 
-      {planLockScreen && <Lock setPlanLockScreen={setPlanLockScreen} />}
-      {maintananceLock && (
+      {/* {planLockScreen && <Lock setPlanLockScreen={setPlanLockScreen} />} */}
+      {/* {maintananceLock && (
         <SpinMaintanance
           setMaintananceLockScreen={setMaintananceLockScreen}
         />
-      )}
+      )} */}
+
+
+      {planLockScreen && <Lock onPaymentSuccess={onPaymentSuccess} returnURL={SPIN_CYCLE_LOCK_PAYPAL_RETURN_URL} />}
     </>
   );
 };

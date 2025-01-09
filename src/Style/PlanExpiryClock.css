@@ -1,0 +1,106 @@
+.clock-container {
+  background-color: #f0f0f0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  width: fit-content;
+}
+
+.minutes-clock {
+  width: 120px;
+  --base-size: 60px;
+}
+
+.hours-minutes-clock {
+  width: 140px;
+  --base-size: 60px;
+}
+
+.default-clock {
+  width: 160px;
+  --base-size: 60px;
+}
+
+.time-unit {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.time-value-box {
+  background-color: white;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.time-value {
+  font-size: clamp(14px, calc(var(--base-size) * 0.25), 48px);
+  color: #333;
+  line-height: 1;
+}
+
+.time-label {
+  font-size: clamp(10px, calc(var(--base-size) * 0.15), 24px);
+  color: #4e4d4d;
+  line-height: 1;
+}
+
+@media (max-width: 480px) {
+  .minutes-clock {
+    width: 90px;
+    --base-size: 45px;
+  }
+
+  .hours-minutes-clock {
+    width: 110px;
+    --base-size: 45px;
+  }
+
+  .default-clock {
+    width: 130px;
+    --base-size: 45px;
+  }
+
+  .time-value-box {
+    height: 20px; 
+  }
+
+  .time-value {
+    font-size: 11px; 
+  }
+
+  .time-label {
+    font-size: 8px;
+  }
+
+  .time-unit {
+    gap: 1px; 
+  }
+
+  .clock-container {
+    padding: 4px !important;  
+  }
+}
+
+@media (min-width: 768px) {
+  .minutes-clock {
+    width: 140px;
+    --base-size: 70px;
+  }
+
+  .hours-minutes-clock {
+    width: 160px;
+    --base-size: 70px;
+  }
+
+  .default-clock {
+    width: 180px;
+    --base-size: 70px;
+  }
+
+  .time-value-box {
+    height: 32px;
+  }
+}

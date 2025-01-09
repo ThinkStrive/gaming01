@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { LuBarChart } from 'react-icons/lu';
+import { IoBarChart } from "react-icons/io5";
 import Dozens from './Dozens';
 import Columns from './Columns';
 import EventMoney from './EventMoney';
@@ -20,7 +20,7 @@ const Statistics = () => {
             {/* Header */}
             <div className="flex justify-center items-center mb-1">
                 <p className="flex items-center justify-center gap-2 font-bold text-xl">
-                    <LuBarChart /> Statistics
+                    <IoBarChart  /> Statistics
                 </p>
             </div>
 

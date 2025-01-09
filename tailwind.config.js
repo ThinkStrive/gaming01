@@ -44,7 +44,10 @@ export default {
         'lastHhigh':'linear-gradient(90deg, rgba(178,181,181,1) 0%, rgba(0,95,255,1) 53%, rgba(176,183,186,1) 100%)',
         'Banker':'linear-gradient(90deg, rgba(111,3,3,1) 0%, rgba(205,38,38,1) 65%, rgba(116,15,15,1) 100%)',
         'Player':' linear-gradient(90deg, rgba(4,12,94,1) 0%, rgba(23,70,235,1) 55%, rgba(9,60,139,1) 100%)',
-        'Tie':' linear-gradient(107deg, rgba(9,112,22,0.9669117647058824) 0%, rgba(35,196,9,0.9921218487394958) 17%, rgba(20,93,36,1) 100%)'
+        'Tie':' linear-gradient(107deg, rgba(9,112,22,0.9669117647058824) 0%, rgba(35,196,9,0.9921218487394958) 17%, rgba(20,93,36,1) 100%)',
+        // 'purpleGradiant':"linear-gradient( 135deg, #E2B0FF 10%, #9F44D3 100%)"
+        "purpleGradiant":"linear-gradient(to top, #cd9cf2 0%, #f6f3ff 100%)"
+
       },
       screens: {
         "custom-md": "930px", // Custom breakpoint for right panel

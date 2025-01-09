@@ -5,9 +5,13 @@ import Toast from "./components/resources/Toast";
 import Auth from "./layout/Auth";
 import ProtectedPage from "./ProtectedPage";
 import { ToastContainer } from "react-toastify";
+import { PAYPAL_OPTIONS } from "./utils/constants";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+
 function App() {
   return (
     <>
+      <PayPalScriptProvider options={PAYPAL_OPTIONS} >
       <BrowserRouter>
         <Toast >
           <Routes>
@@ -30,6 +34,7 @@ function App() {
           transition:Bounce
         />
       </BrowserRouter>
+      </PayPalScriptProvider>
     </>
   );
 }

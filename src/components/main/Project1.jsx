@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Nav from "../nav/nav.jsx";
 import { useRef } from "react";
 import { GrPowerReset } from "react-icons/gr";
-import { LuBarChart, LuBarChart2, LuMoveRight } from "react-icons/lu";
+import { IoBarChart } from "react-icons/io5";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { data } from "../reuse/project1/logic/Project1ComponetRenderData.js";
 import { USER_DETAILS } from "../api/ApiDetails.js";
@@ -29,6 +29,8 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
 import { Pagination, Navigation } from 'swiper/modules';
+import { ROULETTE_LOCK_PAYPAL_RETURN_URL } from "../../utils/constants.js";
+import { usePlanExpiryCheck } from "../../utils/customHooks.js";
 
 const Project1 = ({ theme }) => {
   const [isa_Active, setIsa_Active] = useState(true);
@@ -38,7 +40,7 @@ const Project1 = ({ theme }) => {
   const [isDouble_Active, setIsDouble_Active] = useState(false);
   const [isAlertAllowed, setIsAlertAllowed] = useState(false);
   const [i_btn, setI_btn] = useState(false);
-
+  const userData = JSON.parse(sessionStorage.getItem('userData'));
 
 // --- project 4 states ------------
 
@@ -2671,26 +2673,58 @@ useEffect(() => {
 
   const [planLockScreen, setPlanLockScreen] = useState(false)
 
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        let userData = JSON.parse(sessionStorage.getItem('userData'));
+
+  // custom hook to check plan expiry locally
+  usePlanExpiryCheck( userData?.subscriptionType , userData?.rouletteExpiryDate , setPlanLockScreen );
+
+
+  const fetchUserDetails = async () => {
+    try {
+
         const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
 
+        const { status, data } = response?.data;
 
-        if (!response.data.data.projectsPlan.project1) {
-          setPlanLockScreen(true);
-        } else {
-          setPlanLockScreen(false);
+        if (status && data) {
+            sessionStorage.setItem("userData", JSON.stringify(data));
+            setPlanLockScreen(!data?.projectsPlan?.project1);
         }
-      } catch (err) {
-        console.log('err', err); 
-      }
-    };
+    } catch (err) {
+        console.log('Error fetching user details:', err);
+    }
+  };
 
-    // Call the async function
+  useEffect(() => {
     fetchUserDetails();
   }, []);
+
+const onPaymentSuccess = () => {
+  fetchUserDetails();
+}
+
+
+
+
+  // useEffect(() => {
+  //   const fetchUserDetails = async () => {
+  //     try {
+  //       let userData = JSON.parse(sessionStorage.getItem('userData'));
+  //       const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
+
+
+  //       if (!response.data.data.projectsPlan.project1) {
+  //         setPlanLockScreen(true);
+  //       } else {
+  //         setPlanLockScreen(false);
+  //       }
+  //     } catch (err) {
+  //       console.log('err', err); 
+  //     }
+  //   };
+
+  //   // Call the async function
+  //   fetchUserDetails();
+  // }, []);
 
 
 
@@ -3009,6 +3043,8 @@ useEffect(() => {
 
   return (
     <>
+
+
       <div className="sticky z-30" style={{ top: "0px" }}>
         {/* <Nav theme={theme} setTheme={setTheme} /> */}
         <div
@@ -3244,7 +3280,7 @@ useEffect(() => {
                     </div>
 
                     <p className="flex items-center justify-center gap-2 font-bold text-xl">
-                      <LuBarChart /> Statistics
+                      <IoBarChart /> Statistics
                     </p>
 
                     <div className="invisible">
@@ -4747,8 +4783,12 @@ useEffect(() => {
 
 
 
-      {
+      {/* {
         planLockScreen && <Lock setPlanLockScreen={setPlanLockScreen} />
+      } */}
+
+      {
+        planLockScreen && <Lock onPaymentSuccess={onPaymentSuccess} returnURL={ROULETTE_LOCK_PAYPAL_RETURN_URL} />
       }
     </>
   );

@@ -22,8 +22,13 @@ import BaccaratLock from "../resources/BaccaratLock.jsx";
 import BaccaratMaintanance from "../reuse/project3/BaccaratMaintanance.jsx";
 import HitRunStrategy from "../reuse/project3/TermsBaccarat.jsx";
 import { MdTipsAndUpdates } from "react-icons/md";
+import { BACCARAT_LOCK_PAYPAL_RETURN_URL } from "../../utils/constants.js";
+import { usePlanExpiryCheck } from "../../utils/customHooks.js";
+
+
 
 const Project3 = () => {
+  const userData = JSON.parse(sessionStorage.getItem('userData'));
   const showToast = useToast();
   const [columns, setColumns] = useState(() => {
     const savedColumns = localStorage.getItem("columns");
@@ -52,39 +57,23 @@ const Project3 = () => {
   const [maintananceLock, setMaintananceLockScreen] = useState(false);
 
   
-  // useEffect(() => {
-  //   const fetchUserDetails = async () => {
-  //     try {
-  //       let userData = JSON.parse(sessionStorage.getItem("userData"));
-  //       const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
 
-  //       if (!response.data.data?.projectSubscription?.baccarat?.projectAccess) {
-  //         setPlanLockScreen(true);
-  //       } else {
-  //         setPlanLockScreen(false);
-  //       }
-  //     } catch (err) {
-  //       console.log("err", err);
-  //     }
-  //   };
-
-  //   // Call the async function
-  //   fetchUserDetails();
-  // }, []);
-
+ 
+   // custom hook to check plan expiry locally
+   usePlanExpiryCheck( userData?.projectSubscription?.baccarat?.subscriptionType, userData?.projectSubscription?.baccarat?.expiryDate , setPlanLockScreen );
 
   const fetchUserDetails = async () => {
     try {
-      let userData = JSON.parse(sessionStorage.getItem("userData"));
-      const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
+        const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
 
-      if (response?.data?.data?.projectSubscription?.baccarat?.projectAccess) {
-        setPlanLockScreen(false);
-      } else {
-        setPlanLockScreen(true);
-      }
+        const { status, data } = response?.data;
+
+        if (status && data) {
+            sessionStorage.setItem("userData", JSON.stringify(data));
+            setPlanLockScreen(!data?.projectSubscription?.baccarat?.projectAccess);
+        }
     } catch (err) {
-      console.log("err", err);
+        console.log('Error fetching user details:', err);
     }
   };
 
@@ -92,9 +81,9 @@ const Project3 = () => {
     fetchUserDetails();
   }, []);
 
-  // const onPaymentSuccess = () => {
-  //   fetchUserDetails();
-  // }
+  const onPaymentSuccess = () => {
+    fetchUserDetails();
+  }
   const [currentImg, setCurrentImg] = useState("");
   const [isFlipping, setIsFlipping] = useState(false);
 
@@ -1133,8 +1122,12 @@ const Project3 = () => {
         secondLogic={secondLogic}
       />
 
-      {planLockScreen && <BaccaratLock setPlanLockScreen={setPlanLockScreen} />}
-      {/* {planLockScreen && <BaccaratLock onPaymentSuccess={onPaymentSuccess} />} */}
+      {/* {planLockScreen && <BaccaratLock setPlanLockScreen={setPlanLockScreen} />}
+      */}
+
+{planLockScreen && <BaccaratLock onPaymentSuccess={onPaymentSuccess} returnURL={BACCARAT_LOCK_PAYPAL_RETURN_URL} />}
+
+
       {/* {maintananceLock && (
         <BaccaratMaintanance
           setMaintananceLockScreen={setMaintananceLockScreen}
