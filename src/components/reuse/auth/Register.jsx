@@ -7,6 +7,7 @@ import PhoneInput from "react-phone-input-2";
 import { useToast } from "../../resources/Toast";
 import { USER_REGISTER } from "../../api/ApiDetails";
 import "../../../Style/Auth.css";
+import LegalTermsModal from "../../resources/LegalTermsModal";
 
 
 
@@ -66,6 +67,9 @@ const Register = ({ inputData, setInputData }) => {
         showToast(err.response.data.data, "error");
       });
   };
+
+    const [disabled, setDisabled] = useState(true); // State to control disabled status
+    const [accepted, setAccepted] = useState(false);
 
   return (
     <section className="min-h-screen flex items-center justify-center bg-transparant p-0 m-0">
@@ -148,6 +152,17 @@ const Register = ({ inputData, setInputData }) => {
             }}
             placeholder="Enter your Number"
           />
+
+             {/* Terms and Conditions Modal */}
+             <div className="flex justify-center items-center gap-2">
+                <input
+                  type="checkbox"
+                  className="checkbox checkbox-primary border-2 border-black"
+                  checked={accepted} 
+                  disabled={!accepted}       
+                />
+                <LegalTermsModal accepted={accepted} setAccepted={setAccepted} setDisabled={setDisabled} colors={`text-base-950  hover:text-gray-100`}/>
+              </div>
           {loading ? (
             <button
               type="submit"
@@ -158,7 +173,7 @@ const Register = ({ inputData, setInputData }) => {
           ) : (
             <button
               type="submit"
-              className="w-[100%] bg-[#7F00FF] text-black  shadow-2xl rounded-lg text-lg font-semibold lg:h-[40px] h-[40px]  px-4 border-2 border-[#7F00FF] hover:bg-[#7F00FF] hover:text-white duration-300"
+              className={`w-[100%] bg-[#7F00FF] text-black  shadow-2xl rounded-lg text-lg font-semibold lg:h-[40px] h-[40px]  px-4 border-2 border-[#7F00FF] hover:bg-[#7F00FF] hover:text-white duration-300 ${disabled ? 'opacity-50 pointer-events-none' : ''}`}
             >
               Register
             </button>
