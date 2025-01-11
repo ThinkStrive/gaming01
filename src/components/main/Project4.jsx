@@ -21,10 +21,10 @@ import { FaShieldHeart } from "react-icons/fa6";
 import { SiZap } from "react-icons/si";
 import SpinMaintanance from "../reuse/project4/SpinMaintanance.jsx";
 import { SPIN_CYCLE_LOCK_PAYPAL_RETURN_URL } from "../../utils/constants.js";
-import {usePlanExpiryCheck} from '../../utils/customHooks.js'
+import { usePlanExpiryCheck } from "../../utils/customHooks.js";
 
 const Project4 = ({ theme }) => {
-  const userData = JSON.parse(sessionStorage.getItem('userData'));
+  const userData = JSON.parse(sessionStorage.getItem("userData"));
   const [maintananceLock, setMaintananceLockScreen] = useState(false);
   const [isAlertAllowed, setIsAlertAllowed] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -38,6 +38,9 @@ const Project4 = ({ theme }) => {
   const [i3_btn, setI3_btn] = useState(false);
   const [i6_btn, setI6_btn] = useState(false);
   const [isLockFreeze, setIsLockFreeze] = useState(false);
+
+  const [dozenActiveLogic, setDozenActiveLogic] = useState(null);
+  const [colActiveLogic, setColActiveLogic] = useState(null);
 
   const [isEffectActive, setIsEffectActive] = useState(false);
   const [hasShown36Toast, setHasShown36Toast] = useState(false);
@@ -54,12 +57,12 @@ const Project4 = ({ theme }) => {
 
   const [maximumScoreDozen, setMaximumScoreDozen] = useState(() => {
     const savedLandedNumbers = localStorage.getItem("maximumScoreDozen");
-    return savedLandedNumbers ? JSON.parse(savedLandedNumbers) : '1';
+    return savedLandedNumbers ? JSON.parse(savedLandedNumbers) : "1";
   });
 
   const [maximumScoreCol, setMaximumScoreCol] = useState(() => {
     const savedLandedNumbers = localStorage.getItem("maximumScoreCol");
-    return savedLandedNumbers ? JSON.parse(savedLandedNumbers) : '1';
+    return savedLandedNumbers ? JSON.parse(savedLandedNumbers) : "1";
   });
 
   const [dozenScores, setDozenScores] = useState(() => {
@@ -745,7 +748,7 @@ const Project4 = ({ theme }) => {
     },
   };
 
-  console.log('landedNumbers', landedNumbers);
+  console.log("landedNumbers", landedNumbers);
 
   const handleClickRowHoverData = () => {
     if (landedNumbers.length >= 36) {
@@ -954,13 +957,9 @@ const Project4 = ({ theme }) => {
     }
   );
 
-  const [suggestionActiveColTwo, setSuggestionActiveColTwo] = useState(
-    () => {
-      return (
-        JSON.parse(localStorage.getItem("suggestionActiveCol4Two")) || false
-      );
-    }
-  );
+  const [suggestionActiveColTwo, setSuggestionActiveColTwo] = useState(() => {
+    return JSON.parse(localStorage.getItem("suggestionActiveCol4Two")) || false;
+  });
 
   const [suggestionActiveCol, setSuggestionActiveCol] = useState(() => {
     return JSON.parse(localStorage.getItem("suggestionActiveCol4")) || false;
@@ -986,13 +985,13 @@ const Project4 = ({ theme }) => {
       );
     });
 
-  const [userMissedSuggestionColTwo, setUserMissedSuggestionColTwo] =
-    useState(() => {
+  const [userMissedSuggestionColTwo, setUserMissedSuggestionColTwo] = useState(
+    () => {
       return (
-        JSON.parse(localStorage.getItem("userMissedSuggestionCol4Two")) ||
-        false
+        JSON.parse(localStorage.getItem("userMissedSuggestionCol4Two")) || false
       );
-    });
+    }
+  );
 
   const [userMissedSuggestionCol, setUserMissedSuggestionCol] = useState(() => {
     return (
@@ -1307,8 +1306,8 @@ const Project4 = ({ theme }) => {
     setRepeatDozenTwo(initialRepeatDozen);
     setRepeatCol(initialRepeatCol);
     setRepeatColTwo(initialRepeatCol);
-    setMaximumScoreDozen('1');
-    setMaximumScoreCol('1');
+    setMaximumScoreDozen("1");
+    setMaximumScoreCol("1");
     setSuggestionActive(initialSuggestionActive);
     setUserMissedSuggestion(initialUserMissedSuggestion);
     setSuggestionActiveDozen(initialSuggestionActive);
@@ -1363,8 +1362,8 @@ const Project4 = ({ theme }) => {
     localStorage.setItem("unitDataDozen4", 1);
     localStorage.setItem("unitDataCol4", 1);
     localStorage.setItem("lockProfitValue", 0);
-    localStorage.setItem("maximumScoreDozen", '1');
-    localStorage.setItem("maximumScoreCol", '1');
+    localStorage.setItem("maximumScoreDozen", "1");
+    localStorage.setItem("maximumScoreCol", "1");
     localStorage.setItem(
       "suggestionActive4",
       JSON.stringify(initialSuggestionActive)
@@ -1575,7 +1574,7 @@ const Project4 = ({ theme }) => {
         !Object.values(lastRow).includes(repeatDozen) &&
         !userMissedSuggestionDozen
       ) {
-        if (isAlertAllowed && dozenHoverEffect && maximumScoreDozen === '1') {
+        if (isAlertAllowed && dozenHoverEffect && maximumScoreDozen === "1") {
           showToast(`Book Your Loss!`, "error");
         }
         setUnitDataDozen(1);
@@ -1624,8 +1623,8 @@ const Project4 = ({ theme }) => {
         previousRow.doz3 !== lastRow.doz3 &&
         suggestionActiveDozenTwo
       ) {
-        console.log('suggestionActiveDozenTwo', suggestionActiveDozenTwo)
-        if (isAlertAllowed && dozenHoverEffect && maximumScoreDozen === '2') {
+        console.log("suggestionActiveDozenTwo", suggestionActiveDozenTwo);
+        if (isAlertAllowed && dozenHoverEffect && maximumScoreDozen === "2") {
           showToast(`Book Your Loss two!`, "error");
         }
         setRepeatDozenTwo("");
@@ -1637,36 +1636,36 @@ const Project4 = ({ theme }) => {
         }));
 
         // Initialize loss counters
-    let dozen1Loss = 0;
-    let dozen2Loss = 0;
-    let dozen3Loss = 0;
+        let dozen1Loss = 0;
+        let dozen2Loss = 0;
+        let dozen3Loss = 0;
 
-    // Check mismatches for doz1, doz2, and doz3
-    if (previousRow.doz1 !== lastRow.doz1) {
-      if (previousRow.doz1 === "1") dozen1Loss++;
-      if (previousRow.doz1 === "2") dozen2Loss++;
-      if (previousRow.doz1 === "3") dozen3Loss++;
-    }
+        // Check mismatches for doz1, doz2, and doz3
+        if (previousRow.doz1 !== lastRow.doz1) {
+          if (previousRow.doz1 === "1") dozen1Loss++;
+          if (previousRow.doz1 === "2") dozen2Loss++;
+          if (previousRow.doz1 === "3") dozen3Loss++;
+        }
 
-    if (previousRow.doz2 !== lastRow.doz2) {
-      if (previousRow.doz2 === "1") dozen1Loss++;
-      if (previousRow.doz2 === "2") dozen2Loss++;
-      if (previousRow.doz2 === "3") dozen3Loss++;
-    }
+        if (previousRow.doz2 !== lastRow.doz2) {
+          if (previousRow.doz2 === "1") dozen1Loss++;
+          if (previousRow.doz2 === "2") dozen2Loss++;
+          if (previousRow.doz2 === "3") dozen3Loss++;
+        }
 
-    if (previousRow.doz3 !== lastRow.doz3) {
-      if (previousRow.doz3 === "1") dozen1Loss++;
-      if (previousRow.doz3 === "2") dozen2Loss++;
-      if (previousRow.doz3 === "3") dozen3Loss++;
-    }
+        if (previousRow.doz3 !== lastRow.doz3) {
+          if (previousRow.doz3 === "1") dozen1Loss++;
+          if (previousRow.doz3 === "2") dozen2Loss++;
+          if (previousRow.doz3 === "3") dozen3Loss++;
+        }
 
-    // Update loss stats
-    setStatsDataTwo((prev) => ({
-      ...prev,
-      dozen1_loss: prev.dozen1_loss + dozen1Loss,
-      dozen2_loss: prev.dozen2_loss + dozen2Loss,
-      dozen3_loss: prev.dozen3_loss + dozen3Loss,
-    }));
+        // Update loss stats
+        setStatsDataTwo((prev) => ({
+          ...prev,
+          dozen1_loss: prev.dozen1_loss + dozen1Loss,
+          dozen2_loss: prev.dozen2_loss + dozen2Loss,
+          dozen3_loss: prev.dozen3_loss + dozen3Loss,
+        }));
       }
     }
 
@@ -1681,7 +1680,7 @@ const Project4 = ({ theme }) => {
         !Object.values(lastRow).includes(repeatCol) &&
         !userMissedSuggestionCol
       ) {
-        if (isAlertAllowed && colHoverEffect && maximumScoreCol === '1' ) {
+        if (isAlertAllowed && colHoverEffect && maximumScoreCol === "1") {
           showToast(`Book Your Loss! col`, "error");
         }
         setUnitDataCol(1);
@@ -1711,8 +1710,6 @@ const Project4 = ({ theme }) => {
       }
     }
 
-
-
     if (colRowData.length > 1 && colHoverEffect) {
       const previousRow = colRowData[colRowData.length - 2];
       const lastRow = colRowData[colRowData.length - 1];
@@ -1727,8 +1724,8 @@ const Project4 = ({ theme }) => {
         previousRow.col3 !== lastRow.col3 &&
         suggestionActiveColTwo
       ) {
-        console.log('suggestionActiveColTwo', suggestionActiveColTwo)
-        if (isAlertAllowed && colHoverEffect && maximumScoreCol === '2') {
+        console.log("suggestionActiveColTwo", suggestionActiveColTwo);
+        if (isAlertAllowed && colHoverEffect && maximumScoreCol === "2") {
           showToast(`Book Your Loss two!`, "error");
         }
         setRepeatColTwo("");
@@ -1740,36 +1737,36 @@ const Project4 = ({ theme }) => {
         }));
 
         // Initialize loss counters
-    let col1Loss = 0;
-    let col2Loss = 0;
-    let col3Loss = 0;
+        let col1Loss = 0;
+        let col2Loss = 0;
+        let col3Loss = 0;
 
-    // Check mismatches for doz1, doz2, and doz3
-    if (previousRow.col1 !== lastRow.col1) {
-      if (previousRow.col1 === "1") col1Loss++;
-      if (previousRow.col1 === "2") col2Loss++;
-      if (previousRow.col1 === "3") col3Loss++;
-    }
+        // Check mismatches for doz1, doz2, and doz3
+        if (previousRow.col1 !== lastRow.col1) {
+          if (previousRow.col1 === "1") col1Loss++;
+          if (previousRow.col1 === "2") col2Loss++;
+          if (previousRow.col1 === "3") col3Loss++;
+        }
 
-    if (previousRow.col2 !== lastRow.col2) {
-      if (previousRow.col2 === "1") col1Loss++;
-      if (previousRow.col2 === "2") col2Loss++;
-      if (previousRow.col2 === "3") col3Loss++;
-    }
+        if (previousRow.col2 !== lastRow.col2) {
+          if (previousRow.col2 === "1") col1Loss++;
+          if (previousRow.col2 === "2") col2Loss++;
+          if (previousRow.col2 === "3") col3Loss++;
+        }
 
-    if (previousRow.col3 !== lastRow.col3) {
-      if (previousRow.col3 === "1") col1Loss++;
-      if (previousRow.col3 === "2") col2Loss++;
-      if (previousRow.col3 === "3") col3Loss++;
-    }
+        if (previousRow.col3 !== lastRow.col3) {
+          if (previousRow.col3 === "1") col1Loss++;
+          if (previousRow.col3 === "2") col2Loss++;
+          if (previousRow.col3 === "3") col3Loss++;
+        }
 
-    // Update loss stats
-    setStatsDataTwo((prev) => ({
-      ...prev,
-      col1_loss: prev.col1_loss + col1Loss,
-      col2_loss: prev.col2_loss + col2Loss,
-      col3_loss: prev.col3_loss + col3Loss,
-    }));
+        // Update loss stats
+        setStatsDataTwo((prev) => ({
+          ...prev,
+          col1_loss: prev.col1_loss + col1Loss,
+          col2_loss: prev.col2_loss + col2Loss,
+          col3_loss: prev.col3_loss + col3Loss,
+        }));
       }
     }
 
@@ -2035,7 +2032,6 @@ const Project4 = ({ theme }) => {
         }
       }
 
-
       if (lastRow && Object.keys(lastRow).length === 3) {
         // Ensure previous row has valid data
         // Get the repeated dozen from the current suggestion index
@@ -2054,11 +2050,7 @@ const Project4 = ({ theme }) => {
           setSuggestion("");
           setSuggestionProcessedColTwo(null);
         }
-      } else if (
-        previousRow &&
-        suggestionActiveColTwo &&
-        repeatColTwo !== ""
-      ) {
+      } else if (previousRow && suggestionActiveColTwo && repeatColTwo !== "") {
         const previousRowValues = Object.values(previousRow);
 
         // Ensure previous row has valid data
@@ -2088,8 +2080,6 @@ const Project4 = ({ theme }) => {
           }
         }
       }
-
-
     }
   }, [colRowData, lastHitNumber, unitData]);
 
@@ -2489,15 +2479,15 @@ const Project4 = ({ theme }) => {
     // Handle Dozen and Column Data
     if (doz !== 0 || col !== 0) {
       setDozenRowData((prevRowData) => {
-        if(doz !== 'A'){
+        if (doz !== "A") {
           const lastRow = prevRowData[prevRowData.length - 1];
-        if (!lastRow || Object.keys(lastRow).length >= 3) {
-          return [...prevRowData, { [`doz1`]: doz }];
-        } else {
-          const keyIndex = Object.keys(lastRow).length + 1;
-          const updatedRow = { ...lastRow, [`doz${keyIndex}`]: doz };
-          return [...prevRowData.slice(0, -1), updatedRow];
-        }
+          if (!lastRow || Object.keys(lastRow).length >= 3) {
+            return [...prevRowData, { [`doz1`]: doz }];
+          } else {
+            const keyIndex = Object.keys(lastRow).length + 1;
+            const updatedRow = { ...lastRow, [`doz${keyIndex}`]: doz };
+            return [...prevRowData.slice(0, -1), updatedRow];
+          }
         }
       });
       setColRowData((prevRowData) => {
@@ -2516,7 +2506,7 @@ const Project4 = ({ theme }) => {
       if (doz === repeatDozen) {
         setSuggestionActiveDozen(false);
         setSuggestion("");
-        if (isAlertAllowed && dozenHoverEffect && maximumScoreDozen === '1') {
+        if (isAlertAllowed && dozenHoverEffect && maximumScoreDozen === "1") {
           showToast(`Win Dozen!`, "success");
         }
         // setUnitDataDozen(unitDataDozen + 1);
@@ -2633,7 +2623,7 @@ const Project4 = ({ theme }) => {
       if (doz === repeatDozenTwo) {
         setSuggestionActiveDozenTwo(false);
         setSuggestion("");
-        if (isAlertAllowed && dozenHoverEffect && maximumScoreDozen === '2' ) {
+        if (isAlertAllowed && dozenHoverEffect && maximumScoreDozen === "2") {
           showToast(`Win Dozen Two!`, "success");
         }
         // setUnitDataDozen(unitDataDozen + 1);
@@ -2706,7 +2696,7 @@ const Project4 = ({ theme }) => {
       if (col === repeatCol) {
         setSuggestionActiveCol(false);
         setSuggestion("");
-        if (isAlertAllowed && colHoverEffect && maximumScoreCol === '1' ) {
+        if (isAlertAllowed && colHoverEffect && maximumScoreCol === "1") {
           showToast(`Win Column!`, "success");
         }
         // setUnitDataCol(unitDataCol + 1);
@@ -2820,7 +2810,7 @@ const Project4 = ({ theme }) => {
       if (col === repeatColTwo) {
         setSuggestionActiveColTwo(false);
         setSuggestion("");
-        if (isAlertAllowed && colHoverEffect && maximumScoreCol === '2' ) {
+        if (isAlertAllowed && colHoverEffect && maximumScoreCol === "2") {
           showToast(`Win Col Two!`, "success");
         }
         // setUnitDataDozen(unitDataDozen + 1);
@@ -2968,21 +2958,25 @@ const Project4 = ({ theme }) => {
 
   const [planLockScreen, setPlanLockScreen] = useState(false);
 
-   // custom hook to check plan expiry locally
-   usePlanExpiryCheck( userData?.subscriptionType , userData?.rouletteExpiryDate , setPlanLockScreen );
+  // custom hook to check plan expiry locally
+  usePlanExpiryCheck(
+    userData?.subscriptionType,
+    userData?.rouletteExpiryDate,
+    setPlanLockScreen
+  );
 
   const fetchUserDetails = async () => {
     try {
-        const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
+      const response = await axios.get(`${USER_DETAILS}/${userData._id}`);
 
-        const { status, data } = response?.data;
+      const { status, data } = response?.data;
 
-        if (status && data) {
-            sessionStorage.setItem("userData", JSON.stringify(data));
-            setPlanLockScreen(!data?.projectsPlan?.project4);
-        }
+      if (status && data) {
+        sessionStorage.setItem("userData", JSON.stringify(data));
+        setPlanLockScreen(!data?.projectsPlan?.project4);
+      }
     } catch (err) {
-        console.log('Error fetching user details:', err);
+      console.log("Error fetching user details:", err);
     }
   };
 
@@ -2992,9 +2986,7 @@ const Project4 = ({ theme }) => {
 
   const onPaymentSuccess = () => {
     onPaymentSuccess();
-  }
-
-
+  };
 
   // useEffect(() => {
   //   const fetchUserDetails = async () => {
@@ -3015,11 +3007,6 @@ const Project4 = ({ theme }) => {
   //   // Call the async function
   //   fetchUserDetails();
   // }, []);
-
-
-
-
-
 
   const determineImage = (() => {
     const winPer = analyzeData.dozenWinPer;
@@ -3475,30 +3462,44 @@ const Project4 = ({ theme }) => {
     }
   }, [landedNumbers, hasShown36Toast]);
 
-  console.log('analyze data', analyzeData)
+  console.log("analyze data", analyzeData);
 
+  useEffect(() => {
+    if (landedNumbers.length >= 36) {
+      const { dozenWinPer, dozenWinPerTwo, colWinPer, colWinPerTwo } =
+        analyzeData;
 
-  useEffect(() =>{
-     if(landedNumbers.length >= 36){
-      const { dozenWinPer, dozenWinPerTwo, colWinPer, colWinPerTwo } = analyzeData;
-
-      console.log('dozenWinPer', dozenWinPer)
-      console.log('dozenWinPerTwo', dozenWinPerTwo)
+      console.log("dozenWinPer", dozenWinPer);
+      console.log("dozenWinPerTwo", dozenWinPerTwo);
 
       // Determine which dozen has the higher percentage
       const maxScoreDozen = dozenWinPer > dozenWinPerTwo ? "1" : "2";
       const maxScoreCol = colWinPer > colWinPerTwo ? "1" : "2";
-  
+
       // Update maximumScoreDozen based on the comparison
       setMaximumScoreDozen(maxScoreDozen);
       setMaximumScoreCol(maxScoreCol);
-  
-     }
-  },[landedNumbers])
+    }
+  }, [landedNumbers]);
+
+  console.log('maximum dozen', maximumScoreDozen)
+  console.log('maximum Column', maximumScoreCol)
+
+  // useEffect(()=>{
+  //   // if(landedNumbers.length > 36){
+  //   //     console.log('dozen row data', dozenRowData)
+  //   // }
+  //   console.log('dozen row data', dozenRowData)
+  //   console.log('column row data', colRowData)
+  //   if(dozenRowData.length > 0){
+  //     let lastData = dozenRowData[dozenRowData.length - 1]
+  //     let lastDataLength = Object.keys(lastData).length;
+  //     // if()
+  //   }
+  // },[dozenRowData, repeatDozen, repeatCol, repeatDozenTwo, repeatColTwo, colRowData])
 
   return (
     <>
-    
       <div className="sticky lg:top-0 max-sm:top-0 md:top-0 z-30 ">
         {/* <Nav theme={theme} setTheme={setTheme} /> */}
 
@@ -3758,8 +3759,12 @@ const Project4 = ({ theme }) => {
                     className="h-[33.33%] border bgPercentage border-slate-300 flex justify-center relative items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold rounded-md "
                     style={{
                       backgroundColor:
-                        (maximumScoreDozen === "1" && repeatDozen === "1" && dozenHoverEffect) ||
-                        (maximumScoreDozen === "2" && repeatDozenTwo === "1" && dozenHoverEffect)
+                        (maximumScoreDozen === "1" &&
+                          repeatDozen === "1" &&
+                          dozenHoverEffect) ||
+                        (maximumScoreDozen === "2" &&
+                          repeatDozenTwo === "1" &&
+                          dozenHoverEffect)
                           ? "#58d68d"
                           : "",
                     }}
@@ -3782,8 +3787,12 @@ const Project4 = ({ theme }) => {
                     className="h-[33.33%] border bgPercentage border-slate-300 flex justify-center relative items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold rounded-md "
                     style={{
                       backgroundColor:
-                        (maximumScoreDozen === "1" && repeatDozen === "2" && dozenHoverEffect) ||
-                        (maximumScoreDozen === "2" && repeatDozenTwo === "2" && dozenHoverEffect)
+                        (maximumScoreDozen === "1" &&
+                          repeatDozen === "2" &&
+                          dozenHoverEffect) ||
+                        (maximumScoreDozen === "2" &&
+                          repeatDozenTwo === "2" &&
+                          dozenHoverEffect)
                           ? "#58d68d"
                           : "",
                     }}
@@ -3806,8 +3815,12 @@ const Project4 = ({ theme }) => {
                     className="h-[33.33%] border bgPercentage border-slate-300 flex justify-center relative items-center cursor-pointer hover:bg-green-200 hover:text-black font-semibold rounded-md "
                     style={{
                       backgroundColor:
-                        (maximumScoreDozen === "1" && repeatDozen === "3" && dozenHoverEffect) ||
-                        (maximumScoreDozen === "2" && repeatDozenTwo === "3" && dozenHoverEffect)
+                        (maximumScoreDozen === "1" &&
+                          repeatDozen === "3" &&
+                          dozenHoverEffect) ||
+                        (maximumScoreDozen === "2" &&
+                          repeatDozenTwo === "3" &&
+                          dozenHoverEffect)
                           ? "#58d68d"
                           : "",
                     }}
@@ -3932,6 +3945,8 @@ const Project4 = ({ theme }) => {
                     );
                   })}
 
+                  
+
                   {/* cols */}
                   <div className="w-full flex border-white font-white">
                     <div
@@ -3942,8 +3957,12 @@ const Project4 = ({ theme }) => {
                       // }}
                       style={{
                         backgroundColor:
-                          (maximumScoreCol === "1" && repeatCol === "1" && colHoverEffect) ||
-                          (maximumScoreCol === "2" && repeatColTwo === "1" && colHoverEffect)
+                          (maximumScoreCol === "1" &&
+                            repeatCol === "1" &&
+                            colHoverEffect) ||
+                          (maximumScoreCol === "2" &&
+                            repeatColTwo === "1" &&
+                            colHoverEffect)
                             ? "#58d68d"
                             : "",
                       }}
@@ -3968,8 +3987,12 @@ const Project4 = ({ theme }) => {
                       // }}
                       style={{
                         backgroundColor:
-                          (maximumScoreCol === "1" && repeatCol === "2" && colHoverEffect) ||
-                          (maximumScoreCol === "2" && repeatColTwo === "2" && colHoverEffect)
+                          (maximumScoreCol === "1" &&
+                            repeatCol === "2" &&
+                            colHoverEffect) ||
+                          (maximumScoreCol === "2" &&
+                            repeatColTwo === "2" &&
+                            colHoverEffect)
                             ? "#58d68d"
                             : "",
                       }}
@@ -3993,8 +4016,12 @@ const Project4 = ({ theme }) => {
                       // }}
                       style={{
                         backgroundColor:
-                          (maximumScoreCol === "1" && repeatCol === "3" && colHoverEffect) ||
-                          (maximumScoreCol === "2" && repeatColTwo === "3" && colHoverEffect)
+                          (maximumScoreCol === "1" &&
+                            repeatCol === "3" &&
+                            colHoverEffect) ||
+                          (maximumScoreCol === "2" &&
+                            repeatColTwo === "3" &&
+                            colHoverEffect)
                             ? "#58d68d"
                             : "",
                       }}
@@ -5149,27 +5176,25 @@ const Project4 = ({ theme }) => {
             {/* Dozen */}
 
             <div className="mt-5">
-              <header className="flex gap-2 tabs tabs-boxed w-full bg-purple-800 mb-1 py-2">
-                
+              <header className={`flex gap-2 tabs tabs-boxed w-full bg-purple-800 mb-1 py-2`}>
+              {/* <header className="flex gap-2 tabs tabs-boxed w-full bg-purple-800 mb-1 py-2"> */}
                 <button
-                  className={`px-2 font-bold w-[50%] py-1 ${
-                    dozenActiveTab === 1
-                      ? "bg-white text-black"
-                      : "bg-superPurple  text-white"
-                  } rounded`}
+                  className={`px-2 font-bold w-[50%] py-1 
+                   
+                  ${maximumScoreDozen === '1' ? 'bg-green-500 text-white' : 'bg-white text-black'}
+                  rounded`}
                   onClick={() => setDozenActiveTab(1)}
                 >
-                  Dozen 1
+                  Dozen 
                 </button>
                 <button
-                  className={`px-2 font-bold w-[50%] py-1 ${
-                    dozenActiveTab === 2
-                      ? "bg-white text-black"
-                      : "bg-superPurple  text-white"
-                  } rounded`}
+                  className={`px-2 font-bold w-[50%] py-1 
+                   
+                  ${maximumScoreDozen === '2' ? 'bg-green-500 text-white' : 'bg-white text-black'}
+                  rounded`}
                   onClick={() => setDozenActiveTab(2)}
                 >
-                  Dozen 2
+                  Dozen 
                 </button>
               </header>
 
@@ -5658,32 +5683,29 @@ const Project4 = ({ theme }) => {
               </div>
             </div>
 
-
-
             {/* Column  Logics*/}
 
             <div className="mt-5">
               <header className="flex gap-2 tabs tabs-boxed w-full bg-purple-800 mb-1 py-2">
-               
                 <button
                   className={`mx-2 font-bold w-[50%] py-1 ${
-                    columnActiveTab === 1
-                      ? "bg-white text-black"
-                      : "bg-superPurple text-white"
+                    maximumScoreCol === '1'
+                      ? "bg-green-500 text-white"
+                      : "bg-white text-black"
                   } rounded`}
                   onClick={() => setColumnActiveTab(1)}
                 >
-                  Column 1
+                  Column
                 </button>
                 <button
                   className={`mx-2 font-bold w-[50%] py-1 ${
-                    columnActiveTab === 2
-                      ? "bg-white text-black"
-                      : "bg-superPurple text-white"
+                    maximumScoreCol === '2'
+                      ? "bg-green-500 text-white"
+                      : "bg-white text-black"
                   } rounded`}
                   onClick={() => setColumnActiveTab(2)}
                 >
-                  Column 2
+                  Column
                 </button>
               </header>
 
@@ -6179,7 +6201,6 @@ const Project4 = ({ theme }) => {
           </div>
         </div>
       )}
-      
 
       {/* <div
         className="h-[100%] text-center mt-5 w-full overflow-y-scroll rounded-xl p-2 scrollOff"
@@ -6199,7 +6220,7 @@ const Project4 = ({ theme }) => {
        
       </div> */}
       <div className="flex flex-col items-center p-2 mt-8">
-      <h2
+        <h2
           className={`text-lg font-bold text-white my-4 bg-purplegrad rounded-xl py-2 px-4`}
         >
           Money Management Tool
@@ -6218,8 +6239,12 @@ const Project4 = ({ theme }) => {
         />
       )} */}
 
-
-      {planLockScreen && <Lock onPaymentSuccess={onPaymentSuccess} returnURL={SPIN_CYCLE_LOCK_PAYPAL_RETURN_URL} />}
+      {planLockScreen && (
+        <Lock
+          onPaymentSuccess={onPaymentSuccess}
+          returnURL={SPIN_CYCLE_LOCK_PAYPAL_RETURN_URL}
+        />
+      )}
     </>
   );
 };
