@@ -1,22 +1,40 @@
 import React from 'react';
+import { useEffect, useRef, useState } from 'react';
+const LegalTermsModal = ({  setAccepted, 
+    accepted, 
+    setDisabled, 
+    colors = "text-base-950 hover:text-gray-100",
+    isOpen,
+    setIsOpen  }) => {
 
-const LegalTermsModal = ({ setAccepted, accepted, setDisabled, colors = "text-blue-600  hover:text-blue-800" }) => {
-    const [isOpen, setIsOpen] = React.useState(false);
+  const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
+  const contentRef = useRef(null);
+
+  const handleScroll = (e) => {
+    const element = e.target;
+    if (element.scrollHeight - element.scrollTop <= element.clientHeight + 100) {
+      setHasScrolledToBottom(true);
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      setHasScrolledToBottom(false);
+    }
+  }, [isOpen]);
 
     return (
         <div>
-            {/* Modal Trigger */}
-            <div
-                className={`${colors} font-semibold whitespace-nowrap cursor-pointer underline`}
-                onClick={() => setIsOpen(true)}
-            >
-                <p>Click to read the terms and conditions</p>
-            </div>
+      <div
+        className={`${colors} font-semibold whitespace-nowrap text-md cursor-pointer underline decoration-softBlue`}
+        onClick={() => setIsOpen(true)}
+      >
+        <p className='text-softBlue'>Read the Terms and Conditions</p>
+      </div>
 
-            {/* Modal */}
-            {isOpen && (
-                <div className="modal modal-open">
-                    <div className="modal-box max-w-4xl  max-h-[70vh] bg-slate-100 text-gray-900 w-11/12" style={{
+      {isOpen && (
+        <div className="modal modal-open">
+                    <div className="modal-box max-w-4xl  h-[80vh] mt-14 lg:h-[80vh] md:h-[80vh] sm:h-[90vh] bg-slate-50 text-gray-900 w-11/12" style={{
                         overflow: "scroll",
                         scrollbarWidth: "none",
                     }}>
@@ -124,19 +142,54 @@ const LegalTermsModal = ({ setAccepted, accepted, setDisabled, colors = "text-bl
 
                                 <div className="mt-8">
                                     {/* <h2 className="text-2xl font-bold mb-4">Footer Section</h2>
-    <ul className="list-disc pl-6">
-      <li>Terms of Service</li>
-      <li>Privacy Policy</li>
-      <li>Refund Policy</li>
-      <li>Disclaimer</li>
-    </ul> */}
+                                        <ul className="list-disc pl-6">
+                                        <li>Terms of Service</li>
+                                        <li>Privacy Policy</li>
+                                        <li>Refund Policy</li>
+                                        <li>Disclaimer</li>
+                                        </ul> */}
                                     <p className="mt-4">Legal Compliance: Users are responsible for ensuring their activities on RouletteRise.com adhere to the applicable laws of their jurisdiction. RouletteRise.com is a tool for educational and entertainment purposes only and does not facilitate or endorse illegal gambling activities.</p>
                                 </div>
                             </div>
+                            <div className="modal-action flex-col gap-4 mt-6">
+                            <div className="flex items-center gap-2">
+                                <input
+                                    type="checkbox"
+                                    className="checkbox checkbox-primary"
+                                    checked={accepted}
+                                    onChange={(e) => setAccepted(e.target.checked)}
+                                />
+                                <label className="text-sm">
+                                    I have read and agree to all the terms, policies, and disclaimers
+                                </label>
+                            </div>
+
+                            <div className="flex gap-2 justify-end w-full">
+                                <button
+                                    className="btn btn-ghost font-bold"
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    Close
+                                </button>
+                                <button
+                                    className={`btn ${accepted ? 'btn-primary' : 'btn-disabled'} font-bold`}
+                                    disabled={!accepted}
+                                    onClick={() => {
+                                        if (accepted) {
+                                            console.log('Terms accepted');
+                                            setIsOpen(false);
+                                            setDisabled(false);
+                                        }
+                                    }}
+                                >
+                                    Accept
+                                </button>
+                            </div>
+                        </div>
                         </div>
 
                         {/* Modal Footer */}
-                        <div className="modal-action flex-col gap-4 mt-6">
+                        {/* <div className="modal-action flex-col gap-4 mt-6">
                             <div className="flex items-center gap-2">
                                 <input
                                     type="checkbox"
@@ -170,9 +223,9 @@ const LegalTermsModal = ({ setAccepted, accepted, setDisabled, colors = "text-bl
                                     Accept
                                 </button>
                             </div>
-                        </div>
-                    </div>
-
+                        </div> */}
+                    </div>  
+                    
                     <div
                         className="modal-backdrop bg-neutral opacity-50"
                         onClick={() => setIsOpen(false)}

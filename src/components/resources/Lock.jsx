@@ -10,6 +10,7 @@ import LegalTermsModal from "./LegalTermsModal.jsx";
 const Lock = ({ onPaymentSuccess, returnURL }) => {
   const [disabled, setDisabled] = useState(true); // State to control disabled status
   const [accepted, setAccepted] = useState(false);
+const [showTermsModal, setShowTermsModal] = useState(false);
 
 
   return (
@@ -41,7 +42,7 @@ const Lock = ({ onPaymentSuccess, returnURL }) => {
                     <span className="text-gray-600 ml-2">/ {plan.duration}</span>
                   </div>
 
-                  <div className="w-full mt-auto">
+                  <div className={`w-full mt-auto  ${(!accepted ) ? 'opacity-50 cursor-not-allowed pointer-events-none' : ''}`}>
                     <PaypalButtonComponent
                       subFor={plan.subFor}
                       subType={plan.subType}
@@ -58,9 +59,17 @@ const Lock = ({ onPaymentSuccess, returnURL }) => {
                 type="checkbox"
                 className="checkbox checkbox-primary border-2 border-black"
                 checked={accepted}
-                disabled={!accepted}  
+                onChange={() => setShowTermsModal(true)}
+                onClick={(e) => e.preventDefault()} 
               />
-              <LegalTermsModal accepted={accepted} setAccepted={setAccepted} setDisabled={setDisabled} />
+              <LegalTermsModal 
+                accepted={accepted} 
+                setAccepted={setAccepted} 
+                setDisabled={setDisabled} 
+                colors={`text-base-950 hover:text-gray-100`}
+                isOpen={showTermsModal}
+                setIsOpen={setShowTermsModal}
+              />
             </div>
           </div>
 

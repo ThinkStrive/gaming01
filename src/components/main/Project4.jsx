@@ -55,6 +55,10 @@ const Project4 = ({ theme }) => {
     return savedLandedNumbers ? JSON.parse(savedLandedNumbers) : [];
   });
 
+  const [maximumScoreNumber, setMaximumScoreNumber] = useState(() => {
+    const savedLandedNumbers = localStorage.getItem("maximumScoreNumber");
+    return savedLandedNumbers ? JSON.parse(savedLandedNumbers) : "1";
+  });
   const [maximumScoreDozen, setMaximumScoreDozen] = useState(() => {
     const savedLandedNumbers = localStorage.getItem("maximumScoreDozen");
     return savedLandedNumbers ? JSON.parse(savedLandedNumbers) : "1";
@@ -748,7 +752,7 @@ const Project4 = ({ theme }) => {
     },
   };
 
-  console.log("landedNumbers", landedNumbers);
+  // console.log("landedNumbers", landedNumbers);
 
   const handleClickRowHoverData = () => {
     if (landedNumbers.length >= 36) {
@@ -789,6 +793,24 @@ const Project4 = ({ theme }) => {
           colLossPerTwo: 0,
           winPerDataTwo: 0,
           lossPerDataTwo: 0,
+          winPerDataThree: 0,
+          lossPerDataThree: 0,
+        };
+  });
+
+  const [statsDataThree, setStatsDataThree] = useState(() => {
+    const savedCountData = localStorage.getItem("StatisticsDataThree");
+    return savedCountData
+      ? JSON.parse(savedCountData)
+      : {
+          Agroup: 0,
+          Agroup_loss: 0,
+          Bgroup: 0,
+          Bgroup_loss: 0,
+          Cgroup: 0,
+          Cgroup_loss: 0,
+          Dgroup: 0,
+          Dgroup_loss: 0,
         };
   });
 
@@ -833,6 +855,8 @@ const Project4 = ({ theme }) => {
           Bgroup_loss: 0,
           Cgroup: 0,
           Cgroup_loss: 0,
+          Dgroup: 0,
+          Dgroup_loss: 0,
           dozen1: 0,
           dozen1_loss: 0,
           dozen2: 0,
@@ -906,6 +930,10 @@ const Project4 = ({ theme }) => {
     const savedCountData = localStorage.getItem("rowData4");
     return savedCountData ? JSON.parse(savedCountData) : [];
   });
+  const [rowDataTwo, setRowDataTwo] = useState(() => {
+    const savedCountData = localStorage.getItem("rowData4Two");
+    return savedCountData ? JSON.parse(savedCountData) : [];
+  });
 
   const [dozenRowData, setDozenRowData] = useState(() => {
     const savedCountData = localStorage.getItem("dozenRowData4");
@@ -923,6 +951,12 @@ const Project4 = ({ theme }) => {
 
   const [repeatLetter, setRepeatLetter] = useState(() => {
     return localStorage.getItem("repeatLetter4") || "";
+  });
+  const [repeatLetterTwo, setRepeatLetterTwo] = useState(() => {
+    return localStorage.getItem("repeatLetter4Two") || "";
+  });
+  const [repeatLetterThree, setRepeatLetterThree] = useState(() => {
+    return localStorage.getItem("repeatLetter4Three") || "";
   });
 
   const [repeatDozen, setRepeatDozen] = useState(() => {
@@ -943,6 +977,12 @@ const Project4 = ({ theme }) => {
 
   const [suggestionActive, setSuggestionActive] = useState(() => {
     return JSON.parse(localStorage.getItem("suggestionActive4")) || false;
+  });
+  const [suggestionActiveTwo, setSuggestionActiveTwo] = useState(() => {
+    return JSON.parse(localStorage.getItem("suggestionActive4Two")) || false;
+  });
+  const [suggestionActiveThree, setSuggestionActiveThree] = useState(() => {
+    return JSON.parse(localStorage.getItem("suggestionActive4Three")) || false;
   });
 
   const [suggestionActiveDozen, setSuggestionActiveDozen] = useState(() => {
@@ -968,6 +1008,18 @@ const Project4 = ({ theme }) => {
   const [userMissedSuggestion, setUserMissedSuggestion] = useState(() => {
     return JSON.parse(localStorage.getItem("userMissedSuggestion4")) || false;
   });
+  const [userMissedSuggestionTwo, setUserMissedSuggestionTwo] = useState(() => {
+    return (
+      JSON.parse(localStorage.getItem("userMissedSuggestion4Two")) || false
+    );
+  });
+  const [userMissedSuggestionThree, setUserMissedSuggestionThree] = useState(
+    () => {
+      return (
+        JSON.parse(localStorage.getItem("userMissedSuggestion4Three")) || false
+      );
+    }
+  );
 
   const [userMissedSuggestionDozen, setUserMissedSuggestionDozen] = useState(
     () => {
@@ -1031,6 +1083,22 @@ const Project4 = ({ theme }) => {
     const savedHistoryData = localStorage.getItem("suggestionProcessedRow4");
     return savedHistoryData ? JSON.parse(savedHistoryData) : null;
   });
+
+  const [suggestionProcessedRowTwo, setSuggestionProcessedRowTwo] = useState(
+    () => {
+      const savedHistoryData = localStorage.getItem(
+        "suggestionProcessedRow4Two"
+      );
+      return savedHistoryData ? JSON.parse(savedHistoryData) : null;
+    }
+  );
+  const [suggestionProcessedRowThree, setSuggestionProcessedRowThree] =
+    useState(() => {
+      const savedHistoryData = localStorage.getItem(
+        "suggestionProcessedRow4Three"
+      );
+      return savedHistoryData ? JSON.parse(savedHistoryData) : null;
+    });
 
   const [suggestionProcessedDoz, setSuggestionProcessedDoz] = useState(() => {
     const savedHistoryData = localStorage.getItem("suggestionProcessedDoz4");
@@ -1124,6 +1192,18 @@ const Project4 = ({ theme }) => {
       JSON.stringify(suggestionProcessedRow)
     );
   }, [suggestionProcessedRow]);
+  useEffect(() => {
+    localStorage.setItem(
+      "suggestionProcessedRow4Three",
+      JSON.stringify(suggestionProcessedRowThree)
+    );
+  }, [suggestionProcessedRowThree]);
+  useEffect(() => {
+    localStorage.setItem(
+      "suggestionProcessedRow4Two",
+      JSON.stringify(suggestionProcessedRowTwo)
+    );
+  }, [suggestionProcessedRowTwo]);
 
   useEffect(() => {
     localStorage.setItem(
@@ -1155,6 +1235,9 @@ const Project4 = ({ theme }) => {
   useEffect(() => {
     localStorage.setItem("rowData4", JSON.stringify(rowData));
   }, [rowData]);
+  useEffect(() => {
+    localStorage.setItem("rowData4Two", JSON.stringify(rowDataTwo));
+  }, [rowDataTwo]);
 
   useEffect(() => {
     localStorage.setItem("dozenRowData4", JSON.stringify(dozenRowData));
@@ -1171,6 +1254,12 @@ const Project4 = ({ theme }) => {
   useEffect(() => {
     localStorage.setItem("repeatLetter4", repeatLetter);
   }, [repeatLetter]);
+  useEffect(() => {
+    localStorage.setItem("repeatLetter4Two", repeatLetterTwo);
+  }, [repeatLetterTwo]);
+  useEffect(() => {
+    localStorage.setItem("repeatLetter4Three", repeatLetterThree);
+  }, [repeatLetterThree]);
 
   useEffect(() => {
     localStorage.setItem("repeatDozen4", repeatDozen);
@@ -1191,6 +1280,18 @@ const Project4 = ({ theme }) => {
   useEffect(() => {
     localStorage.setItem("suggestionActive4", JSON.stringify(suggestionActive));
   }, [suggestionActive]);
+  useEffect(() => {
+    localStorage.setItem(
+      "suggestionActive4Two",
+      JSON.stringify(suggestionActiveTwo)
+    );
+  }, [suggestionActiveTwo]);
+  useEffect(() => {
+    localStorage.setItem(
+      "suggestionActive4Three",
+      JSON.stringify(suggestionActiveThree)
+    );
+  }, [suggestionActiveThree]);
 
   useEffect(() => {
     localStorage.setItem("analyzeData4", JSON.stringify(analyzeData));
@@ -1203,6 +1304,9 @@ const Project4 = ({ theme }) => {
   useEffect(() => {
     localStorage.setItem("StatisticsDataTwo", JSON.stringify(statsDataTwo));
   }, [statsDataTwo]);
+  useEffect(() => {
+    localStorage.setItem("StatisticsDataThree", JSON.stringify(statsDataThree));
+  }, [statsDataThree]);
 
   // useEffect(() => {
   //   localStorage.setItem("StatisticsData", JSON.stringify(statsData));
@@ -1228,6 +1332,18 @@ const Project4 = ({ theme }) => {
       JSON.stringify(userMissedSuggestion)
     );
   }, [userMissedSuggestion]);
+  useEffect(() => {
+    localStorage.setItem(
+      "userMissedSuggestion4Two",
+      JSON.stringify(userMissedSuggestionTwo)
+    );
+  }, [userMissedSuggestionTwo]);
+  useEffect(() => {
+    localStorage.setItem(
+      "userMissedSuggestion4Three",
+      JSON.stringify(userMissedSuggestionThree)
+    );
+  }, [userMissedSuggestionThree]);
 
   useEffect(() => {
     localStorage.setItem(
@@ -1270,6 +1386,8 @@ const Project4 = ({ theme }) => {
       colLossPerTwo: 0,
       winPerDataTwo: 0,
       lossPerDataTwo: 0,
+      winPerDataThree: 0,
+      lossPerDataThree: 0,
     };
     const initialStatsData = {
       Agroup: 0,
@@ -1295,21 +1413,39 @@ const Project4 = ({ theme }) => {
       even: 0,
       even_loss: 0,
     };
+    const initialStatsDataTwo = {
+      Agroup: 0,
+      Agroup_loss: 0,
+      Bgroup: 0,
+      Bgroup_loss: 0,
+      Cgroup: 0,
+      Cgroup_loss: 0,
+      Dgroup: 0,
+      Dgroup_loss: 0,
+    };
 
     // Reset the component's state
     setRowData(initialRowData);
+    setRowDataTwo(initialRowData);
     setDozenRowData(initialDozenRowData);
     setColRowData(initialColRowData);
     setSuggestion(initialSuggestion);
     setRepeatLetter(initialRepeatLetter);
+    setRepeatLetterTwo(initialRepeatLetter);
+    setRepeatLetterThree(initialRepeatLetter);
     setRepeatDozen(initialRepeatDozen);
     setRepeatDozenTwo(initialRepeatDozen);
     setRepeatCol(initialRepeatCol);
     setRepeatColTwo(initialRepeatCol);
+    setMaximumScoreNumber("1");
     setMaximumScoreDozen("1");
     setMaximumScoreCol("1");
     setSuggestionActive(initialSuggestionActive);
+    setSuggestionActiveTwo(initialSuggestionActive);
+    setSuggestionActiveThree(initialSuggestionActive);
     setUserMissedSuggestion(initialUserMissedSuggestion);
+    setUserMissedSuggestionTwo(initialUserMissedSuggestion);
+    setUserMissedSuggestionThree(initialUserMissedSuggestion);
     setSuggestionActiveDozen(initialSuggestionActive);
     setSuggestionActiveDozenTwo(initialSuggestionActive);
     setSuggestionActiveColTwo(initialSuggestionActive);
@@ -1321,9 +1457,11 @@ const Project4 = ({ theme }) => {
     setAnalyzeData(initialAnalyzeData);
     setStatsData(initialStatsData);
     setStatsDataTwo(initialStatsData);
-    setStatsDataTwo(initialStatsData);
+    setStatsDataThree(initialStatsDataTwo);
     setMoneyManagementData([]);
     setSuggestionProcessedRow(null);
+    setSuggestionProcessedRowTwo(null);
+    setSuggestionProcessedRowThree(null);
     setSuggestionProcessedDoz(null);
     setSuggestionProcessedDozTwo(null);
     setSuggestionProcessedColTwo(null);
@@ -1340,6 +1478,7 @@ const Project4 = ({ theme }) => {
     // Set the initial values in localStorage
     localStorage.setItem("analyzeData4", JSON.stringify(initialAnalyzeData));
     localStorage.setItem("rowData4", JSON.stringify(initialRowData));
+    localStorage.setItem("rowData4Two", JSON.stringify(initialRowData));
     localStorage.setItem("dozenRowData4", JSON.stringify(initialDozenRowData));
     localStorage.setItem("colRowData4", JSON.stringify(initialColRowData));
     localStorage.setItem("moneyManagement4", JSON.stringify([]));
@@ -1348,12 +1487,16 @@ const Project4 = ({ theme }) => {
     localStorage.setItem("columnScores", JSON.stringify({ 1: 0, 2: 0, 3: 0 }));
     localStorage.setItem("rowDataScores", JSON.stringify({ A: 0, B: 0, C: 0 }));
     localStorage.setItem("suggestionProcessedRow4", JSON.stringify(null));
+    localStorage.setItem("suggestionProcessedRow4Three", JSON.stringify(null));
+    localStorage.setItem("suggestionProcessedRow4Two", JSON.stringify(null));
     localStorage.setItem("suggestionProcessedDoz4", JSON.stringify(null));
     localStorage.setItem("suggestionProcessedDoz4Two", JSON.stringify(null));
     localStorage.setItem("suggestionProcessedCol4Two", JSON.stringify(null));
     localStorage.setItem("suggestionProcessedCol4", JSON.stringify(null));
     localStorage.setItem("suggestion4", initialSuggestion);
     localStorage.setItem("repeatLetter4", initialRepeatLetter);
+    localStorage.setItem("repeatLetter4Two", initialRepeatLetter);
+    localStorage.setItem("repeatLetter4Three", initialRepeatLetter);
     localStorage.setItem("repeatDozen4", initialRepeatDozen);
     localStorage.setItem("repeatDozen4Two", initialRepeatDozen);
     localStorage.setItem("repeatCol4", initialRepeatCol);
@@ -1362,6 +1505,7 @@ const Project4 = ({ theme }) => {
     localStorage.setItem("unitDataDozen4", 1);
     localStorage.setItem("unitDataCol4", 1);
     localStorage.setItem("lockProfitValue", 0);
+    localStorage.setItem("maximumScoreNumber", "1");
     localStorage.setItem("maximumScoreDozen", "1");
     localStorage.setItem("maximumScoreCol", "1");
     localStorage.setItem(
@@ -1369,7 +1513,23 @@ const Project4 = ({ theme }) => {
       JSON.stringify(initialSuggestionActive)
     );
     localStorage.setItem(
+      "suggestionActive4Two",
+      JSON.stringify(initialSuggestionActive)
+    );
+    localStorage.setItem(
+      "suggestionActive4Three",
+      JSON.stringify(initialSuggestionActive)
+    );
+    localStorage.setItem(
       "userMissedSuggestion4",
+      JSON.stringify(initialUserMissedSuggestion)
+    );
+    localStorage.setItem(
+      "userMissedSuggestion4Two",
+      JSON.stringify(initialUserMissedSuggestion)
+    );
+    localStorage.setItem(
+      "userMissedSuggestion4Three",
       JSON.stringify(initialUserMissedSuggestion)
     );
     localStorage.setItem(
@@ -1511,10 +1671,10 @@ const Project4 = ({ theme }) => {
     localStorage.setItem("nonCircleData", JSON.stringify(resetCircleData));
   };
 
-  console.log("dozen row data", dozenRowData);
-  console.log("Repeat dozen two", repeatDozenTwo);
-  console.log("suggestionActiveDozenTwo", suggestionActiveDozenTwo);
-  console.log("userMissedSuggestionDozenTwo", userMissedSuggestionDozenTwo);
+  // console.log("dozen row data", dozenRowData);
+  // console.log("Repeat dozen two", repeatDozenTwo);
+  // console.log("suggestionActiveDozenTwo", suggestionActiveDozenTwo);
+  // console.log("userMissedSuggestionDozenTwo", userMissedSuggestionDozenTwo);
 
   useEffect(() => {
     let newLossEntries = [];
@@ -1530,7 +1690,7 @@ const Project4 = ({ theme }) => {
         !Object.values(lastRow).includes(repeatLetter) &&
         !userMissedSuggestion
       ) {
-        if (isAlertAllowed && rowHoverEffect) {
+        if (isAlertAllowed && rowHoverEffect && maximumScoreNumber === "1") {
           showToast(`Book Your Loss!`, "error");
         }
         setUnitData(1);
@@ -1550,6 +1710,96 @@ const Project4 = ({ theme }) => {
             repeatLetter === "B" ? prev.Bgroup_loss + 1 : prev.Bgroup_loss,
           Cgroup_loss:
             repeatLetter === "C" ? prev.Cgroup_loss + 1 : prev.Cgroup_loss,
+        }));
+
+        // Prepare the letter loss entry
+        newLossEntries.push({
+          spin: lastHitNumber,
+          winLoss: "L",
+          unit: unitData,
+          total: repeatLetter === "A" ? unitData * -11.5 : unitData * -12,
+          covered: repeatLetter === "A" ? 13 : 12,
+        });
+      }
+    }
+
+    if (rowDataTwo.length > 1 && rowHoverEffect) {
+      const previousRow = rowDataTwo[rowDataTwo.length - 2];
+      const lastRow = rowDataTwo[rowDataTwo.length - 1];
+      if (
+        Object.keys(previousRow).length === 3 &&
+        Object.keys(lastRow).length === 3 &&
+        repeatLetterThree &&
+        !Object.values(lastRow).includes(repeatLetterThree) &&
+        !userMissedSuggestionThree
+      ) {
+        if (isAlertAllowed && rowHoverEffect && maximumScoreNumber === "3") {
+          showToast(`Book Your Loss!`, "error");
+        }
+        // setUnitData(1);
+        setRepeatLetterThree("");
+        setUserMissedSuggestionThree(true);
+        setSuggestionActiveThree(false);
+        setAnalyzeData((prev) => ({
+          ...prev,
+          lossPerDataThree: prev.lossPerDataThree + 1,
+        }));
+
+        setStatsDataThree((prev) => ({
+          ...prev,
+          Agroup_loss:
+            repeatLetterThree === "A" ? prev.Agroup_loss + 1 : prev.Agroup_loss,
+          Bgroup_loss:
+            repeatLetterThree === "B" ? prev.Bgroup_loss + 1 : prev.Bgroup_loss,
+          Cgroup_loss:
+            repeatLetterThree === "C" ? prev.Cgroup_loss + 1 : prev.Cgroup_loss,
+          Dgroup_loss:
+            repeatLetterThree === "D" ? prev.Dgroup_loss + 1 : prev.Dgroup_loss,
+        }));
+
+        // Prepare the letter loss entry
+        // newLossEntries.push({
+        //   spin: lastHitNumber,
+        //   winLoss: "L",
+        //   unit: unitData,
+        //   total: repeatLetter === "A" ? unitData * -11.5 : unitData * -12,
+        //   covered: repeatLetter === "A" ? 13 : 12,
+        // });
+      }
+    }
+
+    if (rowData.length > 1 && rowHoverEffect) {
+      const previousRow = rowData[rowData.length - 2];
+      const lastRow = rowData[rowData.length - 1];
+      if (
+        Object.keys(previousRow).length === 3 &&
+        Object.keys(lastRow).length === 3 &&
+        repeatLetterTwo &&
+        previousRow.let1 !== lastRow.let1 &&
+        previousRow.let2 !== lastRow.let2 &&
+        previousRow.let3 !== lastRow.let3 &&
+        suggestionActiveTwo
+      ) {
+        if (isAlertAllowed && rowHoverEffect && maximumScoreNumber === "2") {
+          showToast(`Book Your Loss!`, "error");
+        }
+        setUnitData(1);
+        setRepeatLetterTwo("");
+        setUserMissedSuggestionTwo(true);
+        setSuggestionActiveTwo(false);
+        setAnalyzeData((prev) => ({
+          ...prev,
+          lossPerDataTwo: prev.lossPerDataTwo + 1,
+        }));
+
+        setStatsDataTwo((prev) => ({
+          ...prev,
+          Agroup_loss:
+            repeatLetterTwo === "A" ? prev.Agroup_loss + 1 : prev.Agroup_loss,
+          Bgroup_loss:
+            repeatLetterTwo === "B" ? prev.Bgroup_loss + 1 : prev.Bgroup_loss,
+          Cgroup_loss:
+            repeatLetterTwo === "C" ? prev.Cgroup_loss + 1 : prev.Cgroup_loss,
         }));
 
         // Prepare the letter loss entry
@@ -1612,8 +1862,8 @@ const Project4 = ({ theme }) => {
     if (dozenRowData.length > 1 && dozenHoverEffect) {
       const previousRow = dozenRowData[dozenRowData.length - 2];
       const lastRow = dozenRowData[dozenRowData.length - 1];
-      console.log("previousRow", previousRow);
-      console.log("lastRow", lastRow);
+      // console.log("previousRow", previousRow);
+      // console.log("lastRow", lastRow);
       if (
         Object.keys(previousRow).length === 3 &&
         Object.keys(lastRow).length === 3 &&
@@ -1623,9 +1873,9 @@ const Project4 = ({ theme }) => {
         previousRow.doz3 !== lastRow.doz3 &&
         suggestionActiveDozenTwo
       ) {
-        console.log("suggestionActiveDozenTwo", suggestionActiveDozenTwo);
+        // console.log("suggestionActiveDozenTwo", suggestionActiveDozenTwo);
         if (isAlertAllowed && dozenHoverEffect && maximumScoreDozen === "2") {
-          showToast(`Book Your Loss two!`, "error");
+          showToast(`Book Your Loss!`, "error");
         }
         setRepeatDozenTwo("");
         setUserMissedSuggestionDozenTwo(true);
@@ -1681,7 +1931,7 @@ const Project4 = ({ theme }) => {
         !userMissedSuggestionCol
       ) {
         if (isAlertAllowed && colHoverEffect && maximumScoreCol === "1") {
-          showToast(`Book Your Loss! col`, "error");
+          showToast(`Book Your Loss! column`, "error");
         }
         setUnitDataCol(1);
         setRepeatCol("");
@@ -1713,8 +1963,8 @@ const Project4 = ({ theme }) => {
     if (colRowData.length > 1 && colHoverEffect) {
       const previousRow = colRowData[colRowData.length - 2];
       const lastRow = colRowData[colRowData.length - 1];
-      console.log("previousRow", previousRow);
-      console.log("lastRow", lastRow);
+      // console.log("previousRow", previousRow);
+      // console.log("lastRow", lastRow);
       if (
         Object.keys(previousRow).length === 3 &&
         Object.keys(lastRow).length === 3 &&
@@ -1724,9 +1974,9 @@ const Project4 = ({ theme }) => {
         previousRow.col3 !== lastRow.col3 &&
         suggestionActiveColTwo
       ) {
-        console.log("suggestionActiveColTwo", suggestionActiveColTwo);
+        // console.log("suggestionActiveColTwo", suggestionActiveColTwo);
         if (isAlertAllowed && colHoverEffect && maximumScoreCol === "2") {
-          showToast(`Book Your Loss two!`, "error");
+          showToast(`Book Your Loss!`, "error");
         }
         setRepeatColTwo("");
         setUserMissedSuggestionColTwo(true);
@@ -1778,6 +2028,8 @@ const Project4 = ({ theme }) => {
     rowData,
     dozenRowData,
     colRowData,
+    rowDataTwo,
+    // landedNumbers
     // repeatLetter,
     // repeatDozen,
     // repeatDozenTwo,
@@ -1787,10 +2039,13 @@ const Project4 = ({ theme }) => {
     // userMissedSuggestionCol,
   ]);
 
+  console.log("row data", rowData);
+
   useEffect(() => {
     if (rowData.length > 0) {
       const lastRowIndex = rowData.length - 1;
       const lastRow = rowData[lastRowIndex];
+      let previousRow = rowData[lastRowIndex - 1];
 
       // Only process if we haven't already processed this row's first column
       if (
@@ -1842,8 +2097,117 @@ const Project4 = ({ theme }) => {
           setSuggestionProcessedRow(null); // Reset flag if no suggestion
         }
       }
+
+      // Only process if we haven't already processed this row's first column
+      if (lastRow && Object.keys(lastRow).length === 3) {
+        // Ensure previous row has valid data
+        // Get the repeated dozen from the current suggestion index
+        const repeatedLetter = lastRow.let1;
+        if (repeatedLetter) {
+          // Trigger the suggestion
+          setRepeatLetterTwo(repeatedLetter);
+          setSuggestionActiveTwo(true);
+          setUserMissedSuggestionTwo(false);
+          setSuggestion(`Suggestion: The repeated dozen is ${repeatedLetter}`);
+
+          // Update the suggestion index
+          setSuggestionProcessedRowTwo(3);
+        } else {
+          // Reset if no valid suggestion is available
+          setSuggestion("");
+          setSuggestionProcessedRowTwo(null);
+        }
+      } else if (previousRow && suggestionActiveTwo && repeatLetterTwo !== "") {
+        const previousRowValues = Object.values(previousRow);
+
+        // Ensure previous row has valid data
+        if (previousRowValues.length === 3) {
+          // Determine the current index for suggestion
+          let suggestionIndex =
+            suggestionProcessedRowTwo !== null
+              ? (suggestionProcessedRowTwo + 1) % previousRowValues.length
+              : 0;
+
+          // Get the repeated dozen from the current suggestion index
+          const repeatedDozen = previousRowValues[suggestionIndex];
+
+          if (repeatedDozen) {
+            // Trigger the suggestion
+            setRepeatLetterTwo(repeatedDozen);
+            // setSuggestionActiveDozenTwo(true);
+            setUserMissedSuggestionTwo(false);
+            setSuggestion(`Suggestion: The repeated dozen is ${repeatedDozen}`);
+
+            // Update the suggestion index
+            setSuggestionProcessedRowTwo(suggestionIndex);
+          } else {
+            // Reset if no valid suggestion is available
+            setSuggestion("");
+            setSuggestionProcessedRowTwo(null);
+          }
+        }
+      }
     }
-  }, [rowData, repeatLetter, userMissedSuggestion, lastHitNumber, unitData]);
+  }, [rowData]);
+
+  useEffect(() => {
+    if (rowDataTwo.length > 0) {
+      const lastRowIndex = rowDataTwo.length - 1;
+      const lastRow = rowDataTwo[lastRowIndex];
+      let previousRow = rowDataTwo[lastRowIndex - 1];
+
+      // Only process if we haven't already processed this row's first column
+      if (
+        Object.keys(lastRow).length === 3 &&
+        suggestionProcessedRowThree !== lastRowIndex
+      ) {
+        const values = Object.values(lastRow);
+        const occurrences = values.reduce((acc, letter) => {
+          acc[letter] = (acc[letter] || 0) + 1;
+          return acc;
+        }, {});
+        const repeatedLetter = Object.keys(occurrences).find(
+          (letter) => occurrences[letter] > 1
+        );
+
+        // Check if the repeated letter is in the first column
+        if (repeatedLetter) {
+          // Only trigger the suggestion if it hasn't been processed for this row
+          setRepeatLetterThree(repeatedLetter);
+          setSuggestionActiveThree(true);
+          setUserMissedSuggestionThree(false);
+          setSuggestion(`Suggestion: The repeated letter is ${repeatedLetter}`);
+
+          // Add data to moneyManagementData only for the first column
+          // const newEntry = {
+          //   spin: "",
+          //   winLoss: "",
+          //   unit: unitData,
+          //   total: 0,
+          //   covered: repeatedLetter === "A" ? 13 : 12,
+          // };
+
+          // setMoneyManagementData((prevData) => {
+          //   const updatedData = [...prevData, newEntry];
+          //   localStorage.setItem(
+          //     "moneyManagement4",
+          //     JSON.stringify(updatedData)
+          //   );
+          //   return updatedData;
+          // });
+
+          // Mark this row as processed to prevent duplicate additions for this row
+          setSuggestionProcessedRowThree(lastRowIndex);
+        } else if (!repeatedLetter) {
+          // Reset if there's no repeated letter
+          setSuggestion("");
+          // setRepeatLetter("");
+          // setSuggestionActive(false);
+          setSuggestionProcessedRowThree(null); // Reset flag if no suggestion
+        }
+      }
+    }
+  }, [rowDataTwo]);
 
   useEffect(() => {
     if (dozenRowData.length > 0) {
@@ -1907,8 +2271,8 @@ const Project4 = ({ theme }) => {
         }
       }
 
-      console.log("lastRow", lastRow);
-      console.log("previousRow", previousRow);
+      // console.log("lastRow", lastRow);
+      // console.log("previousRow", previousRow);
 
       // Only process if we haven't already processed this row's first column
       if (lastRow && Object.keys(lastRow).length === 3) {
@@ -1970,8 +2334,8 @@ const Project4 = ({ theme }) => {
     // repeatDozen,
     // userMissedSuggestionDozen,
     // userMissedSuggestionDozenTwo,
-    lastHitNumber,
-    unitData,
+    // lastHitNumber,
+    // unitData,
   ]);
 
   useEffect(() => {
@@ -2081,7 +2445,7 @@ const Project4 = ({ theme }) => {
         }
       }
     }
-  }, [colRowData, lastHitNumber, unitData]);
+  }, [colRowData]);
 
   // Effect to handle multiple losses (letter, dozen, and column)
 
@@ -2094,6 +2458,8 @@ const Project4 = ({ theme }) => {
   const handleClickNumber = (
     key,
     number,
+    letter,
+    letterTwo,
     doz,
     dozen,
     col,
@@ -2103,8 +2469,7 @@ const Project4 = ({ theme }) => {
     ssRange,
     dsRange,
     wTracker,
-    quadra,
-    letter
+    quadra
   ) => {
     const {
       countUpdates,
@@ -2345,14 +2710,25 @@ const Project4 = ({ theme }) => {
         return [...prevRowData.slice(0, -1), updatedRow];
       }
     });
+    setRowDataTwo((prevRowData) => {
+      const lastRow = prevRowData[prevRowData.length - 1];
+      if (!lastRow || Object.keys(lastRow).length >= 3) {
+        return [...prevRowData, { [`let1`]: letterTwo }];
+      } else {
+        const keyIndex = Object.keys(lastRow).length + 1;
+        const updatedRow = { ...lastRow, [`let${keyIndex}`]: letterTwo };
+        return [...prevRowData.slice(0, -1), updatedRow];
+      }
+    });
 
     // Handle suggestion for letters (RowData)
     if (suggestionActive) {
+      // console.log('letter', letter)
       if (letter === repeatLetter) {
         setSuggestionActive(false);
         setSuggestion("");
-        if (isAlertAllowed && rowHoverEffect) {
-          showToast(`Win Number!`, "success");
+        if (isAlertAllowed && rowHoverEffect && maximumScoreNumber === "1") {
+          showToast(`Win Number !`, "success");
         }
         setUnitData(unitData + 1);
         setRepeatLetter("");
@@ -2476,6 +2852,270 @@ const Project4 = ({ theme }) => {
         });
       }
     }
+
+    if (suggestionActiveThree) {
+      // console.log('letter', letter)
+      if (letterTwo === repeatLetterThree) {
+        setSuggestionActiveThree(false);
+        setSuggestion("");
+        if (isAlertAllowed && rowHoverEffect && maximumScoreNumber === "3") {
+          showToast(`Win Number!`, "success");
+        }
+        setUnitData(unitData + 1);
+        setRepeatLetterThree("");
+        setAnalyzeData((prev) => ({
+          ...prev,
+          winPerDataThree: prev.winPerDataThree + 1,
+        }));
+
+        setStatsDataThree((prev) => ({
+          ...prev,
+          Agroup: repeatLetterThree === "A" ? prev.Agroup + 1 : prev.Agroup,
+          Bgroup: repeatLetterThree === "B" ? prev.Bgroup + 1 : prev.Bgroup,
+          Cgroup: repeatLetterThree === "C" ? prev.Cgroup + 1 : prev.Cgroup,
+          Dgroup: repeatLetterThree === "D" ? prev.Dgroup + 1 : prev.Dgroup,
+        }));
+
+        // setMoneyManagementData((prevData) => {
+        //   // Flag to indicate if an update has been made
+        //   let updateMade = false;
+        //   const updatedData = prevData.map((entry, index) => {
+        //     // Get the reverse indices of the last three objects: 3, 2, 1
+        //     if (
+        //       !updateMade && // Update only if no prior match was made
+        //       entry.spin === "" && // Match condition
+        //       entry.winLoss === "" &&
+        //       entry.total === 0 &&
+        //       (entry.covered === 13 || entry.covered === 12) // Fix logical condition
+        //     ) {
+        //       updateMade = true;
+        //       return {
+        //         ...entry,
+        //         spin: {
+        //           number: number,
+        //           color: "",
+        //         },
+        //         winLoss: "W",
+        //         total: letter === "A" ? unitData * 23 : unitData * 24,
+        //       };
+        //     }
+        //     return entry; // Keep other entries unchanged
+        //   });
+
+        //   return updatedData;
+        // });
+
+        // if (!isReachedTimeToIncreaseLetter) {
+        //   setUnitData(unitData / 2);
+        // }
+
+        // if (unitData >= 3) {
+        //   setUnitData(1);
+        // } else {
+        //   setUnitData(unitData + 1);
+        // }
+      } else {
+        setSuggestion(`Suggestion: The repeated letter is ${repeatLetter}`);
+
+        // Step 1: Update `moneyManagementData` with the winLoss: "L" entry
+        // setMoneyManagementData((prevData) => {
+        //   const updatedData = prevData.map((entry, index) => {
+        //     if (
+        //       index >= prevData.length - 3 && // Only check the last three objects
+        //       entry.spin === "" && // Match condition
+        //       entry.winLoss === "" &&
+        //       entry.total === 0
+        //     ) {
+        //       return {
+        //         ...entry,
+        //         spin: {
+        //           number: number,
+        //           color: "",
+        //         },
+        //         winLoss: "L",
+        //         total: -1,
+        //       };
+        //     }
+        //     return entry;
+        //   });
+
+        //   // Save updated data to localStorage
+        //   localStorage.setItem("moneyManagement4", JSON.stringify(updatedData));
+        //   return updatedData;
+        // });
+
+        // // Step 2: Use the updated `moneyManagementData` to calculate `bothLose`
+        // setMoneyManagementData((prevData) => {
+        //   const filteredData = prevData.filter(
+        //     (entry) => entry.covered === 13 || entry.covered === 12
+        //   );
+
+        //   // Skip the last entry and pick the two before it
+        //   const lastTwoEntries = filteredData.slice(-2); // Get the second-last and third-last entries
+
+        //   // Ensure there are exactly two entries and check if both have `winLoss` as "L"
+        //   const bothLose =
+        //     lastTwoEntries.length === 2 &&
+        //     lastTwoEntries.every((entry) => entry.winLoss === "L");
+
+        //   // Update states based on `bothLose`
+        //   if (bothLose) {
+        //     setUnitData((prevUnit) => prevUnit * 2);
+        //   }
+
+        //   setIsReachedTimeToIncreaseLetter(bothLose);
+
+        //   // Add a new entry if needed
+        //   if ((landedNumbers.length + 1) % 3 !== 0) {
+        //     const newEntry = {
+        //       spin: "",
+        //       winLoss: "",
+        //       unit: bothLose ? unitData * 2 : unitData,
+        //       total: 0,
+        //       covered: repeatLetter === "A" ? 13 : 12,
+        //     };
+
+        //     const newData = [...prevData, newEntry];
+        //     localStorage.setItem("moneyManagement4", JSON.stringify(newData));
+        //     return newData;
+        //   }
+
+        //   return prevData;
+        // });
+      }
+    }
+
+    if (suggestionActiveTwo) {
+      // console.log('letter', letter)
+      if (letter === repeatLetterTwo) {
+        setSuggestionActiveTwo(false);
+        setSuggestion("");
+        if (isAlertAllowed && rowHoverEffect && maximumScoreNumber === "2") {
+          showToast(`Win Number!`, "success");
+        }
+        setUnitData(unitData + 1);
+        setRepeatLetterTwo("");
+        setAnalyzeData((prev) => ({
+          ...prev,
+          winPerDataTwo: prev.winPerDataTwo + 1,
+        }));
+
+        setStatsDataTwo((prev) => ({
+          ...prev,
+          Agroup: repeatLetterTwo === "A" ? prev.Agroup + 1 : prev.Agroup,
+          Bgroup: repeatLetterTwo === "B" ? prev.Bgroup + 1 : prev.Bgroup,
+          Cgroup: repeatLetterTwo === "C" ? prev.Cgroup + 1 : prev.Cgroup,
+        }));
+
+        // setMoneyManagementData((prevData) => {
+        //   // Flag to indicate if an update has been made
+        //   let updateMade = false;
+        //   const updatedData = prevData.map((entry, index) => {
+        //     // Get the reverse indices of the last three objects: 3, 2, 1
+        //     if (
+        //       !updateMade && // Update only if no prior match was made
+        //       entry.spin === "" && // Match condition
+        //       entry.winLoss === "" &&
+        //       entry.total === 0 &&
+        //       (entry.covered === 13 || entry.covered === 12) // Fix logical condition
+        //     ) {
+        //       updateMade = true;
+        //       return {
+        //         ...entry,
+        //         spin: {
+        //           number: number,
+        //           color: "",
+        //         },
+        //         winLoss: "W",
+        //         total: letter === "A" ? unitData * 23 : unitData * 24,
+        //       };
+        //     }
+        //     return entry; // Keep other entries unchanged
+        //   });
+
+        //   return updatedData;
+        // });
+
+        // if (!isReachedTimeToIncreaseLetter) {
+        //   setUnitData(unitData / 2);
+        // }
+
+        // if (unitData >= 3) {
+        //   setUnitData(1);
+        // } else {
+        //   setUnitData(unitData + 1);
+        // }
+      } else {
+        setSuggestion(`Suggestion: The repeated letter is ${repeatLetterTwo}`);
+
+        // Step 1: Update `moneyManagementData` with the winLoss: "L" entry
+        // setMoneyManagementData((prevData) => {
+        //   const updatedData = prevData.map((entry, index) => {
+        //     if (
+        //       index >= prevData.length - 3 && // Only check the last three objects
+        //       entry.spin === "" && // Match condition
+        //       entry.winLoss === "" &&
+        //       entry.total === 0
+        //     ) {
+        //       return {
+        //         ...entry,
+        //         spin: {
+        //           number: number,
+        //           color: "",
+        //         },
+        //         winLoss: "L",
+        //         total: -1,
+        //       };
+        //     }
+        //     return entry;
+        //   });
+
+        //   // Save updated data to localStorage
+        //   localStorage.setItem("moneyManagement4", JSON.stringify(updatedData));
+        //   return updatedData;
+        // });
+
+        // // Step 2: Use the updated `moneyManagementData` to calculate `bothLose`
+        // setMoneyManagementData((prevData) => {
+        //   const filteredData = prevData.filter(
+        //     (entry) => entry.covered === 13 || entry.covered === 12
+        //   );
+
+        //   // Skip the last entry and pick the two before it
+        //   const lastTwoEntries = filteredData.slice(-2); // Get the second-last and third-last entries
+
+        //   // Ensure there are exactly two entries and check if both have `winLoss` as "L"
+        //   const bothLose =
+        //     lastTwoEntries.length === 2 &&
+        //     lastTwoEntries.every((entry) => entry.winLoss === "L");
+
+        //   // Update states based on `bothLose`
+        //   if (bothLose) {
+        //     setUnitData((prevUnit) => prevUnit * 2);
+        //   }
+
+        //   setIsReachedTimeToIncreaseLetter(bothLose);
+
+        //   // Add a new entry if needed
+        //   if ((landedNumbers.length + 1) % 3 !== 0) {
+        //     const newEntry = {
+        //       spin: "",
+        //       winLoss: "",
+        //       unit: bothLose ? unitData * 2 : unitData,
+        //       total: 0,
+        //       covered: repeatLetter === "A" ? 13 : 12,
+        //     };
+
+        //     const newData = [...prevData, newEntry];
+        //     localStorage.setItem("moneyManagement4", JSON.stringify(newData));
+        //     return newData;
+        //   }
+
+        //   return prevData;
+        // });
+      }
+    }
+
     // Handle Dozen and Column Data
     if (doz !== 0 || col !== 0) {
       setDozenRowData((prevRowData) => {
@@ -2615,16 +3255,16 @@ const Project4 = ({ theme }) => {
         // });
       }
     }
-    console.log("suggestionActiveDozenTwo", suggestionActiveDozenTwo);
-    console.log("doz", doz);
-    console.log("repeatDozenTwo", repeatDozenTwo);
-    console.log(doz === repeatDozenTwo);
+    // console.log("suggestionActiveDozenTwo", suggestionActiveDozenTwo);
+    // console.log("doz", doz);
+    // console.log("repeatDozenTwo", repeatDozenTwo);
+    // console.log(doz === repeatDozenTwo);
     if (suggestionActiveDozenTwo) {
       if (doz === repeatDozenTwo) {
         setSuggestionActiveDozenTwo(false);
         setSuggestion("");
         if (isAlertAllowed && dozenHoverEffect && maximumScoreDozen === "2") {
-          showToast(`Win Dozen Two!`, "success");
+          showToast(`Win Dozen!`, "success");
         }
         // setUnitDataDozen(unitDataDozen + 1);
         setRepeatDozenTwo("");
@@ -2811,7 +3451,7 @@ const Project4 = ({ theme }) => {
         setSuggestionActiveColTwo(false);
         setSuggestion("");
         if (isAlertAllowed && colHoverEffect && maximumScoreCol === "2") {
-          showToast(`Win Col Two!`, "success");
+          showToast(`Win Col!`, "success");
         }
         // setUnitDataDozen(unitDataDozen + 1);
         setRepeatColTwo("");
@@ -2913,7 +3553,7 @@ const Project4 = ({ theme }) => {
     // }
   };
 
-  console.log("setStatsDataTwo", statsDataTwo);
+  // console.log("setStatsDataTwo", statsDataTwo);
 
   useEffect(() => {
     // Calculate the new scores for each dozen, column, and row once the array length reaches 30
@@ -3382,7 +4022,7 @@ const Project4 = ({ theme }) => {
     ])
   );
 
-  console.log("dozenScores percentages:", percentagesDozen);
+  // console.log("dozenScores percentages:", percentagesDozen);
 
   // Calculate total for column scores
   const totalColumn = Object.values(columnScores).reduce(
@@ -3462,28 +4102,47 @@ const Project4 = ({ theme }) => {
     }
   }, [landedNumbers, hasShown36Toast]);
 
-  console.log("analyze data", analyzeData);
+  // console.log("analyze data", analyzeData);
 
   useEffect(() => {
     if (landedNumbers.length >= 36) {
-      const { dozenWinPer, dozenWinPerTwo, colWinPer, colWinPerTwo } =
-        analyzeData;
+      const {
+        dozenWinPer,
+        dozenWinPerTwo,
+        colWinPer,
+        colWinPerTwo,
+        winPerData,
+        winPerDataTwo,
+        winPerDataThree,
+      } = analyzeData;
 
-      console.log("dozenWinPer", dozenWinPer);
-      console.log("dozenWinPerTwo", dozenWinPerTwo);
+      // console.log("dozenWinPer", dozenWinPer);
+      // console.log("dozenWinPerTwo", dozenWinPerTwo);
 
       // Determine which dozen has the higher percentage
       const maxScoreDozen = dozenWinPer > dozenWinPerTwo ? "1" : "2";
       const maxScoreCol = colWinPer > colWinPerTwo ? "1" : "2";
+      const maxScoreNumber =
+        winPerDataThree > winPerDataTwo && winPerDataThree > winPerData
+          ? "3"
+          : winPerDataTwo > winPerData && winPerDataTwo > winPerDataThree
+          ? "2"
+          : "1";
 
       // Update maximumScoreDozen based on the comparison
       setMaximumScoreDozen(maxScoreDozen);
       setMaximumScoreCol(maxScoreCol);
+      setMaximumScoreNumber(maxScoreNumber);
     }
   }, [landedNumbers]);
 
-  console.log('maximum dozen', maximumScoreDozen)
-  console.log('maximum Column', maximumScoreCol)
+  // console.log('maximum dozen', maximumScoreDozen)
+  console.log("analyzeData", analyzeData);
+  console.log("rowDataTwo", rowDataTwo);
+  console.log("statsData", statsData);
+  console.log("statsDataTwo", statsDataTwo);
+  console.log("statsDataThree", statsDataThree);
+  console.log("maximumScoreNumber", maximumScoreNumber);
 
   // useEffect(()=>{
   //   // if(landedNumbers.length > 36){
@@ -3725,13 +4384,23 @@ const Project4 = ({ theme }) => {
             <div className="w-[100%] h-full max-sm:h-[100%] lg:h-[90%] md:h-[110%] xl:h-[50rem]">
               <div className="w-[82%] ml-[18%] h-[7%] flex">
                 <div
-                  className={`${
-                    repeatLetter === "A" && rowHoverEffect
-                      ? "bg-[#58d68d]"
-                      : "bg-customGreen"
-                  } w-[100%] flex justify-center items-center cursor-pointer border rounded-md`}
-                  onClick={() => handleClickNumber("zero", 0, 0, 0, 0)}
+                  className={` w-[100%] flex justify-center items-center cursor-pointer border rounded-md`}
+                  onClick={() =>
+                    handleClickNumber("zero", 0, "A", "A", 0, 0, 0)
+                  }
                   style={{
+                    backgroundColor:
+                      (maximumScoreNumber === "1" &&
+                        rowHoverEffect &&
+                        repeatLetter === "A") ||
+                      (maximumScoreNumber === "2" &&
+                        rowHoverEffect &&
+                        repeatLetterTwo === "A") ||
+                      (maximumScoreNumber === "3" &&
+                        rowHoverEffect &&
+                        repeatLetterThree === "A")
+                        ? "#58d68d"
+                        : "#00A843",
                     borderColor: theme === "light" ? "#F5F5F5" : "#0A1F44",
                   }}
                 >
@@ -3898,7 +4567,15 @@ const Project4 = ({ theme }) => {
                           `}
                         style={{
                           backgroundColor:
-                            item.letter === repeatLetter && rowHoverEffect
+                            (maximumScoreNumber === "1" &&
+                              rowHoverEffect &&
+                              repeatLetter === item.letter) ||
+                            (maximumScoreNumber === "2" &&
+                              rowHoverEffect &&
+                              repeatLetterTwo === item.letter) ||
+                            (maximumScoreNumber === "3" &&
+                              rowHoverEffect &&
+                              repeatLetterThree === item.letterTwo)
                               ? "#58d68d"
                               : item.bg,
                           borderColor:
@@ -3908,6 +4585,8 @@ const Project4 = ({ theme }) => {
                           handleClickNumber(
                             item.numString,
                             item.num,
+                            item.letter,
+                            item.letterTwo,
                             item.doz,
                             item.dozen,
                             item.col,
@@ -3917,9 +4596,7 @@ const Project4 = ({ theme }) => {
                             item.ssRange,
                             item.dsRange,
                             item.wTracker,
-                            item.quadra,
-                            item.letter,
-                            item.letterTwo
+                            item.quadra
                           )
                         }
                         key={item.num}
@@ -3944,8 +4621,6 @@ const Project4 = ({ theme }) => {
                       </div>
                     );
                   })}
-
-                  
 
                   {/* cols */}
                   <div className="w-full flex border-white font-white">
@@ -4282,38 +4957,47 @@ const Project4 = ({ theme }) => {
             {/* Numbers  */}
 
             <div className="mt-5">
-              {/* <header className="flex gap-2 tabs tabs-boxed w-full bg-purple-800 mb-1 py-2">
+              <header className="flex gap-2 tabs tabs-boxed w-full bg-purple-800 mb-1 py-2">
                 <button
-                  className={`px-2  font-bold w-[33%] py-1 ${
-                    activeTab === 1
-                      ? "bg-white text-black"
-                      : "bg-superPurple text-white"
-                  } rounded`}
+                  className={`px-2 font-bold w-[50%] py-1 
+                   
+                  ${
+                    maximumScoreNumber === "1"
+                      ? "bg-green-500 text-white"
+                      : "bg-white text-black"
+                  }
+                  rounded`}
                   onClick={() => setActiveTab(1)}
                 >
                   12 Number
                 </button>
                 <button
-                  className={`px-2 font-bold w-[33%] py-1 ${
-                    activeTab === 2
-                      ? "bg-white text-black"
-                      : "bg-superPurple text-white"
-                  } rounded`}
+                  className={`px-2 font-bold w-[50%] py-1 
+                   
+                  ${
+                    maximumScoreNumber === "3"
+                      ? "bg-green-500 text-white"
+                      : "bg-white text-black"
+                  }
+                  rounded`}
                   onClick={() => setActiveTab(2)}
                 >
                   9 Number
                 </button>
                 <button
-                  className={`px-2 font-bold w-[33%] py-1 ${
-                    activeTab === 3
-                      ? "bg-white text-black"
-                      : "bg-superPurple text-white"
-                  } rounded`}
+                  className={`px-2 font-bold w-[50%] py-1 
+                   
+                  ${
+                    maximumScoreNumber === "2"
+                      ? "bg-green-500 text-white"
+                      : "bg-white text-black"
+                  }
+                  rounded`}
                   onClick={() => setActiveTab(3)}
                 >
                   12 Number
                 </button>
-              </header> */}
+              </header>
 
               {/* Tab Content */}
               <div className="">
@@ -4632,16 +5316,22 @@ const Project4 = ({ theme }) => {
                                   {" "}
                                   0{" "}
                                 </span>
-                                &nbsp; &nbsp; &nbsp;
-                                2,4,6,13,15,17,19,21,25,27,32,34
+                                &nbsp; &nbsp; &nbsp; 2,4,15,17,19,21,25,32,34
                               </p>
 
                               <p className="border-y my-1 py-1">
                                 <span className="font-bold h-5 w-5 p-1 text-center bg-customRed ps-2 rounded-md">
                                   {" "}
+                                  6{" "}
+                                </span>{" "}
+                                &nbsp; &nbsp; 6,8,10,11,13,23,27,30,36
+                              </p>
+                              <p className="border-y my-1 py-1">
+                                <span className="font-bold h-5 w-5 p-1 text-center bg-customRed ps-2 rounded-md">
+                                  {" "}
                                   1{" "}
                                 </span>{" "}
-                                &nbsp; &nbsp; 1,5,8,10,11,16,20,23,24,30,33,36
+                                &nbsp; &nbsp; 1,5,9,14,16,20,24,31,33
                               </p>
 
                               <p>
@@ -4649,7 +5339,7 @@ const Project4 = ({ theme }) => {
                                   {" "}
                                   3{" "}
                                 </span>{" "}
-                                &nbsp; &nbsp;3,7,9,12,14,18,22,26,28,29,31,35
+                                &nbsp; &nbsp; 3,7,12,18,22,26,28,29,35
                               </p>
                             </div>
                           </div>
@@ -4725,8 +5415,8 @@ const Project4 = ({ theme }) => {
                             className="text-center pt-1"
                           >
                             {(() => {
-                              const winPer = statsData.Agroup;
-                              const lossPer = statsData.Agroup_loss;
+                              const winPer = statsDataThree.Agroup;
+                              const lossPer = statsDataThree.Agroup_loss;
                               const total = winPer + lossPer;
                               const winPercentage = (winPer / total) * 100;
 
@@ -4762,6 +5452,69 @@ const Project4 = ({ theme }) => {
                         </div>
                       </div>
 
+                      {/* we need change the 6 Number  */}
+
+                      <div className="flex border-2 border-purple-500 p-1 rounded-xl">
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <h2 className="text-white text-center p-2 bg-purple-500 rounded-xl font-semibold sm:text-xs px-4  ">
+                            6
+                          </h2>
+                        </div>
+                        {/* Overlayed text */}
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center items-center"
+                        >
+                          <p
+                            style={{
+                              fontSize: "1.2rem",
+                              fontWeight: "bold",
+                              color: "#FFFFFF",
+                              width: "33%",
+                            }}
+                            className="text-center pt-1"
+                          >
+                            {(() => {
+                              const winPer = statsDataThree.Bgroup;
+                              const lossPer = statsDataThree.Bgroup_loss;
+                              const total = winPer + lossPer;
+                              const winPercentage = (winPer / total) * 100;
+
+                              return winPercentage >= 70
+                                ? `Hot`
+                                : winPercentage >= 50
+                                ? `Stable`
+                                : `Cold`;
+                            })()}
+                          </p>
+                        </div>
+                        <div
+                          style={{ width: "33%" }}
+                          className="flex justify-center flex-col items-center"
+                        >
+                          <GaugeChart
+                            id="gauge-chart-1"
+                            nrOfLevels={10}
+                            percent={rowDataScores.B / 666}
+                            colors={[
+                              "#A78BFA",
+                              "#7C3AED",
+                              "#8B5CF6",
+                              "#5B21B6",
+                            ]}
+                            arcWidth={0.3}
+                            hideText={true}
+                            style={{ width: "100px", height: "50px" }}
+                          />
+                          <p className="text-white font-bold text-center">
+                            {NumberHSC.B}
+                          </p>
+                        </div>
+                      </div>
+
                       <div className="flex border-2 border-purple-500 p-1 rounded-xl">
                         <div
                           style={{ width: "33%" }}
@@ -4786,8 +5539,8 @@ const Project4 = ({ theme }) => {
                             className="text-center pt-1"
                           >
                             {(() => {
-                              const winPer = statsData.Bgroup;
-                              const lossPer = statsData.Bgroup_loss;
+                              const winPer = statsDataThree.Cgroup;
+                              const lossPer = statsDataThree.Cgroup_loss;
                               const total = winPer + lossPer;
                               const winPercentage = (winPer / total) * 100;
 
@@ -4847,8 +5600,8 @@ const Project4 = ({ theme }) => {
                             className="text-center pt-1"
                           >
                             {(() => {
-                              const winPer = statsData.Cgroup;
-                              const lossPer = statsData.Cgroup_loss;
+                              const winPer = statsDataThree.Dgroup;
+                              const lossPer = statsDataThree.Dgroup_loss;
                               const total = winPer + lossPer;
                               const winPercentage = (winPer / total) * 100;
 
@@ -5009,8 +5762,8 @@ const Project4 = ({ theme }) => {
                             className="text-center pt-1"
                           >
                             {(() => {
-                              const winPer = statsData.Agroup;
-                              const lossPer = statsData.Agroup_loss;
+                              const winPer = statsDataTwo.Agroup;
+                              const lossPer = statsDataTwo.Agroup_loss;
                               const total = winPer + lossPer;
                               const winPercentage = (winPer / total) * 100;
 
@@ -5070,8 +5823,8 @@ const Project4 = ({ theme }) => {
                             className="text-center pt-1"
                           >
                             {(() => {
-                              const winPer = statsData.Bgroup;
-                              const lossPer = statsData.Bgroup_loss;
+                              const winPer = statsDataTwo.Bgroup;
+                              const lossPer = statsDataTwo.Bgroup_loss;
                               const total = winPer + lossPer;
                               const winPercentage = (winPer / total) * 100;
 
@@ -5131,8 +5884,8 @@ const Project4 = ({ theme }) => {
                             className="text-center pt-1"
                           >
                             {(() => {
-                              const winPer = statsData.Cgroup;
-                              const lossPer = statsData.Cgroup_loss;
+                              const winPer = statsDataTwo.Cgroup;
+                              const lossPer = statsDataTwo.Cgroup_loss;
                               const total = winPer + lossPer;
                               const winPercentage = (winPer / total) * 100;
 
@@ -5176,25 +5929,35 @@ const Project4 = ({ theme }) => {
             {/* Dozen */}
 
             <div className="mt-5">
-              <header className={`flex gap-2 tabs tabs-boxed w-full bg-purple-800 mb-1 py-2`}>
-              {/* <header className="flex gap-2 tabs tabs-boxed w-full bg-purple-800 mb-1 py-2"> */}
+              <header
+                className={`flex gap-2 tabs tabs-boxed w-full bg-purple-800 mb-1 py-2`}
+              >
+                {/* <header className="flex gap-2 tabs tabs-boxed w-full bg-purple-800 mb-1 py-2"> */}
                 <button
                   className={`px-2 font-bold w-[50%] py-1 
                    
-                  ${maximumScoreDozen === '1' ? 'bg-green-500 text-white' : 'bg-white text-black'}
+                  ${
+                    maximumScoreDozen === "1"
+                      ? "bg-green-500 text-white"
+                      : "bg-white text-black"
+                  }
                   rounded`}
                   onClick={() => setDozenActiveTab(1)}
                 >
-                  Dozen 
+                  Dozen
                 </button>
                 <button
                   className={`px-2 font-bold w-[50%] py-1 
                    
-                  ${maximumScoreDozen === '2' ? 'bg-green-500 text-white' : 'bg-white text-black'}
+                  ${
+                    maximumScoreDozen === "2"
+                      ? "bg-green-500 text-white"
+                      : "bg-white text-black"
+                  }
                   rounded`}
                   onClick={() => setDozenActiveTab(2)}
                 >
-                  Dozen 
+                  Dozen
                 </button>
               </header>
 
@@ -5689,7 +6452,7 @@ const Project4 = ({ theme }) => {
               <header className="flex gap-2 tabs tabs-boxed w-full bg-purple-800 mb-1 py-2">
                 <button
                   className={`mx-2 font-bold w-[50%] py-1 ${
-                    maximumScoreCol === '1'
+                    maximumScoreCol === "1"
                       ? "bg-green-500 text-white"
                       : "bg-white text-black"
                   } rounded`}
@@ -5699,7 +6462,7 @@ const Project4 = ({ theme }) => {
                 </button>
                 <button
                   className={`mx-2 font-bold w-[50%] py-1 ${
-                    maximumScoreCol === '2'
+                    maximumScoreCol === "2"
                       ? "bg-green-500 text-white"
                       : "bg-white text-black"
                   } rounded`}

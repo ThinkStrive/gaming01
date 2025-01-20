@@ -17,7 +17,7 @@ const Register = ({ inputData, setInputData }) => {
   const [loading, setLoading] = useState(false);
   const [isPasswordView, setIsPasswordView] = useState(false);
   const navigate = useNavigate();
-
+  
   const handleAuthLoginInputChange = (value, data) => {
     const countryCode = `+${data.countryCode}`; 
     const areaCode = value.slice(0, data.dialCode.length); 
@@ -36,6 +36,7 @@ const Register = ({ inputData, setInputData }) => {
   };
 
   const handleAuthLoginButton = async (e) => {
+
     setLoading(true);
     e.preventDefault();
     let data = {
@@ -70,6 +71,7 @@ const Register = ({ inputData, setInputData }) => {
 
     const [disabled, setDisabled] = useState(true); // State to control disabled status
     const [accepted, setAccepted] = useState(false);
+    const [showTermsModal, setShowTermsModal] = useState(false);
 
   return (
     <section className="min-h-screen flex items-center justify-center bg-transparant p-0 m-0">
@@ -155,29 +157,37 @@ const Register = ({ inputData, setInputData }) => {
 
              {/* Terms and Conditions Modal */}
              <div className="flex justify-center items-center gap-2">
-                <input
-                  type="checkbox"
-                  className="checkbox checkbox-primary border-2 border-black"
-                  checked={accepted} 
-                  disabled={!accepted}       
-                />
-                <LegalTermsModal accepted={accepted} setAccepted={setAccepted} setDisabled={setDisabled} colors={`text-base-950  hover:text-gray-100`}/>
-              </div>
-          {loading ? (
+              <input
+                type="checkbox"
+                className="checkbox checkbox-primary border-2 border-black"
+                checked={accepted}
+                onChange={() => setShowTermsModal(true)}
+                onClick={(e) => e.preventDefault()} 
+              />
+              <LegalTermsModal 
+                accepted={accepted} 
+                setAccepted={setAccepted} 
+                setDisabled={setDisabled} 
+                colors={`text-base-950 hover:text-gray-100`}
+                isOpen={showTermsModal}
+                setIsOpen={setShowTermsModal}
+              />
+            </div>
             <button
               type="submit"
-              className="w-[100%] bg-[#7F00FF] py-3 shadow-2xl rounded-lg text-lg font-semibold text-white lg:h-[55px] h-[50px] flex justify-center items-center"
+              disabled={!accepted || loading}
+              className={`w-full bg-[#7F00FF] text-black shadow-2xl rounded-lg text-lg 
+                font-semibold lg:h-[40px] h-[40px] px-4 border-2 
+                border-[#7F00FF] hover:bg-[#7F00FF] hover:text-white duration-300 
+                flex items-center justify-center ${(!accepted || loading) ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
-              <div className="login-loader"></div>
+              {loading ? (
+                <div className="login-loader"></div>
+              ) : (
+                'Register'
+              )}
             </button>
-          ) : (
-            <button
-              type="submit"
-              className={`w-[100%] bg-[#7F00FF] text-black  shadow-2xl rounded-lg text-lg font-semibold lg:h-[40px] h-[40px]  px-4 border-2 border-[#7F00FF] hover:bg-[#7F00FF] hover:text-white duration-300 ${disabled ? 'opacity-50 pointer-events-none' : ''}`}
-            >
-              Register
-            </button>
-          )}
+
         </form>
 
         <p className="lg:text-sm text-xs mt-4 m-0 text-white text-center">

@@ -4,13 +4,14 @@ import { Link } from "react-router-dom";
 import { MdEmail } from "react-icons/md";
 import { BACCARAT_PLANS } from "../../utils/constants";
 import PaypalButtonComponent from "../reuse/PaypalPayment/PaypalButtonComponent";
-import TermsAndConditions from "./TermsAndConditions";
+// import TermsAndConditions from "./TermsAndConditions";
 import LegalTermsModal from "./LegalTermsModal";
 
 
 const BaccaratLock = ({ onPaymentSuccess, returnURL }) => {
   const [disabled, setDisabled] = useState(true); // State to control disabled status
-  const [accepted, setAccepted] = useState(false);
+ const [accepted, setAccepted] = useState(false);
+    const [showTermsModal, setShowTermsModal] = useState(false);
 
   return (
     <div className="info-con-lock fixed inset-0 flex justify-center items-start sm:items-center overflow-y-auto bg-black/50 p-4 lg:mt-20 md:mt-16 sm:mt-14 pb-20" >
@@ -29,7 +30,7 @@ const BaccaratLock = ({ onPaymentSuccess, returnURL }) => {
             {BACCARAT_PLANS.map((plan, index) => (
               <div
                 key={index}
-                className={`bg-slate-200 rounded-xl shadow flex flex-col items-center p-1 ${disabled ? 'opacity-50 pointer-events-none' : ''}`}
+                className={`bg-slate-200 rounded-xl shadow flex flex-col items-center p-1 `}
               >
                 <div className="text-center mb-3">
                   <h2 className="text-2xl font-bold text-black">{plan.title}</h2>
@@ -42,7 +43,7 @@ const BaccaratLock = ({ onPaymentSuccess, returnURL }) => {
 
                   </div>
 
-                  <div className="w-full mt-auto">
+                  <div className={`w-full mt-auto  ${(!accepted ) ? 'opacity-50 cursor-not-allowed pointer-events-none' : ''}`}>
                     <PaypalButtonComponent
                       subFor={plan.subFor}
                       subType={plan.subType}
@@ -55,16 +56,23 @@ const BaccaratLock = ({ onPaymentSuccess, returnURL }) => {
             ))}
 
           {/* Terms and Conditions Modal */}
-              <div className="flex justify-center items-center gap-2">
-                <input
-                  type="checkbox"
-                  className="checkbox checkbox-primary border-2 border-black"
-                  checked={accepted}  
-                  disabled={!accepted}        
-                />
-                <LegalTermsModal accepted={accepted} setAccepted={setAccepted} setDisabled={setDisabled}/>
-              </div>
-           
+          <div className="flex justify-center items-center gap-2">
+              <input
+                type="checkbox"
+                className="checkbox checkbox-primary border-2 border-black"
+                checked={accepted}
+                onChange={() => setShowTermsModal(true)}
+                onClick={(e) => e.preventDefault()} 
+              />
+              <LegalTermsModal 
+                accepted={accepted} 
+                setAccepted={setAccepted} 
+                setDisabled={setDisabled} 
+                colors={`text-base-950 hover:text-gray-100`}
+                isOpen={showTermsModal}
+                setIsOpen={setShowTermsModal}
+              />
+            </div>
           </div>
 
           {/* Payment options section */}
