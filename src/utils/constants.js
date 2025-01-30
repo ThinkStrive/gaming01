@@ -38,7 +38,7 @@ export const BACCARAT_PLANS = [
     },
     {
         title:"Premium",
-        price: 350,
+        price: 500,
         duration:"Month",
         subFor:"baccarat",
         subType:"monthly"
@@ -63,7 +63,7 @@ export const ROULETTE_PLANS = [
     },
     {
         title:"Premium",
-        price: 210,
+        price: 300,
         duration:"Month",
         subFor:"roulette",
         subType:"monthly"
