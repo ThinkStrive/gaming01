@@ -17,13 +17,15 @@ import "../Style/ProjectsNav.css";
 import ProjectsNav from "../components/nav/ProjectsNav";
 import { Feedback } from "../components/main/Feedback";
 import { Userinfo } from "../components/main/Userinfo";
-import Planprofit from '../components/main/ProfitPlan'
-
+import Planprofit from "../components/main/ProfitPlan";
+// import Lobby from "../components/main/Lobby";
+import PromoModal from "../components/resources/ThinkStrivePromo";
 
 function Home() {
+  const [showPromoModal, setShowPromoModal] = useState(false);
   const [popUp, setPopUp] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation(); 
+  const location = useLocation();
   const [theme, setTheme] = useState(() => {
     const savedTheme = JSON.parse(localStorage.getItem("Theme"));
     return savedTheme ? savedTheme.theme : "dark";
@@ -36,25 +38,46 @@ function Home() {
   }, []);
 
   useEffect(() => {
-   
-    const path = location.pathname.split("/")[1]; 
-    if (["project1", "project2", "project3", "project4","userinfo","feedback","profitplan"].includes(path)) {
+    const path = location.pathname.split("/")[1];
+    if (
+      [
+        "project1",
+        "project2",
+        "project3",
+        "project4",
+        "userinfo",
+        "feedback",
+        "profitplan",
+        "lobby",
+      ].includes(path)
+    ) {
       setNavHeaderName(path);
     } else {
-      setNavHeaderName(""); 
+      setNavHeaderName("");
     }
   }, [location]);
 
+  useEffect(() => {
+    const promoShown = localStorage.getItem("promoModalShown");
+    if (!promoShown) {
+      setShowPromoModal(true);
+    }
+    navigate("/project1/blackRed");
+  }, []);
+
+  const closePromoModal = () => {
+    setShowPromoModal(false);
+    localStorage.setItem("promoModalShown", "true");
+  };
 
   const elementToCaptureRef = useRef(null);
 
   const captureScreenshot = async () => {
     const canvas = await html2canvas(elementToCaptureRef.current);
     canvas.toBlob((blob) => {
-      saveAs(blob, "screenshot.png"); 
+      saveAs(blob, "screenshot.png");
     });
 
-    
     if (navigator.share) {
       canvas.toBlob((blob) => {
         const file = new File([blob], "screenshot.png", { type: "image/png" });
@@ -73,10 +96,9 @@ function Home() {
   };
 
   return (
-    <div
-      ref={elementToCaptureRef}
-      className="bg-purplegrad relative"
-    >
+    <div ref={elementToCaptureRef} className="bg-purplegrad relative">
+      <PromoModal isOpen={showPromoModal} onClose={closePromoModal} />
+
       <ProjectsNav
         setPopUp={setPopUp}
         popUp={popUp}
@@ -106,9 +128,17 @@ function Home() {
               />
             }
           /> */}
-          <Route path="/userinfo" element={<Userinfo />} theme={theme} setTheme={setTheme} />
-          <Route path="/feedback" element={<Feedback theme={theme} setTheme={setTheme} />} />
-          <Route path="/profitplan" element={<Planprofit/>}/>
+          <Route
+            path="/userinfo"
+            element={<Userinfo />}
+            theme={theme}
+            setTheme={setTheme}
+          />
+          <Route
+            path="/feedback"
+            element={<Feedback theme={theme} setTheme={setTheme} />}
+          />
+          <Route path="/profitplan" element={<Planprofit />} />
           <Route
             path="project3/*"
             element={<Project3 theme={theme} setTheme={setTheme} />}
@@ -117,6 +147,9 @@ function Home() {
             path="project4/*"
             element={<Project4 theme={theme} setTheme={setTheme} />}
           />
+          {/* <Route path="/lobby"
+            element = {<Lobby/>}
+          /> */}
         </Routes>
       </div>
     </div>
